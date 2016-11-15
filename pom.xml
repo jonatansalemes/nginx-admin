@@ -7,14 +7,17 @@
 	<packaging>war</packaging>
 
 
+
 	<properties>
-		<version.wildfly.swarm>2016.11.0</version.wildfly.swarm>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
-		<failOnMissingWebXml>false</failOnMissingWebXml>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+			<!-- WildFly Swarm 
+				<version.wildfly.swarm>2016.10.0</version.wildfly.swarm>
+			-->
+			<maven.compiler.source>1.8</maven.compiler.source>
+			<maven.compiler.target>1.8</maven.compiler.target>
+			<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
+	<!-- WildFly Swarm 
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -26,9 +29,12 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+	-->
+
 
 	<build>
 		<plugins>
+			<!-- WildFly Swarm 
 			<plugin>
 				<groupId>org.wildfly.swarm</groupId>
 				<artifactId>wildfly-swarm-plugin</artifactId>
@@ -41,18 +47,12 @@
 					</execution>
 				</executions>
 			</plugin>
+			-->
 		</plugins>
 	</build>
 
 	<dependencies>
-		<!-- Java EE 7 dependency -->
-		<dependency>
-			<groupId>javax</groupId>
-			<artifactId>javaee-api</artifactId>
-			<version>7.0</version>
-			<scope>provided</scope>
-		</dependency>
-		<!-- WildFly Swarm Fractions -->
+		<!-- WildFly Swarm
 		<dependency>
 			<groupId>org.wildfly.swarm</groupId>
 			<artifactId>cdi</artifactId>
@@ -61,7 +61,13 @@
 			<groupId>org.wildfly.swarm</groupId>
 			<artifactId>undertow</artifactId>
 		</dependency>
-
+		-->
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<version>7.0</version>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>com.jslsolucoes</groupId>
 			<artifactId>tagria-lib</artifactId>
