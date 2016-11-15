@@ -2,10 +2,10 @@
 <html:view>
 
 	<html:block rendered="${!empty(runtimeResult)}">
-		<html:alert state="${ runtimeResult.runtimeType == 'ERROR' ? 'danger' : 'success'}" dismissible="true">
+		<html:alert state="${ runtimeResult.runtimeResultType == 'ERROR' ? 'danger' : 'success'}" dismissible="true">
 			<html:listGroup>
 				<html:listGroupItem>
-					${ runtimeResult.runtimeType }
+					${ runtimeResult.runtimeResultType }
 				</html:listGroupItem>
 				<html:listGroupItem>
 					${ runtimeResult.output }
