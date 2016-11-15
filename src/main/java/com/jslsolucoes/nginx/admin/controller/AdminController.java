@@ -1,5 +1,7 @@
 package com.jslsolucoes.nginx.admin.controller;
 
+import java.lang.management.ManagementFactory;
+
 import javax.inject.Inject;
 
 import com.jslsolucoes.nginx.admin.util.RuntimeUtils;
@@ -25,7 +27,7 @@ public class AdminController {
 	}
 	
 	public void dashboard(){
-		
+		 this.result.include("so",ManagementFactory.getOperatingSystemMXBean());
 	}
 	
 	public void configure(){
@@ -44,6 +46,11 @@ public class AdminController {
 	
 	public void status(){
 		this.result.include("runtimeResult",RuntimeUtils.command("/etc/init.d/nginx status"));
+		this.result.redirectTo(this).dashboard();
+	}
+	
+	public void restart() {
+		this.result.include("runtimeResult",RuntimeUtils.command("/etc/init.d/nginx restart"));
 		this.result.redirectTo(this).dashboard();
 	}
 	

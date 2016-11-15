@@ -34,7 +34,7 @@ public class RuntimeUtils {
 				return new RuntimeResult(RuntimeResultType.ERROR, error);
 			}
 		} catch (Exception exception) {
-			return new RuntimeResult(RuntimeResultType.ERROR, ExceptionUtils.getFullStackTrace(exception));
+			return new RuntimeResult(RuntimeResultType.ERROR, ExceptionUtils.getFullStackTrace(exception).replaceAll("\n", "<br/>"));
 		}
 	}
 }

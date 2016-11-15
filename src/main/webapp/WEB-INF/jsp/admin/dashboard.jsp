@@ -17,7 +17,16 @@
 	
 	<html:card>
 		<html:cardBody>
-			Instance details
+			<html:panel>
+				<html:panelHead label="Instance details"></html:panelHead>
+				<html:panelBody>
+					<html:listGroup>
+						<html:listGroupItem> Arch : ${ so.arch }</html:listGroupItem>
+						<html:listGroupItem> Operational System : ${ so.name }</html:listGroupItem>
+						<html:listGroupItem> Version : ${ so.version }</html:listGroupItem>
+					</html:listGroup>
+				</html:panelBody>
+			</html:panel>
 		</html:cardBody>
 		<html:toolbar>
 			<html:buttonGroup spaced="true">
