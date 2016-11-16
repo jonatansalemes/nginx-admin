@@ -34,12 +34,12 @@
 						<configuration>
 							<tasks>
 								<delete>
-									<fileset dir="${project.basedir}/src/main/resources"
+									<fileset dir="${project.build.resources[0].directory}"
 										includes="*.war" />
 								</delete>
 								<copy
-									file="${project.parent.basedir}/nginx-admin-ui/target/nginx-admin-ui-${project.version}.war"
-									tofile="${project.basedir}/src/main/resources/nginx-admin-ui.war" />
+									file="${project.parent.basedir}/${project.parent.modules[0]}/target/${project.parent.modules[0]}-${project.version}.war"
+									tofile="${project.build.resources[0].directory}/${project.parent.modules[0]}.war" />
 							</tasks>
 						</configuration>
 						<goals>
