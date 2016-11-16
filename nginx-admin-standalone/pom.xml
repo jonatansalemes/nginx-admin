@@ -39,7 +39,7 @@
 								</delete>
 								<copy
 									file="${project.parent.basedir}/nginx-admin-ui/target/nginx-admin-ui-${project.version}.war"
-									todir="${project.basedir}/src/main/resources" />
+									tofile="${project.basedir}/src/main/resources/nginx-admin-ui.war" />
 							</tasks>
 						</configuration>
 						<goals>
@@ -86,11 +86,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.wildfly.swarm</groupId>
-			<artifactId>datasources</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.wildfly.swarm</groupId>
-			<artifactId>h2</artifactId>
+			<artifactId>jpa</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>

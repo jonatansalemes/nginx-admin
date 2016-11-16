@@ -1,22 +1,28 @@
 package com.jslsolucoes.nginx.admin.database;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
+import javax.sql.DataSource;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.h2.Driver;
 
 public class DatabaseChecker {
 	
+	private DataSource dataSource;
+
+	public DatabaseChecker(DataSource dataSource) {
+		this.dataSource = dataSource;
+		
+	}
+
 	public void check() {
 		try {
-			DriverManager.registerDriver(new Driver());
-			Connection connection = DriverManager.getConnection("jdbc:h2:~/admin","sa","");
+			Connection connection = dataSource.getConnection();
 			install(connection);
 			connection.close();
 		} catch(Exception exception){

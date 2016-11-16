@@ -4,19 +4,18 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
+import javax.persistence.EntityManager;
 import javax.persistence.Id;
+import javax.persistence.Query;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Property;
 
 import net.vidageek.mirror.dsl.Mirror;
 import net.vidageek.mirror.list.dsl.Matcher;
 
 public abstract class RepositoryImpl<T> {
 
-	protected Session session;
+	protected EntityManager entityManager;
 	private Class<T> clazz;
 
 	public RepositoryImpl() {
@@ -24,9 +23,9 @@ public abstract class RepositoryImpl<T> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public RepositoryImpl(Session session) {
+	public RepositoryImpl(EntityManager entityManager) {
 		this.clazz = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-		this.session = session;
+		this.entityManager = entityManager;
 	}
 
 	public List<T> listAll() {
@@ -35,29 +34,27 @@ public abstract class RepositoryImpl<T> {
 
 	@SuppressWarnings("unchecked")
 	public List<T> listAll(Integer firstResult, Integer maxResults) {
-		Criteria criteria = session.createCriteria(clazz);
+		Query query = entityManager.createQuery("from " + clazz.getSimpleName());
 		if (firstResult != null && maxResults != null) {
-			criteria.setFirstResult(firstResult).setMaxResults(maxResults);
+			query.setFirstResult(firstResult).setMaxResults(maxResults);
 		}
-		return criteria.list();
+		return query.getResultList();
 	}
 
 	public T load(T entity) {
 		return load(id(entity));
 	}
 
-	@SuppressWarnings("unchecked")
 	public T load(Long id) {
-		return (T) session.load(clazz, id);
+		return (T) entityManager.find(clazz, id);
 	}
 
 	public void insert(T entity) {
-		this.session.save(entity);
+		this.entityManager.persist(entity);
 	}
 
-	@SuppressWarnings("unchecked")
 	public T update(T entity) {
-		return (T) this.session.merge(entity);
+		return (T) this.entityManager.merge(entity);
 	}
 
 	private Long id(T entity) {
@@ -83,7 +80,7 @@ public abstract class RepositoryImpl<T> {
 	}
 
 	public OperationType delete(T entity) {
-		this.session.delete(entity);
+		this.entityManager.remove(entity);
 		return OperationType.DELETE;
 	}
 
@@ -99,21 +96,8 @@ public abstract class RepositoryImpl<T> {
 	}
 
 	public Integer count() {
-		Criteria criteria = this.session.createCriteria(clazz);
-		criteria.setProjection(Property.forName("id").count());
-		return ((Long) criteria.uniqueResult()).intValue();
-	}
-
-	public void flush() {
-		this.session.flush();
-	}
-
-	public void evict(T entity) {
-		this.session.evict(entity);
-	}
-	
-	public void clear(){
-		this.session.clear();
+		Query query = entityManager.createQuery("select count(id) from " + clazz.getSimpleName());
+		return ((Long) query.getSingleResult()).intValue();
 	}
 
 }

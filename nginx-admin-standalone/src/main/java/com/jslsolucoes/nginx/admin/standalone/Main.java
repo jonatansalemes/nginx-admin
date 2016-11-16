@@ -16,17 +16,20 @@ public class Main {
 		Swarm swarm = new Swarm(args);
 		swarm.fraction(new DatasourcesFraction().dataSource("AdminDS", (ds) -> {
 			ds.driverName("h2");
-			ds.connectionUrl("jdbc:h2:~/test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
+			ds.connectionUrl("jdbc:h2:~/admin;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
 			ds.userName("foo");
 			ds.password("bar");
+			ds.jndiName("java:jboss/datasources/AdminDS");
 		}));
 		swarm.start();
 
-		InputStream war = Main.class.getResourceAsStream("/nginx-admin-ui-1.0.0.war");
+		InputStream war = Main.class.getResourceAsStream("/nginx-admin-ui.war");
 		File file = File.createTempFile(UUID.randomUUID().toString(), ".war");
 		FileUtils.copyInputStreamToFile(war, file);
+		/*
 		file.deleteOnExit();
 		war.close();
+		*/
 
 		WARArchive warArchive = ShrinkWrap.createFromZipFile(WARArchive.class, file);
 		swarm.deploy(warArchive);
