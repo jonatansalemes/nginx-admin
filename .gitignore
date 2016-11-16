@@ -4,3 +4,4 @@
 .settings
 .DS_Store
 target
+*.war
