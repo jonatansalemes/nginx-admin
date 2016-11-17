@@ -22,7 +22,8 @@
 	<context-param>
 		<param-name>br.com.caelum.vraptor.encoding</param-name>
 		<param-value>UTF-8</param-value>
-	</context-param>
+	</context-param>	
+	
 	<servlet>
 		<servlet-name>tagria</servlet-name>
 		<servlet-class>com.jslsolucoes.tagria.lib.servlet.Tagria</servlet-class>

@@ -15,16 +15,29 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.controller;
 
+import javax.inject.Inject;
+
+import com.jslsolucoes.nginx.admin.repository.MailRepository;
+
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Path;
 
 @Controller
 public class AppController {
 
+	private MailRepository mailRepository;
+
+	public AppController() {
+
+	}
+
+	@Inject
+	public AppController(MailRepository mailRepository) {
+		this.mailRepository = mailRepository;
+	}
 
 	@Path(value = { "/", "/app/home" })
 	public void home() {
-
+		mailRepository.send("Your new password", "jonatan@jslsolucoes.com", "123456");
 	}
-	
 }
