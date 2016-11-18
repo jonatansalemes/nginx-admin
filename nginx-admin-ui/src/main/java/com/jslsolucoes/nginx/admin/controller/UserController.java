@@ -51,25 +51,51 @@ public class UserController {
 		this.result.redirectTo(this).login();
 	}
 
-	@Public
-	public void validateReset(String login) {
+	public void validateBeforeChangePassword(String password, String passwordConfirm) {
 		this.result.use(Results.json())
-				.from(HtmlUtil.convertToUnodernedList(userRepository.validateResetPassword(new User(login))), "errors")
+				.from(HtmlUtil.convertToUnodernedList(
+						userRepository.validateBeforeChangePassword(userSession.getUser(), password, passwordConfirm)),
+						"errors")
+				.serialize();
+	}
+	
+	public void changePassword() {
+		
+	}
+	
+	@Post
+	public void change(String password) {
+		userRepository.changePassword(userSession.getUser(), password);
+		userSession.setUser(userRepository.loadForSession(userSession.getUser()));
+		this.result.include("passwordChanged", true);
+		if(userSession.getUser().getPasswordForceChange() == 1){
+			this.result.redirectTo(AppController.class).home();
+		} else {
+			this.result.redirectTo(this).changePassword();
+		}
+	}
+	
+	@Public
+	public void validateBeforeResetPassword(String login) {
+		this.result.use(Results.json())
+				.from(HtmlUtil.convertToUnodernedList(userRepository.validateBeforeResetPassword(new User(login))),
+						"errors")
 				.serialize();
 	}
 	
 	@Public
-	@Post
-	public void reset(String login) {
-		userRepository.resetPassword(new User(login));
-		this.result.include("passwordRecoveryForLogin",login);
-		this.result.redirectTo(this).login();
-	}
-
-	@Public
 	public void resetPassword() {
 
 	}
+
+	@Public
+	@Post
+	public void reset(String login) {
+		userRepository.resetPassword(new User(login));
+		this.result.include("passwordRecoveryForLogin", login);
+		this.result.redirectTo(this).login();
+	}
+	
 
 	@Public
 	public void login() {
@@ -81,11 +107,17 @@ public class UserController {
 	public void authenticate(String login, String password) {
 		User user = userRepository.authenticate(new User(login, password));
 		if (user != null) {
-			userSession.setUser(user);
-			this.result.redirectTo(AppController.class).home();
+			userSession.setUser(userRepository.loadForSession(user));
+
+			if (user.getPasswordForceChange() == 1) {
+				this.result.redirectTo(this).changePassword();
+			} else {
+				this.result.redirectTo(AppController.class).home();
+			}
 		} else {
 			this.result.include("invalid", true);
 			this.result.redirectTo(this).login();
 		}
 	}
+
 }

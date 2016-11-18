@@ -21,7 +21,7 @@
 				<html:formGroup>
 					<html:alert state="warning"
 						rendered="${ !empty(passwordRecoveryForLogin)}">
-						<fmt:message key="passwordRecovered">
+						<fmt:message key="password.recovered">
 							<fmt:param value="${ passwordRecoveryForLogin }"></fmt:param>
 						</fmt:message>
 					</html:alert>
@@ -49,7 +49,7 @@
 
 
 		<html:block align="center">
-			<html:link url="/user/resetPassword" label="{forgotPassword}"></html:link>
+			<html:link url="/user/resetPassword" label="{forgot.password}"></html:link>
 		</html:block>
 
 	</html:container>

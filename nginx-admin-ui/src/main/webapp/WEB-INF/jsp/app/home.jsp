@@ -7,6 +7,7 @@
 			<html:menuButton icon="cog" align="right">
 				<html:menuItem url="#" label="${ userSession.user.login }" icon="user"></html:menuItem>
 				<html:menuSeparator></html:menuSeparator>
+				<html:menuItem target="content" url="/user/changePassword?forwardToHome=false" icon="log-in" label="{password.change}"></html:menuItem>
 				<html:menuItem url="/user/logout" icon="log-out" label="{logout}"></html:menuItem>
 			</html:menuButton>
 		</html:container>

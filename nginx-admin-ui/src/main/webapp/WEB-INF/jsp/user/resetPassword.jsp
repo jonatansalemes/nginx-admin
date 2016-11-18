@@ -16,8 +16,8 @@
 
 		<html:block>
 			<html:form action="/user/reset" 
-				label="{passwordRecovery}" 
-				 validation="/user/validateReset">
+				label="{password.recovery}" 
+				 validation="/user/validateBeforeResetPassword">
 				<html:formGroup label="{login}" required="true">
 					<html:input name="login" type="email" required="true"
 						placeholder="{login.placeholder}"></html:input>

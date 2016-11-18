@@ -11,6 +11,7 @@ import javax.persistence.Query;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
 
 import com.jslsolucoes.nginx.admin.i18n.Messages;
 import com.jslsolucoes.nginx.admin.model.User;
@@ -45,7 +46,7 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 	}
 
 	@Override
-	public List<String> validateResetPassword(User user) {
+	public List<String> validateBeforeResetPassword(User user) {
 		List<String> errors = new ArrayList<String>();
 		if (getByLogin(user) == null) {
 			errors.add(Messages.getString("invalid.login"));
@@ -68,8 +69,40 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 		String password = RandomStringUtils.randomAlphanumeric(8);
 		user = getByLogin(user);
 		user.setPassword(password);
+		user.setPasswordForceChange(1);
 		mailRepository.send(Messages.getString("reset.mail.subject"), user.getLogin(),
 				Messages.getString("reset.mail.body", user.getLogin(), password));
+	}
+
+	@Override
+	public List<String> validateBeforeChangePassword(User user, String password, String passwordConfirm) {
+		List<String> errors = new ArrayList<String>();
+		user = load(user);
+		Integer passwordSize = 8;
+		if (password.length() < passwordSize) {
+			errors.add(Messages.getString("invalid.password.size", passwordSize));
+		}
+		if (!StringUtils.equals(password, passwordConfirm)) {
+			errors.add(Messages.getString("invalid.password.confirm"));
+		}
+		if (StringUtils.equals(user.getPassword(), DigestUtils.sha256Hex(password))) {
+			errors.add(Messages.getString("invalid.password.same"));
+		}
+		return errors;
+	}
+
+	@Override
+	public void changePassword(User user, String password) {
+		user = load(user);
+		user.setPasswordForceChange(0);
+		user.setPassword(DigestUtils.sha256Hex(password));
+	}
+
+	@Override
+	public User loadForSession(User user) {
+		Query query = entityManager.createQuery("from User where id = :login");
+		query.setParameter("id", user.getId());
+		return (User) query.getSingleResult();
 	}
 
 }
