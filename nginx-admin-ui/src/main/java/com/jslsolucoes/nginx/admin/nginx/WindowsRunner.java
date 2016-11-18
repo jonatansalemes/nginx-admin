@@ -1,15 +1,21 @@
+/*******************************************************************************
+ * Copyright 2016 JSL Solucoes LTDA - https://jslsolucoes.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *******************************************************************************/
 package com.jslsolucoes.nginx.admin.nginx;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-
 import javax.enterprise.inject.Vetoed;
-
-import org.zeroturnaround.exec.InvalidExitValueException;
-import org.zeroturnaround.exec.ProcessExecutor;
 
 import com.jslsolucoes.nginx.admin.os.OperationalSystemDistribution;
 import com.jslsolucoes.nginx.admin.runtime.RuntimeResult;
@@ -25,14 +31,17 @@ public class WindowsRunner implements Runner {
 
 	@Override
 	public RuntimeResult start(NginxConfiguration nginxConfiguration) {
-		return RuntimeUtils.command(
-				"cmd.exe /c start /B nginx.exe -c \"" + nginxConfiguration.getConf().getAbsolutePath() + "\"",
-				nginxConfiguration.getHome(), false);
+		RuntimeUtils.command(
+				"cmd.exe /c nginx.exe -c \"" + nginxConfiguration.getConf().getAbsolutePath() + "\"",
+				nginxConfiguration.getHome(), 3);
+		return status(nginxConfiguration);
 	}
 
 	@Override
 	public RuntimeResult stop(NginxConfiguration nginxConfiguration) {
-		return RuntimeUtils.command("cmd.exe /c nginx.exe -s quit", nginxConfiguration.getHome());
+		RuntimeUtils.command("cmd.exe /c nginx.exe -s quit", nginxConfiguration.getHome());
+		RuntimeUtils.command("taskkill /f /im nginx.exe");
+		return status(nginxConfiguration);
 	}
 
 	@Override
@@ -46,15 +55,7 @@ public class WindowsRunner implements Runner {
 	public RuntimeResult status(NginxConfiguration nginxConfiguration) {
 		return RuntimeUtils.command("tasklist /fi \"imagename eq nginx.exe\"");
 	}
-
-	public static void main(String[] args)
-			throws InvalidExitValueException, IOException, InterruptedException, TimeoutException, ExecutionException {
-
-		try {
-			new ProcessExecutor().commandSplit("cmd.exe /c start /B calc.exe")
-					.directory(new File("D:\\softwares\\nginx-1.11.6")).timeout(1, TimeUnit.SECONDS).execute();
-		} catch (TimeoutException e) {
-			
-		}
-	}
+	
+	
+	
 }

@@ -16,42 +16,50 @@
 package com.jslsolucoes.nginx.admin.runtime;
 
 import java.io.File;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.zeroturnaround.exec.ProcessExecutor;
+import org.zeroturnaround.exec.ProcessResult;
 
 public class RuntimeUtils {
 
 	
 	public static RuntimeResult command(String command) {
-		return command(command, null,null,true);
+		return command(command, null,null,null);
 	}
 	
 	public static RuntimeResult command(String command,File directory) {
-		return command(command, null,directory,true);
+		return command(command, null,directory,null);
 	}
 	
-	public static RuntimeResult command(String command,File directory,Boolean waitFor) {
-		return command(command, null,directory,waitFor);
+	public static RuntimeResult command(String command,File directory,Integer timeout) {
+		return command(command, null,directory,timeout);
 	}
 	
-	public static RuntimeResult command(String command,String [] enviroment,File directory,Boolean waitFor) {
+	public static RuntimeResult command(String command,Map<String,String> enviroment,File directory,Integer timeout) {
 		try {
-			
-			Runtime runtime = Runtime.getRuntime();
-			Process process = runtime.exec(command,enviroment,directory);
-			if(waitFor){
-				process.waitFor();
-				String success = IOUtils.toString(process.getInputStream(), "UTF-8");
-				String error = IOUtils.toString(process.getErrorStream(), "UTF-8");
-				if (!StringUtils.isEmpty(success)) {
-					return new RuntimeResult(RuntimeResultType.SUCCESS, success);
-				} else {
-					return new RuntimeResult(RuntimeResultType.ERROR, error);
-				}
+			ProcessExecutor processExecutor = new ProcessExecutor();
+			processExecutor.commandSplit(command);
+			processExecutor.readOutput(true);
+			if(directory!=null){
+				processExecutor.directory(directory);
 			}
-			return new RuntimeResult(RuntimeResultType.SUCCESS, command);
+			if(enviroment != null){
+				processExecutor.environment(enviroment);
+			}
+			if(timeout != null){
+				processExecutor.timeout(timeout, TimeUnit.SECONDS);
+			}
+			ProcessResult processResult = processExecutor.execute();
+			String output = processResult.outputUTF8().replaceAll("\n","<br/>");
+			
+			if(processResult.getExitValue() == 0){
+				return new RuntimeResult(RuntimeResultType.SUCCESS, output);
+			} else {
+				return new RuntimeResult(RuntimeResultType.ERROR, output);
+			}
 		} catch (Exception exception) {
 			return new RuntimeResult(RuntimeResultType.ERROR, ExceptionUtils.getFullStackTrace(exception).replaceAll("\n", "<br/>"));
 		}
