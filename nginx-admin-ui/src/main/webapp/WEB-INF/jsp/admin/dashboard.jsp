@@ -30,11 +30,7 @@
 		</html:cardBody>
 		<html:toolbar>
 			<html:buttonGroup spaced="true">
-				<html:button id="configure" state="warning"
-					label="{configure}" disabled="true"></html:button>
-				<html:confirm url="/admin/configure"
-					attachTo="configure">
-				</html:confirm>
+				
 
 				<html:button url="/admin/start" state="success"
 					label="{start}"></html:button>
@@ -53,10 +49,7 @@
 					attachTo="restart" label="{restart.confirm}">
 				</html:confirm>
 
-				<html:button url="/admin/virtual/domain"
-					label="{virtual.domain.create}"></html:button>
-				<html:button url="/admin/upstream"
-					label="{upstream.create}"></html:button>
+
 			</html:buttonGroup>
 		</html:toolbar>
 	</html:card>

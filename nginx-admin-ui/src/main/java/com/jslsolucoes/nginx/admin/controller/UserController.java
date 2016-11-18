@@ -21,10 +21,12 @@ import com.jslsolucoes.nginx.admin.annotation.Public;
 import com.jslsolucoes.nginx.admin.model.User;
 import com.jslsolucoes.nginx.admin.repository.UserRepository;
 import com.jslsolucoes.nginx.admin.session.UserSession;
+import com.jslsolucoes.nginx.admin.util.HtmlUtil;
 
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Result;
+import br.com.caelum.vraptor.view.Results;
 
 @Controller
 public class UserController {
@@ -38,7 +40,7 @@ public class UserController {
 	}
 
 	@Inject
-	public UserController(UserSession userSession, Result result,UserRepository userRepository) {
+	public UserController(UserSession userSession, Result result, UserRepository userRepository) {
 		this.userSession = userSession;
 		this.result = result;
 		this.userRepository = userRepository;
@@ -50,6 +52,26 @@ public class UserController {
 	}
 
 	@Public
+	public void validateReset(String login) {
+		this.result.use(Results.json())
+				.from(HtmlUtil.convertToUnodernedList(userRepository.validateResetPassword(new User(login))), "errors")
+				.serialize();
+	}
+	
+	@Public
+	@Post
+	public void reset(String login) {
+		userRepository.resetPassword(new User(login));
+		this.result.include("passwordRecoveryForLogin",login);
+		this.result.redirectTo(this).login();
+	}
+
+	@Public
+	public void resetPassword() {
+
+	}
+
+	@Public
 	public void login() {
 
 	}
@@ -57,7 +79,7 @@ public class UserController {
 	@Post
 	@Public
 	public void authenticate(String login, String password) {
-		User user = userRepository.authenticate(new User(login,password));
+		User user = userRepository.authenticate(new User(login, password));
 		if (user != null) {
 			userSession.setUser(user);
 			this.result.redirectTo(AppController.class).home();

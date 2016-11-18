@@ -4,6 +4,7 @@ import java.lang.management.ManagementFactory;
 
 import javax.inject.Inject;
 
+import com.jslsolucoes.nginx.admin.repository.ConfigurationRepository;
 import com.jslsolucoes.nginx.admin.util.RuntimeUtils;
 
 import br.com.caelum.vraptor.Controller;
@@ -15,14 +16,16 @@ import br.com.caelum.vraptor.Result;
 public class AdminController {
 
 	private Result result;
+	private ConfigurationRepository configurationRepository;
 
 	public AdminController() {
 		
 	}
 	
 	@Inject
-	public AdminController(Result result) {
+	public AdminController(Result result,ConfigurationRepository configurationRepository) {
 		this.result = result;
+		this.configurationRepository = configurationRepository;
 		
 	}
 	
@@ -35,22 +38,22 @@ public class AdminController {
 	}
 	
 	public void stop() {
-		this.result.include("runtimeResult",RuntimeUtils.command("/etc/init.d/nginx stop"));
+		this.result.include("runtimeResult",RuntimeUtils.command(configurationRepository.variable("NGINX_BIN") + " stop"));
 		this.result.redirectTo(this).dashboard();
 	}
 	
 	public void start(){
-		this.result.include("runtimeResult",RuntimeUtils.command("/etc/init.d/nginx start"));
+		this.result.include("runtimeResult",RuntimeUtils.command(configurationRepository.variable("NGINX_BIN") + " start"));
 		this.result.redirectTo(this).dashboard();
 	}
 	
 	public void status(){
-		this.result.include("runtimeResult",RuntimeUtils.command("/etc/init.d/nginx status"));
+		this.result.include("runtimeResult",RuntimeUtils.command(configurationRepository.variable("NGINX_BIN") + " status"));
 		this.result.redirectTo(this).dashboard();
 	}
 	
 	public void restart() {
-		this.result.include("runtimeResult",RuntimeUtils.command("/etc/init.d/nginx restart"));
+		this.result.include("runtimeResult",RuntimeUtils.command(configurationRepository.variable("NGINX_BIN") +" restart"));
 		this.result.redirectTo(this).dashboard();
 	}
 	
