@@ -24,6 +24,7 @@
 						<html:listGroupItem> Arch : ${ so.arch }</html:listGroupItem>
 						<html:listGroupItem> Operational System : ${ so.name }</html:listGroupItem>
 						<html:listGroupItem> Version : ${ so.version }</html:listGroupItem>
+						<html:listGroupItem> Distro : ${ so.operationalSystemDistribution.name }</html:listGroupItem>
 					</html:listGroup>
 				</html:panelBody>
 			</html:panel>

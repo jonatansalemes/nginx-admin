@@ -1,4 +1,4 @@
-package com.jslsolucoes.nginx.admin.util;
+package com.jslsolucoes.nginx.admin.i18n;
 
 import java.text.MessageFormat;
 import java.util.MissingResourceException;

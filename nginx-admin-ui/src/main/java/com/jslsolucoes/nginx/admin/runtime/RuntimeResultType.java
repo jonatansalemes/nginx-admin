@@ -1,4 +1,4 @@
-package com.jslsolucoes.nginx.admin.util;
+package com.jslsolucoes.nginx.admin.runtime;
 
 public enum RuntimeResultType {
 	ERROR,SUCCESS

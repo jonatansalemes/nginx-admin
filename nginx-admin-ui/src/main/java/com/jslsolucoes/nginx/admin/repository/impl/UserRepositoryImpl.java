@@ -12,10 +12,10 @@ import javax.persistence.Query;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.RandomStringUtils;
 
+import com.jslsolucoes.nginx.admin.i18n.Messages;
 import com.jslsolucoes.nginx.admin.model.User;
 import com.jslsolucoes.nginx.admin.repository.MailRepository;
 import com.jslsolucoes.nginx.admin.repository.UserRepository;
-import com.jslsolucoes.nginx.admin.util.Messages;
 
 @RequestScoped
 public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepository {

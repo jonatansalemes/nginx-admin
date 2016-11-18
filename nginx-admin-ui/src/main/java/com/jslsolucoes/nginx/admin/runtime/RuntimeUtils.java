@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package com.jslsolucoes.nginx.admin.util;
+package com.jslsolucoes.nginx.admin.runtime;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
