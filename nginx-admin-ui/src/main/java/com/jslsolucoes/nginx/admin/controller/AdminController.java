@@ -63,7 +63,7 @@ public class AdminController {
 
 	private NginxConfiguration configuration() {
 		return new NginxConfiguration(new File(configurationRepository.variable("NGINX_BIN")),
-				new File(configurationRepository.variable("NGINX_CONF")));
+				new File(configurationRepository.variable("NGINX_CONF")),new File(configurationRepository.variable("NGINX_HOME")));
 	}
 
 }

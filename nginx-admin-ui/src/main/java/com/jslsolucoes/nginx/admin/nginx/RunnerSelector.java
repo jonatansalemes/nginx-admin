@@ -29,7 +29,7 @@ public class RunnerSelector {
 	private List<Runner> implementations(){
 		return new ArrayList<Runner>(){{
 			add(new CentOsRunner());
-			add(new UnknowDistroRunner());
+			add(new WindowsRunner());
 		}};
 	}
 }

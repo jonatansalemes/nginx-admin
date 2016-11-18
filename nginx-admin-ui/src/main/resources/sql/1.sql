@@ -16,11 +16,11 @@ create table admin.configuration (
 insert into admin.configuration (variable,value) values ('VERSION','1');
 insert into admin.configuration (variable,value) values ('NGINX_USER','nginx');
 insert into admin.configuration (variable,value) values ('NGINX_GROUP','nginx');
-insert into admin.configuration (variable,value) values ('NGINX_HOME','/etc/nginx');
-insert into admin.configuration (variable,value) values ('NGINX_BIN','/usr/sbin/nginx');
-insert into admin.configuration (variable,value) values ('NGINX_CONF','/etc/nginx/nginx.conf');
-insert into admin.configuration (variable,value) values ('NGINX_ERROR_LOG','/var/log/nginx/error.log');
-insert into admin.configuration (variable,value) values ('NGINX_ACCESS_LOG','/var/log/nginx/access.log');
+insert into admin.configuration (variable,value) values ('NGINX_HOME','D:\softwares\nginx-1.11.6');
+insert into admin.configuration (variable,value) values ('NGINX_BIN','D:\softwares\nginx-1.11.6\nginx.exe');
+insert into admin.configuration (variable,value) values ('NGINX_CONF','D:\softwares\nginx-1.11.6\conf\nginx.conf');
+insert into admin.configuration (variable,value) values ('NGINX_ERROR_LOG','D:\softwares\nginx-1.11.6\logs\error.log');
+insert into admin.configuration (variable,value) values ('NGINX_ACCESS_LOG','D:\softwares\nginx-1.11.6\logs\access.log');
 
 insert into admin.configuration (variable,value) values ('SMTP_HOST','localhost');
 insert into admin.configuration (variable,value) values ('SMTP_PORT','25');
