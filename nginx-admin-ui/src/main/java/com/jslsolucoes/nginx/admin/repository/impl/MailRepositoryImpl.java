@@ -27,52 +27,46 @@ import javax.mail.internet.InternetAddress;
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.HtmlEmail;
 
-import com.jslsolucoes.nginx.admin.repository.ConfigurationRepository;
+import com.jslsolucoes.nginx.admin.model.Smtp;
 import com.jslsolucoes.nginx.admin.repository.MailRepository;
+import com.jslsolucoes.nginx.admin.repository.SmtpRepository;
 
 @RequestScoped
 public class MailRepositoryImpl implements MailRepository {
 
-	private ConfigurationRepository configurationRepository;
 	private ExecutorService executorService;
+	private SmtpRepository smtpRepository;
 
 	public MailRepositoryImpl() {
 
 	}
 
 	@Inject
-	public MailRepositoryImpl(ConfigurationRepository configurationRepository, ExecutorService executorService) {
-		this.configurationRepository = configurationRepository;
+	public MailRepositoryImpl(ExecutorService executorService, SmtpRepository smtpRepository) {
 		this.executorService = executorService;
+		this.smtpRepository = smtpRepository;
 	}
 
 	@Override
 	public Future<Void> send(String subject, String to, String message) {
 
-		String hostName = configurationRepository.variable("SMTP_HOST");
-		String from = configurationRepository.variable("SMTP_FROM");
-		Integer port = Integer.valueOf(configurationRepository.variable("SMTP_PORT"));
-		Boolean authenticate = Boolean.valueOf(configurationRepository.variable("SMTP_AUTHENTICATE"));
-		Boolean tls = Boolean.valueOf(configurationRepository.variable("SMTP_TLS"));
-		String userName = configurationRepository.variable("SMTP_USERNAME");
-		String password = configurationRepository.variable("SMTP_PASSWORD");
-
+		Smtp smtp = smtpRepository.smtp();
 		Callable<Void> task = new Callable<Void>() {
 			@Override
 			public Void call() {
 				try {
 					Email email = new HtmlEmail();
-					email.setHostName(hostName);
-					email.setSmtpPort(port);
-					email.setFrom(from);
-					if(tls){
+					email.setHostName(smtp.getHost());
+					email.setSmtpPort(smtp.getPort());
+					email.setFrom(smtp.getFromAddress());
+					if (smtp.getTls() == 1) {
 						email.setStartTLSEnabled(true);
 						email.setSSLOnConnect(true);
 						email.setStartTLSRequired(true);
 					}
 					email.setCharset("ISO-8859-1");
-					if(authenticate){
-						email.setAuthentication(userName, password);
+					if (smtp.getAuthenticate() == 1) {
+						email.setAuthentication(smtp.getUserName(), smtp.getPassword());
 					}
 					email.setSubject(subject);
 					email.setMsg(message);

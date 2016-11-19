@@ -4,10 +4,11 @@
 	<html:nav>
 		<html:container>
 			<html:brand label="{brand}" url="/"></html:brand>
-			<html:menuButton icon="cog" align="right">
+			<html:menuButton icon="option-vertical" align="right">
 				<html:menuItem url="#" label="${ userSession.user.login }" icon="user"></html:menuItem>
 				<html:menuSeparator></html:menuSeparator>
-				<html:menuItem target="content" url="/user/changePassword?forwardToHome=false" icon="log-in" label="{password.change}"></html:menuItem>
+				<html:menuItem target="content" url="/settings/home" icon="cog" label="{settings}"></html:menuItem>
+				<html:menuItem target="content" url="/user/changePassword" icon="log-in" label="{password.change}"></html:menuItem>
 				<html:menuItem url="/user/logout" icon="log-out" label="{logout}"></html:menuItem>
 			</html:menuButton>
 		</html:container>
