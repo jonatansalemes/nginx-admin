@@ -26,9 +26,9 @@ public interface UserRepository {
 
 	public void resetPassword(User user);
 	
-	public void changePassword(User user, String password);
+	public void changePassword(User user, String password,String login);
 
-	public List<String> validateBeforeChangePassword(User user, String password, String passwordConfirm);
+	public List<String> validateBeforeChangePassword(User user, String password, String passwordConfirm,String login);
 
 	public User loadForSession(User user);
 }

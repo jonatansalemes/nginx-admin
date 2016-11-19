@@ -30,7 +30,7 @@ create table admin.nginx (
 	access varchar(255) not null,
 	primary key (id)
 );
-insert into admin.nginx (user_name,group_name,home,bin,conf,error,access) values ('nginx','nginx','/etc/nginx','/usr/sbin/nginx','/etc/nginx/nginx.conf','/var/log/nginx/error.log','/var/log/nginx/access.log');
+insert into admin.nginx (username,groupname,home,bin,conf,error,access) values ('nginx','nginx','/etc/nginx','/usr/sbin/nginx','/etc/nginx/nginx.conf','/var/log/nginx/error.log','/var/log/nginx/access.log');
 
 create table admin.smtp (
 	id bigint(10) auto_increment not null, 
@@ -43,6 +43,6 @@ create table admin.smtp (
 	authenticate int(1) not null,
 	primary key (id)
 );
-insert into admin.smtp (host,from,port,tls,authenticate) values ('localhost','nginx.admin@localhost.com',25,0,0);
+insert into admin.smtp (host,from_address,port,tls,authenticate) values ('localhost','nginx.admin@localhost.com',25,0,0);
 
 commit;

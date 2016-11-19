@@ -37,6 +37,21 @@ public class Nginx implements Serializable{
 	
 	@Column(name="access")
 	private String access;
+	
+	public Nginx() {
+		
+	}
+	
+	public Nginx(Long id,String userName,String groupName,String home,String bin,String conf,String error,String access) {
+		this.id = id;
+		this.userName = userName;
+		this.groupName = groupName;
+		this.home = home;
+		this.bin = bin;
+		this.conf = conf;
+		this.error = error;
+		this.access = access;
+	}
 
 	public Long getId() {
 		return id;

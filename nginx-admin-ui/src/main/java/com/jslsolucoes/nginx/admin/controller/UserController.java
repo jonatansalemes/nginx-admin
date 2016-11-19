@@ -51,10 +51,10 @@ public class UserController {
 		this.result.redirectTo(this).login();
 	}
 
-	public void validateBeforeChangePassword(String password, String passwordConfirm) {
+	public void validateBeforeChangePassword(String password, String passwordConfirm,String login) {
 		this.result.use(Results.json())
 				.from(HtmlUtil.convertToUnodernedList(
-						userRepository.validateBeforeChangePassword(userSession.getUser(), password, passwordConfirm)),
+						userRepository.validateBeforeChangePassword(userSession.getUser(), password, passwordConfirm,login)),
 						"errors")
 				.serialize();
 	}
@@ -64,11 +64,11 @@ public class UserController {
 	}
 	
 	@Post
-	public void change(String password) {
-		userRepository.changePassword(userSession.getUser(), password);
+	public void change(String password,String login) {
+		userRepository.changePassword(userSession.getUser(), password,login);
 		userSession.setUser(userRepository.loadForSession(userSession.getUser()));
 		this.result.include("passwordChanged", true);
-		if(userSession.getUser().getPasswordForceChange() == 1){
+		if(userSession.getUser().getPasswordForceChange() == 0){
 			this.result.redirectTo(AppController.class).home();
 		} else {
 			this.result.redirectTo(this).changePassword();

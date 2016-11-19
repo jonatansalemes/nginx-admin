@@ -83,14 +83,14 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 	public void resetPassword(User user) {
 		String password = RandomStringUtils.randomAlphanumeric(8);
 		user = getByLogin(user);
-		user.setPassword(password);
+		user.setPassword(DigestUtils.sha256Hex(password));
 		user.setPasswordForceChange(1);
 		mailRepository.send(Messages.getString("reset.mail.subject"), user.getLogin(),
 				Messages.getString("reset.mail.body", user.getLogin(), password));
 	}
 
 	@Override
-	public List<String> validateBeforeChangePassword(User user, String password, String passwordConfirm) {
+	public List<String> validateBeforeChangePassword(User user, String password, String passwordConfirm,String login) {
 		List<String> errors = new ArrayList<String>();
 		user = load(user);
 		Integer passwordSize = 8;
@@ -103,13 +103,18 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 		if (StringUtils.equals(user.getPassword(), DigestUtils.sha256Hex(password))) {
 			errors.add(Messages.getString("invalid.password.same"));
 		}
+		if(StringUtils.equals(login, "admin@localhost.com")){
+			errors.add(Messages.getString("invalid.login","admin@localhost.com"));
+		}
+		
 		return errors;
 	}
 
 	@Override
-	public void changePassword(User user, String password) {
+	public void changePassword(User user, String password,String login) {
 		user = load(user);
 		user.setPasswordForceChange(0);
+		user.setLogin(login);
 		user.setPassword(DigestUtils.sha256Hex(password));
 	}
 

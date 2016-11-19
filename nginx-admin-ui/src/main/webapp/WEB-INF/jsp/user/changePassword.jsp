@@ -11,6 +11,11 @@
 				<html:form action="/user/change" 
 					label="{password.changing}" 
 					 validation="/user/validateBeforeChangePassword"> 
+					
+					<html:formGroup label="{login}" required="true">
+						<html:input  type="email" value="${ userSession.user.login }" name="login" required="true" placeholder="{login.placeholder}"></html:input>
+					</html:formGroup>
+					
 					<html:formGroup label="{password.new}" required="true">
 						<html:input name="password" type="password" required="true"
 							placeholder="{password.new.placeholder}"></html:input>
@@ -25,5 +30,4 @@
 				</html:form>
 			</html:block>
 	</html:container>
-
 </html:view>
