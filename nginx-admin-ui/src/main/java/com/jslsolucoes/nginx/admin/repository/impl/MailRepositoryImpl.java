@@ -27,6 +27,7 @@ import javax.mail.internet.InternetAddress;
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.HtmlEmail;
 
+import com.jslsolucoes.nginx.admin.mail.MailStatus;
 import com.jslsolucoes.nginx.admin.model.Smtp;
 import com.jslsolucoes.nginx.admin.repository.MailRepository;
 import com.jslsolucoes.nginx.admin.repository.SmtpRepository;
@@ -48,12 +49,12 @@ public class MailRepositoryImpl implements MailRepository {
 	}
 
 	@Override
-	public Future<Void> send(String subject, String to, String message) {
+	public Future<MailStatus> send(String subject, String to, String message) {
 
 		Smtp smtp = smtpRepository.smtp();
-		Callable<Void> task = new Callable<Void>() {
+		Callable<MailStatus> task = new Callable<MailStatus>() {
 			@Override
-			public Void call() {
+			public MailStatus call() {
 				try {
 					Email email = new HtmlEmail();
 					email.setHostName(smtp.getHost());
@@ -72,10 +73,11 @@ public class MailRepositoryImpl implements MailRepository {
 					email.setMsg(message);
 					email.setTo(Arrays.asList(InternetAddress.parse(to)));
 					email.send();
+					return MailStatus.SENDED;
 				} catch (Exception exception) {
 					exception.printStackTrace();
+					return MailStatus.NOT_SENDED;
 				}
-				return null;
 			}
 		};
 		return this.executorService.submit(task);

@@ -17,8 +17,10 @@ package com.jslsolucoes.nginx.admin.repository;
 
 import java.util.concurrent.Future;
 
+import com.jslsolucoes.nginx.admin.mail.MailStatus;
+
 public interface MailRepository {
 
-	public Future<Void> send(String subject,String to,String message);
+	public Future<MailStatus> send(String subject,String to,String message);
 	
 }

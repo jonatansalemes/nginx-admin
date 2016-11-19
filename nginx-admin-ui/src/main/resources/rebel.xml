@@ -8,11 +8,6 @@
 
 	<web>
 		<link target="/">
-			<dir name="D:/workspace/github/nginx-admin/nginx-admin-ui/target/m2e-wtp/web-resources">
-				<exclude name="/"/>
-			</dir>
-		</link>
-		<link target="/">
 			<dir name="D:/workspace/github/nginx-admin/nginx-admin-ui/src/main/webapp">
 			</dir>
 		</link>

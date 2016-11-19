@@ -3,8 +3,8 @@
 
 	<html:block>
 		<html:alert state="success" label="{smtp.update.success}" rendered="${ !empty(updated) && updated }"></html:alert>
-		<html:alert state="success" rendered="${ !empty(sended) && sended }">
-			<fmt:message key="smtp.test.sended">
+		<html:alert state="${ mailStatus == 'SENDED' ? 'success' : 'danger' }" rendered="${ !empty(sended) && sended }">
+			<fmt:message key="${ mailStatus == 'SENDED' ? 'smtp.test.sended.success' : 'smtp.test.sended.error' }">
 				<fmt:param value="${to}"></fmt:param>
 				<fmt:param value="${subject}"></fmt:param>
 			</fmt:message>
@@ -19,7 +19,7 @@
 					placeholder="{smtp.host.placeholder}" required="true"></html:input>
 			</html:formGroup>
 			<html:formGroup label="{smtp.port}" required="true">
-				<html:input type="number" maxLength="5" name="port"
+				<html:input type="number" max="99999" name="port"
 					value="${ smtp.port }" placeholder="{smtp.port.placeholder}"
 					required="true"></html:input>
 			</html:formGroup>

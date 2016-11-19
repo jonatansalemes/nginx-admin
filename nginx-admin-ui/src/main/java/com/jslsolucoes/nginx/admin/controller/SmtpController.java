@@ -1,7 +1,11 @@
 package com.jslsolucoes.nginx.admin.controller;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
 import javax.inject.Inject;
 
+import com.jslsolucoes.nginx.admin.mail.MailStatus;
 import com.jslsolucoes.nginx.admin.model.Smtp;
 import com.jslsolucoes.nginx.admin.repository.MailRepository;
 import com.jslsolucoes.nginx.admin.repository.SmtpRepository;
@@ -42,8 +46,9 @@ public class SmtpController {
 	}
 
 	@Post
-	public void test(String to,String subject,String message){
-		mailRepository.send(subject, to, message);
+	public void test(String to,String subject,String message) throws InterruptedException, ExecutionException{
+		Future<MailStatus> mailStatus = mailRepository.send(subject, to, message);
+		this.result.include("mailStatus",mailStatus.get());
 		this.result.include("sended",true);
 		this.result.include("to",to);
 		this.result.include("subject",subject);
