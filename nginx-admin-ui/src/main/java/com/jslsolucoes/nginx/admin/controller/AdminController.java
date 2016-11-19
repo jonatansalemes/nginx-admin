@@ -15,14 +15,11 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.controller;
 
-import java.io.File;
-
 import javax.inject.Inject;
 
-import com.jslsolucoes.nginx.admin.nginx.NginxConfiguration;
 import com.jslsolucoes.nginx.admin.nginx.Runner;
 import com.jslsolucoes.nginx.admin.os.OperationalSystem;
-import com.jslsolucoes.nginx.admin.repository.ConfigurationRepository;
+import com.jslsolucoes.nginx.admin.repository.NginxRepository;
 
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Path;
@@ -33,7 +30,6 @@ import br.com.caelum.vraptor.Result;
 public class AdminController {
 
 	private Result result;
-	private ConfigurationRepository configurationRepository;
 	private Runner runner;
 
 	public AdminController() {
@@ -41,10 +37,9 @@ public class AdminController {
 	}
 
 	@Inject
-	public AdminController(Result result, ConfigurationRepository configurationRepository, Runner runner) {
+	public AdminController(Result result, Runner runner,NginxRepository nginxRepository) {
 		this.result = result;
-		this.configurationRepository = configurationRepository;
-		this.runner = runner;
+		this.runner = runner.configure(nginxRepository.nginx());
 	}
 
 	public void dashboard() {
@@ -57,28 +52,23 @@ public class AdminController {
 
 	public void stop() {
 
-		this.result.include("runtimeResult",runner.stop(configuration()));
+		this.result.include("runtimeResult",runner.stop());
 		this.result.redirectTo(this).dashboard();
 	}
 
 	public void start() {
-		this.result.include("runtimeResult", runner.start(configuration()));
+		this.result.include("runtimeResult", runner.start());
 		this.result.redirectTo(this).dashboard();
 	}
 
 	public void status() {
-		this.result.include("runtimeResult",runner.status(configuration()));
+		this.result.include("runtimeResult",runner.status());
 		this.result.redirectTo(this).dashboard();
 	}
 
 	public void restart() {
-		this.result.include("runtimeResult",runner.restart(configuration()));
+		this.result.include("runtimeResult",runner.restart());
 		this.result.redirectTo(this).dashboard();
-	}
-
-	private NginxConfiguration configuration() {
-		return new NginxConfiguration(new File(configurationRepository.variable("NGINX_BIN")),
-				new File(configurationRepository.variable("NGINX_CONF")),new File(configurationRepository.variable("NGINX_HOME")));
 	}
 
 }

@@ -17,6 +17,7 @@ package com.jslsolucoes.nginx.admin.nginx;
 
 import javax.enterprise.inject.Vetoed;
 
+import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.os.OperationalSystemDistribution;
 import com.jslsolucoes.nginx.admin.runtime.RuntimeResult;
 import com.jslsolucoes.nginx.admin.runtime.RuntimeResultType;
@@ -33,23 +34,27 @@ public class UnknowDistroRunner implements Runner {
 	}
 
 	@Override
-	public RuntimeResult start(NginxConfiguration nginxConfiguration) {
+	public RuntimeResult start() {
 		return RUNTIME_RESULT;
 	}
 
 	@Override
-	public RuntimeResult stop(NginxConfiguration nginxConfiguration) {
+	public RuntimeResult stop() {
 		return RUNTIME_RESULT;
 	}
 
 	@Override
-	public RuntimeResult restart(NginxConfiguration nginxConfiguration) {
+	public RuntimeResult restart() {
 		return RUNTIME_RESULT;
 	}
 
 	@Override
-	public RuntimeResult status(NginxConfiguration nginxConfiguration) {
+	public RuntimeResult status() {
 		return RUNTIME_RESULT;
 	}
 
+	@Override
+	public Runner configure(Nginx nginx) {
+		return this;
+	}
 }

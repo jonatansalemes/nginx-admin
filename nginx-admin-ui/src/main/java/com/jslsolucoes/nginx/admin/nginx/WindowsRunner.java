@@ -17,6 +17,7 @@ package com.jslsolucoes.nginx.admin.nginx;
 
 import javax.enterprise.inject.Vetoed;
 
+import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.os.OperationalSystemDistribution;
 import com.jslsolucoes.nginx.admin.runtime.RuntimeResult;
 import com.jslsolucoes.nginx.admin.runtime.RuntimeUtils;
@@ -24,38 +25,44 @@ import com.jslsolucoes.nginx.admin.runtime.RuntimeUtils;
 @Vetoed
 public class WindowsRunner implements Runner {
 
+	
+	private Nginx nginx;
+	
 	@Override
 	public OperationalSystemDistribution distro() {
 		return OperationalSystemDistribution.WINDOWS;
 	}
 
 	@Override
-	public RuntimeResult start(NginxConfiguration nginxConfiguration) {
+	public RuntimeResult start() {
 		RuntimeUtils.command(
-				"cmd.exe /c nginx.exe -c \"" + nginxConfiguration.getConf().getAbsolutePath() + "\"",
-				nginxConfiguration.getHome(), 3);
-		return status(nginxConfiguration);
+				"cmd.exe /c nginx.exe -c \"" + nginx.getConf() + "\"",
+				nginx.getHome(), 3);
+		return status();
 	}
 
 	@Override
-	public RuntimeResult stop(NginxConfiguration nginxConfiguration) {
-		RuntimeUtils.command("cmd.exe /c nginx.exe -s quit", nginxConfiguration.getHome());
+	public RuntimeResult stop() {
+		RuntimeUtils.command("cmd.exe /c nginx.exe -s quit", nginx.getHome());
 		RuntimeUtils.command("taskkill /f /im nginx.exe");
-		return status(nginxConfiguration);
+		return status();
 	}
 
 	@Override
-	public RuntimeResult restart(NginxConfiguration nginxConfiguration) {
-		stop(nginxConfiguration);
-		start(nginxConfiguration);
-		return status(nginxConfiguration);
+	public RuntimeResult restart() {
+		stop();
+		start();
+		return status();
 	}
 
 	@Override
-	public RuntimeResult status(NginxConfiguration nginxConfiguration) {
+	public RuntimeResult status() {
 		return RuntimeUtils.command("tasklist /fi \"imagename eq nginx.exe\"");
 	}
-	
-	
-	
+
+	@Override
+	public Runner configure(Nginx nginx) {
+		this.nginx = nginx;
+		return this;
+	}
 }
