@@ -15,23 +15,15 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.nginx;
 
-import javax.enterprise.inject.Vetoed;
-
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.os.OperationalSystemDistribution;
 import com.jslsolucoes.nginx.admin.runtime.RuntimeResult;
 import com.jslsolucoes.nginx.admin.runtime.RuntimeUtils;
 
-@Vetoed
+@RunnerType(OperationalSystemDistribution.WINDOWS)
 public class WindowsRunner implements Runner {
 
-	
 	private Nginx nginx;
-	
-	@Override
-	public OperationalSystemDistribution distro() {
-		return OperationalSystemDistribution.WINDOWS;
-	}
 
 	@Override
 	public RuntimeResult start() {

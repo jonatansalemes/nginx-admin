@@ -15,24 +15,17 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.nginx;
 
-import javax.enterprise.inject.Vetoed;
-
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.os.OperationalSystemDistribution;
 import com.jslsolucoes.nginx.admin.runtime.RuntimeResult;
 import com.jslsolucoes.nginx.admin.runtime.RuntimeResultType;
 import com.jslsolucoes.nginx.admin.runtime.RuntimeUtils;
 
-@Vetoed
+@RunnerType(OperationalSystemDistribution.CENTOS)
 public class CentOsRunner implements Runner {
 
 	
 	private Nginx nginx;
-	
-	@Override
-	public OperationalSystemDistribution distro() {
-		return OperationalSystemDistribution.CENTOS;
-	}
 
 	@Override
 	public RuntimeResult start() {

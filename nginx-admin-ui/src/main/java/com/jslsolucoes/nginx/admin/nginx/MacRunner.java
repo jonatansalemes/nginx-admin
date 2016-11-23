@@ -16,12 +16,38 @@
 package com.jslsolucoes.nginx.admin.nginx;
 
 import com.jslsolucoes.nginx.admin.model.Nginx;
+import com.jslsolucoes.nginx.admin.os.OperationalSystemDistribution;
 import com.jslsolucoes.nginx.admin.runtime.RuntimeResult;
+import com.jslsolucoes.nginx.admin.runtime.RuntimeResultType;
 
-public interface Runner {
-	public Runner configure(Nginx nginx);
-	public RuntimeResult start();
-	public RuntimeResult stop();
-	public RuntimeResult restart();
-	public RuntimeResult status();
+@RunnerType(OperationalSystemDistribution.MAC)
+public class MacRunner implements Runner {
+
+	private static final RuntimeResult RUNTIME_RESULT = new RuntimeResult(RuntimeResultType.ERROR,
+			"Runner not implemented to your distribution");
+
+	@Override
+	public RuntimeResult start() {
+		return RUNTIME_RESULT;
+	}
+
+	@Override
+	public RuntimeResult stop() {
+		return RUNTIME_RESULT;
+	}
+
+	@Override
+	public RuntimeResult restart() {
+		return RUNTIME_RESULT;
+	}
+
+	@Override
+	public RuntimeResult status() {
+		return RUNTIME_RESULT;
+	}
+
+	@Override
+	public Runner configure(Nginx nginx) {
+		return this;
+	}
 }
