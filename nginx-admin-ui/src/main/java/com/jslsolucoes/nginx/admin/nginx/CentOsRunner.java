@@ -48,7 +48,7 @@ public class CentOsRunner implements Runner {
 
 	@Override
 	public RuntimeResult status() {
-		return RuntimeUtils.command("ps -p $("+nginx.getPid()+")");
+		return RuntimeUtils.command("ps -p $(cat "+nginx.getPid()+")");
 	}
 
 	@Override
