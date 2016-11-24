@@ -35,12 +35,12 @@ import com.jslsolucoes.nginx.admin.annotation.Application;
 
 import br.com.caelum.vraptor.events.VRaptorInitialized;
 
-public class ApplicationContextListener {
+public class DatabaseInstaller {
 
 	@Inject
 	private Connection connection;
 	
-	private Logger logger = LoggerFactory.getLogger(ApplicationContextListener.class);
+	private Logger logger = LoggerFactory.getLogger(DatabaseInstaller.class);
 	
 	@Inject
 	@Application
