@@ -38,11 +38,18 @@ public class Nginx implements Serializable{
 	@Column(name="access")
 	private String access;
 	
+	@Column(name="pid")
+	private String pid;
+	
+	@Column(name="lock")
+	private String lock;
+	
 	public Nginx() {
 		
 	}
 	
-	public Nginx(Long id,String userName,String groupName,String home,String bin,String conf,String error,String access) {
+	public Nginx(Long id,String userName,String groupName,String home,String bin,String conf,String error,String access,
+			String pid,String lock) {
 		this.id = id;
 		this.userName = userName;
 		this.groupName = groupName;
@@ -51,6 +58,8 @@ public class Nginx implements Serializable{
 		this.conf = conf;
 		this.error = error;
 		this.access = access;
+		this.pid = pid;
+		this.lock = lock;
 	}
 
 	public Long getId() {
@@ -115,6 +124,22 @@ public class Nginx implements Serializable{
 
 	public void setAccess(String access) {
 		this.access = access;
+	}
+
+	public String getPid() {
+		return pid;
+	}
+
+	public void setPid(String pid) {
+		this.pid = pid;
+	}
+
+	public String getLock() {
+		return lock;
+	}
+
+	public void setLock(String lock) {
+		this.lock = lock;
 	}
 	
 }

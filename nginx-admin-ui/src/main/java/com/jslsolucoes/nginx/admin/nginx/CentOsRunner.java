@@ -18,7 +18,6 @@ package com.jslsolucoes.nginx.admin.nginx;
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.os.OperationalSystemDistribution;
 import com.jslsolucoes.nginx.admin.runtime.RuntimeResult;
-import com.jslsolucoes.nginx.admin.runtime.RuntimeResultType;
 import com.jslsolucoes.nginx.admin.runtime.RuntimeUtils;
 
 @RunnerType(OperationalSystemDistribution.CENTOS)
@@ -29,13 +28,15 @@ public class CentOsRunner implements Runner {
 
 	@Override
 	public RuntimeResult start() {
-		return RuntimeUtils.command(nginx.getBin() + " -c \""
-				+ nginx.getConf() + "\"");
+		return RuntimeUtils.command(nginx.getBin() + " -c "
+				+ nginx.getConf());
 	}
 
 	@Override
 	public RuntimeResult stop() {
-		return RuntimeUtils.command(nginx.getBin() + " -s quit");
+		RuntimeUtils.command(nginx.getBin() + " -s quit");
+		RuntimeUtils.command("killall -9 nginx");
+		return status();
 	}
 
 	@Override
@@ -47,7 +48,7 @@ public class CentOsRunner implements Runner {
 
 	@Override
 	public RuntimeResult status() {
-		return new RuntimeResult(RuntimeResultType.SUCCESS,"Process checking ...");
+		return RuntimeUtils.command("ps -p "+nginx.getPid());
 	}
 
 	@Override
@@ -55,5 +56,4 @@ public class CentOsRunner implements Runner {
 		this.nginx = nginx;
 		return this;
 	}
-
 }

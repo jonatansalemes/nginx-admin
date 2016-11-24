@@ -36,6 +36,14 @@
 				<html:input name="access" value="${ nginx.access }"
 					placeholder="{nginx.access.placeholder}" required="true"></html:input>
 			</html:formGroup>
+			<html:formGroup label="{nginx.pid}" required="true">
+				<html:input name="pid" value="${ nginx.pid }"
+					placeholder="{nginx.pid.placeholder}" required="true"></html:input>
+			</html:formGroup>
+			<html:formGroup label="{nginx.lock}" required="true">
+				<html:input name="lock" value="${ nginx.lock }"
+					placeholder="{nginx.lock.placeholder}" required="true"></html:input>
+			</html:formGroup>
 			
 			<html:toolbar>
 				<html:button state="primary" type="submit" label="{nginx.save.settings}"></html:button>

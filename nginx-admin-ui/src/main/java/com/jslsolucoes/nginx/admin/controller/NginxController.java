@@ -29,10 +29,10 @@ public class NginxController {
 	}
 
 	public void validate(Long id, String userName, String groupName, String home, String bin, String conf, String error,
-			String access) {
+			String access,String pid,String lock) {
 		this.result.use(Results.json())
 				.from(HtmlUtil.convertToUnodernedList(nginxRepository
-						.validateBeforeUpdate(new Nginx(id, userName, groupName, home, bin, conf, error, access))),
+						.validateBeforeUpdate(new Nginx(id, userName, groupName, home, bin, conf, error, access,pid,lock))),
 						"errors")
 				.serialize();
 	}
@@ -42,8 +42,8 @@ public class NginxController {
 	}
 
 	public void update(Long id, String userName, String groupName, String home, String bin, String conf, String error,
-			String access) {
-		this.nginxRepository.update(new Nginx(id, userName, groupName, home, bin, conf, error, access));
+			String access,String pid,String lock) {
+		this.nginxRepository.update(new Nginx(id, userName, groupName, home, bin, conf, error, access,pid,lock));
 		this.result.include("updated", true);
 		this.result.redirectTo(this).edit();
 	}
