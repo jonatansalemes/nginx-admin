@@ -16,8 +16,7 @@ create table admin.configuration (
 	primary key (id)
 );
 alter table admin.configuration add constraint configuration_uk1 unique(variable);
-insert into admin.configuration (variable,value) values ('VERSION','1');
-insert into admin.configuration (variable,value) values ('CONFIGURED','0');
+insert into admin.configuration (variable,value) values ('DB_VERSION','1');
 
 create table admin.nginx (
 	id bigint(10) auto_increment not null, 

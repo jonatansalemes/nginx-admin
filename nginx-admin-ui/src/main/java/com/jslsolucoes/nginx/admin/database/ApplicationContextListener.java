@@ -15,28 +15,70 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.database;
 
-import javax.annotation.Resource;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.annotation.WebListener;
-import javax.sql.DataSource;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Properties;
+import java.util.StringTokenizer;
 
+import javax.enterprise.event.Observes;
+import javax.inject.Inject;
 
-@WebListener
-public class ApplicationContextListener implements ServletContextListener {
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.jslsolucoes.nginx.admin.annotation.Application;
+
+import br.com.caelum.vraptor.events.VRaptorInitialized;
+
+public class ApplicationContextListener {
+
+	@Inject
+	private Connection connection;
 	
-	@Resource(lookup="java:jboss/datasources/AdminDS")
-	private DataSource dataSource;
+	private Logger logger = LoggerFactory.getLogger(ApplicationContextListener.class);
 	
-	@Override
-	public void contextInitialized(ServletContextEvent servletContextEvent) {
-		DatabaseChecker databaseChecker = new DatabaseChecker(dataSource);
-		databaseChecker.check();
-	}
+	@Inject
+	@Application
+	private Properties properties;
 
-	@Override
-	public void contextDestroyed(ServletContextEvent servletContextEvent) {
-		
+	public void contextInitialized(@Observes VRaptorInitialized vRaptorInitialized) throws SQLException, IOException {
+		Integer installedVersion = installed();
+		Integer actualVersion = Integer.valueOf(properties.getProperty("db.version"));
+		while(installedVersion < actualVersion){
+			String sql = IOUtils.toString(getClass().getResourceAsStream("/sql/"+(installedVersion+1)+".sql"),"UTF-8");
+			StringTokenizer stringTokenizer = new StringTokenizer(sql,";");
+			while(stringTokenizer.hasMoreTokens()){
+				String query = stringTokenizer.nextToken().trim();
+				if(!StringUtils.isEmpty(query)){
+					PreparedStatement preparedStatement = connection.prepareStatement(query);
+					preparedStatement.executeUpdate();
+					preparedStatement.close();
+				}
+			}
+			installedVersion = installed();
+		}
 	}
-
+	
+	private Integer installed() {
+		Integer version = 0;
+		try {
+			
+			PreparedStatement preparedStatement = connection.prepareStatement("select value from admin.configuration where variable = ?");
+			preparedStatement.setString(1, "DB_VERSION");
+			ResultSet resultSet = preparedStatement.executeQuery();
+			if(resultSet.next()){
+				version = resultSet.getInt("VALUE");
+			}
+			resultSet.close();
+			preparedStatement.close();
+		} catch(SQLException sqlException){
+			logger.info("Database schema not found .. Prepare to create in next step ..");
+		}
+		return version;
+	}
 }
