@@ -7,7 +7,7 @@ create table admin.user (
 	primary key (id)
 );
 alter table admin.user add constraint user_uk1 unique(login);
-insert into admin.user (login,password,password_force_change) values ('admin@localhost.com',HASH('SHA256', STRINGTOUTF8('password'),1),1);
+insert into admin.user (login,password,password_force_change) values ('admin@localhost.com',HASH('SHA256', STRINGTOUTF8('password'),1),0);
 
 create table admin.configuration (
 	id bigint(10) auto_increment not null, 
@@ -17,6 +17,7 @@ create table admin.configuration (
 );
 alter table admin.configuration add constraint configuration_uk1 unique(variable);
 insert into admin.configuration (variable,value) values ('DB_VERSION','1');
+insert into admin.configuration (variable,value) values ('APP_RECONFIGURE','1');
 
 create table admin.nginx (
 	id bigint(10) auto_increment not null, 

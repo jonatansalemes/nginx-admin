@@ -15,7 +15,12 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.repository;
 
+import com.jslsolucoes.nginx.admin.model.ConfigurationType;
+
 public interface ConfigurationRepository {
 
-	public String variable(String variable);
+	public Integer getInteger(ConfigurationType configurationType);
+	
+	public void update(ConfigurationType configurationType,Object value);
+
 }

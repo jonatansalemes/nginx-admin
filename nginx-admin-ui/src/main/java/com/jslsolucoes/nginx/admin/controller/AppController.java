@@ -15,19 +15,63 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.controller;
 
+import javax.inject.Inject;
+
+import com.jslsolucoes.nginx.admin.model.ConfigurationType;
+import com.jslsolucoes.nginx.admin.repository.ConfigurationRepository;
+import com.jslsolucoes.nginx.admin.repository.UserRepository;
+import com.jslsolucoes.nginx.admin.session.UserSession;
+import com.jslsolucoes.nginx.admin.util.HtmlUtil;
+
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Path;
+import br.com.caelum.vraptor.Result;
+import br.com.caelum.vraptor.view.Results;
 
 @Controller
 public class AppController {
 
 	
+	private Result result;
+	private UserSession userSession;
+	private UserRepository userRepository;
+	private ConfigurationRepository configurationRepository;
+	
 	public AppController() {
+	
+	}
 
+	@Inject
+	public AppController(Result result,UserSession userSession,UserRepository userRepository,ConfigurationRepository configurationRepository) {
+		this.result = result;
+		this.userSession = userSession;
+		this.userRepository = userRepository;
+		this.configurationRepository = configurationRepository;
 	}
 
 	@Path(value = { "/", "/app/home" })
 	public void home() {
 		
+	}
+	
+	@Path("/app/reconfigure")
+	public void reconfigure() {
+		
+	}
+	@Path("/app/validateBeforeReconfigure")
+	public void validateBeforeReconfigure(String password, String passwordConfirm,String login) {
+		this.result.use(Results.json())
+				.from(HtmlUtil.convertToUnodernedList(
+						userRepository.validateBeforeReconfigure(userSession.getUser(), password, passwordConfirm,login)),
+						"errors")
+				.serialize();
+	}
+	
+	@Path("/app/reconfigured")
+	public void reconfigured(String login,String password) {
+ 		userRepository.reconfigure(userSession.getUser(),login,password);
+ 		configurationRepository.update(ConfigurationType.APP_RECONFIGURE, 0);
+ 		userSession.setUser(userRepository.loadForSession(userSession.getUser()));
+		this.result.redirectTo(this).home();
 	}
 }

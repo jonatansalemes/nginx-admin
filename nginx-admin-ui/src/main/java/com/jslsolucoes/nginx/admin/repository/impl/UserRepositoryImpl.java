@@ -90,7 +90,7 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 	}
 
 	@Override
-	public List<String> validateBeforeChangePassword(User user, String password, String passwordConfirm,String login) {
+	public List<String> validateBeforeChangePassword(User user, String password, String passwordConfirm) {
 		List<String> errors = new ArrayList<String>();
 		user = load(user);
 		Integer passwordSize = 8;
@@ -103,18 +103,13 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 		if (StringUtils.equals(user.getPassword(), DigestUtils.sha256Hex(password))) {
 			errors.add(Messages.getString("invalid.password.same"));
 		}
-		if(StringUtils.equals(login, "admin@localhost.com")){
-			errors.add(Messages.getString("invalid.login","admin@localhost.com"));
-		}
-		
 		return errors;
 	}
 
 	@Override
-	public void changePassword(User user, String password,String login) {
+	public void changePassword(User user, String password) {
 		user = load(user);
 		user.setPasswordForceChange(0);
-		user.setLogin(login);
 		user.setPassword(DigestUtils.sha256Hex(password));
 	}
 
@@ -123,6 +118,23 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 		Query query = entityManager.createQuery("from User where id = :id");
 		query.setParameter("id", user.getId());
 		return (User) query.getSingleResult();
+	}
+
+	@Override
+	public List<String> validateBeforeReconfigure(User user, String password, String passwordConfirm, String login) {
+		List<String> errors = new ArrayList<String>();
+		if(StringUtils.equals(login, "admin@localhost.com")){
+			errors.add(Messages.getString("invalid.login","admin@localhost.com"));
+		}
+		errors.addAll(validateBeforeChangePassword(user, password, passwordConfirm));
+		return errors;
+	}
+
+	@Override
+	public void reconfigure(User user,String login, String password) {
+		user = load(user);
+		user.setPassword(DigestUtils.sha256Hex(password));
+		user.setLogin(login);
 	}
 
 }

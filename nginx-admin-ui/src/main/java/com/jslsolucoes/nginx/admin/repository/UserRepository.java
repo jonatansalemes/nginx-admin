@@ -26,9 +26,13 @@ public interface UserRepository {
 
 	public void resetPassword(User user);
 	
-	public void changePassword(User user, String password,String login);
+	public void changePassword(User user, String password);
+	
+	public List<String> validateBeforeReconfigure(User user,String password,String passwordConfirm,String login);
 
-	public List<String> validateBeforeChangePassword(User user, String password, String passwordConfirm,String login);
+	public List<String> validateBeforeChangePassword(User user, String password, String passwordConfirm);
 
 	public User loadForSession(User user);
+
+	public void reconfigure(User user,String login, String password);
 }

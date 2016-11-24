@@ -18,7 +18,6 @@ package com.jslsolucoes.nginx.admin.database;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 import java.util.StringTokenizer;
@@ -32,22 +31,34 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.jslsolucoes.nginx.admin.annotation.Application;
+import com.jslsolucoes.nginx.admin.model.ConfigurationType;
+import com.jslsolucoes.nginx.admin.repository.ConfigurationRepository;
 
 import br.com.caelum.vraptor.events.VRaptorInitialized;
 
 public class DatabaseInstaller {
 
+	
+	private static final Logger logger = LoggerFactory.getLogger(DatabaseInstaller.class);
+	
 	@Inject
 	private Connection connection;
 	
-	private Logger logger = LoggerFactory.getLogger(DatabaseInstaller.class);
+	@Inject
+	private ConfigurationRepository configurationRepository;
 	
 	@Inject
 	@Application
 	private Properties properties;
 
 	public void contextInitialized(@Observes VRaptorInitialized vRaptorInitialized) throws SQLException, IOException {
-		Integer installedVersion = installed();
+	
+		Integer installedVersion = 0;
+		try {
+			installedVersion = configurationRepository.getInteger(ConfigurationType.DB_VERSION);
+		} catch(Exception exception){
+			logger.info("Database not installed yet. Installing ...");
+		}
 		Integer actualVersion = Integer.valueOf(properties.getProperty("db.version"));
 		while(installedVersion < actualVersion){
 			String sql = IOUtils.toString(getClass().getResourceAsStream("/sql/"+(installedVersion+1)+".sql"),"UTF-8");
@@ -60,25 +71,7 @@ public class DatabaseInstaller {
 					preparedStatement.close();
 				}
 			}
-			installedVersion = installed();
+			installedVersion++;
 		}
-	}
-	
-	private Integer installed() {
-		Integer version = 0;
-		try {
-			
-			PreparedStatement preparedStatement = connection.prepareStatement("select value from admin.configuration where variable = ?");
-			preparedStatement.setString(1, "DB_VERSION");
-			ResultSet resultSet = preparedStatement.executeQuery();
-			if(resultSet.next()){
-				version = resultSet.getInt("VALUE");
-			}
-			resultSet.close();
-			preparedStatement.close();
-		} catch(SQLException sqlException){
-			logger.info("Database schema not found .. Prepare to create in next step ..");
-		}
-		return version;
 	}
 }
