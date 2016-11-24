@@ -17,11 +17,7 @@
 						<phase>prepare-package</phase>
 						<configuration>
 							<tasks>
-								<delete>
-									<fileset dir="${project.build.resources[0].directory}/nginx/bin"
-										includes="*.jar" />
-								</delete>
-								<copy
+								<copy overwrite="true"
 									file="${project.parent.basedir}/${project.parent.modules[1]}/target/nginx-admin-standalone-${project.version}-swarm.jar"
 									tofile="${project.build.resources[0].directory}/nginx/bin/nginx-admin-standalone-swarm.jar" />
 							</tasks>

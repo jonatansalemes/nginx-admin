@@ -33,11 +33,7 @@
 						<phase>prepare-package</phase>
 						<configuration>
 							<tasks>
-								<delete>
-									<fileset dir="${project.build.resources[0].directory}"
-										includes="*.war" />
-								</delete>
-								<copy
+								<copy overwrite="true"
 									file="${project.parent.basedir}/${project.parent.modules[0]}/target/${project.parent.modules[0]}-${project.version}.war"
 									tofile="${project.build.resources[0].directory}/${project.parent.modules[0]}.war" />
 							</tasks>
