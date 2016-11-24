@@ -1,21 +1,7 @@
 <%@include file="../app/taglibs.jsp"%>
 <html:view>
-	<html:row>
-		<html:col size="3">
-			<html:listGroup>
-				<html:listGroupItem>
-					<html:link url="/smtp/edit" target="settings"
-						label="{smtp.settings}"></html:link>
-				</html:listGroupItem>
-				<html:listGroupItem>
-					<html:link url="/nginx/edit" target="settings"
-						label="{nginx.settings}"></html:link>
-				</html:listGroupItem>
-			</html:listGroup>
-		</html:col>
-		<html:col size="9">
-			<html:iframe url="/settings/welcome" name="settings"></html:iframe>
-		</html:col>
-	</html:row>
-
+	<html:tabPanel>
+		<html:tab active="true" label="{nginx.settings}" url="/nginx/edit"></html:tab>
+		<html:tab label="{smtp.settings}" url="/smtp/edit"></html:tab>
+	</html:tabPanel>
 </html:view>
