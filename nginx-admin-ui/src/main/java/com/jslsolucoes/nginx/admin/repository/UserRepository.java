@@ -25,14 +25,17 @@ public interface UserRepository {
 	public List<String> validateBeforeResetPassword(User user);
 
 	public void resetPassword(User user);
-	
-	public void changePassword(User user, String password);
-	
-	public List<String> validateBeforeReconfigure(User user,String password,String passwordConfirm,String login);
 
-	public List<String> validateBeforeChangePassword(User user, String password, String passwordConfirm);
+	public void changePassword(User user, String password);
+
+	public List<String> validateBeforeChangePassword(User user, String oldPassword, String password,
+			String passwordConfirm);
 
 	public User loadForSession(User user);
 
-	public void reconfigure(User user,String login, String password);
+	public void reconfigure(User user, String login, String password);
+
+	public List<String> validateBeforeChangeLogin(User user, String oldPassword, String login);
+
+	public void changeLogin(User user, String login);
 }

@@ -50,24 +50,8 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 	public List<String> validateBeforeUpdate(Nginx nginx) {
 		List<String> errors = new ArrayList<String>();
 
-		if (!new File(nginx.getHome()).exists()) {
-			errors.add(Messages.getString("nginx.invalid.home.folder", nginx.getHome()));
-		}
-
 		if (!new File(nginx.getBin()).exists()) {
 			errors.add(Messages.getString("nginx.invalid.bin.file", nginx.getBin()));
-		}
-
-		if (!new File(nginx.getConf()).exists()) {
-			errors.add(Messages.getString("nginx.invalid.conf.file", nginx.getConf()));
-		}
-
-		if (!new File(nginx.getError()).exists()) {
-			errors.add(Messages.getString("nginx.invalid.error.file", nginx.getError()));
-		}
-
-		if (!new File(nginx.getAccess()).exists()) {
-			errors.add(Messages.getString("nginx.invalid.access.file", nginx.getAccess()));
 		}
 
 		return errors;

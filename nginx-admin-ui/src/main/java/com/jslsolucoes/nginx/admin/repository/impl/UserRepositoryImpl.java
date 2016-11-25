@@ -90,10 +90,16 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 	}
 
 	@Override
-	public List<String> validateBeforeChangePassword(User user, String password, String passwordConfirm) {
+	public List<String> validateBeforeChangePassword(User user, String oldPassword, String password,
+			String passwordConfirm) {
 		List<String> errors = new ArrayList<String>();
 		user = load(user);
 		Integer passwordSize = 8;
+
+		if (!StringUtils.equals(user.getPassword(), DigestUtils.sha256Hex(oldPassword))) {
+			errors.add(Messages.getString("invalid.password.old"));
+		}
+
 		if (password.length() < passwordSize) {
 			errors.add(Messages.getString("invalid.password.size", passwordSize));
 		}
@@ -121,20 +127,30 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 	}
 
 	@Override
-	public List<String> validateBeforeReconfigure(User user, String password, String passwordConfirm, String login) {
-		List<String> errors = new ArrayList<String>();
-		if(StringUtils.equals(login, "admin@localhost.com")){
-			errors.add(Messages.getString("invalid.login","admin@localhost.com"));
-		}
-		errors.addAll(validateBeforeChangePassword(user, password, passwordConfirm));
-		return errors;
-	}
-
-	@Override
-	public void reconfigure(User user,String login, String password) {
+	public void reconfigure(User user, String login, String password) {
 		user = load(user);
 		user.setPassword(DigestUtils.sha256Hex(password));
 		user.setLogin(login);
 	}
 
+	@Override
+	public List<String> validateBeforeChangeLogin(User user, String oldPassword, String login) {
+		List<String> errors = new ArrayList<String>();
+		
+		user = load(user);
+		if (!StringUtils.equals(user.getPassword(), DigestUtils.sha256Hex(oldPassword))) {
+			errors.add(Messages.getString("invalid.password.old"));
+		}
+		
+		if (StringUtils.equals(login, "admin@localhost.com")) {
+			errors.add(Messages.getString("invalid.login", "admin@localhost.com"));
+		}
+		return errors;
+	}
+
+	@Override
+	public void changeLogin(User user, String login) {
+		user = load(user);
+		user.setLogin(login);
+	}
 }

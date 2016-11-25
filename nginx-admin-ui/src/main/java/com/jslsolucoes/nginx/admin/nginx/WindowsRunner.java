@@ -15,6 +15,8 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.nginx;
 
+import java.io.File;
+
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.os.OperationalSystemDistribution;
 import com.jslsolucoes.nginx.admin.runtime.RuntimeResult;
@@ -28,14 +30,13 @@ public class WindowsRunner implements Runner {
 	@Override
 	public RuntimeResult start() {
 		RuntimeUtils.command(
-				"cmd.exe /c nginx.exe -c \"" + nginx.getConf() + "\"",
-				nginx.getHome(), 3);
+				"cmd.exe /c nginx.exe -c file");
 		return status();
 	}
 
 	@Override
 	public RuntimeResult stop() {
-		RuntimeUtils.command("cmd.exe /c nginx.exe -s quit", nginx.getHome());
+		RuntimeUtils.command("cmd.exe /c "+nginx.getBin()+" -s quit",new File(nginx.getBin()).getParent());
 		RuntimeUtils.command("taskkill /f /im nginx.exe");
 		return status();
 	}

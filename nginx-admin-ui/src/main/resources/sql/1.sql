@@ -17,22 +17,12 @@ create table admin.configuration (
 );
 alter table admin.configuration add constraint configuration_uk1 unique(variable);
 insert into admin.configuration (variable,value) values ('DB_VERSION','1');
-insert into admin.configuration (variable,value) values ('APP_RECONFIGURE','1');
 
 create table admin.nginx (
 	id bigint(10) auto_increment not null, 
-	username varchar(100) not null,
-	groupname varchar(100) not null,
-	home varchar(255) not null,
 	bin varchar(255) not null,
-	conf varchar(255) not null,
-	error varchar(255) not null,
-	access varchar(255) not null,
-	pid varchar(255) not null,
-	lock varchar(255) not null,
 	primary key (id)
 );
-insert into admin.nginx (username,groupname,home,bin,conf,error,access,pid,lock) values ('nginx','nginx','/etc/nginx','/usr/sbin/nginx','/etc/nginx/nginx.conf','/var/log/nginx/error.log','/var/log/nginx/access.log','/var/run/nginx.pid','/var/run/nginx.lock');
 
 create table admin.smtp (
 	id bigint(10) auto_increment not null, 

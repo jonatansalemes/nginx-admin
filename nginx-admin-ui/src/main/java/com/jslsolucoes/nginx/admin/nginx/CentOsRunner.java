@@ -28,8 +28,7 @@ public class CentOsRunner implements Runner {
 
 	@Override
 	public RuntimeResult start() {
-		return RuntimeUtils.command(nginx.getBin() + " -c "
-				+ nginx.getConf());
+		return RuntimeUtils.command(nginx.getBin() + " -c file");
 	}
 
 	@Override
@@ -48,7 +47,7 @@ public class CentOsRunner implements Runner {
 
 	@Override
 	public RuntimeResult status() {
-		return RuntimeUtils.command("ps -p $(cat "+nginx.getPid()+")");
+		return RuntimeUtils.command("ls");
 	}
 
 	@Override

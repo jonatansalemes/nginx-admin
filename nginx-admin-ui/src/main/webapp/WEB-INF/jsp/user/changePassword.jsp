@@ -11,7 +11,10 @@
 				<html:form action="/user/change" 
 					label="{password.changing}" 
 					 validation="/user/validateBeforeChangePassword"> 
-					
+					<html:formGroup label="{password.old}" required="true">
+						<html:input name="passwordOld" type="password" required="true"
+							placeholder="{password.old.placeholder}"></html:input>
+					</html:formGroup>
 					<html:formGroup label="{password.new}" required="true">
 						<html:input name="password" type="password" required="true"
 							placeholder="{password.new.placeholder}"></html:input>

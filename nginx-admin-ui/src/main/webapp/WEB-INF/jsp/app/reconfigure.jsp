@@ -23,6 +23,15 @@
 						<html:input name="passwordConfirm" type="password" required="true"
 							placeholder="{password.confirm.placeholder}"></html:input>
 					</html:formGroup>
+					
+					<html:formGroup label="{nginx.bin}" required="true">
+						<html:input name="bin" required="true" placeholder="{nginx.bin.placeholder}"></html:input>
+					</html:formGroup>
+					
+					<html:formGroup label="{nginx.config}" required="true">
+						<html:input name="configHome" required="true" placeholder="{nginx.config.placeholder}"></html:input>
+					</html:formGroup>
+					
 					<html:toolbar>
 						<html:button type="submit" label="{reconfigure}" state="primary"></html:button>
 					</html:toolbar>

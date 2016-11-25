@@ -17,10 +17,10 @@ package com.jslsolucoes.nginx.admin.controller;
 
 import javax.inject.Inject;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.jslsolucoes.nginx.admin.annotation.Public;
-import com.jslsolucoes.nginx.admin.model.ConfigurationType;
 import com.jslsolucoes.nginx.admin.model.User;
-import com.jslsolucoes.nginx.admin.repository.ConfigurationRepository;
 import com.jslsolucoes.nginx.admin.repository.UserRepository;
 import com.jslsolucoes.nginx.admin.session.UserSession;
 import com.jslsolucoes.nginx.admin.util.HtmlUtil;
@@ -36,19 +36,16 @@ public class UserController {
 	private UserSession userSession;
 	private Result result;
 	private UserRepository userRepository;
-	private ConfigurationRepository configurationRepository;
 
 	public UserController() {
 
 	}
 
 	@Inject
-	public UserController(UserSession userSession, Result result, UserRepository userRepository,
-			ConfigurationRepository configurationRepository) {
+	public UserController(UserSession userSession, Result result, UserRepository userRepository) {
 		this.userSession = userSession;
 		this.result = result;
 		this.userRepository = userRepository;
-		this.configurationRepository = configurationRepository;
 	}
 
 	public void logout() {
@@ -56,10 +53,10 @@ public class UserController {
 		this.result.redirectTo(this).login();
 	}
 
-	public void validateBeforeChangePassword(String password, String passwordConfirm) {
+	public void validateBeforeChangePassword(String oldPassword,String password, String passwordConfirm) {
 		this.result.use(Results.json())
 				.from(HtmlUtil.convertToUnodernedList(
-						userRepository.validateBeforeChangePassword(userSession.getUser(), password, passwordConfirm)),
+						userRepository.validateBeforeChangePassword(userSession.getUser(),oldPassword, password, passwordConfirm)),
 						"errors")
 				.serialize();
 	}
@@ -113,7 +110,7 @@ public class UserController {
 		User user = userRepository.authenticate(new User(login, password));
 		if (user != null) {
 			userSession.setUser(userRepository.loadForSession(user));
-			if (configurationRepository.getInteger(ConfigurationType.APP_RECONFIGURE) == 1) {
+			if (StringUtils.equals(userSession.getUser().getLogin(),"admin@localhost.com")) {
 				this.result.redirectTo(AppController.class).reconfigure();
 			} else if (user.getPasswordForceChange() == 1) {
 				this.result.redirectTo(this).changePassword();

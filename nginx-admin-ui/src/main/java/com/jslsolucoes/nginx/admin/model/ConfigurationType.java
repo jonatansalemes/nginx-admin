@@ -1,8 +1,7 @@
 package com.jslsolucoes.nginx.admin.model;
 
 public enum ConfigurationType {
-	DB_VERSION("DB_VERSION"),
-	APP_RECONFIGURE("APP_RECONFIGURE");
+	DB_VERSION("DB_VERSION");
 	
 	private String variable;
 	
