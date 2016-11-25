@@ -11,6 +11,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.model.User;
@@ -62,6 +63,23 @@ public class AppRepositoryImpl implements AppRepository {
 	private void configure(String configHome) throws IOException {
 		File home = new File(configHome);
 		FileUtils.forceMkdir(home);
+		nginxConf(home);
+		nginxMimeType(home);
+		FileUtils.forceMkdir(new File(home,"virtual-domain"));
+		FileUtils.forceMkdir(new File(home,"upstream"));
+		FileUtils.forceMkdir(new File(home,"log"));
+		FileUtils.forceMkdir(new File(home,"process"));
+	}
+
+	private void nginxMimeType(File home) throws IOException {
+		String template = IOUtils.toString(getClass().getResourceAsStream("/template/nginx/mime.types"),"UTF-8");
+		FileUtils.writeStringToFile(new File(home,"mime.types"),template,"UTF-8");
+	}
+
+	private void nginxConf(File home) throws IOException {
+		String template = IOUtils.toString(getClass().getResourceAsStream("/template/nginx/nginx.conf"),"UTF-8")
+				.replaceAll("{{nginx.conf}}", home.getAbsolutePath());
+		FileUtils.writeStringToFile(new File(home,"nginx.conf"),template,"UTF-8");
 	}
 
 }

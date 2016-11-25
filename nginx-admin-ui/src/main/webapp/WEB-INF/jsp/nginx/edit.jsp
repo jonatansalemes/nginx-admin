@@ -6,7 +6,7 @@
 	</html:block>
 
 	<html:block>
-		<html:form action="/nginx/update" validation="/nginx/validate" label="{nginx.settings}">
+		<html:form action="/template/update" validation="/template/validate" label="{nginx.settings}">
 			<html:input name="id" value="${ nginx.id }" type="hidden"></html:input>
 			<html:formGroup label="{nginx.bin}" required="true">
 				<html:input name="bin" value="${ nginx.bin }"
