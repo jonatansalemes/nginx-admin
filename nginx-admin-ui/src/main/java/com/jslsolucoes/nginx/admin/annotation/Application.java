@@ -9,7 +9,7 @@ import javax.inject.Qualifier;
 
 @Qualifier
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.FIELD,ElementType.METHOD })
+@Target({ ElementType.PARAMETER,ElementType.METHOD })
 public @interface Application {
 	
 }

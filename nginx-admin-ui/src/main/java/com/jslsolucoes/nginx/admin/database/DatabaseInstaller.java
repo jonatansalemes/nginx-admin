@@ -19,8 +19,8 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Properties;
-import java.util.StringTokenizer;
 
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
@@ -38,40 +38,52 @@ import br.com.caelum.vraptor.events.VRaptorInitialized;
 
 public class DatabaseInstaller {
 
-	
 	private static final Logger logger = LoggerFactory.getLogger(DatabaseInstaller.class);
-	
-	@Inject
+
 	private Connection connection;
-	
-	@Inject
+
 	private ConfigurationRepository configurationRepository;
-	
-	@Inject
-	@Application
+
 	private Properties properties;
 
-	public void contextInitialized(@Observes VRaptorInitialized vRaptorInitialized) throws SQLException, IOException {
-	
+	public DatabaseInstaller() {
+
+	}
+
+	@Inject
+	public DatabaseInstaller(Connection connection, ConfigurationRepository configurationRepository,
+			@Application Properties properties) {
+		this.connection = connection;
+		this.configurationRepository = configurationRepository;
+		this.properties = properties;
+	}
+
+	public void contextInitialized(@Observes VRaptorInitialized vRaptorInitialized) throws IOException {
+
 		Integer installedVersion = 0;
 		try {
 			installedVersion = configurationRepository.getInteger(ConfigurationType.DB_VERSION);
-		} catch(Exception exception){
+		} catch (Exception exception) {
 			logger.info("Database not installed yet. Installing ...");
 		}
+
 		Integer actualVersion = Integer.valueOf(properties.getProperty("db.version"));
-		while(installedVersion < actualVersion){
-			String sql = IOUtils.toString(getClass().getResourceAsStream("/sql/"+(installedVersion+1)+".sql"),"UTF-8");
-			StringTokenizer stringTokenizer = new StringTokenizer(sql,";");
-			while(stringTokenizer.hasMoreTokens()){
-				String query = stringTokenizer.nextToken().trim();
-				if(!StringUtils.isEmpty(query)){
-					PreparedStatement preparedStatement = connection.prepareStatement(query);
-					preparedStatement.executeUpdate();
-					preparedStatement.close();
-				}
-			}
-			installedVersion++;
+		while (installedVersion < actualVersion) {
+			Arrays.asList(resource("/sql/" + (++installedVersion) + ".sql").split(";")).stream()
+					.filter(StringUtils::isNotEmpty)
+					.forEach(statement -> {
+						try {
+							PreparedStatement preparedStatement = connection.prepareStatement(statement);
+							preparedStatement.executeUpdate();
+							preparedStatement.close();
+						} catch (SQLException sqlException) {
+							throw new RuntimeException(sqlException);
+						}
+					});
 		}
+	}
+
+	private String resource(String path) throws IOException {
+		return IOUtils.toString(getClass().getResourceAsStream(path), "UTF-8");
 	}
 }
