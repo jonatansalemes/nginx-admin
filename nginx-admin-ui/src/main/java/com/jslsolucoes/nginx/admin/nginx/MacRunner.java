@@ -50,4 +50,9 @@ public class MacRunner implements Runner {
 	public Runner configure(Nginx nginx) {
 		return this;
 	}
+
+	@Override
+	public RuntimeResult testConfig() {
+		return RUNTIME_RESULT;
+	}
 }

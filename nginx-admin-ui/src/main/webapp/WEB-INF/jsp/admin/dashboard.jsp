@@ -32,12 +32,15 @@
 		<html:toolbar>
 			<html:buttonGroup spaced="true">
 				
-
+				<html:button url="/admin/testConfig" state="success"
+					label="{test.config}"></html:button>
+		
 				<html:button url="/admin/start" state="success"
 					label="{start}"></html:button>
+					
 				<html:button url="/admin/status" state="info"
 					label="{status}"></html:button>
-
+					
 				<html:button id="stop" state="danger"
 					label="{stop}"></html:button>
 				<html:confirm url="/admin/stop"

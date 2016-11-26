@@ -70,5 +70,10 @@ public class AdminController {
 		this.result.include("runtimeResult",runner.restart());
 		this.result.redirectTo(this).dashboard();
 	}
+	
+	public void testConfig() {
+		this.result.include("runtimeResult",runner.testConfig());
+		this.result.redirectTo(this).dashboard();
+	}
 
 }

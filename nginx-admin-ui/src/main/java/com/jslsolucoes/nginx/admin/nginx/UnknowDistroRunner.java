@@ -24,7 +24,7 @@ import com.jslsolucoes.nginx.admin.runtime.RuntimeResultType;
 public class UnknowDistroRunner implements Runner {
 
 	private static final RuntimeResult RUNTIME_RESULT = new RuntimeResult(RuntimeResultType.ERROR,
-			"We dont know your distribution please report issue o github project");
+			"We dont know your distribution please report issue o github project informing your operational system ,distribution and version");
 
 	@Override
 	public RuntimeResult start() {
@@ -49,5 +49,10 @@ public class UnknowDistroRunner implements Runner {
 	@Override
 	public Runner configure(Nginx nginx) {
 		return this;
+	}
+
+	@Override
+	public RuntimeResult testConfig() {
+		return RUNTIME_RESULT;
 	}
 }

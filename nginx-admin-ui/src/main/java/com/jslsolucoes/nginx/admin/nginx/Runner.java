@@ -24,4 +24,5 @@ public interface Runner {
 	public RuntimeResult stop();
 	public RuntimeResult restart();
 	public RuntimeResult status();
+	public RuntimeResult testConfig();
 }

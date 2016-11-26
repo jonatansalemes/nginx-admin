@@ -55,4 +55,9 @@ public class CentOsRunner implements Runner {
 		this.nginx = nginx;
 		return this;
 	}
+
+	@Override
+	public RuntimeResult testConfig() {
+		return RuntimeUtils.command("ls");
+	}
 }
