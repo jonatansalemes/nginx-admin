@@ -17,6 +17,8 @@ package com.jslsolucoes.nginx.admin.nginx;
 
 import java.io.File;
 
+import org.apache.commons.io.FilenameUtils;
+
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.os.OperationalSystemDistribution;
 import com.jslsolucoes.nginx.admin.runtime.RuntimeResult;
@@ -29,15 +31,15 @@ public class WindowsRunner implements Runner {
 
 	@Override
 	public RuntimeResult start() {
-		RuntimeUtils.command("cmd.exe /c nginx.exe -c " + nginx.getHome() + File.separator + "settings" + File.separator
+		RuntimeUtils.command("cmd.exe /c "+executable()+" -c " + nginx.getHome() + File.separator + "settings" + File.separator
 				+ "nginx.conf", new File(nginx.getBin()).getParent(), 1);
 		return status();
 	}
 
 	@Override
 	public RuntimeResult stop() {
-		RuntimeUtils.command("cmd.exe /c nginx.exe -s quit", new File(nginx.getBin()).getParent());
-		RuntimeUtils.command("taskkill /f /im nginx.exe");
+		RuntimeUtils.command("cmd.exe /c "+executable()+" -s quit", new File(nginx.getBin()).getParent());
+		RuntimeUtils.command("taskkill /f /im "+executable()+"");
 		return status();
 	}
 
@@ -50,7 +52,7 @@ public class WindowsRunner implements Runner {
 
 	@Override
 	public RuntimeResult status() {
-		return RuntimeUtils.command("tasklist /fi \"imagename eq nginx.exe\"");
+		return RuntimeUtils.command("tasklist /fi \"imagename eq "+executable()+"\"");
 	}
 
 	@Override
@@ -61,7 +63,13 @@ public class WindowsRunner implements Runner {
 
 	@Override
 	public RuntimeResult testConfig() {
-		return RuntimeUtils.command("cmd.exe /c nginx.exe -t -c " + nginx.getHome() + File.separator + "settings"
+		return RuntimeUtils.command("cmd.exe /c "+executable()+" -t -c " + nginx.getHome() + File.separator + "settings"
 				+ File.separator + "nginx.conf", new File(nginx.getBin()).getParent());
 	}
+	
+	private String executable(){
+		return FilenameUtils.getName(nginx.getBin());
+	}
+	
+
 }
