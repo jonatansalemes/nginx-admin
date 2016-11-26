@@ -11,6 +11,7 @@
 		<class>com.jslsolucoes.nginx.admin.model.Configuration</class>
 		<class>com.jslsolucoes.nginx.admin.model.Smtp</class>
 		<class>com.jslsolucoes.nginx.admin.model.Nginx</class>
+		<class>com.jslsolucoes.nginx.admin.model.SslCertificate</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
 			<property name="hibernate.show_sql" value="true" />

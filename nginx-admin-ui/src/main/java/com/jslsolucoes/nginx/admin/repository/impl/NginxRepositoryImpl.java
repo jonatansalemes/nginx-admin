@@ -39,6 +39,7 @@ import org.apache.commons.io.IOUtils;
 import com.jslsolucoes.nginx.admin.i18n.Messages;
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.repository.NginxRepository;
+import com.jslsolucoes.nginx.admin.util.TemplateProcessor;
 
 @RequestScoped
 public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxRepository {
@@ -81,18 +82,22 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 	public Nginx update(Nginx nginx) {
 		try {
 			configure(nginx);
-		} catch(IOException ioException){
-			throw new RuntimeException(ioException);
+		} catch(Exception exception){
+			throw new RuntimeException(exception);
 		}
 		return super.update(nginx);
 	}
 	
-	private void configure(Nginx nginx) throws IOException {
+	private void configure(Nginx nginx) throws Exception {
 		File settings = new File(nginx.getHome(),"settings");
 		if(!settings.exists()){
 			copy(settings);
 		}
-		conf(settings);
+		new TemplateProcessor()
+		.withTemplate("nginx.tpl")
+		.withData("nginx",nginx)
+		.toLocation(new File(settings,"nginx.conf"))
+		.process();
 	}
 
 	private void copy(File settings) throws IOException {
