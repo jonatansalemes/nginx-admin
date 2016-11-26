@@ -78,7 +78,7 @@ public class AppRepositoryImpl implements AppRepository {
 
 	private void nginxConf(File home) throws IOException {
 		String template = IOUtils.toString(getClass().getResourceAsStream("/template/nginx/nginx.conf"),"UTF-8")
-				.replaceAll("{{nginx.conf}}", home.getAbsolutePath());
+				.replaceAll("{{base}}", home.getAbsolutePath());
 		FileUtils.writeStringToFile(new File(home,"nginx.conf"),template,"UTF-8");
 	}
 
