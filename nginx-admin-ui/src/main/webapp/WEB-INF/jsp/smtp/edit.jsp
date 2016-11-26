@@ -59,7 +59,7 @@
 			<html:toolbar>
 				<html:buttonGroup spaced="true">
 					<html:button state="primary" type="submit" label="{smtp.save.settings}"></html:button>
-					<html:button state="info" id="test" label="{smtp.test.settings}" url="#"></html:button>
+					<html:button rendered="${ smtp != null }" state="info" id="test" label="{smtp.test.settings}" url="#"></html:button>
 				</html:buttonGroup>
 			</html:toolbar>
 			

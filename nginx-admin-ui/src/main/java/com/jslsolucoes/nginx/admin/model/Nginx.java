@@ -21,17 +21,17 @@ public class Nginx implements Serializable{
 	@Column(name="bin")
 	private String bin;
 	
+	@Column(name="home")
+	private String home;
+	
 	public Nginx() {
 		
 	}
 	
-	public Nginx(Long id,String bin) {
+	public Nginx(Long id,String bin,String home) {
 		this.id = id;
 		this.bin = bin;
-	}
-
-	public Nginx(String bin) {
-		this.bin = bin;
+		this.home = home;
 	}
 
 	public Long getId() {
@@ -48,6 +48,14 @@ public class Nginx implements Serializable{
 
 	public void setBin(String bin) {
 		this.bin = bin;
+	}
+
+	public String getHome() {
+		return home;
+	}
+
+	public void setHome(String home) {
+		this.home = home;
 	}
 	
 }

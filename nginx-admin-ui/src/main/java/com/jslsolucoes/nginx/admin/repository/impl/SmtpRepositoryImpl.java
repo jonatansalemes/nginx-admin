@@ -18,6 +18,7 @@ package com.jslsolucoes.nginx.admin.repository.impl;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import com.jslsolucoes.nginx.admin.model.Smtp;
@@ -37,7 +38,11 @@ public class SmtpRepositoryImpl extends RepositoryImpl<Smtp> implements SmtpRepo
 
 	@Override
 	public Smtp smtp() {
-		Query query = entityManager.createQuery("from Smtp");
-		return (Smtp) query.getSingleResult();
+		try {
+			Query query = entityManager.createQuery("from Smtp");
+			return (Smtp) query.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
 	}
 }

@@ -17,10 +17,12 @@ create table admin.configuration (
 );
 alter table admin.configuration add constraint configuration_uk1 unique(variable);
 insert into admin.configuration (variable,value) values ('DB_VERSION','1');
+insert into admin.configuration (variable,value) values ('APP_CONFIGURE','1');
 
 create table admin.nginx (
 	id bigint(10) auto_increment not null, 
 	bin varchar(255) not null,
+	home varchar(255) not null,
 	primary key (id)
 );
 
@@ -35,6 +37,5 @@ create table admin.smtp (
 	authenticate int(1) not null,
 	primary key (id)
 );
-insert into admin.smtp (host,from_address,port,tls,authenticate) values ('localhost','nginx.admin@localhost.com',25,0,0);
 
 commit;

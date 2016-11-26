@@ -16,38 +16,35 @@
 package com.jslsolucoes.nginx.admin.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.inject.Inject;
 
+import org.apache.commons.collections.CollectionUtils;
+
 import com.jslsolucoes.nginx.admin.repository.AppRepository;
-import com.jslsolucoes.nginx.admin.repository.UserRepository;
 import com.jslsolucoes.nginx.admin.session.UserSession;
-import com.jslsolucoes.nginx.admin.util.HtmlUtil;
 
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Result;
-import br.com.caelum.vraptor.view.Results;
 
 @Controller
 public class AppController {
 
 	private Result result;
-	private UserSession userSession;
-	private UserRepository userRepository;
 	private AppRepository appRepository;
+	private UserSession userSession;
 
 	public AppController() {
 
 	}
 
 	@Inject
-	public AppController(Result result, UserSession userSession, UserRepository userRepository,
-			AppRepository appRepository) {
+	public AppController(Result result,AppRepository appRepository,UserSession userSession) {
 		this.result = result;
-		this.userSession = userSession;
-		this.userRepository = userRepository;
 		this.appRepository = appRepository;
+		this.userSession = userSession;
 	}
 
 	@Path(value = { "/", "/app/home" })
@@ -55,24 +52,19 @@ public class AppController {
 
 	}
 
-	@Path("/app/reconfigure")
-	public void reconfigure() {
+	@Path("/app/configure")
+	public void configure() {
 
 	}
 
-	@Path("/app/validateBeforeReconfigure")
-	public void validateBeforeReconfigure(String password, String passwordConfirm, String login, String bin,
-			String configHome) {
-		this.result.use(Results.json())
-				.from(HtmlUtil.convertToUnodernedList(appRepository.validateBeforeReconfigure(userSession.getUser(),
-						password, passwordConfirm, login, bin, configHome)), "errors")
-				.serialize();
-	}
-
-	@Path("/app/reconfigured")
-	public void reconfigured(String login, String password, String bin, String configHome) throws IOException {
-		appRepository.reconfigure(userSession.getUser(), login, password, bin, configHome);
-		userSession.setUser(userRepository.loadForSession(userSession.getUser()));
-		this.result.redirectTo(this).home();
+	@Path("/app/configure/check")
+	public void check() throws IOException {
+		List<String> invalids = appRepository.checkAllRequiredConfiguration(userSession.getUser());
+		if(CollectionUtils.isEmpty(invalids)){
+			this.result.redirectTo(AppController.class).home();
+		} else {
+			this.result.include("invalids",invalids);
+			this.result.redirectTo(this).configure();
+		}
 	}
 }

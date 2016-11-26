@@ -8,7 +8,6 @@
 				<html:menuItem url="#" label="${ userSession.user.login }" icon="user"></html:menuItem>
 				<html:menuSeparator></html:menuSeparator>
 				<html:menuItem target="content" url="/settings/home" icon="cog" label="{settings}"></html:menuItem>
-				<html:menuItem target="content" url="/user/changePassword" icon="log-in" label="{password.change}"></html:menuItem>
 				<html:menuItem url="/user/logout" icon="log-out" label="{logout}"></html:menuItem>
 			</html:menuButton>
 		</html:container>

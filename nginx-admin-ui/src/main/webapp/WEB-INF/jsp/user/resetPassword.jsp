@@ -15,9 +15,13 @@
 		</html:block> 
 
 		<html:block>
+		
+			<html:alert state="danger" label="{password.recovery.invalid.stmp}" 
+			 rendered="${ smtp == null }"></html:alert>
+		
 			<html:form action="/user/reset" 
 				label="{password.recovery}" 
-				 validation="/user/validateBeforeResetPassword">
+				 validation="/user/validateBeforeResetPassword" rendered="${ smtp != null }">
 				<html:formGroup label="{login}" required="true">
 					<html:input name="login" type="email" required="true"
 						placeholder="{login.placeholder}"></html:input>

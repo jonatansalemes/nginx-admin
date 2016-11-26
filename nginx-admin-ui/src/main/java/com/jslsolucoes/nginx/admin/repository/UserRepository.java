@@ -38,4 +38,6 @@ public interface UserRepository {
 	public List<String> validateBeforeChangeLogin(User user, String oldPassword, String login);
 
 	public void changeLogin(User user, String login);
+
+	public User load(User user);
 }

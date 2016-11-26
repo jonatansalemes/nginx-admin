@@ -28,10 +28,10 @@ public class NginxController {
 		this.nginxRepository = nginxRepository;
 	}
 
-	public void validate(Long id, String bin) {
+	public void validate(Long id, String bin,String home) {
 		this.result.use(Results.json())
 				.from(HtmlUtil.convertToUnodernedList(nginxRepository
-						.validateBeforeUpdate(new Nginx(id, bin))),
+						.validateBeforeUpdate(new Nginx(id, bin,home))),
 						"errors")
 				.serialize();
 	}
@@ -40,8 +40,8 @@ public class NginxController {
 		this.result.include("nginx", this.nginxRepository.nginx());
 	}
 
-	public void update(Long id, String bin) {
-		this.nginxRepository.update(new Nginx(id, bin));
+	public void update(Long id, String bin,String home) {
+		this.nginxRepository.update(new Nginx(id, bin,home));
 		this.result.include("updated", true);
 		this.result.redirectTo(this).edit();
 	}
