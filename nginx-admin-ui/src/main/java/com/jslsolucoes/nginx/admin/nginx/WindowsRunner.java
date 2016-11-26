@@ -30,13 +30,14 @@ public class WindowsRunner implements Runner {
 	@Override
 	public RuntimeResult start() {
 		RuntimeUtils.command(
-				"cmd.exe /c nginx.exe -c file");
+				"cmd.exe /c nginx.exe -c "+nginx.getHome()+ File.separator + "settings"+ File.separator +"nginx.conf",
+				new File(nginx.getBin()).getParent(),1);
 		return status();
 	}
 
 	@Override
 	public RuntimeResult stop() {
-		RuntimeUtils.command("cmd.exe /c "+nginx.getBin()+" -s quit",new File(nginx.getBin()).getParent());
+		RuntimeUtils.command("cmd.exe /c nginx.exe -s quit",new File(nginx.getBin()).getParent());
 		RuntimeUtils.command("taskkill /f /im nginx.exe");
 		return status();
 	}

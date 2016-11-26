@@ -1,7 +1,7 @@
 user  nginx;
 worker_processes  1;
 
-error_log  &base&/log/nginx/error.log warn;
+error_log  &base&/log/error.log warn;
 pid        &base&/process/nginx.pid;
 
 events {
@@ -21,7 +21,7 @@ http {
 
     sendfile        on;
     keepalive_timeout  65;
-
+    
     include  &base&/upstream/*.conf;
     include  &base&/virtual-domain/*.conf;
 }

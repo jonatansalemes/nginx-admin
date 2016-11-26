@@ -16,9 +16,15 @@
 package com.jslsolucoes.nginx.admin.repository.impl;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
+import java.net.JarURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.jar.JarEntry;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -27,6 +33,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 
 import com.jslsolucoes.nginx.admin.i18n.Messages;
@@ -81,24 +88,57 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 	}
 	
 	private void configure(Nginx nginx) throws IOException {
-		File home = new File(nginx.getHome(),"settings");
-		FileUtils.forceMkdir(home);
-		conf(home);
-		mimeType(home);
-		FileUtils.forceMkdir(new File(home,"virtual-domain"));
-		FileUtils.forceMkdir(new File(home,"upstream"));
-		FileUtils.forceMkdir(new File(home,"log"));
-		FileUtils.forceMkdir(new File(home,"process"));
+		File settings = new File(nginx.getHome(),"settings");
+		if(!settings.exists()){
+			copy(settings);
+		}
+		conf(settings);
 	}
 
-	private void mimeType(File home) throws IOException {
-		String template = IOUtils.toString(getClass().getResourceAsStream("/template/nginx/mime.types"),"UTF-8");
-		FileUtils.writeStringToFile(new File(home,"mime.types"),template,"UTF-8");
+	private void copy(File settings) throws IOException {
+		FileUtils.forceMkdir(settings);
+		copyToDirectory(getClass().getResource("/template/nginx"),settings,new FileFilter() {
+			@Override
+			public boolean accept(File file) {
+				return !FilenameUtils.getExtension(file.getName()).equals("tpl");
+			}
+		});
 	}
 
-	private void conf(File home) throws IOException {
-		String template = IOUtils.toString(getClass().getResourceAsStream("/template/nginx/nginx.conf"),"UTF-8")
-				.replaceAll("&base&", home.getAbsolutePath());
-		FileUtils.writeStringToFile(new File(home,"nginx.conf"),template,"UTF-8");
+	private void conf(File settings) throws IOException {
+		String template = IOUtils.toString(getClass().getResourceAsStream("/template/nginx/nginx.tpl"),"UTF-8")
+				.replaceAll("&base&", settings.getAbsolutePath().replaceAll("\\\\", "/"));
+		FileUtils.writeStringToFile(new File(settings,"nginx.conf"),template,"UTF-8");
+	}
+	
+	public static void copyToDirectory(URL url, File destination,FileFilter fileFilter) throws IOException {
+		URLConnection urlConnection = url.openConnection();
+		if (urlConnection instanceof JarURLConnection) {
+			copyFromJar(url, destination,fileFilter);
+		} else {
+			File source = new File(url.getPath());
+			if (source.isDirectory()) {
+				org.apache.commons.io.FileUtils.copyDirectory(source, destination,fileFilter);
+			} else {
+				org.apache.commons.io.FileUtils.copyFileToDirectory(source, destination);
+			}
+		}
+	}
+
+	private static void copyFromJar(URL url, File destination,FileFilter fileFilter) throws IOException {
+		JarURLConnection jarURLConnection = (JarURLConnection) url.openConnection();
+		Enumeration<JarEntry> files = jarURLConnection.getJarFile().entries();
+		while (files.hasMoreElements()) {
+			JarEntry entry = files.nextElement();
+			if (!entry.isDirectory()) {
+				File file = new File(destination, entry.getName());
+				if(fileFilter.accept(file)){
+					org.apache.commons.io.FileUtils
+						.copyInputStreamToFile(jarURLConnection.getJarFile().getInputStream(entry), file);
+				}
+			} else {
+				org.apache.commons.io.FileUtils.forceMkdir(new File(destination, entry.getName()));
+			}
+		}
 	}
 }

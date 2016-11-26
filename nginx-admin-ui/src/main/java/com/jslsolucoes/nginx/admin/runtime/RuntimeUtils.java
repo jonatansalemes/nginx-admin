@@ -39,6 +39,9 @@ public class RuntimeUtils {
 	}
 	
 	public static RuntimeResult command(String command,Map<String,String> enviroment,String directory,Integer timeout) {
+		
+		System.out.println(command);
+		
 		try {
 			ProcessExecutor processExecutor = new ProcessExecutor();
 			processExecutor.commandSplit(command);
