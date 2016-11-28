@@ -74,35 +74,32 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 		if (!new File(nginx.getHome()).exists()) {
 			errors.add(Messages.getString("nginx.invalid.home.folder", nginx.getBin()));
 		}
-		
+
 		return errors;
 	}
-	
+
 	@Override
 	public Nginx update(Nginx nginx) {
 		try {
 			configure(nginx);
-		} catch(Exception exception){
+		} catch (Exception exception) {
 			throw new RuntimeException(exception);
 		}
 		return super.update(nginx);
 	}
-	
+
 	private void configure(Nginx nginx) throws Exception {
-		File settings = new File(nginx.getHome(),"settings");
-		if(!settings.exists()){
+		File settings = new File(nginx.getHome(), "settings");
+		if (!settings.exists()) {
 			copy(settings);
 		}
-		new TemplateProcessor()
-		.withTemplate("nginx.tpl")
-		.withData("nginx",nginx)
-		.toLocation(new File(settings,"nginx.conf"))
-		.process();
+		new TemplateProcessor().withTemplate("nginx.tpl").withData("nginx", nginx)
+				.toLocation(new File(settings, "nginx.conf")).process();
 	}
 
 	private void copy(File settings) throws IOException {
 		FileUtils.forceMkdir(settings);
-		copyToDirectory(getClass().getResource("/template/nginx"),settings,new FileFilter() {
+		copyToDirectory(getClass().getResource("/template/nginx"), settings, new FileFilter() {
 			@Override
 			public boolean accept(File file) {
 				return !FilenameUtils.getExtension(file.getName()).equals("tpl");
@@ -111,35 +108,35 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 	}
 
 	private void conf(File settings) throws IOException {
-		String template = IOUtils.toString(getClass().getResourceAsStream("/template/nginx/nginx.tpl"),"UTF-8")
+		String template = IOUtils.toString(getClass().getResourceAsStream("/template/nginx/nginx.tpl"), "UTF-8")
 				.replaceAll("&base&", settings.getAbsolutePath().replaceAll("\\\\", "/"));
-		FileUtils.writeStringToFile(new File(settings,"nginx.conf"),template,"UTF-8");
+		FileUtils.writeStringToFile(new File(settings, "nginx.conf"), template, "UTF-8");
 	}
-	
-	public static void copyToDirectory(URL url, File destination,FileFilter fileFilter) throws IOException {
+
+	public static void copyToDirectory(URL url, File destination, FileFilter fileFilter) throws IOException {
 		URLConnection urlConnection = url.openConnection();
 		if (urlConnection instanceof JarURLConnection) {
-			copyFromJar(url, destination,fileFilter);
+			copyFromJar(url, destination, fileFilter);
 		} else {
 			File source = new File(url.getPath());
 			if (source.isDirectory()) {
-				org.apache.commons.io.FileUtils.copyDirectory(source, destination,fileFilter);
+				org.apache.commons.io.FileUtils.copyDirectory(source, destination, fileFilter);
 			} else {
 				org.apache.commons.io.FileUtils.copyFileToDirectory(source, destination);
 			}
 		}
 	}
 
-	private static void copyFromJar(URL url, File destination,FileFilter fileFilter) throws IOException {
+	private static void copyFromJar(URL url, File destination, FileFilter fileFilter) throws IOException {
 		JarURLConnection jarURLConnection = (JarURLConnection) url.openConnection();
 		Enumeration<JarEntry> files = jarURLConnection.getJarFile().entries();
 		while (files.hasMoreElements()) {
 			JarEntry entry = files.nextElement();
 			if (!entry.isDirectory()) {
 				File file = new File(destination, entry.getName());
-				if(fileFilter.accept(file)){
+				if (fileFilter.accept(file)) {
 					org.apache.commons.io.FileUtils
-						.copyInputStreamToFile(jarURLConnection.getJarFile().getInputStream(entry), file);
+							.copyInputStreamToFile(jarURLConnection.getJarFile().getInputStream(entry), file);
 				}
 			} else {
 				org.apache.commons.io.FileUtils.forceMkdir(new File(destination, entry.getName()));

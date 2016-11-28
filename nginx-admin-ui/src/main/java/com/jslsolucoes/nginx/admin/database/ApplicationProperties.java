@@ -13,7 +13,7 @@ public class ApplicationProperties {
 	@Produces
 	@ApplicationScoped
 	@Application
-	public Properties getInstance() throws IOException{
+	public Properties getInstance() throws IOException {
 		Properties properties = new Properties();
 		properties.load(getClass().getResourceAsStream("/application.properties"));
 		return properties;

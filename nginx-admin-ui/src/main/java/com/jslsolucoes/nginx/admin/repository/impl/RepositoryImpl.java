@@ -95,7 +95,7 @@ public abstract class RepositoryImpl<T> {
 	}
 
 	public OperationType delete(T entity) {
-		this.entityManager.remove(entity);
+		this.entityManager.remove(load(entity));
 		return OperationType.DELETE;
 	}
 

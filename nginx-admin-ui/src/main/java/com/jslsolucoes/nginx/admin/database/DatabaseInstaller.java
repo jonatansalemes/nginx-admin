@@ -70,8 +70,7 @@ public class DatabaseInstaller {
 		Integer actualVersion = Integer.valueOf(properties.getProperty("db.version"));
 		while (installedVersion < actualVersion) {
 			Arrays.asList(resource("/sql/" + (++installedVersion) + ".sql").split(";")).stream()
-					.filter(StringUtils::isNotEmpty)
-					.forEach(statement -> {
+					.filter(StringUtils::isNotEmpty).forEach(statement -> {
 						try {
 							PreparedStatement preparedStatement = connection.prepareStatement(statement);
 							preparedStatement.executeUpdate();

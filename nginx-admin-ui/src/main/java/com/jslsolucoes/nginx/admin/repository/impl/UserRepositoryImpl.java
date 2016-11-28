@@ -136,12 +136,12 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 	@Override
 	public List<String> validateBeforeChangeLogin(User user, String oldPassword, String login) {
 		List<String> errors = new ArrayList<String>();
-		
+
 		user = load(user);
 		if (!StringUtils.equals(user.getPassword(), DigestUtils.sha256Hex(oldPassword))) {
 			errors.add(Messages.getString("invalid.password.old"));
 		}
-		
+
 		if (StringUtils.equals(login, "admin@localhost.com")) {
 			errors.add(Messages.getString("invalid.login", "admin@localhost.com"));
 		}

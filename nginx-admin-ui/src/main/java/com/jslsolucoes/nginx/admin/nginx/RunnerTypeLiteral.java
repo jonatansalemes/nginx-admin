@@ -18,6 +18,4 @@ public class RunnerTypeLiteral extends AnnotationLiteral<RunnerType> implements 
 		return operationalSystemDistribution;
 	}
 
-	
-	
 }

@@ -34,7 +34,6 @@ import br.com.caelum.vraptor.view.Results;
 @Intercepts
 public class AuthenticationInterceptor {
 
-
 	@Inject
 	private UserSession userSession;
 

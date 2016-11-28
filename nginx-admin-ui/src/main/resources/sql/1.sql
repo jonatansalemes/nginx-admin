@@ -38,4 +38,12 @@ create table admin.smtp (
 	primary key (id)
 );
 
+create table admin.ssl_certificate (
+	id bigint(10) auto_increment not null, 
+	common_name varchar(100) not null,
+	certificate varchar(100) not null,
+	certificate_private_key varchar(100) not null,
+	primary key (id)
+);
+
 commit;

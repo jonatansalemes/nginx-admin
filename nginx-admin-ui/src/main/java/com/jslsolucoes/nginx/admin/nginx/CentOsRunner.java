@@ -23,7 +23,6 @@ import com.jslsolucoes.nginx.admin.runtime.RuntimeUtils;
 @RunnerType(OperationalSystemDistribution.CENTOS)
 public class CentOsRunner implements Runner {
 
-	
 	private Nginx nginx;
 
 	@Override

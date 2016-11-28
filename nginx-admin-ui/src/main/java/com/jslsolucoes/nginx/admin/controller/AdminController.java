@@ -37,7 +37,7 @@ public class AdminController {
 	}
 
 	@Inject
-	public AdminController(Result result, Runner runner,NginxRepository nginxRepository) {
+	public AdminController(Result result, Runner runner, NginxRepository nginxRepository) {
 		this.result = result;
 		this.runner = runner.configure(nginxRepository.nginx());
 	}
@@ -52,7 +52,7 @@ public class AdminController {
 
 	public void stop() {
 
-		this.result.include("runtimeResult",runner.stop());
+		this.result.include("runtimeResult", runner.stop());
 		this.result.redirectTo(this).dashboard();
 	}
 
@@ -62,17 +62,17 @@ public class AdminController {
 	}
 
 	public void status() {
-		this.result.include("runtimeResult",runner.status());
+		this.result.include("runtimeResult", runner.status());
 		this.result.redirectTo(this).dashboard();
 	}
 
 	public void restart() {
-		this.result.include("runtimeResult",runner.restart());
+		this.result.include("runtimeResult", runner.restart());
 		this.result.redirectTo(this).dashboard();
 	}
-	
+
 	public void testConfig() {
-		this.result.include("runtimeResult",runner.testConfig());
+		this.result.include("runtimeResult", runner.testConfig());
 		this.result.redirectTo(this).dashboard();
 	}
 

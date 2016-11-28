@@ -11,37 +11,66 @@ import javax.persistence.Table;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name="ssl_certificate",schema="admin")
-public class SslCertificate implements Serializable{
+@Table(name = "ssl_certificate", schema = "admin")
+public class SslCertificate implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@Column(name="certificate")
+
+	@Column(name = "common_name")
+	private String commonName;
+
+	@Column(name = "certificate")
 	private String certificate;
-	
-	@Column(name="key")
-	private String key;
-	
+
+	@Column(name = "certificate_private_key")
+	private String certificatePrivateKey;
+
 	public SslCertificate() {
-		
+
 	}
-	
+
+	public SslCertificate(Long id, String commonName, String certificate, String certificatePrivateKey) {
+		this.id = id;
+		this.commonName = commonName;
+		this.certificate = certificate;
+		this.certificatePrivateKey = certificatePrivateKey;
+	}
+
 	public SslCertificate(Long id) {
 		this.id = id;
 	}
-	
+
 	public String getCertificate() {
 		return certificate;
 	}
+
 	public void setCertificate(String certificate) {
 		this.certificate = certificate;
 	}
-	public String getKey() {
-		return key;
+
+	public String getCommonName() {
+		return commonName;
 	}
-	public void setKey(String key) {
-		this.key = key;
+
+	public void setCommonName(String commonName) {
+		this.commonName = commonName;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getCertificatePrivateKey() {
+		return certificatePrivateKey;
+	}
+
+	public void setCertificatePrivateKey(String certificatePrivateKey) {
+		this.certificatePrivateKey = certificatePrivateKey;
 	}
 }

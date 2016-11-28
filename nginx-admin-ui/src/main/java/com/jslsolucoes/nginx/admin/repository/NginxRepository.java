@@ -8,7 +8,7 @@ public interface NginxRepository {
 	public Nginx nginx();
 
 	public Nginx update(Nginx nginx);
-	
+
 	public List<String> validateBeforeUpdate(Nginx nginx);
 
 	public void insert(Nginx nginx);

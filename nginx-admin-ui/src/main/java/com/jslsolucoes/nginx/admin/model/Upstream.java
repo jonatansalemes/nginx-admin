@@ -5,9 +5,9 @@ import java.util.Set;
 public class Upstream {
 
 	private String name;
-	
+
 	private Strategy strategy;
-	
+
 	private Set<Endpoint> servers;
 
 	public String getName() {

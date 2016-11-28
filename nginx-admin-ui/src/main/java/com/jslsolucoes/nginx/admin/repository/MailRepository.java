@@ -21,6 +21,6 @@ import com.jslsolucoes.nginx.admin.mail.MailStatus;
 
 public interface MailRepository {
 
-	public Future<MailStatus> send(String subject,String to,String message);
-	
+	public Future<MailStatus> send(String subject, String to, String message);
+
 }

@@ -16,18 +16,19 @@
 package com.jslsolucoes.nginx.admin.repository.impl;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
+import java.util.UUID;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 
-import com.itextpdf.text.pdf.security.CertificateInfo.X500Name;
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.model.SslCertificate;
 import com.jslsolucoes.nginx.admin.repository.NginxRepository;
@@ -49,21 +50,28 @@ public class SslCertificateRepositoryImpl extends RepositoryImpl<SslCertificate>
 	}
 
 	@Override
-	public void upload(InputStream certificate, InputStream key) throws Exception {
+	public OperationResult saveOrUpdate(SslCertificate sslCertificate, InputStream certificateFile,
+			InputStream certificatePrivateKeyFile) throws Exception {
 		Nginx nginx = nginxRepository.nginx();
-		File settings = new File(nginx.getHome(), "settings");
-		File ssl = new File(settings, "ssl");
-		
-		String cn = CertificateFactory.getInstance("X.509")
-				.generateCertificates(certificate)
-			.stream()
-			.map(x509 -> {
-				X509Certificate x509Certificate = (X509Certificate) x509;
-				X500Name x500Name = new X500Name(x509Certificate.getSubjectX500Principal().getName());
-				return x500Name.getField("CN");
-		}).reduce("", String::concat);
-		
-		IOUtils.copy(certificate, new FileOutputStream(new File(ssl, cn + ".cer")));
-		IOUtils.copy(key, new FileOutputStream(new File(ssl, cn + ".key")));
+		if (certificateFile != null) {
+			if (StringUtils.isEmpty(sslCertificate.getCertificate())) {
+				sslCertificate.setCertificate(UUID.randomUUID().toString() + ".cer");
+			}
+			IOUtils.copy(certificateFile, new FileOutputStream(new File(nginx.ssl(), sslCertificate.getCertificate())));
+		}
+		if (certificatePrivateKeyFile != null) {
+			if (StringUtils.isEmpty(sslCertificate.getCertificatePrivateKey())) {
+				sslCertificate.setCertificatePrivateKey(UUID.randomUUID().toString() + ".key");
+			}
+			IOUtils.copy(certificatePrivateKeyFile,
+					new FileOutputStream(new File(nginx.ssl(), sslCertificate.getCertificatePrivateKey())));
+		}
+		return super.saveOrUpdate(sslCertificate);
+	}
+
+	@Override
+	public InputStream download(String hash) throws FileNotFoundException {
+		Nginx nginx = nginxRepository.nginx();
+		return new FileInputStream(new File(nginx.ssl(), hash));
 	}
 }

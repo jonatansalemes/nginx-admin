@@ -44,13 +44,12 @@ public class ConfigurationRepositoryImpl extends RepositoryImpl<Configuration> i
 		query.executeUpdate();
 	}
 
-	
 	@Override
 	public Integer getInteger(ConfigurationType configurationType) {
 		return Integer.valueOf(variable(configurationType));
 	}
-	
-	private String variable(ConfigurationType configurationType){
+
+	private String variable(ConfigurationType configurationType) {
 		Query query = entityManager.createQuery("select value from Configuration where variable = :variable ");
 		query.setParameter("variable", configurationType.getVariable());
 		return (String) query.getSingleResult();

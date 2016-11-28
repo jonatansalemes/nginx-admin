@@ -20,7 +20,7 @@ import com.jslsolucoes.nginx.admin.model.ConfigurationType;
 public interface ConfigurationRepository {
 
 	public Integer getInteger(ConfigurationType configurationType);
-	
-	public void update(ConfigurationType configurationType,Object value);
+
+	public void update(ConfigurationType configurationType, Object value);
 
 }

@@ -1,5 +1,6 @@
 package com.jslsolucoes.nginx.admin.model;
 
+import java.io.File;
 import java.io.Serializable;
 
 import javax.persistence.Column;
@@ -11,24 +12,24 @@ import javax.persistence.Table;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name="nginx",schema="admin")
-public class Nginx implements Serializable{
-	
+@Table(name = "nginx", schema = "admin")
+public class Nginx implements Serializable {
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@Column(name="bin")
+
+	@Column(name = "bin")
 	private String bin;
-	
-	@Column(name="home")
+
+	@Column(name = "home")
 	private String home;
-	
+
 	public Nginx() {
-		
+
 	}
-	
-	public Nginx(Long id,String bin,String home) {
+
+	public Nginx(Long id, String bin, String home) {
 		this.id = id;
 		this.bin = bin;
 		this.home = home;
@@ -57,5 +58,13 @@ public class Nginx implements Serializable{
 	public void setHome(String home) {
 		this.home = home;
 	}
-	
+
+	public File settings() {
+		return new File(home, "settings");
+	}
+
+	public File ssl() {
+		return new File(settings(), "ssl");
+	}
+
 }

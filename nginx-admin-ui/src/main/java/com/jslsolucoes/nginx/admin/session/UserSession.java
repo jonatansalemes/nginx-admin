@@ -28,12 +28,12 @@ import com.jslsolucoes.nginx.admin.model.User;
 public class UserSession implements Serializable {
 
 	private User user;
-	
+
 	public UserSession() {
-		
+
 	}
-	
-	public void logout(){
+
+	public void logout() {
 		this.user = null;
 	}
 

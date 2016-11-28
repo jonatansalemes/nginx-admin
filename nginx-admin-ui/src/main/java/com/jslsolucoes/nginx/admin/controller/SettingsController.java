@@ -7,12 +7,11 @@ import br.com.caelum.vraptor.Path;
 @Path("settings")
 public class SettingsController {
 
-	
-	public void home(){
-		
+	public void home() {
+
 	}
-	
-	public void welcome(){
-		
+
+	public void welcome() {
+
 	}
 }

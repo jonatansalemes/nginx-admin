@@ -20,9 +20,14 @@ import com.jslsolucoes.nginx.admin.runtime.RuntimeResult;
 
 public interface Runner {
 	public Runner configure(Nginx nginx);
+
 	public RuntimeResult start();
+
 	public RuntimeResult stop();
+
 	public RuntimeResult restart();
+
 	public RuntimeResult status();
+
 	public RuntimeResult testConfig();
 }

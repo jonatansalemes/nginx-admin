@@ -25,46 +25,47 @@ import org.zeroturnaround.exec.ProcessResult;
 
 public class RuntimeUtils {
 
-	
 	public static RuntimeResult command(String command) {
-		return command(command, null,null,null);
+		return command(command, null, null, null);
 	}
-	
-	public static RuntimeResult command(String command,String directory) {
-		return command(command, null,directory,null);
+
+	public static RuntimeResult command(String command, String directory) {
+		return command(command, null, directory, null);
 	}
-	
-	public static RuntimeResult command(String command,String directory,Integer timeout) {
-		return command(command, null,directory,timeout);
+
+	public static RuntimeResult command(String command, String directory, Integer timeout) {
+		return command(command, null, directory, timeout);
 	}
-	
-	public static RuntimeResult command(String command,Map<String,String> enviroment,String directory,Integer timeout) {
-		
+
+	public static RuntimeResult command(String command, Map<String, String> enviroment, String directory,
+			Integer timeout) {
+
 		System.out.println(command);
-		
+
 		try {
 			ProcessExecutor processExecutor = new ProcessExecutor();
 			processExecutor.commandSplit(command);
 			processExecutor.readOutput(true);
-			if(directory!=null){
+			if (directory != null) {
 				processExecutor.directory(new File(directory));
 			}
-			if(enviroment != null){
+			if (enviroment != null) {
 				processExecutor.environment(enviroment);
 			}
-			if(timeout != null){
+			if (timeout != null) {
 				processExecutor.timeout(timeout, TimeUnit.SECONDS);
 			}
 			ProcessResult processResult = processExecutor.execute();
-			String output = processResult.outputUTF8().replaceAll("\n","<br/>");
-			
-			if(processResult.getExitValue() == 0){
+			String output = processResult.outputUTF8().replaceAll("\n", "<br/>");
+
+			if (processResult.getExitValue() == 0) {
 				return new RuntimeResult(RuntimeResultType.SUCCESS, output);
 			} else {
 				return new RuntimeResult(RuntimeResultType.ERROR, output);
 			}
 		} catch (Exception exception) {
-			return new RuntimeResult(RuntimeResultType.ERROR, ExceptionUtils.getFullStackTrace(exception).replaceAll("\n", "<br/>"));
+			return new RuntimeResult(RuntimeResultType.ERROR,
+					ExceptionUtils.getFullStackTrace(exception).replaceAll("\n", "<br/>"));
 		}
 	}
 }

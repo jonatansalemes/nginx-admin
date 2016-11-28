@@ -47,7 +47,7 @@ public class UserController {
 
 	@Inject
 	public UserController(UserSession userSession, Result result, UserRepository userRepository,
-			SmtpRepository smtpRepository,AppRepository appRepository) {
+			SmtpRepository smtpRepository, AppRepository appRepository) {
 		this.userSession = userSession;
 		this.result = result;
 		this.userRepository = userRepository;
@@ -59,10 +59,11 @@ public class UserController {
 		this.userSession.logout();
 		this.result.redirectTo(this).login();
 	}
-	
+
 	public void validateBeforeChangeLogin(String passwordOld, String login) {
-		this.result.use(Results.json()).from(HtmlUtil.convertToUnodernedList(userRepository
-				.validateBeforeChangeLogin(userSession.getUser(), passwordOld, login)), "errors")
+		this.result.use(Results.json())
+				.from(HtmlUtil.convertToUnodernedList(
+						userRepository.validateBeforeChangeLogin(userSession.getUser(), passwordOld, login)), "errors")
 				.serialize();
 	}
 
@@ -84,21 +85,19 @@ public class UserController {
 	}
 
 	public void changePassword(boolean forced) {
-		this.result.include("forced",forced);
+		this.result.include("forced", forced);
 	}
 
 	@Post
-	public void change(String password,boolean forced) {
+	public void change(String password, boolean forced) {
 		userRepository.changePassword(userSession.getUser(), password);
 		this.result.include("passwordChanged", true);
-		if(forced){
+		if (forced) {
 			this.result.redirectTo(AppController.class).home();
 		} else {
 			this.result.redirectTo(this).changePassword(false);
 		}
 	}
-	
-	
 
 	@Public
 	public void validateBeforeResetPassword(String login) {
@@ -110,7 +109,7 @@ public class UserController {
 
 	@Public
 	public void resetPassword() {
-		this.result.include("smtp",smtpRepository.smtp());
+		this.result.include("smtp", smtpRepository.smtp());
 	}
 
 	@Public

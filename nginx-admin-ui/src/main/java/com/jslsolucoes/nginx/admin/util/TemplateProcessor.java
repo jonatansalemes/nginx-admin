@@ -15,7 +15,7 @@ import freemarker.template.TemplateExceptionHandler;
 
 public class TemplateProcessor {
 
-	private Map<String,Object> data = new HashMap<String,Object>();
+	private Map<String, Object> data = new HashMap<String, Object>();
 	private String template;
 	private File location;
 

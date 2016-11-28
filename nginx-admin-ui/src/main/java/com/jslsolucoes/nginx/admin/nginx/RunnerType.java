@@ -11,9 +11,9 @@ import com.jslsolucoes.nginx.admin.os.OperationalSystemDistribution;
 
 @Qualifier
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD, ElementType.TYPE, ElementType.METHOD})
+@Target({ ElementType.FIELD, ElementType.TYPE, ElementType.METHOD })
 public @interface RunnerType {
-  
-   OperationalSystemDistribution value();
-  
+
+	OperationalSystemDistribution value();
+
 }

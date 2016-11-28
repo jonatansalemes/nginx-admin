@@ -11,40 +11,40 @@ import javax.persistence.Table;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name="smtp",schema="admin")
-public class Smtp implements Serializable{
-	
+@Table(name = "smtp", schema = "admin")
+public class Smtp implements Serializable {
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name="host")
+	@Column(name = "host")
 	private String host;
-	
-	@Column(name="port")
+
+	@Column(name = "port")
 	private Integer port;
-	
-	@Column(name="tls")
+
+	@Column(name = "tls")
 	private Integer tls;
-	
-	@Column(name="authenticate")
+
+	@Column(name = "authenticate")
 	private Integer authenticate;
-	
-	@Column(name="username")
+
+	@Column(name = "username")
 	private String userName;
-	
-	@Column(name="password")
+
+	@Column(name = "password")
 	private String password;
-	
-	@Column(name="from_address")
+
+	@Column(name = "from_address")
 	private String fromAddress;
-	
+
 	public Smtp() {
-		
+
 	}
-	
-	public Smtp(Long id, String host, Integer port, Integer authenticate, String userName, String password,
-			Integer tls, String fromAddress) {
+
+	public Smtp(Long id, String host, Integer port, Integer authenticate, String userName, String password, Integer tls,
+			String fromAddress) {
 		this.id = id;
 		this.host = host;
 		this.port = port;
@@ -54,52 +54,67 @@ public class Smtp implements Serializable{
 		this.password = password;
 		this.fromAddress = fromAddress;
 	}
+
 	public String getHost() {
 		return host;
 	}
+
 	public void setHost(String host) {
 		this.host = host;
 	}
+
 	public Integer getPort() {
 		return port;
 	}
+
 	public void setPort(Integer port) {
 		this.port = port;
 	}
+
 	public Integer getTls() {
 		return tls;
 	}
+
 	public void setTls(Integer tls) {
 		this.tls = tls;
 	}
+
 	public Integer getAuthenticate() {
 		return authenticate;
 	}
+
 	public void setAuthenticate(Integer authenticate) {
 		this.authenticate = authenticate;
 	}
+
 	public String getUserName() {
 		return userName;
 	}
+
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
+
 	public String getPassword() {
 		return password;
 	}
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
+
 	public String getFromAddress() {
 		return fromAddress;
 	}
+
 	public void setFromAddress(String fromAddress) {
 		this.fromAddress = fromAddress;
 	}

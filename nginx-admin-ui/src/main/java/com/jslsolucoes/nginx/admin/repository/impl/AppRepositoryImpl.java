@@ -17,10 +17,8 @@ import com.jslsolucoes.nginx.admin.repository.NginxRepository;
 import com.jslsolucoes.nginx.admin.repository.SmtpRepository;
 import com.jslsolucoes.nginx.admin.repository.UserRepository;
 
-
 @RequestScoped
 public class AppRepositoryImpl implements AppRepository {
-
 
 	private SmtpRepository smtpRepository;
 	private NginxRepository nginxRepository;
@@ -31,28 +29,28 @@ public class AppRepositoryImpl implements AppRepository {
 	}
 
 	@Inject
-	public AppRepositoryImpl(SmtpRepository smtpRepository,NginxRepository nginxRepository,
+	public AppRepositoryImpl(SmtpRepository smtpRepository, NginxRepository nginxRepository,
 			UserRepository userRepository) {
 		this.smtpRepository = smtpRepository;
 		this.nginxRepository = nginxRepository;
 		this.userRepository = userRepository;
-		
+
 	}
 
 	@Override
 	public List<String> checkAllRequiredConfiguration(User user) {
 		List<String> errors = new ArrayList<String>();
 		user = userRepository.load(user);
-		if(smtpRepository.smtp() == null){
+		if (smtpRepository.smtp() == null) {
 			errors.add(Messages.getString("invalid.configuration.smtp"));
 		}
-		if(nginxRepository.nginx() == null){
+		if (nginxRepository.nginx() == null) {
 			errors.add(Messages.getString("invalid.configuration.nginx"));
 		}
-		if(StringUtils.equals(user.getLogin(),"admin@localhost.com")){
+		if (StringUtils.equals(user.getLogin(), "admin@localhost.com")) {
 			errors.add(Messages.getString("invalid.configuration.login"));
 		}
-		if(StringUtils.equals(user.getPassword(),DigestUtils.sha256Hex("password"))){
+		if (StringUtils.equals(user.getPassword(), DigestUtils.sha256Hex("password"))) {
 			errors.add(Messages.getString("invalid.configuration.password"));
 		}
 		return errors;

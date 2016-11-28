@@ -26,31 +26,31 @@ import javax.persistence.Table;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name="user",schema="admin")
-public class User implements Serializable{
+@Table(name = "user", schema = "admin")
+public class User implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@Column(name="login")
+
+	@Column(name = "login")
 	private String login;
-	
-	@Column(name="password")
+
+	@Column(name = "password")
 	private String password;
-	
-	@Column(name="password_force_change")
+
+	@Column(name = "password_force_change")
 	private Integer passwordForceChange;
-	
+
 	public User() {
-		
+
 	}
-	
-	public User(String login,String password) {
+
+	public User(String login, String password) {
 		this.login = login;
 		this.password = password;
 	}
-	
+
 	public User(String login) {
 		this.login = login;
 	}
@@ -58,12 +58,15 @@ public class User implements Serializable{
 	public String getLogin() {
 		return login;
 	}
+
 	public void setLogin(String login) {
 		this.login = login;
 	}
+
 	public String getPassword() {
 		return password;
 	}
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
@@ -84,5 +87,4 @@ public class User implements Serializable{
 		this.passwordForceChange = passwordForceChange;
 	}
 
-	
 }

@@ -30,18 +30,19 @@ import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.apache.commons.lang.StringUtils;
 
 public class OperationalSystem {
-	
-	public static OperationalSystemInfo info(){
+
+	public static OperationalSystemInfo info() {
 		OperatingSystemMXBean operatingSystemMXBean = ManagementFactory.getOperatingSystemMXBean();
 		OperationalSystemInfo operationalSystemInfo = new OperationalSystemInfo(operatingSystemMXBean.getName(),
-				operatingSystemMXBean.getArch(),operatingSystemMXBean.getVersion());
-		if(operationalSystemInfo.getName().startsWith("Windows")){
+				operatingSystemMXBean.getArch(), operatingSystemMXBean.getVersion());
+		if (operationalSystemInfo.getName().startsWith("Windows")) {
 			operationalSystemInfo.setOperationalSystemDistribution(OperationalSystemDistribution.WINDOWS);
 		} else if (operationalSystemInfo.getName().startsWith("Mac")) {
 			operationalSystemInfo.setOperationalSystemDistribution(OperationalSystemDistribution.MAC);
 		} else if (operationalSystemInfo.getName().startsWith("Darwin")) {
 			operationalSystemInfo.setOperationalSystemDistribution(OperationalSystemDistribution.DARWIN);
-		} else if (operationalSystemInfo.getName().startsWith("Linux") || operationalSystemInfo.getName().startsWith("SunOS")) {
+		} else if (operationalSystemInfo.getName().startsWith("Linux")
+				|| operationalSystemInfo.getName().startsWith("SunOS")) {
 			operationalSystemInfo.setOperationalSystemDistribution(distribution());
 		}
 		return operationalSystemInfo;
@@ -55,8 +56,8 @@ public class OperationalSystem {
 		locations.add("/etc/lsb-release");
 		locations.addAll(releases());
 		String distribution = find(locations);
-		if(!StringUtils.isEmpty(distribution)){
-			if(distribution.contains("centos")){
+		if (!StringUtils.isEmpty(distribution)) {
+			if (distribution.contains("centos")) {
 				return OperationalSystemDistribution.CENTOS;
 			} else {
 				return OperationalSystemDistribution.UNKNOW_DISTRIBUTION;
@@ -67,12 +68,12 @@ public class OperationalSystem {
 	}
 
 	private static String find(Set<String> locations) {
-		for(String location : locations){
+		for (String location : locations) {
 			File file = new File(location);
-			if(file.exists()){
+			if (file.exists()) {
 				try {
-					return FileUtils.readFileToString(file,"UTF-8").toLowerCase();
-				} catch (Exception exception){
+					return FileUtils.readFileToString(file, "UTF-8").toLowerCase();
+				} catch (Exception exception) {
 					exception.printStackTrace();
 				}
 			}
@@ -82,20 +83,21 @@ public class OperationalSystem {
 
 	private static List<String> releases() {
 		List<String> locations = new ArrayList<String>();
-		Iterator<File> files = FileUtils.iterateFiles(new File("/etc"),new WildcardFileFilter(new String[]{"*-release","*_version"}),new IOFileFilter() {
-			@Override
-			public boolean accept(File file, String name) {
-				return true;
-			}
-			
-			@Override
-			public boolean accept(File file) {
-				return true;
-			}
-		});
-		while(files.hasNext()){
+		Iterator<File> files = FileUtils.iterateFiles(new File("/etc"),
+				new WildcardFileFilter(new String[] { "*-release", "*_version" }), new IOFileFilter() {
+					@Override
+					public boolean accept(File file, String name) {
+						return true;
+					}
+
+					@Override
+					public boolean accept(File file) {
+						return true;
+					}
+				});
+		while (files.hasNext()) {
 			locations.add(files.next().getAbsolutePath());
 		}
 		return locations;
-	}	
+	}
 }

@@ -26,17 +26,17 @@ import javax.persistence.Table;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name="configuration",schema="admin")
+@Table(name = "configuration", schema = "admin")
 public class Configuration implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@Column(name="variable")
+
+	@Column(name = "variable")
 	private String variable;
-	
-	@Column(name="value")
+
+	@Column(name = "value")
 	private String value;
 
 	public Long getId() {
@@ -62,5 +62,5 @@ public class Configuration implements Serializable {
 	public void setValue(String value) {
 		this.value = value;
 	}
-	
+
 }

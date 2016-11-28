@@ -33,13 +33,9 @@ public class RuntimeResult {
 		this.output = output;
 	}
 
-
-
 	public RuntimeResultType getRuntimeResultType() {
 		return runtimeResultType;
 	}
-
-
 
 	public void setRuntimeResultType(RuntimeResultType runtimeResultType) {
 		this.runtimeResultType = runtimeResultType;

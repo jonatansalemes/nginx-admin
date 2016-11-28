@@ -41,7 +41,7 @@ public class AppController {
 	}
 
 	@Inject
-	public AppController(Result result,AppRepository appRepository,UserSession userSession) {
+	public AppController(Result result, AppRepository appRepository, UserSession userSession) {
 		this.result = result;
 		this.appRepository = appRepository;
 		this.userSession = userSession;
@@ -60,10 +60,10 @@ public class AppController {
 	@Path("/app/configure/check")
 	public void check() throws IOException {
 		List<String> invalids = appRepository.checkAllRequiredConfiguration(userSession.getUser());
-		if(CollectionUtils.isEmpty(invalids)){
+		if (CollectionUtils.isEmpty(invalids)) {
 			this.result.redirectTo(AppController.class).home();
 		} else {
-			this.result.include("invalids",invalids);
+			this.result.include("invalids", invalids);
 			this.result.redirectTo(this).configure();
 		}
 	}

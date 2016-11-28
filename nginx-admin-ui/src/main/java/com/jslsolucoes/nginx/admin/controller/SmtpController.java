@@ -28,7 +28,7 @@ public class SmtpController {
 	}
 
 	@Inject
-	public SmtpController(Result result, SmtpRepository smtpRepository,MailRepository mailRepository) {
+	public SmtpController(Result result, SmtpRepository smtpRepository, MailRepository mailRepository) {
 		this.result = result;
 		this.smtpRepository = smtpRepository;
 		this.mailRepository = mailRepository;
@@ -38,20 +38,20 @@ public class SmtpController {
 		this.result.include("smtp", this.smtpRepository.smtp());
 	}
 
-	public void update(Long id,String host, Integer port, Integer authenticate, Integer tls, String fromAddress,
+	public void update(Long id, String host, Integer port, Integer authenticate, Integer tls, String fromAddress,
 			String username, String password) {
-		this.smtpRepository.update(new Smtp(id,host,port,authenticate,username,password,tls,fromAddress));
-		this.result.include("updated",true);
+		this.smtpRepository.update(new Smtp(id, host, port, authenticate, username, password, tls, fromAddress));
+		this.result.include("updated", true);
 		this.result.redirectTo(this).edit();
 	}
 
 	@Post
-	public void test(String to,String subject,String message) throws InterruptedException, ExecutionException{
+	public void test(String to, String subject, String message) throws InterruptedException, ExecutionException {
 		Future<MailStatus> mailStatus = mailRepository.send(subject, to, message);
-		this.result.include("mailStatus",mailStatus.get());
-		this.result.include("sended",true);
-		this.result.include("to",to);
-		this.result.include("subject",subject);
+		this.result.include("mailStatus", mailStatus.get());
+		this.result.include("sended", true);
+		this.result.include("to", to);
+		this.result.include("subject", subject);
 		this.result.redirectTo(this).edit();
 	}
 }
