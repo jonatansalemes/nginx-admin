@@ -18,7 +18,6 @@ package com.jslsolucoes.nginx.admin.repository.impl;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 
 import com.jslsolucoes.nginx.admin.model.Configuration;
 import com.jslsolucoes.nginx.admin.model.ConfigurationType;
@@ -37,21 +36,12 @@ public class ConfigurationRepositoryImpl extends RepositoryImpl<Configuration> i
 	}
 
 	@Override
-	public void update(ConfigurationType configurationType, Object value) {
-		Query query = entityManager.createQuery("update Configuration set value = :value where variable = :variable ");
-		query.setParameter("variable", configurationType.getVariable());
-		query.setParameter("value", String.valueOf(value));
-		query.executeUpdate();
-	}
-
-	@Override
 	public Integer getInteger(ConfigurationType configurationType) {
 		return Integer.valueOf(variable(configurationType));
 	}
 
 	private String variable(ConfigurationType configurationType) {
-		Query query = entityManager.createQuery("select value from Configuration where variable = :variable ");
-		query.setParameter("variable", configurationType.getVariable());
-		return (String) query.getSingleResult();
+		return (String) entityManager.createQuery("select value from Configuration where variable = :variable ")
+				.setParameter("variable", configurationType.getVariable()).getSingleResult();
 	}
 }

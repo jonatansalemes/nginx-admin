@@ -38,7 +38,7 @@ public class SmtpRepositoryImpl extends RepositoryImpl<Smtp> implements SmtpRepo
 	}
 
 	@Override
-	public Smtp smtp() {
+	public Smtp configuration() {
 		return (Smtp) entityManager.createQuery("from Smtp").getSingleResult();
 	}
 

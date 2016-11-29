@@ -36,7 +36,7 @@ public class NginxController {
 	}
 
 	public void edit() {
-		this.result.include("nginx", this.nginxRepository.nginx());
+		this.result.include("nginx", this.nginxRepository.configuration());
 	}
 
 	public void update(Long id, String bin, String home) {

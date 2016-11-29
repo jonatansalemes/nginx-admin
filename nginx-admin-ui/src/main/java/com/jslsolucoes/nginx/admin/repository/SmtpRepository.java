@@ -6,7 +6,7 @@ import com.jslsolucoes.nginx.admin.model.Smtp;
 import com.jslsolucoes.nginx.admin.repository.impl.OperationResult;
 
 public interface SmtpRepository {
-	public Smtp smtp();
+	public Smtp configuration();
 
 	public OperationResult saveOrUpdate(Smtp smtp);
 

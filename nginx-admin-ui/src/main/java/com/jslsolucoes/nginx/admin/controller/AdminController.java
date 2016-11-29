@@ -39,7 +39,7 @@ public class AdminController {
 	@Inject
 	public AdminController(Result result, Runner runner, NginxRepository nginxRepository) {
 		this.result = result;
-		this.runner = runner.configure(nginxRepository.nginx());
+		this.runner = runner.configure(nginxRepository.configuration());
 	}
 
 	public void dashboard() {

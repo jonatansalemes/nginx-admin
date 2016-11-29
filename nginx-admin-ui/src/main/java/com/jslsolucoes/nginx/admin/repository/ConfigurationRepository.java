@@ -21,6 +21,5 @@ public interface ConfigurationRepository {
 
 	public Integer getInteger(ConfigurationType configurationType);
 
-	public void update(ConfigurationType configurationType, Object value);
 
 }

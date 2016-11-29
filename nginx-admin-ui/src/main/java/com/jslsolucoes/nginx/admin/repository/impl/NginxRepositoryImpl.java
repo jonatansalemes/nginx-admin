@@ -51,7 +51,7 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 	}
 
 	@Override
-	public Nginx nginx() {
+	public Nginx configuration() {
 		return (Nginx) entityManager.createQuery("from Nginx").getSingleResult();
 	}
 

@@ -51,7 +51,7 @@ public class MailRepositoryImpl implements MailRepository {
 	@Override
 	public Future<MailStatus> send(String subject, String to, String message) {
 
-		Smtp smtp = smtpRepository.smtp();
+		Smtp smtp = smtpRepository.configuration();
 		Callable<MailStatus> task = new Callable<MailStatus>() {
 			@Override
 			public MailStatus call() {

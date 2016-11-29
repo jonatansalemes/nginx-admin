@@ -52,7 +52,7 @@ public class SslCertificateRepositoryImpl extends RepositoryImpl<SslCertificate>
 	@Override
 	public OperationResult saveOrUpdate(SslCertificate sslCertificate, InputStream certificateFile,
 			InputStream certificatePrivateKeyFile) throws Exception {
-		Nginx nginx = nginxRepository.nginx();
+		Nginx nginx = nginxRepository.configuration();
 		if (certificateFile != null) {
 			if (StringUtils.isEmpty(sslCertificate.getCertificate())) {
 				sslCertificate.setCertificate(UUID.randomUUID().toString() + ".cer");
@@ -71,7 +71,7 @@ public class SslCertificateRepositoryImpl extends RepositoryImpl<SslCertificate>
 
 	@Override
 	public InputStream download(String hash) throws FileNotFoundException {
-		Nginx nginx = nginxRepository.nginx();
+		Nginx nginx = nginxRepository.configuration();
 		return new FileInputStream(new File(nginx.ssl(), hash));
 	}
 }

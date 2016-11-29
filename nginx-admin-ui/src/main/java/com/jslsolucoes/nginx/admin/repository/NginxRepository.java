@@ -6,7 +6,7 @@ import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.repository.impl.OperationResult;
 
 public interface NginxRepository {
-	public Nginx nginx();
+	public Nginx configuration();
 
 	public void insert(Nginx nginx);
 

@@ -35,7 +35,7 @@ public class SmtpController {
 	}
 
 	public void edit() {
-		this.result.include("smtp", this.smtpRepository.smtp());
+		this.result.include("smtp", this.smtpRepository.configuration());
 	}
 
 	public void update(Long id, String host, Integer port, Integer authenticate, Integer tls, String fromAddress,

@@ -11,15 +11,23 @@ import javax.persistence.Table;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "strategy", schema = "admin")
-public class Strategy implements Serializable {
+@Table(name = "server", schema = "admin")
+public class Server implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "name")
-	private String name;
+	@Column(name = "ip")
+	private String ip;
+
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
 
 	public Long getId() {
 		return id;
@@ -29,11 +37,4 @@ public class Strategy implements Serializable {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
 }
