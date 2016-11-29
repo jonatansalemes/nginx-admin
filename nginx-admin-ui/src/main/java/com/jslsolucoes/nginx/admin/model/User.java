@@ -41,6 +41,9 @@ public class User implements Serializable {
 
 	@Column(name = "password_force_change")
 	private Integer passwordForceChange;
+	
+	@Column(name = "admin")
+	private Integer admin;
 
 	public User() {
 
@@ -85,6 +88,14 @@ public class User implements Serializable {
 
 	public void setPasswordForceChange(Integer passwordForceChange) {
 		this.passwordForceChange = passwordForceChange;
+	}
+
+	public Integer getAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(Integer admin) {
+		this.admin = admin;
 	}
 
 }

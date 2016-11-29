@@ -22,9 +22,9 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.Query;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 
@@ -51,10 +51,9 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 	@Override
 	public User authenticate(User user) {
 		try {
-			Query query = entityManager.createQuery("from User where login = :login and password = :password");
-			query.setParameter("login", user.getLogin());
-			query.setParameter("password", DigestUtils.sha256Hex(user.getPassword()));
-			return (User) query.getSingleResult();
+			return (User) entityManager.createQuery("from User where login = :login and password = :password")
+					.setParameter("login", user.getLogin())
+					.setParameter("password", DigestUtils.sha256Hex(user.getPassword())).getSingleResult();
 		} catch (NoResultException e) {
 			return null;
 		}
@@ -71,9 +70,8 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 
 	private User getByLogin(User user) {
 		try {
-			Query query = entityManager.createQuery("from User where login = :login");
-			query.setParameter("login", user.getLogin());
-			return (User) query.getSingleResult();
+			return (User) entityManager.createQuery("from User where login = :login")
+					.setParameter("login", user.getLogin()).getSingleResult();
 		} catch (NoResultException e) {
 			return null;
 		}
@@ -94,20 +92,27 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 			String passwordConfirm) {
 		List<String> errors = new ArrayList<String>();
 		user = load(user);
-		Integer passwordSize = 8;
+
+		errors.addAll(validatePasswordPair(password, passwordConfirm));
 
 		if (!StringUtils.equals(user.getPassword(), DigestUtils.sha256Hex(oldPassword))) {
 			errors.add(Messages.getString("invalid.password.old"));
 		}
 
+		if (StringUtils.equals(user.getPassword(), DigestUtils.sha256Hex(password))) {
+			errors.add(Messages.getString("invalid.password.same"));
+		}
+		return errors;
+	}
+
+	private List<String> validatePasswordPair(String password, String passwordConfirm) {
+		List<String> errors = new ArrayList<String>();
+		Integer passwordSize = 8;
 		if (password.length() < passwordSize) {
 			errors.add(Messages.getString("invalid.password.size", passwordSize));
 		}
 		if (!StringUtils.equals(password, passwordConfirm)) {
 			errors.add(Messages.getString("invalid.password.confirm"));
-		}
-		if (StringUtils.equals(user.getPassword(), DigestUtils.sha256Hex(password))) {
-			errors.add(Messages.getString("invalid.password.same"));
 		}
 		return errors;
 	}
@@ -121,36 +126,36 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 
 	@Override
 	public User loadForSession(User user) {
-		Query query = entityManager.createQuery("from User where id = :id");
-		query.setParameter("id", user.getId());
-		return (User) query.getSingleResult();
+		return (User) entityManager.createQuery("from User where id = :id").setParameter("id", user.getId())
+				.getSingleResult();
 	}
 
 	@Override
-	public void reconfigure(User user, String login, String password) {
-		user = load(user);
-		user.setPassword(DigestUtils.sha256Hex(password));
-		user.setLogin(login);
+	public Boolean hasUsers() {
+		return !CollectionUtils.isEmpty(entityManager.createQuery("from User").getResultList());
 	}
 
 	@Override
-	public List<String> validateBeforeChangeLogin(User user, String oldPassword, String login) {
+	public List<String> validateBeforeCreateAdministrator(String login, String loginConfirm, String password,
+			String passwordConfirm) {
+
 		List<String> errors = new ArrayList<String>();
+		errors.addAll(validatePasswordPair(password, passwordConfirm));
 
-		user = load(user);
-		if (!StringUtils.equals(user.getPassword(), DigestUtils.sha256Hex(oldPassword))) {
-			errors.add(Messages.getString("invalid.password.old"));
+		if (!StringUtils.equals(login, loginConfirm)) {
+			errors.add(Messages.getString("admin.login.invalid.confirm"));
 		}
 
-		if (StringUtils.equals(login, "admin@localhost.com")) {
-			errors.add(Messages.getString("invalid.login", "admin@localhost.com"));
-		}
 		return errors;
 	}
 
 	@Override
-	public void changeLogin(User user, String login) {
-		user = load(user);
+	public void createAdministrator(String login, String password) {
+		User user = new User();
+		user.setPassword(DigestUtils.sha256Hex(password));
 		user.setLogin(login);
+		user.setPasswordForceChange(0);
+		user.setAdmin(1);
+		super.insert(user);
 	}
 }

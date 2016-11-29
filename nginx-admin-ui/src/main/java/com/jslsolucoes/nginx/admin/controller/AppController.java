@@ -15,56 +15,22 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.controller;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.inject.Inject;
-
-import org.apache.commons.collections.CollectionUtils;
-
-import com.jslsolucoes.nginx.admin.repository.AppRepository;
-import com.jslsolucoes.nginx.admin.session.UserSession;
-
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Path;
-import br.com.caelum.vraptor.Result;
 
 @Controller
 public class AppController {
 
-	private Result result;
-	private AppRepository appRepository;
-	private UserSession userSession;
-
+	
 	public AppController() {
 
 	}
 
-	@Inject
-	public AppController(Result result, AppRepository appRepository, UserSession userSession) {
-		this.result = result;
-		this.appRepository = appRepository;
-		this.userSession = userSession;
-	}
+	
 
 	@Path(value = { "/", "/app/home" })
 	public void home() {
 
 	}
 
-	@Path("/app/configure")
-	public void configure() {
-
-	}
-
-	@Path("/app/configure/check")
-	public void check() throws IOException {
-		List<String> invalids = appRepository.checkAllRequiredConfiguration(userSession.getUser());
-		if (CollectionUtils.isEmpty(invalids)) {
-			this.result.redirectTo(AppController.class).home();
-		} else {
-			this.result.include("invalids", invalids);
-			this.result.redirectTo(this).configure();
-		}
-	}
 }

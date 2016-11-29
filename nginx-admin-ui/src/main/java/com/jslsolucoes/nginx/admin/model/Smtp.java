@@ -42,6 +42,11 @@ public class Smtp implements Serializable {
 	public Smtp() {
 
 	}
+	
+	public Smtp(String host, Integer port, Integer authenticate, String userName, String password, Integer tls,
+			String fromAddress) {
+		this(null, host, port, authenticate, userName, password, tls, fromAddress);
+	}
 
 	public Smtp(Long id, String host, Integer port, Integer authenticate, String userName, String password, Integer tls,
 			String fromAddress) {

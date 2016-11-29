@@ -9,19 +9,19 @@
 					shape="circle" alt="logo" cssClass="center-block"></html:img>
 			</html:div>
 			<html:div cssClass="text-center">
-				<html:h1><html:small><fmt:message key="title"></fmt:message></html:small>
+				<html:h1>
+					<html:small>
+						<fmt:message key="title"></fmt:message>
+					</html:small>
 				</html:h1>
 			</html:div>
-		</html:block> 
+		</html:block>
 
 		<html:block>
 		
-			<html:alert state="danger" label="{password.recovery.invalid.stmp}" 
-			 rendered="${ smtp == null }"></html:alert>
-		
-			<html:form action="/user/reset" 
-				label="{password.recovery}" 
-				 validation="/user/validateBeforeResetPassword" rendered="${ smtp != null }">
+			<html:form action="/user/reset" label="{password.recovery}"
+				validation="/user/validateBeforeResetPassword"
+				rendered="${ smtp != null }">
 				<html:formGroup label="{login}" required="true">
 					<html:input name="login" type="email" required="true"
 						placeholder="{login.placeholder}"></html:input>

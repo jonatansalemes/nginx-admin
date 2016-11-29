@@ -26,18 +26,19 @@ public interface UserRepository {
 
 	public void resetPassword(User user);
 
-	public void changePassword(User user, String password);
-
 	public List<String> validateBeforeChangePassword(User user, String oldPassword, String password,
 			String passwordConfirm);
+	
+	public void changePassword(User user, String password);
 
 	public User loadForSession(User user);
 
-	public void reconfigure(User user, String login, String password);
-
-	public List<String> validateBeforeChangeLogin(User user, String oldPassword, String login);
-
-	public void changeLogin(User user, String login);
-
 	public User load(User user);
+
+	public Boolean hasUsers();
+
+	public List<String>  validateBeforeCreateAdministrator(String login, String loginConfirm, String password,
+			String passwordConfirm);
+	
+	public void createAdministrator(String login,String password);
 }

@@ -40,7 +40,7 @@ public class SmtpController {
 
 	public void update(Long id, String host, Integer port, Integer authenticate, Integer tls, String fromAddress,
 			String username, String password) {
-		this.smtpRepository.update(new Smtp(id, host, port, authenticate, username, password, tls, fromAddress));
+		this.smtpRepository.saveOrUpdate(new Smtp(id, host, port, authenticate, username, password, tls, fromAddress));
 		this.result.include("updated", true);
 		this.result.redirectTo(this).edit();
 	}

@@ -29,12 +29,9 @@ import java.util.jar.JarEntry;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.Query;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 
 import com.jslsolucoes.nginx.admin.i18n.Messages;
 import com.jslsolucoes.nginx.admin.model.Nginx;
@@ -55,16 +52,11 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 
 	@Override
 	public Nginx nginx() {
-		try {
-			Query query = entityManager.createQuery("from Nginx");
-			return (Nginx) query.getSingleResult();
-		} catch (NoResultException e) {
-			return null;
-		}
+		return (Nginx) entityManager.createQuery("from Nginx").getSingleResult();
 	}
 
 	@Override
-	public List<String> validateBeforeUpdate(Nginx nginx) {
+	public List<String> validateBeforeSaveOrUpdate(Nginx nginx) {
 		List<String> errors = new ArrayList<String>();
 
 		if (!new File(nginx.getBin()).exists()) {
@@ -79,13 +71,13 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 	}
 
 	@Override
-	public Nginx update(Nginx nginx) {
+	public OperationResult saveOrUpdate(Nginx nginx) {
 		try {
 			configure(nginx);
 		} catch (Exception exception) {
 			throw new RuntimeException(exception);
 		}
-		return super.update(nginx);
+		return super.saveOrUpdate(nginx);
 	}
 
 	private void configure(Nginx nginx) throws Exception {
@@ -107,13 +99,7 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 		});
 	}
 
-	private void conf(File settings) throws IOException {
-		String template = IOUtils.toString(getClass().getResourceAsStream("/template/nginx/nginx.tpl"), "UTF-8")
-				.replaceAll("&base&", settings.getAbsolutePath().replaceAll("\\\\", "/"));
-		FileUtils.writeStringToFile(new File(settings, "nginx.conf"), template, "UTF-8");
-	}
-
-	public static void copyToDirectory(URL url, File destination, FileFilter fileFilter) throws IOException {
+	public void copyToDirectory(URL url, File destination, FileFilter fileFilter) throws IOException {
 		URLConnection urlConnection = url.openConnection();
 		if (urlConnection instanceof JarURLConnection) {
 			copyFromJar(url, destination, fileFilter);
@@ -127,7 +113,7 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 		}
 	}
 
-	private static void copyFromJar(URL url, File destination, FileFilter fileFilter) throws IOException {
+	private void copyFromJar(URL url, File destination, FileFilter fileFilter) throws IOException {
 		JarURLConnection jarURLConnection = (JarURLConnection) url.openConnection();
 		Enumeration<JarEntry> files = jarURLConnection.getJarFile().entries();
 		while (files.hasMoreElements()) {

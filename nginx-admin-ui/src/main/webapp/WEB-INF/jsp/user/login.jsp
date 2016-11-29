@@ -53,5 +53,13 @@
 		</html:block>
 
 	</html:container>
+	
+	<ajax:function url="/installer/check" name="checkForInstall" executeOnDocumentLoad="true">
+		<ajax:onSuccess>
+			if(!data.hasUsers){
+				window.location = URL_BASE + '/installer/form';
+			}
+		</ajax:onSuccess>
+	</ajax:function>
 
 </html:view>

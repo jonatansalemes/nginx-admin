@@ -15,11 +15,12 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.repository.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.Query;
 
 import com.jslsolucoes.nginx.admin.model.Smtp;
 import com.jslsolucoes.nginx.admin.repository.SmtpRepository;
@@ -38,11 +39,13 @@ public class SmtpRepositoryImpl extends RepositoryImpl<Smtp> implements SmtpRepo
 
 	@Override
 	public Smtp smtp() {
-		try {
-			Query query = entityManager.createQuery("from Smtp");
-			return (Smtp) query.getSingleResult();
-		} catch (NoResultException e) {
-			return null;
-		}
+		return (Smtp) entityManager.createQuery("from Smtp").getSingleResult();
+	}
+
+	@Override
+	public List<String> validateBeforeSaveOrUpdate(Smtp smtp) {
+		List<String> errors = new ArrayList<String>();
+
+		return errors;
 	}
 }

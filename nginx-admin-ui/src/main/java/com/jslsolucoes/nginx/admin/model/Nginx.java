@@ -28,6 +28,10 @@ public class Nginx implements Serializable {
 	public Nginx() {
 
 	}
+	
+	public Nginx(String bin, String home) {
+		this(null, bin, home);
+	}
 
 	public Nginx(Long id, String bin, String home) {
 		this.id = id;

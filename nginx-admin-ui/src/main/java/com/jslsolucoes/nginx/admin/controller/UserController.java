@@ -17,12 +17,8 @@ package com.jslsolucoes.nginx.admin.controller;
 
 import javax.inject.Inject;
 
-import org.apache.commons.collections.CollectionUtils;
-
 import com.jslsolucoes.nginx.admin.annotation.Public;
 import com.jslsolucoes.nginx.admin.model.User;
-import com.jslsolucoes.nginx.admin.repository.AppRepository;
-import com.jslsolucoes.nginx.admin.repository.SmtpRepository;
 import com.jslsolucoes.nginx.admin.repository.UserRepository;
 import com.jslsolucoes.nginx.admin.session.UserSession;
 import com.jslsolucoes.nginx.admin.util.HtmlUtil;
@@ -38,44 +34,21 @@ public class UserController {
 	private UserSession userSession;
 	private Result result;
 	private UserRepository userRepository;
-	private SmtpRepository smtpRepository;
-	private AppRepository appRepository;
 
 	public UserController() {
 
 	}
 
 	@Inject
-	public UserController(UserSession userSession, Result result, UserRepository userRepository,
-			SmtpRepository smtpRepository, AppRepository appRepository) {
+	public UserController(UserSession userSession, Result result, UserRepository userRepository) {
 		this.userSession = userSession;
 		this.result = result;
 		this.userRepository = userRepository;
-		this.appRepository = appRepository;
-		this.smtpRepository = smtpRepository;
 	}
 
 	public void logout() {
 		this.userSession.logout();
 		this.result.redirectTo(this).login();
-	}
-
-	public void validateBeforeChangeLogin(String passwordOld, String login) {
-		this.result.use(Results.json())
-				.from(HtmlUtil.convertToUnodernedList(
-						userRepository.validateBeforeChangeLogin(userSession.getUser(), passwordOld, login)), "errors")
-				.serialize();
-	}
-
-	public void changeLogin() {
-
-	}
-
-	@Post
-	public void changeLoginFor(String login) {
-		userRepository.changeLogin(userSession.getUser(), login);
-		this.result.include("loginChanged", true);
-		this.result.redirectTo(this).changeLogin();
 	}
 
 	public void validateBeforeChangePassword(String passwordOld, String password, String passwordConfirm) {
@@ -109,7 +82,7 @@ public class UserController {
 
 	@Public
 	public void resetPassword() {
-		this.result.include("smtp", smtpRepository.smtp());
+		
 	}
 
 	@Public
@@ -131,9 +104,7 @@ public class UserController {
 		User user = userRepository.authenticate(new User(login, password));
 		if (user != null) {
 			userSession.setUser(userRepository.loadForSession(user));
-			if (!CollectionUtils.isEmpty(appRepository.checkAllRequiredConfiguration(user))) {
-				this.result.redirectTo(AppController.class).configure();
-			} else if (user.getPasswordForceChange() == 1) {
+			if (user.getPasswordForceChange() == 1) {
 				this.result.redirectTo(this).changePassword(true);
 			} else {
 				this.result.redirectTo(AppController.class).home();

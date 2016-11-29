@@ -3,7 +3,6 @@
 	<html:tabPanel>
 		<html:tab active="true" label="{nginx.settings}" url="/nginx/edit"></html:tab>
 		<html:tab label="{smtp.settings}" url="/smtp/edit"></html:tab>
-		<html:tab url="/user/changePassword" label="{password.change}"></html:tab>
-		<html:tab url="/user/changeLogin" label="{login.change}"></html:tab>
+		<html:tab label="{password.change}" url="/user/changePassword"></html:tab>
 	</html:tabPanel>
 </html:view>
