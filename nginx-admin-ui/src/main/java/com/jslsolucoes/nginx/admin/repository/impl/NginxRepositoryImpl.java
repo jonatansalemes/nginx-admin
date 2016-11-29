@@ -91,11 +91,8 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 
 	private void copy(File settings) throws IOException {
 		FileUtils.forceMkdir(settings);
-		copyToDirectory(getClass().getResource("/template/nginx"), settings, new FileFilter() {
-			@Override
-			public boolean accept(File file) {
-				return !FilenameUtils.getExtension(file.getName()).equals("tpl");
-			}
+		copyToDirectory(getClass().getResource("/template/nginx"), settings, file -> {
+			return !FilenameUtils.getExtension(file.getName()).equals("tpl");
 		});
 	}
 

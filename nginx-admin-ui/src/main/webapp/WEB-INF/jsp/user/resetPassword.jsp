@@ -20,8 +20,7 @@
 		<html:block>
 		
 			<html:form action="/user/reset" label="{password.recovery}"
-				validation="/user/validateBeforeResetPassword"
-				rendered="${ smtp != null }">
+				validation="/user/validateBeforeResetPassword">
 				<html:formGroup label="{login}" required="true">
 					<html:input name="login" type="email" required="true"
 						placeholder="{login.placeholder}"></html:input>
