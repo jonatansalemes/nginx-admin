@@ -8,8 +8,8 @@
 
 	<html:block>
 
-		<html:grid data="${ sslCertificateList }" var="sslCertificate">
-			<html:gridColumn label="{ssl.common.name}">
+		<html:grid data="${ sslCertificateList }" var="sslCertificate" label="{ssl.list}">
+			<html:gridColumn label="{ssl.common.name}" exportable="true">
 				${ sslCertificate.commonName }
 			</html:gridColumn>
 			<html:gridColumn label="{ssl.certificate}">

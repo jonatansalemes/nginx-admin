@@ -9,7 +9,7 @@
 	</html:block>
 
 	<html:block>
-		<html:form action="/sslCertificate/saveOrUpdate" multipart="true">
+		<html:form action="/sslCertificate/saveOrUpdate" multipart="true" label="{ssl.form}">
 			<html:input name="id" type="hidden" value="${ sslCertificate.id }"></html:input>
 			<html:input name="certificate" type="hidden"
 				value="${ sslCertificate.certificate }"></html:input>

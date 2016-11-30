@@ -20,6 +20,14 @@ public class Strategy implements Serializable {
 	
 	@Column(name = "name")
 	private String name;
+	
+	public Strategy() {
+	
+	}
+	
+	public Strategy(Long id) {
+		this.id = id;
+	}
 
 	public Long getId() {
 		return id;

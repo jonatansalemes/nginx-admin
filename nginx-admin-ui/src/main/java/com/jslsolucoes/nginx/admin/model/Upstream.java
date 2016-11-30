@@ -32,6 +32,20 @@ public class Upstream implements Serializable {
 	
 	@OneToMany(fetch=FetchType.LAZY,mappedBy="upstream")
 	private Set<UpstreamServer> servers;
+	
+	public Upstream() {
+	
+	}
+	
+	public Upstream(Long id,String name,Strategy strategy) {
+		this.id = id;
+		this.name = name;
+		this.strategy = strategy;
+	}
+	
+	public Upstream(Long id) {
+		this.id = id;
+	}
 
 	public Long getId() {
 		return id;

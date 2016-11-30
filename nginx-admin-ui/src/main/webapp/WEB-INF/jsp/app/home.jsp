@@ -12,6 +12,8 @@
 			</html:menuButton>
 			<html:menuButton icon="briefcase" align="right">
 				<html:menuItem target="content" url="/sslCertificate/list" icon="lock" label="{ssl.certificates}"></html:menuItem>
+				<html:menuItem target="content" url="/server/list" icon="list" label="{servers}"></html:menuItem>
+				<html:menuItem target="content" url="/upstream/list" icon="indent-left" label="{upstreams}"></html:menuItem>
 			</html:menuButton>
 		</html:container>
 	</html:nav>

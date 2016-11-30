@@ -20,6 +20,19 @@ public class Server implements Serializable {
 	
 	@Column(name = "ip")
 	private String ip;
+	
+	public Server() {
+	
+	}
+	
+	public Server(Long id) {
+		this.id = id;
+	}
+
+	public Server(Long id, String ip) {
+		this.id = id;
+		this.ip = ip;
+	}
 
 	public String getIp() {
 		return ip;

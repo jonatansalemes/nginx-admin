@@ -44,6 +44,7 @@ create table admin.ssl_certificate (
 	certificate_private_key varchar(100) not null,
 	primary key (id)
 );
+alter table admin.ssl_certificate add constraint ssl_certificate_uk1 unique(common_name);
 
 create table admin.strategy (
 	id bigint(10) auto_increment not null, 
@@ -60,6 +61,7 @@ create table admin.server (
 	ip varchar(100) not null,
 	primary key (id)
 );
+alter table admin.server add constraint server_uk1 unique(ip);
 
 create table admin.upstream (
 	id bigint(10) auto_increment not null, 
@@ -67,6 +69,7 @@ create table admin.upstream (
 	id_strategy bigint(10) not null, 
 	primary key (id)
 );
+alter table admin.upstream add constraint upstream_uk1 unique(name);
 alter table admin.upstream add constraint upstream_fk1 foreign key(id_strategy) references admin.strategy(id);
 
 create table admin.upstream_server (
@@ -76,6 +79,7 @@ create table admin.upstream_server (
 	port int(5) not null,
 	primary key (id)
 );
+alter table admin.upstream_server add constraint upstream_server_uk1 unique(id_server,id_upstream,port);
 alter table admin.upstream_server add constraint upstream_server_fk1 foreign key(id_server) references admin.server(id);
 alter table admin.upstream_server add constraint upstream_server_fk2 foreign key(id_upstream) references admin.upstream(id);
 
@@ -87,6 +91,7 @@ create table admin.virtual_domain (
 	domain varchar(100) not null,
 	primary key (id)
 );
+alter table admin.virtual_domain add constraint virtual_domain_uk1 unique(domain);
 alter table admin.virtual_domain add constraint virtual_domain_fk1 foreign key(id_ssl_certificate) references admin.ssl_certificate(id);
 alter table admin.virtual_domain add constraint virtual_domain_fk2 foreign key(id_upstream) references admin.upstream(id);
 

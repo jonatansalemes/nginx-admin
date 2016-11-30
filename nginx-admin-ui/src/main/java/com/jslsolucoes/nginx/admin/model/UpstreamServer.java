@@ -31,6 +31,15 @@ public class UpstreamServer implements Serializable {
 	
 	@Column(name = "port")
 	private Integer port;
+	
+	public UpstreamServer() {
+	
+	}
+
+	public UpstreamServer(Server server,Integer port) {
+		this.server = server;
+		this.port = port;
+	}
 
 	public Long getId() {
 		return id;
