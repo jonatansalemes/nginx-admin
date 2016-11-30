@@ -71,4 +71,8 @@ public class Nginx implements Serializable {
 		return new File(settings(), "ssl");
 	}
 
+	public File upstream() {
+		return new File(settings(), "upstream");
+	}
+
 }

@@ -8,7 +8,7 @@
 
 	<html:block>
 
-		<html:grid data="${ upstreamList }" var="upstream" label="{upstream.list}">
+		<html:grid data="${ upstreamList }" var="upstream" label="{upstream.list}" paginate="false">
 			<html:gridColumn label="{upstream.name}" exportable="true">
 				${ upstream.name }
 			</html:gridColumn>

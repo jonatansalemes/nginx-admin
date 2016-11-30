@@ -8,7 +8,7 @@
 
 	<html:block>
 
-		<html:grid data="${ serverList }" var="server" label="{server.list}">
+		<html:grid data="${ serverList }" var="server" label="{server.list}" paginate="false">
 			<html:gridColumn label="{server.ip}" exportable="true">
 				${ server.ip }
 			</html:gridColumn>

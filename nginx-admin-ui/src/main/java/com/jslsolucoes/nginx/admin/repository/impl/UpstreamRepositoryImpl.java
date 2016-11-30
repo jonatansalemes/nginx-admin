@@ -15,8 +15,10 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.repository.impl;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.enterprise.context.RequestScoped;
@@ -26,32 +28,46 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import com.jslsolucoes.nginx.admin.i18n.Messages;
+import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.model.Server;
 import com.jslsolucoes.nginx.admin.model.Upstream;
 import com.jslsolucoes.nginx.admin.model.UpstreamServer;
+import com.jslsolucoes.nginx.admin.repository.NginxRepository;
 import com.jslsolucoes.nginx.admin.repository.UpstreamRepository;
 import com.jslsolucoes.nginx.admin.repository.UpstreamServerRepository;
+import com.jslsolucoes.nginx.admin.util.TemplateProcessor;
 
 @RequestScoped
 public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements UpstreamRepository {
 
 	private UpstreamServerRepository upstreamServerRepository;
+	private NginxRepository nginxRepository;
 
 	public UpstreamRepositoryImpl() {
 
 	}
 
 	@Inject
-	public UpstreamRepositoryImpl(EntityManager entityManager, UpstreamServerRepository upstreamServerRepository) {
+	public UpstreamRepositoryImpl(EntityManager entityManager, UpstreamServerRepository upstreamServerRepository,
+			NginxRepository nginxRepository) {
 		super(entityManager);
 		this.upstreamServerRepository = upstreamServerRepository;
+		this.nginxRepository = nginxRepository;
 	}
 
 	@Override
-	public OperationResult saveOrUpdate(Upstream upstream, List<UpstreamServer> upstreamServers) {
+	public OperationResult saveOrUpdate(Upstream upstream, List<UpstreamServer> upstreamServers) throws Exception {
 		OperationResult operationResult = super.saveOrUpdate(upstream);
 		upstreamServerRepository.recreate(new Upstream(operationResult.getId()), upstreamServers);
+		configure(upstream);
 		return operationResult;
+	}
+
+	private void configure(Upstream upstream) throws Exception {
+		upstream = load(upstream);
+		Nginx nginx = nginxRepository.configuration();
+		new TemplateProcessor().withTemplate("upstream.tpl").withData("upstream", upstream)
+				.toLocation(new File(nginx.upstream(), UUID.randomUUID().toString() + ".conf")).process();
 	}
 
 	@Override

@@ -15,7 +15,7 @@ public interface UpstreamRepository {
 
 	public Upstream load(Upstream upstream);
 
-	public OperationResult saveOrUpdate(Upstream upstream, List<UpstreamServer> upstreamServers);
+	public OperationResult saveOrUpdate(Upstream upstream, List<UpstreamServer> upstreamServers) throws Exception;
 	
 	public List<String> validateBeforeSaveOrUpdate(Upstream upstream, List<UpstreamServer> upstreamServers);
 
