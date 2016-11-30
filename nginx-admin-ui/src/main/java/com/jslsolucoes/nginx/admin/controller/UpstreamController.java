@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.jslsolucoes.nginx.admin.model.ResourceIdentifier;
 import com.jslsolucoes.nginx.admin.model.Server;
 import com.jslsolucoes.nginx.admin.model.Strategy;
 import com.jslsolucoes.nginx.admin.model.Upstream;
@@ -54,10 +55,12 @@ public class UpstreamController {
 		this.result.include("strategyList", strategyRepository.listAll());
 	}
 
-	public void validate(Long id, String name, Long idStrategy, List<Long> servers, List<Integer> ports) {
+	public void validate(Long id, String name, Long idStrategy, List<Long> servers, List<Integer> ports,
+			Long idResourceIdentifier) {
 		this.result.use(Results.json())
 				.from(HtmlUtil.convertToUnodernedList(upstreamRepository.validateBeforeSaveOrUpdate(
-						new Upstream(id, name, new Strategy(idStrategy)), convert(servers, ports))), "errors")
+						new Upstream(id, name, new Strategy(idStrategy), new ResourceIdentifier(idResourceIdentifier)),
+						convert(servers, ports))), "errors")
 				.serialize();
 	}
 
@@ -74,10 +77,11 @@ public class UpstreamController {
 	}
 
 	@Post
-	public void saveOrUpdate(Long id, String name, Long idStrategy, List<Long> servers, List<Integer> ports)
+	public void saveOrUpdate(Long id, String name, Long idStrategy, List<Long> servers, List<Integer> ports,
+			Long idResourceIdentifier)
 			throws Exception {
 		OperationResult operationResult = upstreamRepository
-				.saveOrUpdate(new Upstream(id, name, new Strategy(idStrategy)), convert(servers, ports));
+				.saveOrUpdate(new Upstream(id, name, new Strategy(idStrategy), new ResourceIdentifier(idResourceIdentifier)), convert(servers, ports));
 		this.result.include("operation", operationResult.getOperationType());
 		this.result.redirectTo(this).edit(operationResult.getId());
 	}

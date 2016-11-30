@@ -9,6 +9,13 @@ create table admin.user (
 );
 alter table admin.user add constraint user_uk1 unique(login);
 
+create table admin.resource_identifier (
+	id bigint(10) auto_increment not null, 
+	hash varchar(100) not null,
+	primary key (id)
+);
+alter table admin.resource_identifier add constraint resource_identifier_uk1 unique(hash);
+
 create table admin.configuration (
 	id bigint(10) auto_increment not null, 
 	variable varchar(100) not null,
@@ -67,10 +74,12 @@ create table admin.upstream (
 	id bigint(10) auto_increment not null, 
 	name varchar(100) not null,
 	id_strategy bigint(10) not null, 
+	id_resource_identifier bigint(10) not null, 
 	primary key (id)
 );
 alter table admin.upstream add constraint upstream_uk1 unique(name);
 alter table admin.upstream add constraint upstream_fk1 foreign key(id_strategy) references admin.strategy(id);
+alter table admin.upstream add constraint upstream_fk2 foreign key(id_resource_identifier) references admin.resource_identifier(id);
 
 create table admin.upstream_server (
 	id bigint(10) auto_increment not null, 
@@ -89,10 +98,13 @@ create table admin.virtual_domain (
 	id_ssl_certificate bigint(10), 
 	id_upstream bigint(10) not null, 
 	domain varchar(100) not null,
+	id_resource_identifier bigint(10) not null,
 	primary key (id)
 );
 alter table admin.virtual_domain add constraint virtual_domain_uk1 unique(domain);
 alter table admin.virtual_domain add constraint virtual_domain_fk1 foreign key(id_ssl_certificate) references admin.ssl_certificate(id);
 alter table admin.virtual_domain add constraint virtual_domain_fk2 foreign key(id_upstream) references admin.upstream(id);
+alter table admin.virtual_domain add constraint virtual_domain_fk3 foreign key(id_resource_identifier) references admin.resource_identifier(id);
+
 
 commit;

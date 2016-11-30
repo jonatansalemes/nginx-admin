@@ -18,7 +18,6 @@ package com.jslsolucoes.nginx.admin.repository.impl;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.enterprise.context.RequestScoped;
@@ -27,12 +26,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import org.apache.commons.io.FileUtils;
+
 import com.jslsolucoes.nginx.admin.i18n.Messages;
-import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.model.Server;
 import com.jslsolucoes.nginx.admin.model.Upstream;
 import com.jslsolucoes.nginx.admin.model.UpstreamServer;
 import com.jslsolucoes.nginx.admin.repository.NginxRepository;
+import com.jslsolucoes.nginx.admin.repository.ResourceIdentifierRepository;
 import com.jslsolucoes.nginx.admin.repository.UpstreamRepository;
 import com.jslsolucoes.nginx.admin.repository.UpstreamServerRepository;
 import com.jslsolucoes.nginx.admin.util.TemplateProcessor;
@@ -42,6 +43,7 @@ public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements 
 
 	private UpstreamServerRepository upstreamServerRepository;
 	private NginxRepository nginxRepository;
+	private ResourceIdentifierRepository resourceIdentifierRepository;
 
 	public UpstreamRepositoryImpl() {
 
@@ -49,61 +51,78 @@ public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements 
 
 	@Inject
 	public UpstreamRepositoryImpl(EntityManager entityManager, UpstreamServerRepository upstreamServerRepository,
-			NginxRepository nginxRepository) {
+			NginxRepository nginxRepository, ResourceIdentifierRepository resourceIdentifierRepository) {
 		super(entityManager);
 		this.upstreamServerRepository = upstreamServerRepository;
 		this.nginxRepository = nginxRepository;
+		this.resourceIdentifierRepository = resourceIdentifierRepository;
 	}
 
 	@Override
 	public OperationResult saveOrUpdate(Upstream upstream, List<UpstreamServer> upstreamServers) throws Exception {
+
+		if (upstream.getId() == null) {
+			upstream.setResourceIdentifier(resourceIdentifierRepository.create());
+		}
 		OperationResult operationResult = super.saveOrUpdate(upstream);
 		upstreamServerRepository.recreate(new Upstream(operationResult.getId()), upstreamServers);
+		entityManager.flush();
+		entityManager.clear();
 		configure(upstream);
 		return operationResult;
 	}
 
 	private void configure(Upstream upstream) throws Exception {
 		upstream = load(upstream);
-		Nginx nginx = nginxRepository.configuration();
 		new TemplateProcessor().withTemplate("upstream.tpl").withData("upstream", upstream)
-				.toLocation(new File(nginx.upstream(), UUID.randomUUID().toString() + ".conf")).process();
+				.toLocation(new File(nginxRepository.configuration().upstream(),
+						upstream.getResourceIdentifier().getHash() + ".conf"))
+				.process();
 	}
 
 	@Override
 	public List<String> validateBeforeSaveOrUpdate(Upstream upstream, List<UpstreamServer> upstreamServers) {
 		List<String> errors = new ArrayList<String>();
 
-		if(upstreamServers
-				.stream()
-				.map(upstreamServer -> {
-					return upstreamServer.getServer().getId() + ":" + upstreamServer.getPort();
-				})
-				.collect(Collectors.toSet())
-				.size() != upstreamServers.size()){
+		if (upstreamServers.stream().map(upstreamServer -> {
+			return upstreamServer.getServer().getId() + ":" + upstreamServer.getPort();
+		}).collect(Collectors.toSet()).size() != upstreamServers.size()) {
 			errors.add(Messages.getString("upstream.servers.mapped.twice"));
 		}
-		
+
 		if (hasEquals(upstream) != null) {
 			errors.add(Messages.getString("upstream.already.exists"));
 		}
-		
+
 		return errors;
 	}
-	
+
+	@Override
+	public OperationType delete(Upstream upstream) {
+		upstreamServerRepository.deleteAllFor(upstream);
+		try {
+			upstream = load(upstream);
+			String hash = upstream.getResourceIdentifier().getHash();
+			FileUtils.forceDelete(new File(nginxRepository.configuration().upstream(),hash + ".conf"));
+			super.delete(upstream);
+			resourceIdentifierRepository.delete(hash);
+			return OperationType.DELETE;
+		} catch(Exception exception) {
+			throw new RuntimeException(exception);
+		}
+	}
+
 	private Server hasEquals(Upstream upstream) {
 		try {
-			StringBuilder  hql = new StringBuilder("from Upstream where name = :name ");
-			if(upstream.getId() != null){
+			StringBuilder hql = new StringBuilder("from Upstream where name = :name ");
+			if (upstream.getId() != null) {
 				hql.append("and id <> :id");
 			}
-			Query query = entityManager.createQuery(hql.toString())
-			.setParameter("name", upstream.getName());
-			if(upstream.getId() != null){
+			Query query = entityManager.createQuery(hql.toString()).setParameter("name", upstream.getName());
+			if (upstream.getId() != null) {
 				query.setParameter("id", upstream.getId());
 			}
-			return (Server) 
-					query.getSingleResult();
+			return (Server) query.getSingleResult();
 		} catch (NoResultException e) {
 			return null;
 		}

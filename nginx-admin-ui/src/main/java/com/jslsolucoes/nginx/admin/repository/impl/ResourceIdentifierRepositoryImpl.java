@@ -15,43 +15,43 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.repository.impl;
 
-import java.util.List;
+import java.util.UUID;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
-import com.jslsolucoes.nginx.admin.model.Upstream;
-import com.jslsolucoes.nginx.admin.model.UpstreamServer;
-import com.jslsolucoes.nginx.admin.repository.UpstreamServerRepository;
+import com.jslsolucoes.nginx.admin.model.ResourceIdentifier;
+import com.jslsolucoes.nginx.admin.repository.ResourceIdentifierRepository;
 
 @RequestScoped
-public class UpstreamServerRepositoryImpl extends RepositoryImpl<UpstreamServer> implements UpstreamServerRepository {
+public class ResourceIdentifierRepositoryImpl extends RepositoryImpl<ResourceIdentifier>
+		implements ResourceIdentifierRepository {
 
-	public UpstreamServerRepositoryImpl() {
+	public ResourceIdentifierRepositoryImpl() {
 
 	}
 
 	@Inject
-	public UpstreamServerRepositoryImpl(EntityManager entityManager) {
+	public ResourceIdentifierRepositoryImpl(EntityManager entityManager) {
 		super(entityManager);
 	}
 
 	@Override
-	public void deleteAllFor(Upstream upstream) {
-		entityManager
-				.createQuery(
-						"delete from UpstreamServer upstreamServer where upstreamServer.upstream.id = :idUpstream")
-				.setParameter("idUpstream", upstream.getId()).executeUpdate();
+	public ResourceIdentifier create() {
+		ResourceIdentifier resourceIdentifier = new ResourceIdentifier(UUID.randomUUID().toString());
+		super.insert(resourceIdentifier);
+		return resourceIdentifier;
 	}
 
 	@Override
-	public void recreate(Upstream upstream, List<UpstreamServer> upstreamServers) {
-		deleteAllFor(upstream);
-		for (UpstreamServer upstreamServer : upstreamServers) {
-			upstreamServer.setUpstream(upstream);
-			super.insert(upstreamServer);
-		}
+	public void delete(String hash) {
+		super.delete(findByHash(hash));
+	}
+
+	private ResourceIdentifier findByHash(String hash) {
+		return (ResourceIdentifier) entityManager.createQuery("from ResourceIdentifier where hash = :hash")
+				.setParameter("hash", hash).getSingleResult();
 	}
 
 }

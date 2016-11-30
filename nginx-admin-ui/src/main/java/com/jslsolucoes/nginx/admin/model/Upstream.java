@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @SuppressWarnings("serial")
@@ -30,6 +31,10 @@ public class Upstream implements Serializable {
 	@JoinColumn(name = "id_strategy")
 	private Strategy strategy;
 	
+	@OneToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name = "id_resource_identifier")
+	private ResourceIdentifier resourceIdentifier;
+	
 	@OneToMany(fetch=FetchType.LAZY,mappedBy="upstream")
 	private Set<UpstreamServer> servers;
 	
@@ -37,10 +42,11 @@ public class Upstream implements Serializable {
 	
 	}
 	
-	public Upstream(Long id,String name,Strategy strategy) {
+	public Upstream(Long id,String name,Strategy strategy,ResourceIdentifier resourceIdentifier) {
 		this.id = id;
 		this.name = name;
 		this.strategy = strategy;
+		this.resourceIdentifier = resourceIdentifier;
 	}
 	
 	public Upstream(Long id) {
@@ -73,6 +79,14 @@ public class Upstream implements Serializable {
 
 	public Set<UpstreamServer> getServers() {
 		return servers;
+	}
+
+	public ResourceIdentifier getResourceIdentifier() {
+		return resourceIdentifier;
+	}
+
+	public void setResourceIdentifier(ResourceIdentifier resourceIdentifier) {
+		this.resourceIdentifier = resourceIdentifier;
 	}
 
 }

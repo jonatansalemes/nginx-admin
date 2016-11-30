@@ -17,6 +17,7 @@
 		<class>com.jslsolucoes.nginx.admin.model.Upstream</class>
 		<class>com.jslsolucoes.nginx.admin.model.UpstreamServer</class>
 		<class>com.jslsolucoes.nginx.admin.model.VirtualDomain</class>
+		<class>com.jslsolucoes.nginx.admin.model.ResourceIdentifier</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
 			<property name="hibernate.show_sql" value="true" />
