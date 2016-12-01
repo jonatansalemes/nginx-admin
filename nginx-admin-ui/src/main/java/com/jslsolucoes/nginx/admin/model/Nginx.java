@@ -74,5 +74,9 @@ public class Nginx implements Serializable {
 	public File upstream() {
 		return new File(settings(), "upstream");
 	}
+	
+	public File virtualDomain() {
+		return new File(settings(), "virtual-domain");
+	}
 
 }

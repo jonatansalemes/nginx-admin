@@ -114,5 +114,18 @@ public abstract class RepositoryImpl<T> {
 		Query query = entityManager.createQuery("select count(id) from " + clazz.getSimpleName());
 		return ((Long) query.getSingleResult()).intValue();
 	}
+	
+	public void flushAndClear(){
+		flush();
+		clear();
+	}
+	
+	public void flush() {
+		this.entityManager.flush();
+	}
+	
+	public void clear() {
+		this.entityManager.clear();
+	}
 
 }

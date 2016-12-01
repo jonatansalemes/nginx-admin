@@ -66,8 +66,7 @@ public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements 
 		}
 		OperationResult operationResult = super.saveOrUpdate(upstream);
 		upstreamServerRepository.recreate(new Upstream(operationResult.getId()), upstreamServers);
-		entityManager.flush();
-		entityManager.clear();
+		flushAndClear();
 		configure(upstream);
 		return operationResult;
 	}
