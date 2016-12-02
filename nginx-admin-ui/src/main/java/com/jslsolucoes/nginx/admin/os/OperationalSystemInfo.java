@@ -22,7 +22,7 @@ public class OperationalSystemInfo {
 	private OperationalSystemDistribution operationalSystemDistribution;
 
 	public OperationalSystemInfo(String name, String arch, String version) {
-		this(name, arch, version, OperationalSystemDistribution.UNKNOW_DISTRIBUTION);
+		this(name, arch, version, OperationalSystemDistribution.NOT_IMPLEMENTED);
 	}
 
 	public OperationalSystemInfo(String name, String arch, String version,

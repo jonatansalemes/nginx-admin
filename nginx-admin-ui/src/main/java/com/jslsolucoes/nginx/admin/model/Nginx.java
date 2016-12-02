@@ -62,6 +62,19 @@ public class Nginx implements Serializable {
 	public void setHome(String home) {
 		this.home = home;
 	}
+	
+	
+	public File parent(){
+		return bin().getParentFile();
+	}
+	
+	public File bin(){
+		return new File(bin);
+	}
+	
+	public File conf(){
+		return new File(settings(), "nginx.conf");
+	}
 
 	public File settings() {
 		return new File(home, "settings");

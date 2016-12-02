@@ -37,17 +37,13 @@ public class OperationalSystem {
 				operatingSystemMXBean.getArch(), operatingSystemMXBean.getVersion());
 		if (operationalSystemInfo.getName().startsWith("Windows")) {
 			operationalSystemInfo.setOperationalSystemDistribution(OperationalSystemDistribution.WINDOWS);
-		} else if (operationalSystemInfo.getName().startsWith("Mac")) {
-			operationalSystemInfo.setOperationalSystemDistribution(OperationalSystemDistribution.MAC);
-		} else if (operationalSystemInfo.getName().startsWith("Darwin")) {
-			operationalSystemInfo.setOperationalSystemDistribution(OperationalSystemDistribution.DARWIN);
-		} else if (operationalSystemInfo.getName().startsWith("Linux")
-				|| operationalSystemInfo.getName().startsWith("SunOS")) {
-			operationalSystemInfo.setOperationalSystemDistribution(distribution());
+		} else {
+			operationalSystemInfo.setOperationalSystemDistribution(OperationalSystemDistribution.NOT_IMPLEMENTED);
 		}
 		return operationalSystemInfo;
 	}
 
+	@SuppressWarnings("unused")
 	private static OperationalSystemDistribution distribution() {
 		Set<String> locations = new HashSet<String>();
 		locations.add("/etc/system-release");
@@ -58,12 +54,12 @@ public class OperationalSystem {
 		String distribution = find(locations);
 		if (!StringUtils.isEmpty(distribution)) {
 			if (distribution.contains("centos")) {
-				return OperationalSystemDistribution.CENTOS;
+				return OperationalSystemDistribution.NOT_IMPLEMENTED;
 			} else {
-				return OperationalSystemDistribution.UNKNOW_DISTRIBUTION;
+				return OperationalSystemDistribution.NOT_IMPLEMENTED;
 			}
 		} else {
-			return OperationalSystemDistribution.UNKNOW_DISTRIBUTION;
+			return OperationalSystemDistribution.NOT_IMPLEMENTED;
 		}
 	}
 

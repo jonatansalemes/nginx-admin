@@ -16,7 +16,7 @@
 package com.jslsolucoes.nginx.admin.os;
 
 public enum OperationalSystemDistribution {
-	WINDOWS("Microsoft"), CENTOS("CentOs"), MAC("Apple"), DARWIN("Apple"), UNKNOW_DISTRIBUTION("Unknow");
+	WINDOWS("Microsoft"), NOT_IMPLEMENTED("Not implemented distro");
 
 	private String name;
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package com.jslsolucoes.nginx.admin.nginx;
+package com.jslsolucoes.nginx.admin.nginx.runner;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Any;

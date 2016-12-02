@@ -13,27 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package com.jslsolucoes.nginx.admin.nginx;
+package com.jslsolucoes.nginx.admin.nginx.runner.impl;
+
+import org.apache.commons.io.FilenameUtils;
 
 import com.jslsolucoes.nginx.admin.model.Nginx;
+import com.jslsolucoes.nginx.admin.nginx.runner.Runner;
+import com.jslsolucoes.nginx.admin.nginx.runner.RunnerType;
 import com.jslsolucoes.nginx.admin.os.OperationalSystemDistribution;
 import com.jslsolucoes.nginx.admin.runtime.RuntimeResult;
 import com.jslsolucoes.nginx.admin.runtime.RuntimeUtils;
 
-@RunnerType(OperationalSystemDistribution.CENTOS)
-public class CentOsRunner implements Runner {
+@RunnerType(OperationalSystemDistribution.WINDOWS)
+public class WindowsRunner implements Runner {
 
 	private Nginx nginx;
 
 	@Override
 	public RuntimeResult start() {
-		return RuntimeUtils.command(nginx.getBin() + " -c file");
+		RuntimeUtils.command("cmd.exe /c " + executable() + " -c " + nginx.conf().getAbsolutePath(),
+				nginx.parent(), 1);
+		return status();
 	}
 
 	@Override
 	public RuntimeResult stop() {
-		RuntimeUtils.command(nginx.getBin() + " -s quit");
-		RuntimeUtils.command("killall -9 nginx");
+		RuntimeUtils.command("cmd.exe /c " + executable() + " -s quit", nginx.parent());
+		RuntimeUtils.command("taskkill /f /im " + executable() + "");
 		return status();
 	}
 
@@ -46,7 +52,7 @@ public class CentOsRunner implements Runner {
 
 	@Override
 	public RuntimeResult status() {
-		return RuntimeUtils.command("ls");
+		return RuntimeUtils.command("tasklist /fi \"imagename eq " + executable() + "\"");
 	}
 
 	@Override
@@ -57,6 +63,23 @@ public class CentOsRunner implements Runner {
 
 	@Override
 	public RuntimeResult testConfig() {
-		return RuntimeUtils.command("ls");
+		return RuntimeUtils.command("cmd.exe /c " + executable() + " -t -c " + nginx.conf().getAbsolutePath(),
+				nginx.parent());
 	}
+
+	private String executable() {
+		return FilenameUtils.getName(nginx.getBin());
+	}
+
+	@Override
+	public RuntimeResult version() {
+		return RuntimeUtils.command("cmd.exe /c " + executable() + " -v ",
+				nginx.parent());
+	}
+
+	@Override
+	public RuntimeResult reload() {
+		return RuntimeUtils.command("cmd.exe /c " + executable() + " -s reload", nginx.parent());
+	}
+
 }

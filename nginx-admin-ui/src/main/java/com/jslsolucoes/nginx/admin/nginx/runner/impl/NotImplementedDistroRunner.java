@@ -13,62 +13,58 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package com.jslsolucoes.nginx.admin.nginx;
-
-import java.io.File;
-
-import org.apache.commons.io.FilenameUtils;
+package com.jslsolucoes.nginx.admin.nginx.runner.impl;
 
 import com.jslsolucoes.nginx.admin.model.Nginx;
+import com.jslsolucoes.nginx.admin.nginx.runner.Runner;
+import com.jslsolucoes.nginx.admin.nginx.runner.RunnerType;
 import com.jslsolucoes.nginx.admin.os.OperationalSystemDistribution;
 import com.jslsolucoes.nginx.admin.runtime.RuntimeResult;
-import com.jslsolucoes.nginx.admin.runtime.RuntimeUtils;
+import com.jslsolucoes.nginx.admin.runtime.RuntimeResultType;
 
-@RunnerType(OperationalSystemDistribution.WINDOWS)
-public class WindowsRunner implements Runner {
+@RunnerType(OperationalSystemDistribution.NOT_IMPLEMENTED)
+public class NotImplementedDistroRunner implements Runner {
 
-	private Nginx nginx;
+	private static final RuntimeResult RUNTIME_RESULT = new RuntimeResult(RuntimeResultType.ERROR,
+			"Runner not implemented to your distribution");
 
 	@Override
 	public RuntimeResult start() {
-		RuntimeUtils.command("cmd.exe /c " + executable() + " -c " + nginx.getHome() + File.separator + "settings"
-				+ File.separator + "nginx.conf", new File(nginx.getBin()).getParent(), 1);
-		return status();
+		return RUNTIME_RESULT;
 	}
 
 	@Override
 	public RuntimeResult stop() {
-		RuntimeUtils.command("cmd.exe /c " + executable() + " -s quit", new File(nginx.getBin()).getParent());
-		RuntimeUtils.command("taskkill /f /im " + executable() + "");
-		return status();
+		return RUNTIME_RESULT;
 	}
 
 	@Override
 	public RuntimeResult restart() {
-		stop();
-		start();
-		return status();
+		return RUNTIME_RESULT;
 	}
 
 	@Override
 	public RuntimeResult status() {
-		return RuntimeUtils.command("tasklist /fi \"imagename eq " + executable() + "\"");
+		return RUNTIME_RESULT;
 	}
 
 	@Override
 	public Runner configure(Nginx nginx) {
-		this.nginx = nginx;
 		return this;
 	}
 
 	@Override
 	public RuntimeResult testConfig() {
-		return RuntimeUtils.command("cmd.exe /c " + executable() + " -t -c " + nginx.getHome() + File.separator
-				+ "settings" + File.separator + "nginx.conf", new File(nginx.getBin()).getParent());
+		return RUNTIME_RESULT;
 	}
 
-	private String executable() {
-		return FilenameUtils.getName(nginx.getBin());
+	@Override
+	public RuntimeResult version() {
+		return RUNTIME_RESULT;
 	}
 
+	@Override
+	public RuntimeResult reload() {
+		return RUNTIME_RESULT;
+	}
 }

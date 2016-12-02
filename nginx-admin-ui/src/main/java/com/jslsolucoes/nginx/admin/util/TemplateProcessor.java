@@ -40,6 +40,7 @@ public class TemplateProcessor {
 		configuration.setDefaultEncoding("UTF-8");
 		configuration.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
 		configuration.setLogTemplateExceptions(false);
+		
 		Template template = configuration.getTemplate(this.template);
 		Writer writer = new StringWriter();
 		template.process(data, writer);

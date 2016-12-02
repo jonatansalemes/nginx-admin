@@ -73,11 +73,17 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 	@Override
 	public OperationResult saveOrUpdate(Nginx nginx) {
 		try {
+			nginx.setHome(normalize(nginx.getHome()));
+			nginx.setBin(normalize(nginx.getBin()));
 			configure(nginx);
+			return super.saveOrUpdate(nginx);
 		} catch (Exception exception) {
 			throw new RuntimeException(exception);
 		}
-		return super.saveOrUpdate(nginx);
+	}
+	
+	private String normalize(String path){
+		return path.replaceAll("\\\\","/");
 	}
 
 	private void configure(Nginx nginx) throws Exception {

@@ -1,4 +1,4 @@
-package com.jslsolucoes.nginx.admin.nginx;
+package com.jslsolucoes.nginx.admin.nginx.runner;
 
 import javax.enterprise.util.AnnotationLiteral;
 

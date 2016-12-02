@@ -17,7 +17,7 @@ package com.jslsolucoes.nginx.admin.controller;
 
 import javax.inject.Inject;
 
-import com.jslsolucoes.nginx.admin.nginx.Runner;
+import com.jslsolucoes.nginx.admin.nginx.runner.Runner;
 import com.jslsolucoes.nginx.admin.os.OperationalSystem;
 import com.jslsolucoes.nginx.admin.repository.NginxRepository;
 

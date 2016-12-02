@@ -29,25 +29,23 @@ public class RuntimeUtils {
 		return command(command, null, null, null);
 	}
 
-	public static RuntimeResult command(String command, String directory) {
+	public static RuntimeResult command(String command, File directory) {
 		return command(command, null, directory, null);
 	}
 
-	public static RuntimeResult command(String command, String directory, Integer timeout) {
+	public static RuntimeResult command(String command, File directory, Integer timeout) {
 		return command(command, null, directory, timeout);
 	}
 
-	public static RuntimeResult command(String command, Map<String, String> enviroment, String directory,
+	public static RuntimeResult command(String command, Map<String, String> enviroment, File directory,
 			Integer timeout) {
-
-		System.out.println(command);
 
 		try {
 			ProcessExecutor processExecutor = new ProcessExecutor();
 			processExecutor.commandSplit(command);
 			processExecutor.readOutput(true);
 			if (directory != null) {
-				processExecutor.directory(new File(directory));
+				processExecutor.directory(directory);
 			}
 			if (enviroment != null) {
 				processExecutor.environment(enviroment);
