@@ -27,13 +27,26 @@
 	<build>
 		<plugins>
 			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>${project.build.resources[0].directory}</directory>
+							<includes>
+								<include>*.war</include>
+							</includes>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<executions>
 					<execution>
 						<phase>prepare-package</phase>
 						<configuration>
 							<tasks>
-								<copy overwrite="true"
+								<copy
 									file="${project.parent.basedir}/${project.parent.modules[0]}/target/${project.parent.modules[0]}-${project.version}.war"
 									tofile="${project.build.resources[0].directory}/${project.parent.modules[0]}.war" />
 							</tasks>

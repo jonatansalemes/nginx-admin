@@ -10,6 +10,22 @@
 
 	<build>
 		<plugins>
+
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>${project.build.resources[0].directory}/nginx/bin</directory>
+							<includes>
+								<include>*.jar</include>
+							</includes>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+
+
 			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<executions>
@@ -17,7 +33,7 @@
 						<phase>prepare-package</phase>
 						<configuration>
 							<tasks>
-								<copy overwrite="true"
+								<copy 
 									file="${project.parent.basedir}/${project.parent.modules[1]}/target/nginx-admin-standalone-${project.version}-swarm.jar"
 									tofile="${project.build.resources[0].directory}/nginx/bin/nginx-admin-standalone-swarm.jar" />
 							</tasks>
