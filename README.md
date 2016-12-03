@@ -14,12 +14,11 @@ Nginx admin is an open source multiplaform manager for nginx software to easy ad
 Tested at moment in Operational system :
 <ul>
 	<li>Windows 7</li>
-	<li>CentOS 6</li>
 </ul>
 
-Features :
+Some features :
 <ul>
-	<li>Stop,Start,Status and Restart</li>
+	<li>Test configuration,Stop,Start,Status,Reload and Restart</li>
 	<li>Multiplatform</li>
 	<li>100% Java</li>
 	<li>Support for i18n (internationalization)</li>
@@ -37,7 +36,6 @@ Quick start installation and configuration :
 * Install jdk8 (required)
 * Run command java -jar ****.jar 
 * Access ip:3000 to access manager
-
 
 <h1>For premium support please contact : jonatan@jslsolucoes.com</h2>
 

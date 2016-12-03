@@ -10,12 +10,6 @@
 	<artifactId>nginx-admin-ui</artifactId>
 	<packaging>war</packaging>
 
-	<properties>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>javax</groupId>
@@ -26,7 +20,7 @@
 		<dependency>
 			<groupId>com.jslsolucoes</groupId>
 			<artifactId>tagria-lib</artifactId>
-			<version>1.0.2-SNAPSHOT</version>
+			<version>1.0.2</version>
 		</dependency>
 		<dependency>
 			<groupId>br.com.caelum</groupId>
