@@ -51,8 +51,12 @@ public class AdminController {
 	}
 
 	public void stop() {
-
 		this.result.include("runtimeResult", runner.stop());
+		this.result.redirectTo(this).dashboard();
+	}
+	
+	public void reload() {
+		this.result.include("runtimeResult", runner.reload());
 		this.result.redirectTo(this).dashboard();
 	}
 

@@ -18,13 +18,13 @@
 	<html:card>
 		<html:cardBody>
 			<html:panel>
-				<html:panelHead label="Instance details"></html:panelHead>
+				<html:panelHead label="{machine.details}"></html:panelHead>
 				<html:panelBody>
 					<html:listGroup>
-						<html:listGroupItem> Arch : ${ so.arch }</html:listGroupItem>
-						<html:listGroupItem> Operational System : ${ so.name }</html:listGroupItem>
-						<html:listGroupItem> Version : ${ so.version }</html:listGroupItem>
-						<html:listGroupItem> Distro : ${ so.operationalSystemDistribution.name }</html:listGroupItem>
+						<html:listGroupItem> <fmt:message key="machine.arch"/> : ${ so.arch }</html:listGroupItem>
+						<html:listGroupItem> <fmt:message key="machine.os"/> : ${ so.name }</html:listGroupItem>
+						<html:listGroupItem> <fmt:message key="machine.version"/> : ${ so.version }</html:listGroupItem>
+						<html:listGroupItem> <fmt:message key="machine.vendor"/> : ${ so.operationalSystemDistribution.name }</html:listGroupItem>
 					</html:listGroup>
 				</html:panelBody>
 			</html:panel>
@@ -51,6 +51,12 @@
 					label="{restart}"></html:button>
 				<html:confirm url="/admin/restart"
 					attachTo="restart" label="{restart.confirm}">
+				</html:confirm>
+				
+				<html:button id="reload" state="danger"
+					label="{reload}"></html:button>
+				<html:confirm url="/admin/reload"
+					attachTo="reload" label="{reload.confirm}">
 				</html:confirm>
 
 

@@ -28,6 +28,7 @@ import javax.persistence.Query;
 import com.jslsolucoes.nginx.admin.i18n.Messages;
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.model.VirtualDomain;
+import com.jslsolucoes.nginx.admin.nginx.runner.Runner;
 import com.jslsolucoes.nginx.admin.repository.NginxRepository;
 import com.jslsolucoes.nginx.admin.repository.ResourceIdentifierRepository;
 import com.jslsolucoes.nginx.admin.repository.VirtualDomainRepository;
@@ -38,6 +39,7 @@ public class VirtualDomainRepositoryImpl extends RepositoryImpl<VirtualDomain> i
 
 	private ResourceIdentifierRepository resourceIdentifierRepository;
 	private NginxRepository nginxRepository;
+	private Runner runner;
 
 	public VirtualDomainRepositoryImpl() {
 
@@ -45,10 +47,11 @@ public class VirtualDomainRepositoryImpl extends RepositoryImpl<VirtualDomain> i
 
 	@Inject
 	public VirtualDomainRepositoryImpl(EntityManager entityManager,ResourceIdentifierRepository resourceIdentifierRepository,
-			NginxRepository nginxRepository) {
+			NginxRepository nginxRepository,Runner runner) {
 		super(entityManager);
 		this.resourceIdentifierRepository = resourceIdentifierRepository;
 		this.nginxRepository = nginxRepository;
+		this.runner = runner;
 	}
 	
 	@Override
@@ -63,6 +66,7 @@ public class VirtualDomainRepositoryImpl extends RepositoryImpl<VirtualDomain> i
 			OperationResult operationResult = super.saveOrUpdate(virtualDomain);
 			flushAndClear();
 			configure(virtualDomain);
+			runner.reload();
 			return operationResult;
 		} catch(Exception exception){
 			throw new RuntimeException(exception);

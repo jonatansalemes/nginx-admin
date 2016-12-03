@@ -17,11 +17,13 @@ package com.jslsolucoes.nginx.admin.nginx.runner.impl;
 
 import org.apache.commons.io.FilenameUtils;
 
+import com.jslsolucoes.nginx.admin.i18n.Messages;
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.nginx.runner.Runner;
 import com.jslsolucoes.nginx.admin.nginx.runner.RunnerType;
 import com.jslsolucoes.nginx.admin.os.OperationalSystemDistribution;
 import com.jslsolucoes.nginx.admin.runtime.RuntimeResult;
+import com.jslsolucoes.nginx.admin.runtime.RuntimeResultType;
 import com.jslsolucoes.nginx.admin.runtime.RuntimeUtils;
 
 @RunnerType(OperationalSystemDistribution.WINDOWS)
@@ -52,7 +54,15 @@ public class WindowsRunner implements Runner {
 
 	@Override
 	public RuntimeResult status() {
-		return RuntimeUtils.command("tasklist /fi \"imagename eq " + executable() + "\"");
+		RuntimeResult runtimeResult = RuntimeUtils.command("tasklist /fi \"imagename eq " + executable() + "\"");
+		if(runtimeResult.getRuntimeResultType().equals(RuntimeResultType.SUCCESS)){
+			if(runtimeResult.getOutput().contains(executable())){
+				return new RuntimeResult(RuntimeResultType.SUCCESS, Messages.getString("running"));
+			} else {
+				return new RuntimeResult(RuntimeResultType.SUCCESS, Messages.getString("stopped"));
+			}
+		}
+		return runtimeResult; 
 	}
 
 	@Override
@@ -63,8 +73,16 @@ public class WindowsRunner implements Runner {
 
 	@Override
 	public RuntimeResult testConfig() {
-		return RuntimeUtils.command("cmd.exe /c " + executable() + " -t -c " + nginx.conf().getAbsolutePath(),
+		RuntimeResult runtimeResult = RuntimeUtils.command("cmd.exe /c " + executable() + " -t -c " + nginx.conf().getAbsolutePath(),
 				nginx.parent());
+		if(runtimeResult.getRuntimeResultType().equals(RuntimeResultType.SUCCESS)){
+			if(runtimeResult.getOutput().contains("syntax is ok")){
+				return new RuntimeResult(RuntimeResultType.SUCCESS, Messages.getString("syntax.ok"));
+			} else {
+				return new RuntimeResult(RuntimeResultType.ERROR, runtimeResult.getOutput());
+			}
+		}
+		return runtimeResult; 
 	}
 
 	private String executable() {
