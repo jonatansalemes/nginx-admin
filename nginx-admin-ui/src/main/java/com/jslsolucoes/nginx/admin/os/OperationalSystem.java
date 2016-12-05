@@ -38,7 +38,7 @@ public class OperationalSystem {
 		String operationalSystem = operationalSystemInfo.getName().toLowerCase();
 		if (operationalSystem.contains("windows")) {
 			operationalSystemInfo.setOperationalSystemDistribution(OperationalSystemDistribution.WINDOWS);
-		} if (operationalSystem.contains("linux")) {
+		} else if (operationalSystem.contains("linux")) {
 			operationalSystemInfo.setOperationalSystemDistribution(distribution());
 		}  else {
 			operationalSystemInfo.setOperationalSystemDistribution(OperationalSystemDistribution.NOT_IMPLEMENTED);

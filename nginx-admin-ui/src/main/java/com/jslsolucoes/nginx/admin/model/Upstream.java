@@ -38,6 +38,9 @@ public class Upstream implements Serializable {
 	@OneToMany(fetch=FetchType.LAZY,mappedBy="upstream")
 	private Set<UpstreamServer> servers;
 	
+	@OneToMany(fetch=FetchType.LAZY,mappedBy="upstream")
+	private Set<VirtualDomain> virtualDomains;
+	
 	public Upstream() {
 	
 	}
@@ -89,4 +92,7 @@ public class Upstream implements Serializable {
 		this.resourceIdentifier = resourceIdentifier;
 	}
 
+	public Set<VirtualDomain> getVirtualDomains() {
+		return virtualDomains;
+	}
 }

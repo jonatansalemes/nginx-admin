@@ -1,12 +1,15 @@
 package com.jslsolucoes.nginx.admin.model;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @SuppressWarnings("serial")
@@ -26,6 +29,9 @@ public class SslCertificate implements Serializable {
 
 	@Column(name = "certificate_private_key")
 	private String certificatePrivateKey;
+	
+	@OneToMany(fetch=FetchType.LAZY,mappedBy="sslCertificate")
+	private Set<VirtualDomain> virtualDomains;
 
 	public SslCertificate() {
 
@@ -73,4 +79,9 @@ public class SslCertificate implements Serializable {
 	public void setCertificatePrivateKey(String certificatePrivateKey) {
 		this.certificatePrivateKey = certificatePrivateKey;
 	}
+
+	public Set<VirtualDomain> getVirtualDomains() {
+		return virtualDomains;
+	}
+
 }
