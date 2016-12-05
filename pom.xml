@@ -22,6 +22,7 @@
 		<module>nginx-admin-ui</module>
 		<module>nginx-admin-standalone</module>
 		<module>nginx-admin-docker</module>
+		<module>nginx-admin-script</module>
 	</modules>	
 
 	<build>

@@ -13,7 +13,8 @@ Nginx admin is an open source multiplaform manager for nginx software to easy ad
  
 Tested at moment in Operational system :
 <ul>
-	<li>Windows 7</li>
+	<li>Windows</li>
+	<li>CentOs</li>
 </ul>
 
 Some features :
