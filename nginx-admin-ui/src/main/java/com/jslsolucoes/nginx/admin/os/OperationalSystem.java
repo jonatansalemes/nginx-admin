@@ -35,15 +35,17 @@ public class OperationalSystem {
 		OperatingSystemMXBean operatingSystemMXBean = ManagementFactory.getOperatingSystemMXBean();
 		OperationalSystemInfo operationalSystemInfo = new OperationalSystemInfo(operatingSystemMXBean.getName(),
 				operatingSystemMXBean.getArch(), operatingSystemMXBean.getVersion());
-		if (operationalSystemInfo.getName().startsWith("Windows")) {
+		String operationalSystem = operationalSystemInfo.getName().toLowerCase();
+		if (operationalSystem.contains("windows")) {
 			operationalSystemInfo.setOperationalSystemDistribution(OperationalSystemDistribution.WINDOWS);
-		} else {
+		} if (operationalSystem.contains("linux")) {
+			operationalSystemInfo.setOperationalSystemDistribution(distribution());
+		}  else {
 			operationalSystemInfo.setOperationalSystemDistribution(OperationalSystemDistribution.NOT_IMPLEMENTED);
 		}
 		return operationalSystemInfo;
 	}
 
-	@SuppressWarnings("unused")
 	private static OperationalSystemDistribution distribution() {
 		Set<String> locations = new HashSet<String>();
 		locations.add("/etc/system-release");
@@ -54,13 +56,12 @@ public class OperationalSystem {
 		String distribution = find(locations);
 		if (!StringUtils.isEmpty(distribution)) {
 			if (distribution.contains("centos")) {
-				return OperationalSystemDistribution.NOT_IMPLEMENTED;
+				return OperationalSystemDistribution.CENTOS;
 			} else {
 				return OperationalSystemDistribution.NOT_IMPLEMENTED;
 			}
-		} else {
-			return OperationalSystemDistribution.NOT_IMPLEMENTED;
 		}
+		return OperationalSystemDistribution.NOT_IMPLEMENTED;
 	}
 
 	private static String find(Set<String> locations) {

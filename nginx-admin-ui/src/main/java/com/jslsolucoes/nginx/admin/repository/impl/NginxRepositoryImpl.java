@@ -20,7 +20,6 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.net.JarURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -32,6 +31,7 @@ import javax.persistence.EntityManager;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.jboss.vfs.VirtualFile;
 
 import com.jslsolucoes.nginx.admin.i18n.Messages;
 import com.jslsolucoes.nginx.admin.model.Nginx;
@@ -81,9 +81,9 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 			throw new RuntimeException(exception);
 		}
 	}
-	
-	private String normalize(String path){
-		return path.replaceAll("\\\\","/");
+
+	private String normalize(String path) {
+		return path.replaceAll("\\\\", "/");
 	}
 
 	private void configure(Nginx nginx) throws Exception {
@@ -103,16 +103,21 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 	}
 
 	public void copyToDirectory(URL url, File destination, FileFilter fileFilter) throws IOException {
-		URLConnection urlConnection = url.openConnection();
-		if (urlConnection instanceof JarURLConnection) {
+		if (url.getProtocol().equals("vfs")) {
+			copyFromVFS((VirtualFile) url.getContent(), destination, fileFilter);
+		} else if (url.getProtocol().equals("jar")) {
 			copyFromJar(url, destination, fileFilter);
 		} else {
-			File source = new File(url.getPath());
-			if (source.isDirectory()) {
-				org.apache.commons.io.FileUtils.copyDirectory(source, destination, fileFilter);
-			} else {
-				org.apache.commons.io.FileUtils.copyFileToDirectory(source, destination);
-			}
+			copyFromFile(url, destination, fileFilter);
+		}
+	}
+
+	public void copyFromFile(URL url, File destination, FileFilter fileFilter) throws IOException {
+		File source = new File(url.getPath());
+		if (source.isDirectory()) {
+			org.apache.commons.io.FileUtils.copyDirectory(source, destination, fileFilter);
+		} else {
+			org.apache.commons.io.FileUtils.copyFileToDirectory(source, destination);
 		}
 	}
 
@@ -129,6 +134,22 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 				}
 			} else {
 				org.apache.commons.io.FileUtils.forceMkdir(new File(destination, entry.getName()));
+			}
+		}
+	}
+
+	private static void copyFromVFS(VirtualFile virtualRootFile, File dest, FileFilter fileFilter) throws IOException {
+		for (VirtualFile virtualFile : virtualRootFile.getChildren()) {
+			String fileName = virtualFile.getName();
+			if (!virtualFile.isDirectory()) {
+				File file = new File(dest, fileName);
+				if (fileFilter.accept(file)) {
+					FileUtils.copyInputStreamToFile(virtualFile.openStream(), file);
+				}
+			} else {
+				File created = new File(dest, fileName);
+				FileUtils.forceMkdir(created);
+				copyFromVFS(virtualFile, created, fileFilter);
 			}
 		}
 	}

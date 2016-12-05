@@ -26,22 +26,22 @@ import com.jslsolucoes.nginx.admin.runtime.RuntimeResult;
 import com.jslsolucoes.nginx.admin.runtime.RuntimeResultType;
 import com.jslsolucoes.nginx.admin.runtime.RuntimeUtils;
 
-@RunnerType(OperationalSystemDistribution.WINDOWS)
-public class WindowsRunner implements Runner {
+@RunnerType(OperationalSystemDistribution.CENTOS)
+public class CentOsRunner implements Runner {
 
 	private Nginx nginx;
 
 	@Override
 	public RuntimeResult start() {
-		RuntimeUtils.command("cmd.exe /c " + executable() + " -c " + nginx.conf().getAbsolutePath(),
+		RuntimeUtils.command(executable() + " -c " + nginx.conf().getAbsolutePath(),
 				nginx.parent(), 1);
 		return status();
 	}
 
 	@Override
 	public RuntimeResult stop() {
-		RuntimeUtils.command("cmd.exe /c " + executable() + " -s quit", nginx.parent());
-		RuntimeUtils.command("taskkill /f /im " + executable());
+		RuntimeUtils.command(executable() + " -s quit", nginx.parent());
+		RuntimeUtils.command("killall -9 " + executable());
 		return status();
 	}
 
@@ -54,15 +54,12 @@ public class WindowsRunner implements Runner {
 
 	@Override
 	public RuntimeResult status() {
-		RuntimeResult runtimeResult = RuntimeUtils.command("tasklist /fi \"imagename eq " + executable() + "\"");
+		RuntimeResult runtimeResult = RuntimeUtils.command("pidof "+executable());
 		if(runtimeResult.getRuntimeResultType().equals(RuntimeResultType.SUCCESS)){
-			if(runtimeResult.getOutput().contains(executable())){
-				return new RuntimeResult(RuntimeResultType.SUCCESS, Messages.getString("running"));
-			} else {
-				return new RuntimeResult(RuntimeResultType.SUCCESS, Messages.getString("stopped"));
-			}
+			return new RuntimeResult(RuntimeResultType.SUCCESS, Messages.getString("running"));
+		} else {
+			return new RuntimeResult(RuntimeResultType.SUCCESS, Messages.getString("stopped"));
 		}
-		return runtimeResult; 
 	}
 
 	@Override
@@ -73,7 +70,7 @@ public class WindowsRunner implements Runner {
 
 	@Override
 	public RuntimeResult testConfig() {
-		RuntimeResult runtimeResult = RuntimeUtils.command("cmd.exe /c " + executable() + " -t -c " + nginx.conf().getAbsolutePath(),
+		RuntimeResult runtimeResult = RuntimeUtils.command(executable() + " -t -c " + nginx.conf().getAbsolutePath(),
 				nginx.parent());
 		if(runtimeResult.getRuntimeResultType().equals(RuntimeResultType.SUCCESS)){
 			if(runtimeResult.getOutput().contains("syntax is ok")){
@@ -91,13 +88,13 @@ public class WindowsRunner implements Runner {
 
 	@Override
 	public RuntimeResult version() {
-		return RuntimeUtils.command("cmd.exe /c " + executable() + " -v ",
+		return RuntimeUtils.command(executable() + " -v ",
 				nginx.parent());
 	}
 
 	@Override
 	public RuntimeResult reload() {
-		return RuntimeUtils.command("cmd.exe /c " + executable() + " -s reload -c " + nginx.conf().getAbsolutePath(), nginx.parent());
+		return RuntimeUtils.command(executable() + " -s reload -c " + nginx.conf().getAbsolutePath(), nginx.parent());
 	}
 
 }

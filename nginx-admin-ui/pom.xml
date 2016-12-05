@@ -57,6 +57,12 @@
 			<artifactId>javassist</artifactId>
 			<version>3.21.0-GA</version>
 		</dependency>
+		<dependency>
+			<groupId>org.jboss</groupId>
+			<artifactId>jboss-vfs</artifactId>
+			<version>3.2.12.Final</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 
 </project>

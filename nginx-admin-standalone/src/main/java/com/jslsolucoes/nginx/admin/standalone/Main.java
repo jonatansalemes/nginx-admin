@@ -13,7 +13,9 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.io.FileUtils;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.wildfly.swarm.Swarm;
+import org.wildfly.swarm.config.logging.Level;
 import org.wildfly.swarm.datasources.DatasourcesFraction;
+import org.wildfly.swarm.logging.LoggingFraction;
 import org.wildfly.swarm.undertow.WARArchive;
 
 public class Main {
@@ -55,6 +57,8 @@ public class Main {
 			ds.password(commandLine.getOptionValue("dbpassword"));
 			ds.jndiName("java:jboss/datasources/AdminDS");
 		}));
+		swarm.fraction(new LoggingFraction()
+				.rootLogger(Level.ERROR));
 		swarm.start();
 
 		InputStream war = Main.class.getResourceAsStream("/nginx-admin-ui.war");

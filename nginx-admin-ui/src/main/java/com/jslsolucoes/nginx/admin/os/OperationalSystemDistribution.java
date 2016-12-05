@@ -16,7 +16,9 @@
 package com.jslsolucoes.nginx.admin.os;
 
 public enum OperationalSystemDistribution {
-	WINDOWS("Microsoft"), NOT_IMPLEMENTED("Not implemented distro");
+	WINDOWS("Microsoft"),
+	CENTOS("Red Hat CentOs"),
+	NOT_IMPLEMENTED("Not implemented distro");
 
 	private String name;
 
