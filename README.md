@@ -9,7 +9,7 @@
 
 
 # nginx-admin
-Nginx admin is an open source multiplaform manager for nginx software to easy administratation 
+Nginx admin is an open source multiplatform manager for nginx software to easy administration 
  
 Tested at moment in Operational system :
 <ul>
@@ -20,19 +20,30 @@ Tested at moment in Operational system :
 Some features :
 <ul>
 	<li>Test configuration,Stop,Start,Status,Reload and Restart</li>
+	<li>Manager serves,ssl certificate,upstreams and virtual domains</li>
 	<li>Multiplatform</li>
 	<li>100% Java</li>
-	<li>Support for i18n (internationalization)</li>
 </ul>
 
 
 <hr/>
-Quick start installation and configuration : 
+Automatic installation :
 
-* Download latest version of manager in : ***** urlpackage ******
+Red-hat distribution you can download file : 
+
+wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/develop/nginx-admin-script/install/red-hat/install.sh
+chmod +x install.sh
+./install.sh
+
+<hr/>
+Manually : 
+
+* Download latest version of manager hosted on <a href='https://bintray.com/jslsolucoes/nginx-admin/com.jslsolucoes.nginx.admin/'>bintray</a> 
+* Install nginx (required)
 * Install jdk8 (required)
-* Run command java -jar ****.jar 
-* Access ip:3000 to access manager
+* Run command java -jar nginx-admin-standalone-{version}-swarm.jar -dbuser xxxx -dbpassword xxxx
+* Access localhost:3000 to access manager
+* Enjoy
 
 <h1>For premium support please contact : jonatan@jslsolucoes.com</h2>
 

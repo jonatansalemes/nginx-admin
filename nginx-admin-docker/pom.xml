@@ -16,9 +16,9 @@
 				<configuration>
 					<filesets>
 						<fileset>
-							<directory>${project.build.resources[0].directory}/nginx/bin</directory>
+							<directory>${project.build.resources[0].directory}/nginx/script</directory>
 							<includes>
-								<include>*.jar</include>
+								<include>**/*</include>
 							</includes>
 						</fileset>
 					</filesets>
@@ -33,9 +33,9 @@
 						<phase>prepare-package</phase>
 						<configuration>
 							<tasks>
-								<copy 
-									file="${project.parent.basedir}/${project.parent.modules[1]}/target/nginx-admin-standalone-${project.version}-swarm.jar"
-									tofile="${project.build.resources[0].directory}/nginx/bin/nginx-admin-standalone-swarm.jar" />
+								<copy todir="${project.build.resources[0].directory}/nginx/scripts">
+								    <fileset dir="${project.parent.basedir}/${project.parent.modules[3]}/install"/>
+								  </copy>
 							</tasks>
 						</configuration>
 						<goals>
