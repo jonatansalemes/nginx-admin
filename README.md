@@ -44,7 +44,8 @@ Manual installation:
 * Download latest version of manager hosted on <a href='https://bintray.com/jslsolucoes/nginx-admin/com.jslsolucoes.nginx.admin/'>bintray</a> 
 * Install nginx (required)
 * Install jdk8 (required)
-* Run command java -jar nginx-admin-standalone-{version}-swarm.jar -dbuser xxxx -dbpassword xxxx
+* Run command passing as database user and password : java -jar nginx-admin-standalone-{version}-swarm.jar -dbuser xxxx -dbpassword xxxx
+* h2 database is located under ~/nginx-admin/database (it`s important keep backup of this folder)
 * Access localhost:3000 to access manager
 * Enjoy
 
