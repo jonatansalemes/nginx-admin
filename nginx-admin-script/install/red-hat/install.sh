@@ -9,7 +9,7 @@ yum -y update
 if ! rpm -q --quiet wget ; then 
 	echo "installing wget ..."
 	yum -y install wget
-fi
+fi 
 if ! rpm -q --quiet nginx ; then 
   echo "installing nginx ..."
   printf '[nginx]\nname=nginx repo\nbaseurl=http://nginx.org/packages/centos/$releasever/$basearch/\ngpgcheck=0\nenabled=1' > /etc/yum.repos.d/nginx.repo
