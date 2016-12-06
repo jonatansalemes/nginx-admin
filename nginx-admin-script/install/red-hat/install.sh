@@ -1,10 +1,4 @@
 #!/bin/bash 
-echo -n "Database user : "
-read dbuser
- 
-echo -n "Database password : "
-read -s dbpassword
-
 yum -y update
 if ! rpm -q --quiet wget ; then 
 	echo "installing wget ..."
@@ -21,12 +15,17 @@ if ! rpm -q --quiet java-1.8.0-openjdk ; then
 fi
 mkdir -p /usr/share/softwares
 
-if [! -f "/usr/share/softwares/nginx-admin-standalone-1.0.0-swarm.jar" ] ; then 
+if [! -e "/usr/share/softwares/nginx-admin-standalone-1.0.0-swarm.jar" ] ; then 
 	wget https://bintray.com/jslsolucoes/nginx-admin/download_file?file_path=nginx-admin-standalone-1.0.0-swarm.jar -O /usr/share/softwares/nginx-admin-standalone-1.0.0-swarm.jar
 fi
 
-if [! -f "/etc/init.d/nginx-admin" ] ; then 
+if [! -e "/etc/init.d/nginx-admin" ] ; then 
 	wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/develop/nginx-admin-script/install/red-hat/nginx-admin-init-redhat.sh -O /etc/init.d/nginx-admin
+	echo -n "Database user : "
+	read dbuser
+ 
+	echo -n "Database password : "
+	read -s dbpassword
 	sed -i "s/dbuser \(\w*\)/dbuser $dbuser/g" /etc/init.d/nginx-admin
 	sed -i "s/dbpassword \(\w*\)/dbpassword $dbpassword/g" /etc/init.d/nginx-admin
 	chmod +x /etc/init.d/nginx-admin
