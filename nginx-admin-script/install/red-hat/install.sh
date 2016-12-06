@@ -15,11 +15,11 @@ if ! rpm -q --quiet java-1.8.0-openjdk ; then
 fi
 mkdir -p /usr/share/softwares
 
-if [! -e "/usr/share/softwares/nginx-admin-standalone-1.0.0-swarm.jar" ] ; then 
+if [ ! -e "/usr/share/softwares/nginx-admin-standalone-1.0.0-swarm.jar" ] ; then 
 	wget https://bintray.com/jslsolucoes/nginx-admin/download_file?file_path=nginx-admin-standalone-1.0.0-swarm.jar -O /usr/share/softwares/nginx-admin-standalone-1.0.0-swarm.jar
 fi
 
-if [! -e "/etc/init.d/nginx-admin" ] ; then 
+if [ ! -e "/etc/init.d/nginx-admin" ] ; then 
 	wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/develop/nginx-admin-script/install/red-hat/nginx-admin-init-redhat.sh -O /etc/init.d/nginx-admin
 	echo -n "Database user : "
 	read dbuser
