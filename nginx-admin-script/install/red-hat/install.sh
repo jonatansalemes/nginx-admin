@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash 
 echo -n "Database user : "
 read dbuser
 
