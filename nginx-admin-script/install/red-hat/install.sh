@@ -1,7 +1,7 @@
 #!/bin/bash 
 echo -n "Database user : "
 read dbuser
-
+ 
 echo -n "Database password : "
 read -s dbpassword
 
@@ -22,8 +22,8 @@ fi
 mkdir -p /usr/share/softwares
 wget https://bintray.com/jslsolucoes/nginx-admin/download_file?file_path=nginx-admin-standalone-1.0.0-swarm.jar -O /usr/share/softwares/nginx-admin-standalone-1.0.0-swarm.jar
 wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/develop/nginx-admin-script/install/red-hat/nginx-admin-init-redhat.sh -O /etc/init.d/nginx-admin
-sed -i "s/dbuser \(\w*\) /dbpassword $dbuser /g" /etc/init.d/nginx-admin
-sed -i "s/dbpassword \(\w*\) /dbpassword $dbpassword /g" /etc/init.d/nginx-admin
+sed -i "s/dbuser \(\w*\)/dbpassword $dbuser/g" /etc/init.d/nginx-admin
+sed -i "s/dbpassword \(\w*\)/dbpassword $dbpassword/g" /etc/init.d/nginx-admin
 chmod +x /etc/init.d/nginx-admin
 chown root:root /etc/init.d/nginx-admin
 update-rc.d nginx-admin defaults
