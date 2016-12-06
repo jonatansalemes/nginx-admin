@@ -1,5 +1,9 @@
 #!/bin/bash
 yum -y update
+if ! rpm -q --quiet dos2unix ; then 
+	echo "installing dos2unix ..."
+	yum -y install dos2unix
+fi
 if ! rpm -q --quiet wget ; then 
 	echo "installing wget ..."
 	yum -y install wget
@@ -16,6 +20,7 @@ fi
 mkdir -p /usr/share/softwares
 wget https://bintray.com/jslsolucoes/nginx-admin/download_file?file_path=nginx-admin-standalone-1.0.0-swarm.jar -O /usr/share/softwares/nginx-admin-standalone-1.0.0-swarm.jar
 wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/develop/nginx-admin-script/install/red-hat/nginx-admin-init-redhat.sh -O /etc/init.d/nginx-admin
+dos2unix /etc/init.d/nginx-admin
 chmod +x /etc/init.d/nginx-admin
 chown root:root /etc/init.d/nginx-admin
 update-rc.d nginx-admin defaults
