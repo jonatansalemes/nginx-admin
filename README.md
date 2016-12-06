@@ -29,14 +29,17 @@ Some features :
 <hr/>
 Automatic installation :
 
-Red-hat distribution you can download file : 
-
-wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/develop/nginx-admin-script/install/red-hat/install.sh
-chmod +x install.sh
-./install.sh
+Red-hat distribution you follow this step as root user : 
+<pre>
+	<code>
+		wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/develop/nginx-admin-script/install/red-hat/install.sh
+		chmod +x install.sh
+		./install.sh 
+	</code>
+</pre>
 
 <hr/>
-Manually : 
+Manual installation: 
 
 * Download latest version of manager hosted on <a href='https://bintray.com/jslsolucoes/nginx-admin/com.jslsolucoes.nginx.admin/'>bintray</a> 
 * Install nginx (required)
