@@ -29,7 +29,7 @@ if [ ! -e "/etc/init.d/nginx-admin" ] ; then
 	echo -n "Database password : "
 	read -s dbpassword
 	
-	wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/develop/nginx-admin-script/install/red-hat/nginx-admin-init-redhat.sh -O /etc/init.d/nginx-admin
+	wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/master/nginx-admin-script/install/red-hat/nginx-admin-init-redhat.sh -O /etc/init.d/nginx-admin
 	sed -i "s/dbuser \(\w*\)/dbuser $dbuser/g" /etc/init.d/nginx-admin
 	sed -i "s/dbpassword \(\w*\)/dbpassword $dbpassword/g" /etc/init.d/nginx-admin
 	chmod +x /etc/init.d/nginx-admin
