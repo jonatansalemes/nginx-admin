@@ -6,7 +6,7 @@
 	version="2.0">
 	<persistence-unit name="default">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
-		<non-jta-data-source>java:jboss/datasources/AdminDS</non-jta-data-source>
+		<non-jta-data-source>java:jboss/datasources/nginx-admin</non-jta-data-source>
 		<class>com.jslsolucoes.nginx.admin.model.User</class>
 		<class>com.jslsolucoes.nginx.admin.model.Configuration</class>
 		<class>com.jslsolucoes.nginx.admin.model.Smtp</class>

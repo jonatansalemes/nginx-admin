@@ -24,22 +24,20 @@ public class Main {
 		Launcher launcher = launchMode.launcher();
 		
 		if (!launcher.getQuit()) {
-			args = new String []{"-Dswarm.http.port="+launcher.getPort(),
-					"-Dswarm.bind.address="+launcher.getBind()};
+			args = new String []{"-Dswarm.http.port="+launcher.getPort()};
 			
 			Swarm swarm = new Swarm(args);
-			swarm.fraction(new DatasourcesFraction().dataSource("AdminDS", (ds) -> {
+			swarm.fraction(new DatasourcesFraction().dataSource("NginxAdminDataSource", (ds) -> {
 				ds.driverName("h2");
-				ds.connectionUrl("jdbc:h2:~/nginx-admin/database;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
-				ds.userName(launcher.getDataSource().getUserName());
-				ds.password(launcher.getDataSource().getPassword());
-				ds.jndiName("java:jboss/datasources/AdminDS");
+				ds.connectionUrl("jdbc:h2:/opt/nginx-admin/database/nginx-admin;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
+				ds.userName("root");
+				ds.jndiName("java:jboss/datasources/nginx-admin");
 			}));
 			swarm.fraction(new LoggingFraction()
 					.rootLogger(Level.ERROR));
 			swarm.start();
 
-			InputStream war = Main.class.getResourceAsStream("/nginx-admin-ui.war");
+			InputStream war = Main.class.getResourceAsStream("/nginx-admin-ui-1.0.0.war");
 			File file = File.createTempFile(UUID.randomUUID().toString(), ".war");
 			FileUtils.copyInputStreamToFile(war, file);
 			file.deleteOnExit();

@@ -6,4 +6,44 @@
     <version>1.0.0</version>
   </parent>
   <artifactId>nginx-admin-script</artifactId>
+  
+  
+  
+  <build>
+  	<plugins>
+  		<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>generate-resources</phase>
+						<configuration>
+							<tasks>
+								<replaceregexp
+									file="${project.basedir}/install/red-hat/install.sh"
+									match="nginx-admin-standalone-(.*?)-swarm.jar" replace="nginx-admin-standalone-${project.version}-swarm.jar" />
+								<replaceregexp
+									file="${project.basedir}/install/red-hat/service.sh"
+									match="nginx-admin-standalone-(.*?)-swarm.jar" replace="nginx-admin-standalone-${project.version}-swarm.jar" />
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.ant</groupId>
+						<artifactId>ant-nodeps</artifactId>
+						<version>1.8.1</version>
+					</dependency>
+					<dependency>
+						<groupId>org.apache.ant</groupId>
+						<artifactId>ant-apache-regexp</artifactId>
+						<version>1.9.7</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+  	</plugins>
+  </build>
 </project>
