@@ -54,26 +54,26 @@ if [ -z "$JAVA" ]; then
 	fi
 fi
 
-# Location of wildfly
+# Location of nginx-admin
 if [ -z "$NGINX_ADMIN_HOME" ]; then
-	NGINX_ADMIN_HOME="/opt/wildfly"
+	NGINX_ADMIN_HOME="/opt/nginx-admin"
 fi
 export NGINX_ADMIN_HOME
 
-# Check if wildfly is installed
+# Check if nginx-admin is installed
 if [ ! -f "$NGINX_ADMIN_HOME/jboss-modules.jar" ]; then
 	log_failure_msg "$NAME is not installed in \"$NGINX_ADMIN_HOME\""
 	exit 1
 fi
 
-# Run as wildfly user
+# Run as nginx-admin user
 # Example of user creation for Debian based:
-# adduser --system --group --no-create-home --home $NGINX_ADMIN_HOME --disabled-login wildfly
+# adduser --system --group --no-create-home --home $NGINX_ADMIN_HOME --disabled-login nginx-admin
 if [ -z "$NGINX_ADMIN_USER" ]; then
-	NGINX_ADMIN_USER=wildfly
+	NGINX_ADMIN_USER=nginx-admin
 fi
 
-# Check wildfly user
+# Check nginx-admin user
 id $NGINX_ADMIN_USER > /dev/null 2>&1
 if [ $? -ne 0 -o -z "$NGINX_ADMIN_USER" ]; then
 	log_failure_msg "User \"$NGINX_ADMIN_USER\" does not exist..."
@@ -86,7 +86,7 @@ if [ ! $(stat -L -c "%U" "$NGINX_ADMIN_HOME") = $NGINX_ADMIN_USER ]; then
 	exit 1
 fi
 
-# Startup mode of wildfly
+# Startup mode of nginx-admin
 if [ -z "$NGINX_ADMIN_MODE" ]; then
 	NGINX_ADMIN_MODE=standalone
 fi
@@ -142,11 +142,11 @@ export NGINX_ADMIN_CONSOLE_LOG
 NGINX_ADMIN_PIDFILE="/var/run/$NAME/$NAME.pid"
 export NGINX_ADMIN_PIDFILE
 
-# Launch wildfly in background
+# Launch nginx-admin in background
 LAUNCH_NGINX_ADMIN_IN_BACKGROUND=1
 export LAUNCH_NGINX_ADMIN_IN_BACKGROUND
 
-# Helper function to check status of wildfly service
+# Helper function to check status of nginx-admin service
 check_status() {
 	pidofproc -p "$NGINX_ADMIN_PIDFILE" "$JAVA" >/dev/null 2>&1
 }
