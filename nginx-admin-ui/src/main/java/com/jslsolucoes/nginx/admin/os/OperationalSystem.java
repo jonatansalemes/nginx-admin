@@ -57,6 +57,8 @@ public class OperationalSystem {
 		if (!StringUtils.isEmpty(distribution)) {
 			if (distribution.contains("centos")) {
 				return OperationalSystemDistribution.CENTOS;
+			} else if (distribution.contains("ubuntu")) {
+				return OperationalSystemDistribution.UBUNTU;
 			} else {
 				return OperationalSystemDistribution.NOT_IMPLEMENTED;
 			}

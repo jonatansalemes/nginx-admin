@@ -1,24 +1,30 @@
 #!/bin/bash 
+apt-get -y update
+
 function package_exists(){
-    return rpm -q --quiet $1
+    dpkg -l $1 > /dev/null 2>&1
+    INSTALLED=$?
+    if [ $INSTALLED == '0' ]; then
+       return $true
+    else
+       return $false
+    fi
 }
 
-yum -y update
-
-if ! package_exists wget ; then 
+if ! package_exists wget ; then
 	echo "installing wget ..."
-	yum -y install wget
+	apt-get -y install wget
 fi 
 
 if ! package_exists nginx ; then 
   echo "installing nginx ..."
-  printf '[nginx]\nname=nginx repo\nbaseurl=http://nginx.org/packages/centos/$releasever/$basearch/\ngpgcheck=0\nenabled=1' > /etc/yum.repos.d/nginx.repo
-  yum -y install nginx
+  printf 'deb http://nginx.org/packages/ubuntu/ xenial nginx\ndeb-src http://nginx.org/packages/ubuntu/ xenial nginx' >> /etc/apt/sources.list
+  apt-get -y install nginx
 fi
 
-if ! package_exists java-1.8.0-openjdk ; then
+if ! package_exists openjdk-8-jdk ; then
   echo "installing java 8 ..."
-  yum -y install java-1.8.0-openjdk-devel.x86_64
+  apt-get -y install openjdk-8-jdk
 fi
 
 mkdir -p /usr/share/softwares
@@ -33,10 +39,11 @@ if [ ! -e "/etc/init.d/nginx-admin" ] ; then
 	echo -n "Database password : "
 	read -s dbpassword
 	
-	wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/develop/nginx-admin-script/install/red-hat/nginx-admin-init-redhat.sh -O /etc/init.d/nginx-admin
+	wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/develop/nginx-admin-script/install/debian/nginx-admin-init-debian.sh -O /etc/init.d/nginx-admin
 	sed -i "s/dbuser \(\w*\)/dbuser $dbuser/g" /etc/init.d/nginx-admin
 	sed -i "s/dbpassword \(\w*\)/dbpassword $dbpassword/g" /etc/init.d/nginx-admin
 	chmod +x /etc/init.d/nginx-admin
 	chown root:root /etc/init.d/nginx-admin
-	chkconfig --level 345 nginx-admin on
+	update-rc.d nginx-admin defaults
+	update-rc.d nginx-admin enable
 fi
