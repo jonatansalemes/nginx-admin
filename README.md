@@ -15,6 +15,7 @@ Tested at moment in Operational system :
 <ul>
 	<li>Windows</li>
 	<li>Linux CentOs</li>
+	<li>Linux Ubuntu</li>
 </ul>
 
 Some features :
@@ -44,9 +45,9 @@ Manual installation:
 * Download latest version of manager hosted on <a href='https://bintray.com/jslsolucoes/nginx-admin/com.jslsolucoes.nginx.admin/'>bintray</a> 
 * Install nginx (required)
 * Install jdk8 (required)
-* Run command passing as database user and password : java -jar nginx-admin-standalone-{version}-swarm.jar -dbuser xxxx -dbpassword xxxx
-* h2 database is located under ~/nginx-admin/database (it`s important keep backup of this folder)
-* Access localhost:3000 to access manager
+* Run command passing as database user and password : java -jar nginx-admin-standalone-{version}-swarm.jar -p port
+* h2 database is located under ../database/nginx of directory you are running (it`s important keep backup of this folder)
+* Access localhost:port to access manager
 * Enjoy
 
 <h1>For premium support please contact : jonatan@jslsolucoes.com</h2>
