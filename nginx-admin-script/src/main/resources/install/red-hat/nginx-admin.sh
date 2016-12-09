@@ -60,7 +60,7 @@ try_launch() {
 	mkdir -p $(dirname $NGINX_ADMIN_PIDFILE)
 	chown $NGINX_ADMIN_USER $(dirname $NGINX_ADMIN_PIDFILE) || true
 
-	su -s /bin/bash $NGINX_ADMIN_USER -c "java -jar $NGINX_ADMIN_BIN/nginx-admin-standalone-$NGINX_ADMIN_VERSION-swarm.jar -p $NGINX_ADMIN_PORT" >> $NGINX_ADMIN_CONSOLE_LOG 2>&1 & echo $! > $NGINX_ADMIN_PIDFILE
+	su -s /bin/bash $NGINX_ADMIN_USER -c "java -jar $NGINX_ADMIN_BIN/nginx-admin-standalone-$NGINX_ADMIN_VERSION-swarm.jar -p $NGINX_ADMIN_PORT -h $NGINX_ADMIN_HOME" >> $NGINX_ADMIN_CONSOLE_LOG 2>&1 & echo $! > $NGINX_ADMIN_PIDFILE
 	
 	if ! is_launched ; then
 		printf "$NGINX_ADMIN_NAME not started please see server log on $NGINX_ADMIN_CONSOLE_LOG for details and report issue on https://github.com/jslsolucoes/nginx-admin please"

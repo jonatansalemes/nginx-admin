@@ -29,7 +29,7 @@ public class Main {
 			Swarm swarm = new Swarm(args);
 			swarm.fraction(new DatasourcesFraction().dataSource("NginxAdminDataSource", (ds) -> {
 				ds.driverName("h2");
-				ds.connectionUrl("jdbc:h2:../database/nginx-admin;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
+				ds.connectionUrl("jdbc:h2:"+launcher.getHome()+"/database/nginx-admin;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
 				ds.userName("root");
 				ds.jndiName("java:jboss/datasources/nginx-admin");
 			}));

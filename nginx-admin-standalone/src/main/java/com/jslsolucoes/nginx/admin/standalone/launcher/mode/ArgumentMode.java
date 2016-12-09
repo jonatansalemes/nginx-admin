@@ -15,9 +15,6 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.standalone.launcher.mode;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -40,6 +37,7 @@ public class ArgumentMode implements LauncherMode {
 		Options options = new Options();
 	    options.addOption(new Option("help", false, "Help"));
 	    options.addOption(new Option("p", true, "Port to manager listening (default 3000)"));
+	    options.addOption(new Option("h", true, "Home folder (default user home)"));
 		
 		CommandLineParser commandLineParser = new DefaultParser();
 		CommandLine commandLine = commandLineParser.parse(options, args);
@@ -52,20 +50,15 @@ public class ArgumentMode implements LauncherMode {
 			helpFormatter.printHelp("java -jar nginx-admin-standalone-1.0.0-swarm.jar", options);
 			launch.setQuit(true);
 		}
-				
-		if(!launch.getQuit()){
-			List<String> excludes = Arrays.asList(new String[]{"p"});
-			for(Option option : options.getOptions()){
-				if(option.hasArg() 
-						&& !excludes.contains(option.getOpt())
-						&& !commandLine.hasOption(option.getOpt())){
-					System.out.println("-"+ option.getOpt() + " argument is required to run");
-					launch.setQuit(true);
-				}
-			}
-		}
 		
 		if(!launch.getQuit()){
+			
+			if(commandLine.hasOption("h")){
+				launch.setHome(commandLine.getOptionValue("h"));
+			} else {
+				launch.setHome("~");
+			}
+			
 			if(commandLine.hasOption("p")){
 				launch.setPort(Integer.valueOf(commandLine.getOptionValue("p")));
 			} else {
