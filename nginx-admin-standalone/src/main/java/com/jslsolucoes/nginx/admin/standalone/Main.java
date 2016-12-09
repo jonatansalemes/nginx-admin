@@ -29,7 +29,7 @@ public class Main {
 			Swarm swarm = new Swarm(args);
 			swarm.fraction(new DatasourcesFraction().dataSource("NginxAdminDataSource", (ds) -> {
 				ds.driverName("h2");
-				ds.connectionUrl("jdbc:h2:/opt/nginx-admin/database/nginx-admin;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
+				ds.connectionUrl("jdbc:h2:../database/nginx-admin;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
 				ds.userName("root");
 				ds.jndiName("java:jboss/datasources/nginx-admin");
 			}));
@@ -37,7 +37,7 @@ public class Main {
 					.rootLogger(Level.ERROR));
 			swarm.start();
 
-			InputStream war = Main.class.getResourceAsStream("/nginx-admin-ui-1.0.0.war");
+			InputStream war = Main.class.getResourceAsStream("/nginx-admin-ui-1.0.1.war");
 			File file = File.createTempFile(UUID.randomUUID().toString(), ".war");
 			FileUtils.copyInputStreamToFile(war, file);
 			file.deleteOnExit();

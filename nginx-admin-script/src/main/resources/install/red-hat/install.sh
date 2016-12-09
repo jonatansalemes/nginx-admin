@@ -15,11 +15,11 @@ function file_exists(){
     fi
 }
 
-NGINX_ADMIN_BASE=/opt
-NGINX_ADMIN_HOME=$NGINX_ADMIN_BASE/nginx-admin
+NGINX_ADMIN_HOME=/opt/nginx-admin
 NGINX_ADMIN_CONF=$NGINX_ADMIN_HOME/conf
 NGINX_ADMIN_BIN=$NGINX_ADMIN_HOME/bin
 NGINX_ADMIN_LOG=$NGINX_ADMIN_HOME/log
+NGINX_ADMIN_VERSION=1.0.1
 
 yum -y update
 
@@ -48,17 +48,22 @@ mkdir -p $NGINX_ADMIN_CONF
 mkdir -p $NGINX_ADMIN_BIN
 mkdir -p $NGINX_ADMIN_LOG
 
-printf 'NGINX_ADMIN_HOME=%s\nNGINX_ADMIN_BIN=%s\nNGINX_ADMIN_LOG=%s\n' $NGINX_ADMIN_HOME $NGINX_ADMIN_BIN $NGINX_ADMIN_LOG  > $NGINX_ADMIN_CONF/nginx-admin.conf
+printf 'NGINX_ADMIN_HOME=%s\nNGINX_ADMIN_BIN=%s\nNGINX_ADMIN_LOG=%s\nNGINX_ADMIN_VERSION=%s\nNGINX_ADMIN_USER=nginx-admin\nNGINX_ADMIN_PORT=3000\n' $NGINX_ADMIN_HOME $NGINX_ADMIN_BIN $NGINX_ADMIN_LOG $NGINX_ADMIN_VERSION  > $NGINX_ADMIN_CONF/nginx-admin.conf
 
-if ! file_exists "$NGINX_ADMIN_BIN/nginx-admin-standalone-1.0.0-swarm.jar" ; then 
-	wget https://bintray.com/jslsolucoes/nginx-admin/download_file?file_path=nginx-admin-standalone-1.0.0-swarm.jar -O $NGINX_ADMIN_BIN/nginx-admin-standalone-1.0.0-swarm.jar
+if ! file_exists "$NGINX_ADMIN_BIN/nginx-admin-standalone-$NGINX_ADMIN_VERSION-swarm.jar" ; then 
+	wget https://bintray.com/jslsolucoes/nginx-admin/download_file?file_path=nginx-admin-standalone-$NGINX_ADMIN_VERSION-swarm.jar -O $NGINX_ADMIN_BIN/nginx-admin-standalone-$NGINX_ADMIN_VERSION-swarm.jar
 fi
 
+useradd -s /sbin/nologin nginx-admin
+chown -R nginx-admin:nginx-admin $NGINX_ADMIN_HOME
+
 if ! file_exists "/etc/init.d/nginx-admin" ; then 
-	wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/develop/nginx-admin-script/install/red-hat/service.sh -O /etc/init.d/nginx-admin
+	wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/develop/nginx-admin-script/install/red-hat/nginx-admin.sh -O /etc/init.d/nginx-admin
 	chmod +x /etc/init.d/nginx-admin
 	chown root:root /etc/init.d/nginx-admin
 	chkconfig --level 345 nginx-admin on
 fi
 
-echo "Nginx admin was successfully installed on $NGINX_ADMIN_HOME. To start just type service nginx-admin start"
+service nginx-admin start
+
+echo "Nginx admin was successfully installed on $NGINX_ADMIN_HOME."

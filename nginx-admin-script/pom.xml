@@ -3,11 +3,9 @@
   <parent>
     <groupId>com.jslsolucoes</groupId>
     <artifactId>nginx-admin</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
   </parent>
   <artifactId>nginx-admin-script</artifactId>
-  
-  
   
   <build>
   	<plugins>
@@ -19,11 +17,8 @@
 						<configuration>
 							<tasks>
 								<replaceregexp
-									file="${project.basedir}/install/red-hat/install.sh"
-									match="nginx-admin-standalone-(.*?)-swarm.jar" replace="nginx-admin-standalone-${project.version}-swarm.jar" />
-								<replaceregexp
-									file="${project.basedir}/install/red-hat/service.sh"
-									match="nginx-admin-standalone-(.*?)-swarm.jar" replace="nginx-admin-standalone-${project.version}-swarm.jar" />
+									file="${project.build.resources[0].directory}/install/red-hat/install.sh"
+									match="NGINX_ADMIN_VERSION=(.*)" replace="NGINX_ADMIN_VERSION=${project.version}" />
 							</tasks>
 						</configuration>
 						<goals>
