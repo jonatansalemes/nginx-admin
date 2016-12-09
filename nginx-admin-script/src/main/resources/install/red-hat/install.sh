@@ -58,7 +58,7 @@ useradd -s /sbin/nologin nginx-admin
 chown -R nginx-admin:nginx-admin $NGINX_ADMIN_HOME
 
 if ! file_exists "/etc/init.d/nginx-admin" ; then 
-	wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/develop/nginx-admin-script/install/red-hat/nginx-admin.sh -O /etc/init.d/nginx-admin
+	wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/develop/nginx-admin-script/src/main/resources/install/red-hat/nginx-admin.sh -O /etc/init.d/nginx-admin
 	chmod +x /etc/init.d/nginx-admin
 	chown root:root /etc/init.d/nginx-admin
 	chkconfig --level 345 nginx-admin on

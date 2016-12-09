@@ -33,7 +33,7 @@ Automatic installation :
 Red-hat distribution you follow this step as root user : 
 <pre>
 	<code>
-wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/develop/nginx-admin-script/install/red-hat/install.sh
+wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/develop/nginx-admin-script/src/main/resources/install/red-hat/install.sh
 chmod +x install.sh
 ./install.sh 
 	</code>
