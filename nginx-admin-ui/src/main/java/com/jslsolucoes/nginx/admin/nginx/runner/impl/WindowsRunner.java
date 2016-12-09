@@ -34,13 +34,13 @@ public class WindowsRunner implements Runner {
 	@Override
 	public RuntimeResult start() {
 		RuntimeUtils.command("cmd.exe /c " + executable() + " -c " + nginx.conf().getAbsolutePath(),
-				nginx.parent(), 1);
+				nginx.binFolder(), 1);
 		return status();
 	}
 
 	@Override
 	public RuntimeResult stop() {
-		RuntimeUtils.command("cmd.exe /c " + executable() + " -s quit", nginx.parent());
+		RuntimeUtils.command("cmd.exe /c " + executable() + " -s quit", nginx.binFolder());
 		RuntimeUtils.command("taskkill /f /im " + executable());
 		return status();
 	}
@@ -74,7 +74,7 @@ public class WindowsRunner implements Runner {
 	@Override
 	public RuntimeResult testConfig() {
 		RuntimeResult runtimeResult = RuntimeUtils.command("cmd.exe /c " + executable() + " -t -c " + nginx.conf().getAbsolutePath(),
-				nginx.parent());
+				nginx.binFolder());
 		if(runtimeResult.getRuntimeResultType().equals(RuntimeResultType.SUCCESS)){
 			if(runtimeResult.getOutput().contains("syntax is ok")){
 				return new RuntimeResult(RuntimeResultType.SUCCESS, Messages.getString("syntax.ok"));
@@ -92,12 +92,12 @@ public class WindowsRunner implements Runner {
 	@Override
 	public RuntimeResult version() {
 		return RuntimeUtils.command("cmd.exe /c " + executable() + " -v ",
-				nginx.parent());
+				nginx.binFolder());
 	}
 
 	@Override
 	public RuntimeResult reload() {
-		return RuntimeUtils.command("cmd.exe /c " + executable() + " -s reload -c " + nginx.conf().getAbsolutePath(), nginx.parent());
+		return RuntimeUtils.command("cmd.exe /c " + executable() + " -s reload -c " + nginx.conf().getAbsolutePath(), nginx.binFolder());
 	}
 
 }

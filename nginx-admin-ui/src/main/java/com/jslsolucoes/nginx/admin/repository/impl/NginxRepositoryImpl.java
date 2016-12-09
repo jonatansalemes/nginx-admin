@@ -63,8 +63,14 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 			errors.add(Messages.getString("nginx.invalid.bin.file", nginx.getBin()));
 		}
 
-		if (!new File(nginx.getHome()).exists()) {
-			errors.add(Messages.getString("nginx.invalid.home.folder", nginx.getBin()));
+		
+		File settings = new File(nginx.getSettings());
+		if(!settings.exists()){
+			try {
+				FileUtils.forceMkdir(settings);
+			} catch(Exception exception){
+				errors.add(Messages.getString("nginx.invalid.home.permission", nginx.getSettings()));
+			}
 		}
 
 		return errors;
@@ -73,7 +79,7 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 	@Override
 	public OperationResult saveOrUpdate(Nginx nginx) {
 		try {
-			nginx.setHome(normalize(nginx.getHome()));
+			nginx.setSettings(normalize(nginx.getSettings()));
 			nginx.setBin(normalize(nginx.getBin()));
 			configure(nginx);
 			return super.saveOrUpdate(nginx);
@@ -87,10 +93,8 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 	}
 
 	private void configure(Nginx nginx) throws Exception {
-		File settings = new File(nginx.getHome(), "settings");
-		if (!settings.exists()) {
-			copy(settings);
-		}
+		File settings = new File(nginx.getSettings());
+		copy(settings);
 		new TemplateProcessor().withTemplate("nginx.tpl").withData("nginx", nginx)
 				.toLocation(new File(settings, "nginx.conf")).process();
 	}

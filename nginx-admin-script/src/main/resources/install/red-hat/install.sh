@@ -23,10 +23,22 @@ NGINX_ADMIN_VERSION=1.0.1
 
 yum -y update
 
+if ! package_exists psmisc ; then 
+	echo "installing psmisc ..."
+	yum -y install psmisc
+fi
+
+
 if ! package_exists initscripts ; then 
 	echo "installing initscripts ..."
 	yum -y install initscripts
 fi
+
+if ! package_exists sudo ; then 
+	echo "installing sudo ..."
+	yum -y install sudo
+	chmod 640 /etc/sudoers
+fi 
 
 if ! package_exists wget ; then 
 	echo "installing wget ..."
@@ -56,6 +68,8 @@ fi
 
 useradd -s /sbin/nologin nginx-admin
 chown -R nginx-admin:nginx-admin $NGINX_ADMIN_HOME
+printf 'nginx-admin ALL = NOPASSWD: /sbin/nginx\n' >> /etc/sudoers
+printf 'Defaults:nginx-admin !requiretty\n' >> /etc/sudoers
 
 if ! file_exists "/etc/init.d/nginx-admin" ; then 
 	wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/develop/nginx-admin-script/src/main/resources/install/red-hat/nginx-admin.sh -O /etc/init.d/nginx-admin

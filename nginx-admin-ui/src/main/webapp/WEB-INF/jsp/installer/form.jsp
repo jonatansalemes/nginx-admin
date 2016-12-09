@@ -2,6 +2,21 @@
 <html:view>
 
 	<html:container>
+	
+		<html:block>
+			<html:div>
+				<html:img url="/image/logo.png" width="150" height="150"
+					shape="circle" alt="logo" cssClass="center-block"></html:img>
+			</html:div>
+			<html:div cssClass="text-center">
+				<html:h1>
+					<html:small>
+						<fmt:message key="title"></fmt:message> - v.<html:span id="par_version"></html:span>
+					</html:small>
+				</html:h1>
+			</html:div>
+		</html:block>
+	
 		<html:block>
 			<html:alert state="info" label="{install.welcome}"></html:alert>
 		</html:block>
@@ -42,11 +57,13 @@
 						<html:panelBody>
 							<html:formGroup label="{nginx.bin}" required="true">
 								<html:input name="nginxBin"
-									placeholder="{nginx.bin.placeholder}" required="true"></html:input>
+									placeholder="{nginx.bin.placeholder}" required="true"
+									 value="/usr/sbin/nginx"></html:input>
 							</html:formGroup>
-							<html:formGroup label="{nginx.home}" required="true">
-								<html:input name="nginxHome"
-									placeholder="{nginx.home.placeholder}" required="true"></html:input>
+							<html:formGroup label="{nginx.settings}" required="true">
+								<html:input name="nginxSettings"
+									placeholder="{nginx.settings.placeholder}" required="true" 
+									 value="/opt/nginx-admin/settings"></html:input>
 							</html:formGroup>
 						</html:panelBody>
 					</html:panel>
@@ -115,5 +132,11 @@
 			$('.auth').val('').parent().hide();
 		}
 	</html:jsEvent>
+	
+	<ajax:function url="/version" name="version" executeOnDocumentLoad="true">
+		<ajax:onSuccess>
+			<ajax:target type="html" data="version" target="version"></ajax:target>
+		</ajax:onSuccess>
+	</ajax:function>
 
 </html:view>

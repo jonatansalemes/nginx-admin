@@ -43,21 +43,21 @@ public class InstallerController {
 
 	@Post
 	public void validateBeforeInstall(String login, String loginConfirm, String adminPassword,
-			String adminPasswordConfirm, String nginxBin, String nginxHome, String smtpHost,
+			String adminPasswordConfirm, String nginxBin, String nginxSettings, String smtpHost,
 			Integer smtpPort, Integer smtpAuthenticate, Integer smtpTls, String smtpFromAddress, String smtpUsername,
 			String smtpPassword) {
 		this.result.use(Results.json())
 				.from(HtmlUtil.convertToUnodernedList(installRepository.validateBeforeInstall(login, loginConfirm,
-						adminPassword, adminPasswordConfirm, nginxBin, nginxHome, smtpHost, smtpPort,
+						adminPassword, adminPasswordConfirm, nginxBin, nginxSettings, smtpHost, smtpPort,
 						smtpAuthenticate, smtpTls, smtpFromAddress, smtpUsername, smtpPassword)), "errors")
 				.serialize();
 	}
 
 	@Post
 	public void install(String login, String loginConfirm, String adminPassword, String adminPasswordConfirm,
-			String nginxBin, String nginxHome, String smtpHost, Integer smtpPort, Integer smtpAuthenticate,
+			String nginxBin, String nginxSettings, String smtpHost, Integer smtpPort, Integer smtpAuthenticate,
 			Integer smtpTls, String smtpFromAddress, String smtpUsername, String smtpPassword) {
-		installRepository.install(login, loginConfirm, adminPassword, adminPasswordConfirm, nginxBin, nginxHome,
+		installRepository.install(login, loginConfirm, adminPassword, adminPasswordConfirm, nginxBin, nginxSettings,
 				smtpHost, smtpPort, smtpAuthenticate, smtpTls, smtpFromAddress, smtpUsername, smtpPassword);
 		this.result.redirectTo(UserController.class).login();
 	}

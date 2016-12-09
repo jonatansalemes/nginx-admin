@@ -33,14 +33,14 @@ public class UbuntuRunner implements Runner {
 
 	@Override
 	public RuntimeResult start() {
-		RuntimeUtils.command(executable() + " -c " + nginx.conf().getAbsolutePath(),
-				nginx.parent(), 1);
+		RuntimeUtils.command("sudo " + executable() + " -c " + nginx.conf().getAbsolutePath(),
+				nginx.binFolder(), 1);
 		return status();
 	}
 
 	@Override
 	public RuntimeResult stop() {
-		RuntimeUtils.command(executable() + " -s quit", nginx.parent());
+		RuntimeUtils.command("sudo " + executable() + " -s quit", nginx.binFolder());
 		RuntimeUtils.command("killall -9 " + executable());
 		return status();
 	}
@@ -70,8 +70,8 @@ public class UbuntuRunner implements Runner {
 
 	@Override
 	public RuntimeResult testConfig() {
-		RuntimeResult runtimeResult = RuntimeUtils.command(executable() + " -t -c " + nginx.conf().getAbsolutePath(),
-				nginx.parent());
+		RuntimeResult runtimeResult = RuntimeUtils.command("sudo " + executable() + " -t -c " + nginx.conf().getAbsolutePath(),
+				nginx.binFolder());
 		if(runtimeResult.getRuntimeResultType().equals(RuntimeResultType.SUCCESS)){
 			if(runtimeResult.getOutput().contains("syntax is ok")){
 				return new RuntimeResult(RuntimeResultType.SUCCESS, Messages.getString("syntax.ok"));
@@ -88,13 +88,13 @@ public class UbuntuRunner implements Runner {
 
 	@Override
 	public RuntimeResult version() {
-		return RuntimeUtils.command(executable() + " -v ",
-				nginx.parent());
+		return RuntimeUtils.command("sudo " + executable() + " -v ",
+				nginx.binFolder());
 	}
 
 	@Override
 	public RuntimeResult reload() {
-		return RuntimeUtils.command(executable() + " -s reload -c " + nginx.conf().getAbsolutePath(), nginx.parent());
+		return RuntimeUtils.command("sudo " + executable() + " -s reload -c " + nginx.conf().getAbsolutePath(), nginx.binFolder());
 	}
 
 }
