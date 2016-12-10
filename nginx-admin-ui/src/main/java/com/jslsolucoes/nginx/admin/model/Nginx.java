@@ -75,6 +75,10 @@ public class Nginx implements Serializable {
 	public File conf(){
 		return new File(settings, "nginx.conf");
 	}
+	
+	public File pid(){
+		return new File(settings, "nginx.pid");
+	}
 
 	public File ssl() {
 		return new File(settings, "ssl");

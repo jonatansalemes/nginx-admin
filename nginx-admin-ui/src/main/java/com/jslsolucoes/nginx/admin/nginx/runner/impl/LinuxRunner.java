@@ -53,7 +53,7 @@ public class LinuxRunner implements Runner {
 
 	@Override
 	public RuntimeResult status() {
-		RuntimeResult runtimeResult = RuntimeUtils.command("pidof "+executable());
+		RuntimeResult runtimeResult = RuntimeUtils.command("sudo pgrep "+executable());
 		if(runtimeResult.getRuntimeResultType().equals(RuntimeResultType.SUCCESS)){
 			return new RuntimeResult(RuntimeResultType.SUCCESS, Messages.getString("running"));
 		} else {
