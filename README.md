@@ -11,11 +11,10 @@
 # nginx-admin
 Nginx admin is an open source multiplatform manager for nginx software to easy administration 
  
-Tested at moment in Operational system :
+Supported operational system :
 <ul>
 	<li>Windows</li>
-	<li>Linux CentOs</li>
-	<li>Linux Ubuntu</li>
+	<li>Linux</li>
 </ul>
 
 Some features :
@@ -45,9 +44,9 @@ Manual installation:
 * Download latest version of manager hosted on <a href='https://bintray.com/jslsolucoes/nginx-admin/com.jslsolucoes.nginx.admin/'>bintray</a> 
 * Install nginx (required)
 * Install jdk8 (required)
-* Run command passing as database user and password : java -jar nginx-admin-standalone-{version}-swarm.jar -p port
-* h2 database is located under ../database/nginx of directory you are running (it`s important keep backup of this folder)
-* Access localhost:port to access manager
+* Run manager with : java -jar nginx-admin-standalone-{version}-swarm.jar
+* h2 database is located under ~/database/nginx-admin (it`s important keep backup of this folder)
+* Access serverip:3000 to access manager
 * Enjoy
 
 <h1>For premium support please contact : jonatan@jslsolucoes.com</h2>
