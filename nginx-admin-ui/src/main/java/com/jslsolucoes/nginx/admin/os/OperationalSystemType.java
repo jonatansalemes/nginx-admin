@@ -15,15 +15,14 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.os;
 
-public enum OperationalSystemDistribution {
+public enum OperationalSystemType {
 	WINDOWS("Microsoft"),
-	CENTOS("Red Hat CentOs"),
-	NOT_IMPLEMENTED("Not implemented distro"), 
-	UBUNTU("Debian Ubuntu");
+	LINUX("Linux"),
+	NOT_IMPLEMENTED("Not implemented operational system");
 
 	private String name;
 
-	OperationalSystemDistribution(String name) {
+	OperationalSystemType(String name) {
 		this.name = name;
 
 	}

@@ -2,20 +2,20 @@ package com.jslsolucoes.nginx.admin.nginx.runner;
 
 import javax.enterprise.util.AnnotationLiteral;
 
-import com.jslsolucoes.nginx.admin.os.OperationalSystemDistribution;
+import com.jslsolucoes.nginx.admin.os.OperationalSystemType;
 
 @SuppressWarnings("serial")
 public class RunnerTypeLiteral extends AnnotationLiteral<RunnerType> implements RunnerType {
 
-	private OperationalSystemDistribution operationalSystemDistribution;
+	private OperationalSystemType operationalSystemType;
 
-	public RunnerTypeLiteral(OperationalSystemDistribution operationalSystemDistribution) {
-		this.operationalSystemDistribution = operationalSystemDistribution;
+	public RunnerTypeLiteral(OperationalSystemType operationalSystemType) {
+		this.operationalSystemType = operationalSystemType;
 	}
 
 	@Override
-	public OperationalSystemDistribution value() {
-		return operationalSystemDistribution;
+	public OperationalSystemType value() {
+		return operationalSystemType;
 	}
 
 }

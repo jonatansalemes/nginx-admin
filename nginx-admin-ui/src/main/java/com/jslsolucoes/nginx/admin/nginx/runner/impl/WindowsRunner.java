@@ -21,12 +21,12 @@ import com.jslsolucoes.nginx.admin.i18n.Messages;
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.nginx.runner.Runner;
 import com.jslsolucoes.nginx.admin.nginx.runner.RunnerType;
-import com.jslsolucoes.nginx.admin.os.OperationalSystemDistribution;
+import com.jslsolucoes.nginx.admin.os.OperationalSystemType;
 import com.jslsolucoes.nginx.admin.runtime.RuntimeResult;
 import com.jslsolucoes.nginx.admin.runtime.RuntimeResultType;
 import com.jslsolucoes.nginx.admin.runtime.RuntimeUtils;
 
-@RunnerType(OperationalSystemDistribution.WINDOWS)
+@RunnerType(OperationalSystemType.WINDOWS)
 public class WindowsRunner implements Runner {
 
 	private Nginx nginx;

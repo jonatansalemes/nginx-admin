@@ -19,18 +19,13 @@ public class OperationalSystemInfo {
 	private String name;
 	private String arch;
 	private String version;
-	private OperationalSystemDistribution operationalSystemDistribution;
+	private String distribution;
+	private OperationalSystemType operationalSystemType;
 
 	public OperationalSystemInfo(String name, String arch, String version) {
-		this(name, arch, version, OperationalSystemDistribution.NOT_IMPLEMENTED);
-	}
-
-	public OperationalSystemInfo(String name, String arch, String version,
-			OperationalSystemDistribution operationalSystemDistribution) {
 		this.name = name;
 		this.arch = arch;
 		this.version = version;
-		this.operationalSystemDistribution = operationalSystemDistribution;
 	}
 
 	public String getName() {
@@ -57,12 +52,22 @@ public class OperationalSystemInfo {
 		this.version = version;
 	}
 
-	public OperationalSystemDistribution getOperationalSystemDistribution() {
-		return operationalSystemDistribution;
+	public OperationalSystemType getOperationalSystemType() {
+		return operationalSystemType;
 	}
 
-	public void setOperationalSystemDistribution(OperationalSystemDistribution operationalSystemDistribution) {
-		this.operationalSystemDistribution = operationalSystemDistribution;
+	public void setOperationalSystemType(OperationalSystemType operationalSystemType) {
+		this.operationalSystemType = operationalSystemType;
 	}
+
+	public String getDistribution() {
+		return distribution;
+	}
+
+	public void setDistribution(String distribution) {
+		this.distribution = distribution;
+	}
+
+	
 
 }
