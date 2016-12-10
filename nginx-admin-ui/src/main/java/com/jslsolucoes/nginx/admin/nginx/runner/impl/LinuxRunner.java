@@ -34,13 +34,13 @@ public class LinuxRunner implements Runner {
 	@Override
 	public RuntimeResult start() {
 		RuntimeUtils.command("sudo " + executable() + " -c " + nginx.conf().getAbsolutePath(),
-				nginx.binFolder(), 1);
+				nginx.binFolder(), 3);
 		return status();
 	}
 
 	@Override
 	public RuntimeResult stop() {
-		RuntimeUtils.command("sudo " + executable() + " -c " + nginx.conf().getAbsolutePath() + " -s quit", nginx.binFolder());
+		RuntimeUtils.command("sudo " + executable() + " -c " + nginx.conf().getAbsolutePath() + " -s quit", nginx.binFolder(),3);
 		return status();
 	}
 

@@ -92,6 +92,10 @@ public class Nginx implements Serializable {
 		return new File(settings, "virtual-domain");
 	}
 
+	public File setting() {
+		return new File(settings);
+	}
+
 	
 
 }

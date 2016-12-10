@@ -93,15 +93,24 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 	}
 
 	private void configure(Nginx nginx) throws Exception {
-		File settings = new File(nginx.getSettings());
-		copy(settings);
-		new TemplateProcessor().withTemplate("nginx.tpl").withData("nginx", nginx)
-				.toLocation(new File(settings, "nginx.conf")).process();
+		copy(nginx);
+		conf(nginx);
+		root(nginx);
 	}
 
-	private void copy(File settings) throws IOException {
-		FileUtils.forceMkdir(settings);
-		copyToDirectory(getClass().getResource("/template/nginx"), settings, file -> {
+	private void root(Nginx nginx) throws Exception {
+		new TemplateProcessor().withTemplate("root.tpl").withData("nginx", nginx)
+		.toLocation(new File(nginx.virtualDomain(), "root.conf")).process();
+	}
+
+	private void conf(Nginx nginx) throws Exception {
+		new TemplateProcessor().withTemplate("nginx.tpl").withData("nginx", nginx)
+			.toLocation(new File(nginx.setting(), "nginx.conf")).process();
+	}
+
+	private void copy(Nginx nginx) throws IOException {
+		FileUtils.forceMkdir(nginx.setting());
+		copyToDirectory(getClass().getResource("/template/nginx"), nginx.setting(), file -> {
 			return !FilenameUtils.getExtension(file.getName()).equals("tpl");
 		});
 	}

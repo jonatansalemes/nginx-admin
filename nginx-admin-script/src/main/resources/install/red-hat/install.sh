@@ -68,7 +68,7 @@ fi
 
 useradd -s /sbin/nologin nginx-admin
 chown -R nginx-admin:nginx-admin $NGINX_ADMIN_HOME
-printf 'nginx-admin ALL = NOPASSWD: /sbin/nginx\n' >> /etc/sudoers
+printf 'nginx-admin ALL = NOPASSWD: /usr/sbin/nginx,/usr/bin/pgrep\n' >> /etc/sudoers
 printf 'Defaults:nginx-admin !requiretty\n' >> /etc/sudoers
 
 if ! file_exists "/etc/init.d/nginx-admin" ; then 
@@ -80,4 +80,4 @@ fi
 
 service nginx-admin start
 
-echo "Nginx admin was successfully installed on $NGINX_ADMIN_HOME."
+echo "Nginx admin was successfully started and installed on $NGINX_ADMIN_HOME. If you can check file $NGINX_ADMIN_CONF/nginx-admin.conf for configurations of service"
