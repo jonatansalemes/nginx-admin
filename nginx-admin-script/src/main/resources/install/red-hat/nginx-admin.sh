@@ -96,6 +96,10 @@ exit_with_failure(){
 
 killpid() {
 	killproc -p $NGINX_ADMIN_PIDFILE -d $SHUTDOWN_WAIT
+	children_pids=$(pgrep -P $(pid))
+	for child in $children_pids; do
+		/bin/kill -9 $child >/dev/null 2>&1
+	done
 	rm -f $NGINX_ADMIN_PIDFILE
 	rm -f $NGINX_ADMIN_LOCKFILE
 }

@@ -25,6 +25,13 @@ NGINX_ADMIN_VERSION=1.0.1
 
 apt-get -y update
 
+
+if ! package_exists sudo ; then 
+	echo "installing sudo ..."
+	apt-get -y install sudo
+	chmod 640 /etc/sudoers
+fi 
+
 if ! package_exists wget ; then
 	echo "installing wget ..."
 	apt-get -y install wget
@@ -52,6 +59,7 @@ if ! file_exists "$NGINX_ADMIN_BIN/nginx-admin-standalone-$NGINX_ADMIN_VERSION-s
 	wget https://bintray.com/jslsolucoes/nginx-admin/download_file?file_path=nginx-admin-standalone-$NGINX_ADMIN_VERSION-swarm.jar -O $NGINX_ADMIN_BIN/nginx-admin-standalone-$NGINX_ADMIN_VERSION-swarm.jar
 fi
 
+useradd -s /sbin/nologin nginx
 useradd -s /sbin/nologin nginx-admin
 chown -R nginx-admin:nginx-admin $NGINX_ADMIN_HOME
 printf 'nginx-admin ALL = NOPASSWD: /usr/sbin/nginx,/usr/bin/pgrep\n' >> /etc/sudoers
