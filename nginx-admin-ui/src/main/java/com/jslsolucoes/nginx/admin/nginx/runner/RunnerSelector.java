@@ -27,6 +27,6 @@ public class RunnerSelector {
 	@ApplicationScoped
 	@Produces
 	public Runner getInstance(@Any Instance<Runner> runners) {
-		return runners.select(new RunnerTypeLiteral(OperationalSystem.info().getOperationalSystemDistribution())).get();
+		return runners.select(new RunnerTypeLiteral(OperationalSystem.info().getOperationalSystemType())).get();
 	}
 }

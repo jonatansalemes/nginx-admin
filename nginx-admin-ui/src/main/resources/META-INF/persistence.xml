@@ -6,7 +6,7 @@
 	version="2.0">
 	<persistence-unit name="default">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
-		<non-jta-data-source>java:jboss/datasources/AdminDS</non-jta-data-source>
+		<non-jta-data-source>java:jboss/datasources/nginx-admin</non-jta-data-source>
 		<class>com.jslsolucoes.nginx.admin.model.User</class>
 		<class>com.jslsolucoes.nginx.admin.model.Configuration</class>
 		<class>com.jslsolucoes.nginx.admin.model.Smtp</class>
@@ -20,7 +20,7 @@
 		<class>com.jslsolucoes.nginx.admin.model.ResourceIdentifier</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
-			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.show_sql" value="false" />
 			<property name="hibernate.format_sql" value="false" />
 		</properties>
 	</persistence-unit>

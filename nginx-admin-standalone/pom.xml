@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.jslsolucoes</groupId>
 		<artifactId>nginx-admin</artifactId>
-		<version>1.0.0</version>
+		<version>1.0.1</version>
 	</parent>
 	<artifactId>nginx-admin-standalone</artifactId>
 
@@ -28,6 +28,7 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-clean-plugin</artifactId>
+				<version>3.0.0</version>
 				<configuration>
 					<filesets>
 						<fileset>
@@ -48,7 +49,10 @@
 							<tasks>
 								<copy
 									file="${project.parent.basedir}/${project.parent.modules[0]}/target/${project.parent.modules[0]}-${project.version}.war"
-									tofile="${project.build.resources[0].directory}/${project.parent.modules[0]}.war" />
+									tofile="${project.build.resources[0].directory}/${project.parent.modules[0]}-${project.version}.war" />
+								<replaceregexp
+									file="${project.build.sourceDirectory}/com/jslsolucoes/nginx/admin/standalone/Main.java"
+									match="/nginx-admin-ui-(.*?).war" replace="/nginx-admin-ui-${project.version}.war" />
 							</tasks>
 						</configuration>
 						<goals>
@@ -56,6 +60,18 @@
 						</goals>
 					</execution>
 				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.ant</groupId>
+						<artifactId>ant-nodeps</artifactId>
+						<version>1.8.1</version>
+					</dependency>
+					<dependency>
+						<groupId>org.apache.ant</groupId>
+						<artifactId>ant-apache-regexp</artifactId>
+						<version>1.9.7</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 			<plugin>
 				<groupId>org.wildfly.swarm</groupId>

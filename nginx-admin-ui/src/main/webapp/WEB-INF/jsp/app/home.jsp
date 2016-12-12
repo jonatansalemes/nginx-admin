@@ -3,7 +3,11 @@
 
 	<html:nav>
 		<html:container>
-			<html:brand label="{brand}" url="/"></html:brand>
+			<html:brand url="/">
+				<fmt:message key="brand">
+					<fmt:param value="${version}"></fmt:param>
+				</fmt:message>
+			</html:brand>
 			<html:menuButton icon="option-vertical" align="right">
 				<html:menuItem url="#" label="${ userSession.user.login }" icon="user"></html:menuItem>
 				<html:menuSeparator></html:menuSeparator>
@@ -24,4 +28,5 @@
 			<html:iframe url="/admin/dashboard" name="content"></html:iframe>
 		</html:block>
 	</html:container>
+	
 </html:view>

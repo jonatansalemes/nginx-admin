@@ -9,7 +9,10 @@
 					shape="circle" alt="logo" cssClass="center-block"></html:img>
 			</html:div>
 			<html:div cssClass="text-center">
-				<html:h1><html:small><fmt:message key="title"></fmt:message></html:small>
+				<html:h1>
+					<html:small>
+						<fmt:message key="title"></fmt:message> - v.<html:span id="par_version"></html:span>
+					</html:small>
 				</html:h1>
 			</html:div>
 		</html:block> 
@@ -53,6 +56,12 @@
 		</html:block>
 
 	</html:container>
+	
+	<ajax:function url="/version" name="version" executeOnDocumentLoad="true">
+		<ajax:onSuccess>
+			<ajax:target type="html" data="version" target="version"></ajax:target>
+		</ajax:onSuccess>
+	</ajax:function>
 	
 	<ajax:function url="/installer/check" name="checkForInstall" executeOnDocumentLoad="true">
 		<ajax:onSuccess>

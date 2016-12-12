@@ -22,8 +22,8 @@ public class Nginx implements Serializable {
 	@Column(name = "bin")
 	private String bin;
 
-	@Column(name = "home")
-	private String home;
+	@Column(name = "settings")
+	private String settings;
 
 	public Nginx() {
 
@@ -33,10 +33,10 @@ public class Nginx implements Serializable {
 		this(null, bin, home);
 	}
 
-	public Nginx(Long id, String bin, String home) {
+	public Nginx(Long id, String bin, String settings) {
 		this.id = id;
 		this.bin = bin;
-		this.home = home;
+		this.settings = settings;
 	}
 
 	public Long getId() {
@@ -54,17 +54,17 @@ public class Nginx implements Serializable {
 	public void setBin(String bin) {
 		this.bin = bin;
 	}
-
-	public String getHome() {
-		return home;
+	
+	public String getSettings() {
+		return settings;
 	}
 
-	public void setHome(String home) {
-		this.home = home;
+	public void setSettings(String settings) {
+		this.settings = settings;
 	}
+
 	
-	
-	public File parent(){
+	public File binFolder(){
 		return bin().getParentFile();
 	}
 	
@@ -73,23 +73,29 @@ public class Nginx implements Serializable {
 	}
 	
 	public File conf(){
-		return new File(settings(), "nginx.conf");
+		return new File(settings, "nginx.conf");
 	}
-
-	public File settings() {
-		return new File(home, "settings");
+	
+	public File pid(){
+		return new File(settings, "nginx.pid");
 	}
 
 	public File ssl() {
-		return new File(settings(), "ssl");
+		return new File(settings, "ssl");
 	}
 
 	public File upstream() {
-		return new File(settings(), "upstream");
+		return new File(settings, "upstream");
 	}
 	
 	public File virtualDomain() {
-		return new File(settings(), "virtual-domain");
+		return new File(settings, "virtual-domain");
 	}
+
+	public File setting() {
+		return new File(settings);
+	}
+
+	
 
 }

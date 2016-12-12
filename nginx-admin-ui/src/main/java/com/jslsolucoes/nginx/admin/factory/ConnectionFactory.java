@@ -11,7 +11,7 @@ import javax.sql.DataSource;
 
 public class ConnectionFactory {
 
-	@Resource(lookup = "java:jboss/datasources/AdminDS")
+	@Resource(lookup = "java:jboss/datasources/nginx-admin")
 	private DataSource dataSource;
 
 	@Produces

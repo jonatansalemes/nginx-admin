@@ -5,10 +5,45 @@
 	<parent>
 		<groupId>com.jslsolucoes</groupId>
 		<artifactId>nginx-admin</artifactId>
-		<version>1.0.0</version>
+		<version>1.0.1</version>
 	</parent>
 	<artifactId>nginx-admin-ui</artifactId>
 	<packaging>war</packaging>
+	
+	<build>
+  	<plugins>
+  		<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>generate-resources</phase>
+						<configuration>
+							<tasks>
+								<replaceregexp
+									file="${project.build.resources[0].directory}/application.properties"
+									match="app\.version\=(.*)" replace="app.version=${project.version}" />
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.ant</groupId>
+						<artifactId>ant-nodeps</artifactId>
+						<version>1.8.1</version>
+					</dependency>
+					<dependency>
+						<groupId>org.apache.ant</groupId>
+						<artifactId>ant-apache-regexp</artifactId>
+						<version>1.9.7</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+  	</plugins>
+  </build>
 
 	<dependencies>
 		<dependency>
@@ -20,7 +55,7 @@
 		<dependency>
 			<groupId>com.jslsolucoes</groupId>
 			<artifactId>tagria-lib</artifactId>
-			<version>1.0.2</version>
+			<version>1.0.3</version>
 		</dependency>
 		<dependency>
 			<groupId>br.com.caelum</groupId>

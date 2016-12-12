@@ -2,17 +2,9 @@ package com.jslsolucoes.nginx.admin.standalone.launcher;
 
 public class Launcher {
 
-	private String bind;
+	private String home;
 	private Integer port;
 	private Boolean quit;
-	private DataSource dataSource;
-	
-	public String getBind() {
-		return bind;
-	}
-	public void setBind(String bind) {
-		this.bind = bind;
-	}
 	public Integer getPort() {
 		return port;
 	}
@@ -25,10 +17,10 @@ public class Launcher {
 	public void setQuit(Boolean quit) {
 		this.quit = quit;
 	}
-	public DataSource getDataSource() {
-		return dataSource;
+	public String getHome() {
+		return home;
 	}
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
+	public void setHome(String home) {
+		this.home = home;
 	}
 }

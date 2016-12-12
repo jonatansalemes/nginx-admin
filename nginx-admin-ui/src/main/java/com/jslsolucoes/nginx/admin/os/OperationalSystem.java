@@ -27,7 +27,7 @@ import java.util.Set;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
-import org.apache.commons.lang.StringUtils;
+
 
 public class OperationalSystem {
 
@@ -37,31 +37,24 @@ public class OperationalSystem {
 				operatingSystemMXBean.getArch(), operatingSystemMXBean.getVersion());
 		String operationalSystem = operationalSystemInfo.getName().toLowerCase();
 		if (operationalSystem.contains("windows")) {
-			operationalSystemInfo.setOperationalSystemDistribution(OperationalSystemDistribution.WINDOWS);
+			operationalSystemInfo.setOperationalSystemType(OperationalSystemType.WINDOWS);
 		} else if (operationalSystem.contains("linux")) {
-			operationalSystemInfo.setOperationalSystemDistribution(distribution());
+			operationalSystemInfo.setOperationalSystemType(OperationalSystemType.LINUX);
+			operationalSystemInfo.setDistribution(distribution());
 		}  else {
-			operationalSystemInfo.setOperationalSystemDistribution(OperationalSystemDistribution.NOT_IMPLEMENTED);
+			operationalSystemInfo.setOperationalSystemType(OperationalSystemType.NOT_IMPLEMENTED);
 		}
 		return operationalSystemInfo;
 	}
 
-	private static OperationalSystemDistribution distribution() {
+	private static String distribution() {
 		Set<String> locations = new HashSet<String>();
 		locations.add("/etc/system-release");
 		locations.add("/proc/version");
 		locations.add("/etc/issue");
 		locations.add("/etc/lsb-release");
 		locations.addAll(releases());
-		String distribution = find(locations);
-		if (!StringUtils.isEmpty(distribution)) {
-			if (distribution.contains("centos")) {
-				return OperationalSystemDistribution.CENTOS;
-			} else {
-				return OperationalSystemDistribution.NOT_IMPLEMENTED;
-			}
-		}
-		return OperationalSystemDistribution.NOT_IMPLEMENTED;
+		return find(locations);
 	}
 
 	private static String find(Set<String> locations) {

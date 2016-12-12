@@ -7,13 +7,13 @@ import java.lang.annotation.Target;
 
 import javax.inject.Qualifier;
 
-import com.jslsolucoes.nginx.admin.os.OperationalSystemDistribution;
+import com.jslsolucoes.nginx.admin.os.OperationalSystemType;
 
 @Qualifier
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.FIELD, ElementType.TYPE, ElementType.METHOD })
 public @interface RunnerType {
 
-	OperationalSystemDistribution value();
+	OperationalSystemType value();
 
 }

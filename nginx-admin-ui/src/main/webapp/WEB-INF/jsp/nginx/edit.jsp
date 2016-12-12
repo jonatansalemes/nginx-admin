@@ -12,9 +12,9 @@
 				<html:input name="bin" value="${ nginx.bin }"
 					placeholder="{nginx.bin.placeholder}" required="true"></html:input>
 			</html:formGroup>
-			<html:formGroup label="{nginx.home}" required="true">
-				<html:input name="home" value="${ nginx.home }"
-					placeholder="{nginx.home.placeholder}" required="true"></html:input>
+			<html:formGroup label="{nginx.settings}" required="true">
+				<html:input name="settings" value="${ nginx.settings }"
+					placeholder="{nginx.settings.placeholder}" required="true"></html:input>
 			</html:formGroup>
 			<html:toolbar>
 				<html:button state="primary" type="submit" label="{nginx.save.settings}"></html:button>
