@@ -28,7 +28,7 @@ Some features :
 
 <hr/>
 Automatic installation :
-
+ 
 Red-hat distribution you follow this step as root user : 
 <pre>
 	<code>
