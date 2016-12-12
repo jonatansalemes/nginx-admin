@@ -65,4 +65,6 @@ if ! file_exists "/etc/init.d/nginx-admin" ; then
 	update-rc.d nginx-admin enable
 fi
 
+service nginx-admin start
+
 echo "Nginx admin was successfully started and installed on $NGINX_ADMIN_HOME. If you can check file $NGINX_ADMIN_CONF/nginx-admin.conf for configurations of service"
