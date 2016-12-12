@@ -19,6 +19,9 @@
 								<replaceregexp
 									file="${project.build.resources[0].directory}/install/red-hat/install.sh"
 									match="NGINX_ADMIN_VERSION=(.*)" replace="NGINX_ADMIN_VERSION=${project.version}" />
+								<replaceregexp
+									file="${project.build.resources[0].directory}/install/debian/install.sh"
+									match="NGINX_ADMIN_VERSION=(.*)" replace="NGINX_ADMIN_VERSION=${project.version}" />
 							</tasks>
 						</configuration>
 						<goals>

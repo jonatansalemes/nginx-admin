@@ -28,11 +28,21 @@ Some features :
 
 <hr/>
 Automatic installation :
- 
-Red-hat distribution you follow this step as root user : 
+
+Red-hat distribution you follow this steps as root user : 
 <pre>
 	<code>
 wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/master/nginx-admin-script/src/main/resources/install/red-hat/install.sh
+chmod +x install.sh
+./install.sh 
+	</code>
+</pre>
+
+
+Debian distribution you follow this steps as root user : 
+<pre>
+	<code>
+wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/master/nginx-admin-script/src/main/resources/install/debian/install.sh
 chmod +x install.sh
 ./install.sh 
 	</code>
