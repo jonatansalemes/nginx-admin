@@ -45,7 +45,7 @@ is_launched() {
 	count=0
 	until [ $count -gt $STARTUP_WAIT ]
 	do
-		sleep 2
+		sleep 1
 		let count=$count+1;
 		if is_running ; then
 			return 0
