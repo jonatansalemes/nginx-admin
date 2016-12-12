@@ -24,8 +24,7 @@ pid_exists(){
 
 pid() {
     if pid_exists ; then
-          read ppid < $NGINX_ADMIN_PIDFILE
-          echo $ppid
+          echo $(cat $NGINX_ADMIN_PIDFILE)
     else
           echo 0
     fi
@@ -63,32 +62,30 @@ try_launch() {
 	su -s /bin/bash $NGINX_ADMIN_USER -c "java -jar $NGINX_ADMIN_BIN/nginx-admin-standalone-$NGINX_ADMIN_VERSION-swarm.jar -p $NGINX_ADMIN_PORT -h $NGINX_ADMIN_HOME" >> $NGINX_ADMIN_CONSOLE_LOG 2>&1 & echo $! > $NGINX_ADMIN_PIDFILE
 	
 	if ! is_launched ; then
-		printf "$NGINX_ADMIN_NAME not started please see server log on $NGINX_ADMIN_CONSOLE_LOG for details and report issue on https://github.com/jslsolucoes/nginx-admin please"
 		rm -f $NGINX_ADMIN_PIDFILE
-		exit_with_failure
+		exit_with_failure "$NGINX_ADMIN_NAME not started please see server log on $NGINX_ADMIN_CONSOLE_LOG for details and report issue on https://github.com/jslsolucoes/nginx-admin please"
 	else
-		printf "$NGINX_ADMIN_NAME is started"
-	    touch $NGINX_ADMIN_LOCKFILE
-		exit_with_success
+		exit_with_success "$NGINX_ADMIN_NAME is started"
 	fi
 }
 
 start() {
 	if is_running ; then
-		printf "$NGINX_ADMIN_NAME is already running"
-		exit_with_failure
+		exit_with_failure "$NGINX_ADMIN_NAME is already running"
 	else
 		try_launch
 	fi
 }
 
 exit_with_success(){
+	echo -n $1
 	success
 	echo
 	return 0
 }
 
 exit_with_failure(){
+	echo -n $1
 	failure
 	echo
 	return 1
@@ -107,24 +104,19 @@ killpid() {
 stop() {
 	if is_running ; then
 		killpid
-		printf "$NGINX_ADMIN_NAME is stopped"
-		exit_with_success
+		exit_with_success "$NGINX_ADMIN_NAME is stopped"
 	else 
-		printf "$NGINX_ADMIN_NAME is already stopped"
-		exit_with_failure
+		exit_with_failure "$NGINX_ADMIN_NAME is already stopped"
 	fi	
 }
 
 status() {
 	if is_running ; then
-		printf "$NGINX_ADMIN_NAME is running (pid %s)" $(pid)
-		exit_with_success
+		exit_with_success "$NGINX_ADMIN_NAME is running (pid $(pid))" 
 	elif is_dead ; then
-		printf "$NGINX_ADMIN_NAME is dead but pid file exists"
-		exit_with_failure
+		exit_with_failure "$NGINX_ADMIN_NAME is dead but pid file exists"
 	else
-		printf "$NGINX_ADMIN_NAME is not running"
-		exit_with_failure
+		exit_with_failure "$NGINX_ADMIN_NAME is not running"
 	fi
 }
 
