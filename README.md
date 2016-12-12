@@ -32,7 +32,7 @@ Automatic installation :
 Red-hat distribution you follow this step as root user : 
 <pre>
 	<code>
-wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/develop/nginx-admin-script/src/main/resources/install/red-hat/install.sh
+wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/master/nginx-admin-script/src/main/resources/install/red-hat/install.sh
 chmod +x install.sh
 ./install.sh 
 	</code>
@@ -46,7 +46,7 @@ Manual installation:
 * Install jdk8 (required)
 * Run manager with : java -jar nginx-admin-standalone-{version}-swarm.jar
 * h2 database is located under ~/database/nginx-admin (it`s important keep backup of this folder)
-* Access serverip:3000 to access manager
+* Access localhost:3000 to access manager
 * Enjoy
 
 <h1>For premium support please contact : jonatan@jslsolucoes.com</h2>
