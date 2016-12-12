@@ -136,5 +136,6 @@ case "$1" in
 	*)
 		
 	log_action_msg "Usage: $0 {start|stop|status|restart}"
+	exit 1
 	;;
 esac
