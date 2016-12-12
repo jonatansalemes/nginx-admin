@@ -66,7 +66,7 @@ printf 'nginx-admin ALL = NOPASSWD: /usr/sbin/nginx,/usr/bin/pgrep\n' >> /etc/su
 printf 'Defaults:nginx-admin !requiretty\n' >> /etc/sudoers
 
 if ! file_exists "/etc/init.d/nginx-admin" ; then 
-	wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/develop/nginx-admin-script/src/main/resources/install/debian/nginx-admin.sh -O /etc/init.d/nginx-admin
+	wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/master/nginx-admin-script/src/main/resources/install/debian/nginx-admin.sh -O /etc/init.d/nginx-admin
 	chmod +x /etc/init.d/nginx-admin
 	chown root:root /etc/init.d/nginx-admin
 	update-rc.d nginx-admin defaults
