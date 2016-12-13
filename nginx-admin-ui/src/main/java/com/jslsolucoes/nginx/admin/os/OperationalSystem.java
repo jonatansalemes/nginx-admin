@@ -41,6 +41,8 @@ public class OperationalSystem {
 		} else if (operationalSystem.contains("linux")) {
 			operationalSystemInfo.setOperationalSystemType(OperationalSystemType.LINUX);
 			operationalSystemInfo.setDistribution(distribution());
+		} else if (operationalSystem.contains("mac")||operationalSystem.contains("darwin")) {
+			operationalSystemInfo.setOperationalSystemType(OperationalSystemType.MAC);
 		}  else {
 			operationalSystemInfo.setOperationalSystemType(OperationalSystemType.NOT_IMPLEMENTED);
 		}

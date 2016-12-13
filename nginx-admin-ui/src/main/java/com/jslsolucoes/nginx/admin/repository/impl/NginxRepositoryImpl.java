@@ -35,6 +35,7 @@ import org.jboss.vfs.VirtualFile;
 
 import com.jslsolucoes.nginx.admin.i18n.Messages;
 import com.jslsolucoes.nginx.admin.model.Nginx;
+import com.jslsolucoes.nginx.admin.os.OperationalSystem;
 import com.jslsolucoes.nginx.admin.repository.NginxRepository;
 import com.jslsolucoes.nginx.admin.util.TemplateProcessor;
 
@@ -104,7 +105,9 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 	}
 
 	private void conf(Nginx nginx) throws Exception {
-		new TemplateProcessor().withTemplate("nginx.tpl").withData("nginx", nginx)
+		new TemplateProcessor().withTemplate("nginx.tpl")
+			.withData("nginx", nginx)
+			.withData("so", OperationalSystem.info().getOperationalSystemType())
 			.toLocation(new File(nginx.setting(), "nginx.conf")).process();
 	}
 

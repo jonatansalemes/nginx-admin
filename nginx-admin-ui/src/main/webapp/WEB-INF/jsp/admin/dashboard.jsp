@@ -24,9 +24,7 @@
 						<html:listGroupItem> <fmt:message key="machine.arch"/> : ${ so.arch }</html:listGroupItem>
 						<html:listGroupItem> <fmt:message key="machine.os"/> : ${ so.name }</html:listGroupItem>
 						<html:listGroupItem> <fmt:message key="machine.version"/> : ${ so.version }</html:listGroupItem>
-						<c:if test="${ !empty(so.distribution) }">
-							<html:listGroupItem> <fmt:message key="machine.distribution"/> : ${ so.distribution }</html:listGroupItem>
-						</c:if>
+						<html:listGroupItem rendered="${ !empty(so.distribution) }"> <fmt:message key="machine.distribution"/> : ${ so.distribution }</html:listGroupItem>
 					</html:listGroup>
 				</html:panelBody>
 			</html:panel>

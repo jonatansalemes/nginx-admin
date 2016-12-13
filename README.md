@@ -15,6 +15,7 @@ Supported operational system :
 <ul>
 	<li>Windows</li>
 	<li>Linux</li>
+	<li>Mac OSX</li>
 </ul>
 
 Some features :
