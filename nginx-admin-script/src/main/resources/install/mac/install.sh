@@ -1,6 +1,6 @@
 #!/bin/bash 
 function package_exists(){
-    if which $1 > /dev/null; then 
+    if sudo which $1 > /dev/null; then 
      	return $true
     else
         return $false
@@ -15,8 +15,16 @@ function file_exists(){
     fi
 }
 
+function user_exists() {
+	if sudo dscl . -read /Users/$1 > /dev/null; then 
+     	return $true
+    else
+        return $false
+    fi
+}
+
 function create_user() {
-	MAXID=$(dscl . -read /Users/nobody UniqueID | awk '{print $2}' | sort -ug | tail -1)
+	MAXID=$(sudo dscl . -read /Users/$2 UniqueID | awk '{print $2}' | sort -ug | tail -1)
 	USERID=$((MAXID-1))
 	
 	sudo dscl . -create /Users/$1
@@ -62,11 +70,16 @@ if ! file_exists "$NGINX_ADMIN_BIN/nginx-admin-standalone-$NGINX_ADMIN_VERSION-s
 	sudo wget https://bintray.com/jslsolucoes/nginx-admin/download_file?file_path=nginx-admin-standalone-$NGINX_ADMIN_VERSION-swarm.jar -O $NGINX_ADMIN_BIN/nginx-admin-standalone-$NGINX_ADMIN_VERSION-swarm.jar
 fi
 
-create_user nginx
-create_user nginx-admin
+if ! user_exists nginx ; then 
+	create_user nginx nobody
+fi
+
+if ! user_exists nginx-admin ; then 
+	create_user nginx-admin nginx
+fi
 
 if ! file_exists "/Library/LaunchDaemons/com.jslsolucoes.nginx.admin.plist" ; then 
-	wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/develop/nginx-admin-script/src/main/resources/install/mac/com.jslsolucoes.nginx.admin.plist -O /Library/LaunchDaemons/com.jslsolucoes.nginx.admin.plist
+	sudo wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/develop/nginx-admin-script/src/main/resources/install/mac/com.jslsolucoes.nginx.admin.plist -O /Library/LaunchDaemons/com.jslsolucoes.nginx.admin.plist
 	sudo launchctl load -w /Library/LaunchDaemons/com.jslsolucoes.nginx.admin.plist
 fi
 
