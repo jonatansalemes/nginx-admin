@@ -1,8 +1,8 @@
-package com.jslsolucoes.nginx.admin.nginx.parser.model;
+package com.jslsolucoes.nginx.admin.nginx.parser.directive;
 
 import java.util.List;
 
-public class VirtualHost {
+public class ServerDirective implements Directive {
 
 	private Integer port;
 	private List<String> aliases;
@@ -31,6 +31,11 @@ public class VirtualHost {
 	}
 	public void setSslCertificateKey(String sslCertificateKey) {
 		this.sslCertificateKey = sslCertificateKey;
+	}
+	
+	@Override
+	public DirectiveType type() {
+		return DirectiveType.VIRTUAL_DOMAIN;
 	}
 	
 }

@@ -1,6 +1,6 @@
-package com.jslsolucoes.nginx.admin.nginx.parser.model;
+package com.jslsolucoes.nginx.admin.nginx.parser.directive;
 
-public class Server {
+public class UpstreamDirectiveServer {
 
 	private String ip;
 	private Integer port;
