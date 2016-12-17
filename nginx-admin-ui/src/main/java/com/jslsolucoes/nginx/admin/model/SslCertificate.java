@@ -48,6 +48,10 @@ public class SslCertificate implements Serializable {
 		this.id = id;
 	}
 
+	public SslCertificate(String commonName) {
+		this.commonName = commonName;
+	}
+
 	public String getCertificate() {
 		return certificate;
 	}

@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -47,7 +48,7 @@ public class ImportRepositoryImpl implements ImportRepository {
 
 	@Inject
 	public ImportRepositoryImpl(ServerRepository serverRepository, UpstreamRepository upstreamRepository,
-			StrategyRepository strategyRepository,VirtualDomainRepository virtualDomainRepository,
+			StrategyRepository strategyRepository, VirtualDomainRepository virtualDomainRepository,
 			SslCertificateRepository sslCertificateRepository) {
 		this.serverRepository = serverRepository;
 		this.upstreamRepository = upstreamRepository;
@@ -66,19 +67,24 @@ public class ImportRepositoryImpl implements ImportRepository {
 
 	private void virtualHosts(List<Directive> directives) {
 		directives.stream().filter(directive -> directive.type().equals(DirectiveType.SERVER)).forEach(directive -> {
-			
-			
 			try {
 				ServerDirective serverDirective = ((ServerDirective) directive);
-				if(!StringUtils.isEmpty(serverDirective.getSslCertificate())){
-					sslCertificateRepository.saveOrUpdate(new SslCertificate(), new FileInputStream(new File(serverDirective.getSslCertificate())), new FileInputStream(new File(serverDirective.getSslCertificateKey())));
-				}
-			
-				serverDirective
-				.getAliases()
-				.stream()
-				.forEach(domain -> {
-					virtualDomainRepository.saveOrUpdate(new VirtualDomain(domain,(serverDirective.getPort() == 80 ? 0 : 1), null, upstreamRepository.findByName("wildfly")));
+				serverDirective.getAliases().stream().forEach(domain -> {
+					try {
+						SslCertificate sslCertificate = null;
+						if (!StringUtils.isEmpty(serverDirective.getSslCertificate())) {
+							OperationResult operationResult = sslCertificateRepository.saveOrUpdate(
+									new SslCertificate(UUID.randomUUID().toString()),
+									new FileInputStream(new File(serverDirective.getSslCertificate())),
+									new FileInputStream(new File(serverDirective.getSslCertificateKey())));
+							sslCertificate = new SslCertificate(operationResult.getId());
+						}
+						virtualDomainRepository
+								.saveOrUpdate(new VirtualDomain(domain, (serverDirective.getPort() == 80 ? 0 : 1),
+										sslCertificate, upstreamRepository.findByName(serverDirective.getUpstream())));
+					} catch (Exception e) {
+						throw new RuntimeException(e);
+					}
 				});
 			} catch (Exception e) {
 				throw new RuntimeException(e);

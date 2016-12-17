@@ -41,7 +41,7 @@ public class NginxConfParser {
 	private List<Parser> parsers(File file){
 		return new ArrayList<Parser>(){{
 			add(new UpstreamParser(file));
-			add(new VirtualHostParser(file));
+			add(new ServerParser(file));
 		}};
 	}
 }

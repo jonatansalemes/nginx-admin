@@ -15,11 +15,11 @@ import org.apache.commons.lang.StringUtils;
 import com.jslsolucoes.nginx.admin.nginx.parser.directive.Directive;
 import com.jslsolucoes.nginx.admin.nginx.parser.directive.ServerDirective;
 
-public class VirtualHostParser implements Parser {
+public class ServerParser implements Parser {
 
 	private File file;
 
-	public VirtualHostParser(File file) {
+	public ServerParser(File file) {
 		this.file = file;
 	}
 
@@ -30,25 +30,30 @@ public class VirtualHostParser implements Parser {
 			ServerDirective virtualHost = new ServerDirective();
 
 			Matcher listen = Pattern.compile("listen(\\s{1,})([0-9]{2,})(\\s(.*?))?;").matcher(block);
-			while (listen.find()) {
+			if (listen.find()) {
 				virtualHost.setPort(Integer.valueOf(listen.group(2)));
 			}
 
 			Matcher serverName = Pattern.compile("server_name(\\s{1,})(.*?);").matcher(block);
-			while (serverName.find()) {
+			if (serverName.find()) {
 				virtualHost.setAliases(Arrays.asList(serverName.group(2).split(" ")));
 			}
 
 			Matcher sslCertificate = Pattern.compile("ssl_certificate(\\s{1,})(.*?);").matcher(block);
-			while (sslCertificate.find()) {
+			if (sslCertificate.find()) {
 				virtualHost.setSslCertificate(sslCertificate.group(2));
 			}
 
 			Matcher sslCertificateKey = Pattern.compile("ssl_certificate_key(\\s{1,})(.*?);").matcher(block);
-			while (sslCertificateKey.find()) {
+			if (sslCertificateKey.find()) {
 				virtualHost.setSslCertificateKey(sslCertificateKey.group(2));
 			}
-
+			
+			Matcher upstreams = Pattern.compile("proxy_pass(\\s{1,})(https?:\\/\\/)(.*?);").matcher(block);
+			while (upstreams.find()) {
+				virtualHost.setUpstream(upstreams.group(3));
+			}
+			
 			virtualHosts.add(virtualHost);
 		}
 		return virtualHosts;

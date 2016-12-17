@@ -8,6 +8,8 @@ public class ServerDirective implements Directive {
 	private List<String> aliases;
 	private String sslCertificate;
 	private String sslCertificateKey;
+	private String upstream;
+	
 	public Integer getPort() {
 		return port;
 	}
@@ -36,6 +38,12 @@ public class ServerDirective implements Directive {
 	@Override
 	public DirectiveType type() {
 		return DirectiveType.SERVER;
+	}
+	public String getUpstream() {
+		return upstream;
+	}
+	public void setUpstream(String upstream) {
+		this.upstream = upstream;
 	}
 	
 }
