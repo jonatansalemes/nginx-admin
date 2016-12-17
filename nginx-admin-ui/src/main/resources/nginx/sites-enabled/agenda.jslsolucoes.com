@@ -9,8 +9,8 @@ server {
 
 server {
         listen               443 ssl;
-        ssl_certificate      /etc/nginx/ssl/jslsolucoes.crt;
-        ssl_certificate_key  /etc/nginx/ssl/jslsolucoes.key;
+        ssl_certificate      D:/workspace/github/nginx-admin/nginx-admin-ui/src/main/resources/nginx/ssl/jslsolucoes.crt;
+        ssl_certificate_key  D:/workspace/github/nginx-admin/nginx-admin-ui/src/main/resources/nginx/ssl/jslsolucoes.key;
         server_name agenda.jslsolucoes.com;
         ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
         ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:ECDHE-RSA-AES128-GCM-SHA256:AES256+EECDH:DHE-RSA-AES128-GCM-SHA256:AES256+EDH:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES128-SHA256:DHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA:DES-CBC3-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!PSK:!RC4";
