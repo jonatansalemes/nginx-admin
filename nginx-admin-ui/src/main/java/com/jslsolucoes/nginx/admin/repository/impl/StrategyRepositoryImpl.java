@@ -18,6 +18,7 @@ package com.jslsolucoes.nginx.admin.repository.impl;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 
 import com.jslsolucoes.nginx.admin.model.Strategy;
 import com.jslsolucoes.nginx.admin.repository.StrategyRepository;
@@ -33,5 +34,18 @@ public class StrategyRepositoryImpl extends RepositoryImpl<Strategy> implements 
 	public StrategyRepositoryImpl(EntityManager entityManager) {
 		super(entityManager);
 	}
-	
+
+	@Override
+	public Strategy findByName(String name) {
+		try {
+
+			return (Strategy) entityManager
+					.createQuery("from Strategy where name = :name ")
+					.setParameter("name", name)
+					.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+
 }

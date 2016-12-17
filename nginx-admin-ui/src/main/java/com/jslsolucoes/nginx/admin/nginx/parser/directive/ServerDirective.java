@@ -35,7 +35,7 @@ public class ServerDirective implements Directive {
 	
 	@Override
 	public DirectiveType type() {
-		return DirectiveType.VIRTUAL_DOMAIN;
+		return DirectiveType.SERVER;
 	}
 	
 }

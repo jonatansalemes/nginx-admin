@@ -8,4 +8,6 @@ public interface StrategyRepository {
 
 	public List<Strategy> listAll();
 
+	public Strategy findByName(String name);
+
 }

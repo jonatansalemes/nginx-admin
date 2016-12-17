@@ -14,6 +14,9 @@
 				<html:menuItem target="content" url="/settings/home" icon="cog" label="{settings}"></html:menuItem>
 				<html:menuItem url="/user/logout" icon="log-out" label="{logout}"></html:menuItem>
 			</html:menuButton>
+			<html:menuButton icon="cloud-upload" align="right">
+				<html:menuItem target="content" url="/import/form" icon="copy" label="{import.nginx.conf}"></html:menuItem>
+			</html:menuButton>
 			<html:menuButton icon="briefcase" align="right">
 				<html:menuItem target="content" url="/sslCertificate/list" icon="lock" label="{ssl.certificates}"></html:menuItem>
 				<html:menuItem target="content" url="/server/list" icon="list" label="{servers}"></html:menuItem>

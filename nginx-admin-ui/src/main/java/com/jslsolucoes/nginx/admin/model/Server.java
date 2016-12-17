@@ -34,6 +34,10 @@ public class Server implements Serializable {
 		this.ip = ip;
 	}
 
+	public Server(String ip) {
+		this.ip = ip;
+	}
+
 	public String getIp() {
 		return ip;
 	}

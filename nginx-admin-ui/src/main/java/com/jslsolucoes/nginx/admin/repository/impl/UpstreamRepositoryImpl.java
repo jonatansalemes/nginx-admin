@@ -131,4 +131,16 @@ public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements 
 			return null;
 		}
 	}
+
+	@Override
+	public Upstream findByName(String name) {
+		try {
+			return (Upstream) entityManager
+					.createQuery("from Upstream where name = :name ")
+					.setParameter("name", name)
+					.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
 }

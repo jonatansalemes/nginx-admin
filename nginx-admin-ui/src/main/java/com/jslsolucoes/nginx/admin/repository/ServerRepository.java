@@ -17,4 +17,10 @@ public interface ServerRepository {
 	public OperationResult saveOrUpdate(Server server);
 
 	public List<String> validateBeforeSaveOrUpdate(Server server);
+
+	public Server hasEquals(Server server);
+
+	public OperationType insert(Server server);
+
+	public Server findByIp(String ip);
 }

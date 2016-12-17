@@ -58,6 +58,13 @@ public class VirtualDomain implements Serializable {
 		this.resourceIdentifier = resourceIdentifier;
 	}
 
+	public VirtualDomain(String domain, Integer https, SslCertificate sslCertificate, Upstream upstream) {
+		this.domain = domain;
+		this.https = https;
+		this.sslCertificate = sslCertificate;
+		this.upstream = upstream;
+	}
+
 	public Long getId() {
 		return id;
 	}

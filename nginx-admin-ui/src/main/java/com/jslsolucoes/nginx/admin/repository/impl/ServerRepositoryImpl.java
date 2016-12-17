@@ -47,27 +47,34 @@ public class ServerRepositoryImpl extends RepositoryImpl<Server> implements Serv
 		if (hasEquals(server) != null) {
 			errors.add(Messages.getString("server.already.exists"));
 		}
-		
+
 		return errors;
 	}
 
-	private Server hasEquals(Server server) {
+	@Override
+	public Server hasEquals(Server server) {
 		try {
-			StringBuilder  hql = new StringBuilder("from Server where ip = :ip ");
-			if(server.getId() != null){
+			StringBuilder hql = new StringBuilder("from Server where ip = :ip ");
+			if (server.getId() != null) {
 				hql.append("and id <> :id");
 			}
-			Query query = entityManager.createQuery(hql.toString())
-			.setParameter("ip", server.getIp());
-			if(server.getId() != null){
+			Query query = entityManager.createQuery(hql.toString()).setParameter("ip", server.getIp());
+			if (server.getId() != null) {
 				query.setParameter("id", server.getId());
 			}
-			return (Server) 
-					query.getSingleResult();
+			return (Server) query.getSingleResult();
 		} catch (NoResultException e) {
 			return null;
 		}
 	}
 
-	
+	@Override
+	public Server findByIp(String ip) {
+		try {
+			return (Server) entityManager.createQuery("from Server where ip = :ip ").setParameter("ip", ip)
+					.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
 }

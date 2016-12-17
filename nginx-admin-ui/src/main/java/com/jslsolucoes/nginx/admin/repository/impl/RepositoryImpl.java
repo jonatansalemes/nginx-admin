@@ -64,12 +64,14 @@ public abstract class RepositoryImpl<T> {
 		return (T) entityManager.find(clazz, id);
 	}
 
-	public void insert(T entity) {
+	public OperationType insert(T entity) {
 		this.entityManager.persist(entity);
+		return OperationType.INSERT;
 	}
 
-	public T update(T entity) {
-		return (T) this.entityManager.merge(entity);
+	public OperationType update(T entity) {
+		this.entityManager.merge(entity);
+		return OperationType.UPDATE;
 	}
 
 	private Long id(T entity) {
@@ -102,11 +104,9 @@ public abstract class RepositoryImpl<T> {
 	public OperationResult saveOrUpdate(T entity) {
 		Long id = id(entity);
 		if (id == null) {
-			this.insert(entity);
-			return new OperationResult(OperationType.INSERT, id(entity));
+			return new OperationResult(insert(entity), id(entity));
 		} else {
-			this.update(entity);
-			return new OperationResult(OperationType.UPDATE, id);
+			return new OperationResult(update(entity), id);
 		}
 	}
 
