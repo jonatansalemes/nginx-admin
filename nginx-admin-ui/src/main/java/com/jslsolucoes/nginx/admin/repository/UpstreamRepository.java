@@ -21,4 +21,6 @@ public interface UpstreamRepository {
 
 	public Upstream findByName(String name);
 
+	public Upstream hasEquals(Upstream upstream);
+
 }

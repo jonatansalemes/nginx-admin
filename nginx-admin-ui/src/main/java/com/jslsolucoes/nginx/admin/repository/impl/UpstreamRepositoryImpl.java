@@ -29,7 +29,6 @@ import javax.persistence.Query;
 import org.apache.commons.io.FileUtils;
 
 import com.jslsolucoes.nginx.admin.i18n.Messages;
-import com.jslsolucoes.nginx.admin.model.Server;
 import com.jslsolucoes.nginx.admin.model.Upstream;
 import com.jslsolucoes.nginx.admin.model.UpstreamServer;
 import com.jslsolucoes.nginx.admin.nginx.runner.Runner;
@@ -116,7 +115,8 @@ public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements 
 		}
 	}
 
-	private Server hasEquals(Upstream upstream) {
+	@Override
+	public Upstream hasEquals(Upstream upstream) {
 		try {
 			StringBuilder hql = new StringBuilder("from Upstream where name = :name ");
 			if (upstream.getId() != null) {
@@ -126,7 +126,7 @@ public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements 
 			if (upstream.getId() != null) {
 				query.setParameter("id", upstream.getId());
 			}
-			return (Server) query.getSingleResult();
+			return (Upstream) query.getSingleResult();
 		} catch (NoResultException e) {
 			return null;
 		}

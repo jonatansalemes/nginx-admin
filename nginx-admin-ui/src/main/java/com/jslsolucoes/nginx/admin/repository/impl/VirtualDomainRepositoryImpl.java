@@ -95,7 +95,8 @@ public class VirtualDomainRepositoryImpl extends RepositoryImpl<VirtualDomain> i
 		return errors;
 	}
 
-	private VirtualDomain hasEquals(VirtualDomain virtualDomain) {
+	@Override
+	public VirtualDomain hasEquals(VirtualDomain virtualDomain) {
 		try {
 			StringBuilder  hql = new StringBuilder("from VirtualDomain where domain = :domain ");
 			if(virtualDomain.getId() != null){

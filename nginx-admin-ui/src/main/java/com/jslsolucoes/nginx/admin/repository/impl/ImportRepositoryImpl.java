@@ -72,7 +72,8 @@ public class ImportRepositoryImpl implements ImportRepository {
 				serverDirective.getAliases().stream().forEach(domain -> {
 					try {
 						
-						if(!StringUtils.isEmpty(serverDirective.getUpstream())){
+						if(!StringUtils.isEmpty(serverDirective.getUpstream()) 
+								&& virtualDomainRepository.hasEquals(new VirtualDomain(domain)) == null){
 							SslCertificate sslCertificate = null;
 							if (!StringUtils.isEmpty(serverDirective.getSslCertificate())) {
 								OperationResult operationResult = sslCertificateRepository.saveOrUpdate(
@@ -99,18 +100,20 @@ public class ImportRepositoryImpl implements ImportRepository {
 		directives.stream().filter(directive -> directive.type().equals(DirectiveType.UPSTREAM)).forEach(directive -> {
 			try {
 				UpstreamDirective upstreamDirective = ((UpstreamDirective) directive);
-				upstreamRepository.saveOrUpdate(
-						new Upstream(upstreamDirective.getName(),
-								strategyRepository.findByName(upstreamDirective.getStrategy())),
-						Lists.transform(upstreamDirective.getServers(),
-								new Function<UpstreamDirectiveServer, UpstreamServer>() {
-									@Override
-									public UpstreamServer apply(UpstreamDirectiveServer upstreamDirectiveServer) {
-										return new UpstreamServer(
-												serverRepository.findByIp(upstreamDirectiveServer.getIp()),
-												(upstreamDirectiveServer.getPort() == null ? 80 : upstreamDirectiveServer.getPort()));
-									}
-								}));
+				if(upstreamRepository.hasEquals(new Upstream(upstreamDirective.getName())) == null){
+					upstreamRepository.saveOrUpdate(
+							new Upstream(upstreamDirective.getName(),
+									strategyRepository.findByName(upstreamDirective.getStrategy())),
+							Lists.transform(upstreamDirective.getServers(),
+									new Function<UpstreamDirectiveServer, UpstreamServer>() {
+										@Override
+										public UpstreamServer apply(UpstreamDirectiveServer upstreamDirectiveServer) {
+											return new UpstreamServer(
+													serverRepository.findByIp(upstreamDirectiveServer.getIp()),
+													(upstreamDirectiveServer.getPort() == null ? 80 : upstreamDirectiveServer.getPort()));
+										}
+									}));
+				}
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}

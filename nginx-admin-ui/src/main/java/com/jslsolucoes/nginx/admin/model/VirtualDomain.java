@@ -65,6 +65,10 @@ public class VirtualDomain implements Serializable {
 		this.upstream = upstream;
 	}
 
+	public VirtualDomain(String domain) {
+		this.domain = domain;
+	}
+
 	public Long getId() {
 		return id;
 	}

@@ -17,4 +17,6 @@ public interface VirtualDomainRepository {
 	public OperationResult saveOrUpdate(VirtualDomain virtualDomain);
 
 	public List<String> validateBeforeSaveOrUpdate(VirtualDomain virtualDomain);
+
+	public VirtualDomain hasEquals(VirtualDomain virtualDomain);
 }
