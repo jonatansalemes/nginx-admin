@@ -71,7 +71,6 @@ public class ImportRepositoryImpl implements ImportRepository {
 				ServerDirective serverDirective = ((ServerDirective) directive);
 				serverDirective.getAliases().stream().forEach(domain -> {
 					try {
-						
 						if(!StringUtils.isEmpty(serverDirective.getUpstream()) 
 								&& virtualDomainRepository.hasEquals(new VirtualDomain(domain)) == null){
 							SslCertificate sslCertificate = null;

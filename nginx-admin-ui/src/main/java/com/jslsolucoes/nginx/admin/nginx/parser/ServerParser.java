@@ -1,6 +1,5 @@
 package com.jslsolucoes.nginx.admin.nginx.parser;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,7 +8,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.jslsolucoes.nginx.admin.nginx.parser.directive.Directive;
@@ -17,15 +15,15 @@ import com.jslsolucoes.nginx.admin.nginx.parser.directive.ServerDirective;
 
 public class ServerParser implements Parser {
 
-	private File file;
+	private String fileContent;
 
-	public ServerParser(File file) {
-		this.file = file;
+	public ServerParser(String fileContent) {
+		this.fileContent = fileContent;
 	}
 
 	public List<Directive> parse() throws IOException {
 		List<Directive> virtualHosts = new ArrayList<Directive>();
-		for (String block : blocks(file)) {
+		for (String block : blocks()) {
 
 			ServerDirective virtualHost = new ServerDirective();
 
@@ -59,9 +57,10 @@ public class ServerParser implements Parser {
 		return virtualHosts;
 	}
 
-	private List<String> blocks(File file) throws IOException {
+	private List<String> blocks() throws IOException {
 		List<String> blocks = new ArrayList<String>();
-		List<String> lines = FileUtils.readLines(file, "UTF-8");
+		List<String> lines = Arrays.asList(fileContent.split("\n"));
+		
 		AtomicInteger atomicInteger = new AtomicInteger(0);
 		AtomicInteger currentLine = new AtomicInteger(1);
 		Integer indexStart = 0;
@@ -84,10 +83,8 @@ public class ServerParser implements Parser {
 
 	@Override
 	public Boolean accepts() throws IOException {
-		return Pattern.compile("server(\\s{1,})\\{").matcher(content()).find();
+		return Pattern.compile("server(\\s{1,})\\{").matcher(fileContent).find();
 	}
 
-	private String content() throws IOException {
-		return FileUtils.readFileToString(file, "UTF-8");
-	}
+	
 }

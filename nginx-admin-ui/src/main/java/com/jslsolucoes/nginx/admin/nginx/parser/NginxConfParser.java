@@ -27,7 +27,7 @@ public class NginxConfParser {
 			String directory = includes.group(1).trim();
 			String pattern = includes.group(2).trim().replaceAll("\\*", "\\.\\*");
 			for (File file : FileUtils.listFiles(new File(directory), new RegexFileFilter(pattern), null)) {
-				for(Parser parser : parsers(file)){
+				for(Parser parser : parsers(content(file))){
 					if(parser.accepts()){
 						directives.addAll(parser.parse());
 					}
@@ -38,10 +38,14 @@ public class NginxConfParser {
 	}
 	
 	@SuppressWarnings("serial")
-	private List<Parser> parsers(File file){
+	private List<Parser> parsers(String fileContent){
 		return new ArrayList<Parser>(){{
-			add(new UpstreamParser(file));
-			add(new ServerParser(file));
+			add(new UpstreamParser(fileContent));
+			add(new ServerParser(fileContent));
 		}};
+	}
+	
+	private String content(File file) throws IOException {
+		return FileUtils.readFileToString(file, "UTF-8").replaceAll("#(.*)","");
 	}
 }
