@@ -16,10 +16,21 @@
 				<html:input name="settings" value="${ nginx.settings }"
 					placeholder="{nginx.settings.placeholder}" required="true"></html:input>
 			</html:formGroup>
+			<html:formGroup>
+				<html:listGroup>
+					<html:listGroupItem>
+						<html:input checked="${ nginx.gzip }" name="gzip"
+							value="1" type="checkbox"></html:input> <fmt:message key="nginx.enable.gzip"></fmt:message>
+				</html:listGroupItem>
+				</html:listGroup>
+			</html:formGroup>
+			<html:formGroup label="{nginx.max.post.size}" required="true">
+				<html:input value="${ nginx.maxPostSize }" name="maxPostSize" type="number" maxLength="9999"
+							placeholder="{nginx.max.post.size.placeholder}" required="true"></html:input>
+			</html:formGroup>
 			<html:toolbar>
 				<html:button state="primary" type="submit" label="{nginx.save.settings}"></html:button>
 			</html:toolbar>
-			
 		</html:form>
 	</html:block>
 	
