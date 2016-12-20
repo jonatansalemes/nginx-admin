@@ -22,7 +22,7 @@ public class NginxConfParser {
 
 	public List<Directive> parse() throws IOException {
 		List<Directive> directives = new ArrayList<Directive>();
-		Matcher includes = Pattern.compile("include (.*)/(.*);").matcher(FileUtils.readFileToString(new File(location), "UTF-8"));
+		Matcher includes = Pattern.compile("include (.*)/(.*);").matcher(content(new File(location)));
 		while (includes.find()) {
 			String directory = includes.group(1).trim();
 			String pattern = includes.group(2).trim().replaceAll("\\*", "\\.\\*");
