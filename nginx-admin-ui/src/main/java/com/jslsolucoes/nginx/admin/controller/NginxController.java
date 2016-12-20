@@ -28,9 +28,11 @@ public class NginxController {
 		this.nginxRepository = nginxRepository;
 	}
 
-	public void validate(Long id, String bin, String settings) {
+	public void validate(Long id, String bin, String settings, Integer gzip,
+			Integer maxPostSize) {
 		this.result.use(Results.json())
-				.from(HtmlUtil.convertToUnodernedList(nginxRepository.validateBeforeSaveOrUpdate(new Nginx(id, bin, settings))),
+				.from(HtmlUtil.convertToUnodernedList(nginxRepository
+						.validateBeforeSaveOrUpdate(new Nginx(id, bin, settings,  gzip, maxPostSize))),
 						"errors")
 				.serialize();
 	}
@@ -39,8 +41,9 @@ public class NginxController {
 		this.result.include("nginx", this.nginxRepository.configuration());
 	}
 
-	public void update(Long id, String bin, String settings) {
-		this.nginxRepository.saveOrUpdate(new Nginx(id, bin, settings));
+	public void update(Long id, String bin, String settings, Integer gzip,
+			Integer maxPostSize) {
+		this.nginxRepository.saveOrUpdate(new Nginx(id, bin, settings,gzip, maxPostSize));
 		this.result.include("updated", true);
 		this.result.redirectTo(this).edit();
 	}

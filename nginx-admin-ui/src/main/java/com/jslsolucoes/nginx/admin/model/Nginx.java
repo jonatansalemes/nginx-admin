@@ -24,19 +24,27 @@ public class Nginx implements Serializable {
 
 	@Column(name = "settings")
 	private String settings;
+	
+	@Column(name = "gzip")
+	private Integer gzip;
+	
+	@Column(name = "max_post_size")
+	private Integer maxPostSize;
 
 	public Nginx() {
 
 	}
 	
 	public Nginx(String bin, String home) {
-		this(null, bin, home);
+		this(null, bin, home,1,100);
 	}
 
-	public Nginx(Long id, String bin, String settings) {
+	public Nginx(Long id, String bin, String settings,Integer gzip,Integer maxPostSize) {
 		this.id = id;
 		this.bin = bin;
 		this.settings = settings;
+		this.gzip = (gzip == null ? 0 : gzip);
+		this.maxPostSize = maxPostSize;
 	}
 
 	public Long getId() {
@@ -94,6 +102,22 @@ public class Nginx implements Serializable {
 
 	public File setting() {
 		return new File(settings);
+	}
+
+	public Integer getGzip() {
+		return gzip;
+	}
+
+	public void setGzip(Integer gzip) {
+		this.gzip = gzip;
+	}
+
+	public Integer getMaxPostSize() {
+		return maxPostSize;
+	}
+
+	public void setMaxPostSize(Integer maxPostSize) {
+		this.maxPostSize = maxPostSize;
 	}
 
 	
