@@ -36,7 +36,7 @@ import com.jslsolucoes.nginx.admin.repository.NginxRepository;
 import com.jslsolucoes.nginx.admin.repository.ResourceIdentifierRepository;
 import com.jslsolucoes.nginx.admin.repository.UpstreamRepository;
 import com.jslsolucoes.nginx.admin.repository.UpstreamServerRepository;
-import com.jslsolucoes.nginx.admin.util.TemplateProcessor;
+import com.jslsolucoes.nginx.admin.template.TemplateProcessor;
 
 @RequestScoped
 public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements UpstreamRepository {

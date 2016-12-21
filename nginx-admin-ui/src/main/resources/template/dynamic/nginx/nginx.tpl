@@ -38,7 +38,7 @@ http {
 
 	<#if nginx.gzip == 1>
 	    gzip 		on;
-	    gzip_types 	application/json application/x-javascript application/javascript application/xml application/xml+rss text/html text/plain text/css text/xml text/javascript image/svg+xml;
+	    gzip_types 	application/json application/x-javascript application/javascript application/xml application/xml+rss text/plain text/css text/xml text/javascript image/svg+xml;
     </#if>
     
     include  	${ nginx.settings }/upstream/*.conf;

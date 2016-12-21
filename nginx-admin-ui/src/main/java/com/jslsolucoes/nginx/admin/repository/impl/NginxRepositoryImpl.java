@@ -35,9 +35,8 @@ import org.jboss.vfs.VirtualFile;
 
 import com.jslsolucoes.nginx.admin.i18n.Messages;
 import com.jslsolucoes.nginx.admin.model.Nginx;
-import com.jslsolucoes.nginx.admin.os.OperationalSystem;
 import com.jslsolucoes.nginx.admin.repository.NginxRepository;
-import com.jslsolucoes.nginx.admin.util.TemplateProcessor;
+import com.jslsolucoes.nginx.admin.template.TemplateProcessor;
 
 @RequestScoped
 public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxRepository {
@@ -107,13 +106,12 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 	private void conf(Nginx nginx) throws Exception {
 		new TemplateProcessor().withTemplate("nginx.tpl")
 			.withData("nginx", nginx)
-			.withData("so", OperationalSystem.info().getOperationalSystemType())
 			.toLocation(new File(nginx.setting(), "nginx.conf")).process();
 	}
 
 	private void copy(Nginx nginx) throws IOException {
 		FileUtils.forceMkdir(nginx.setting());
-		copyToDirectory(getClass().getResource("/template/nginx"), nginx.setting(), file -> {
+		copyToDirectory(getClass().getResource("/template/fixed/nginx"), nginx.setting(), file -> {
 			return !FilenameUtils.getExtension(file.getName()).equals("tpl");
 		});
 	}
