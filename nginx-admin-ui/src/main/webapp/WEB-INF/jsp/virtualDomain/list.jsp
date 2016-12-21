@@ -8,7 +8,9 @@
 
 	<html:block>
 
-		<html:grid data="${ virtualDomainList }" var="virtualDomain" label="{virtualDomain.list}" paginate="false">
+		<html:grid
+		 search="true" url="/virtualDomain/list"
+		 data="${ virtualDomainList }" var="virtualDomain" label="{virtualDomain.list}" paginate="false">
 			<html:gridColumn label="{virtualDomain.domain}" exportable="true">
 				${ virtualDomain.domain }
 			</html:gridColumn>

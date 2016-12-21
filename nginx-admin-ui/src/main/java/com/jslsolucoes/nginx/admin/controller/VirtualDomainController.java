@@ -40,8 +40,12 @@ public class VirtualDomainController {
 		this.sslCertificateRepository = sslCertificateRepository;
 	}
 
-	public void list() {
-		this.result.include("virtualDomainList", virtualDomainRepository.listAll());
+	public void list(boolean search,String term) {
+		if(search) {
+			this.result.include("virtualDomainList", virtualDomainRepository.search(term));
+		} else {
+			this.result.include("virtualDomainList", virtualDomainRepository.listAll());
+		}
 	}
 
 	public void form() {
@@ -69,7 +73,7 @@ public class VirtualDomainController {
 	@Path("delete/{id}")
 	public void delete(Long id) {
 		this.result.include("operation", virtualDomainRepository.delete(new VirtualDomain(id)));
-		this.result.redirectTo(this).list();
+		this.result.redirectTo(this).list(false,null);
 	}
 
 	@Post

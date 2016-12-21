@@ -19,4 +19,6 @@ public interface VirtualDomainRepository {
 	public List<String> validateBeforeSaveOrUpdate(VirtualDomain virtualDomain);
 
 	public VirtualDomain hasEquals(VirtualDomain virtualDomain);
+
+	public List<VirtualDomain> search(String term);
 }
