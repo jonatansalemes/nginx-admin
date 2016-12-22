@@ -25,6 +25,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import org.apache.commons.io.FileUtils;
+
 import com.jslsolucoes.nginx.admin.i18n.Messages;
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.model.VirtualHost;
@@ -66,6 +68,20 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 			configure(virtualHost);
 			return operationResult;
 		} catch (Exception exception) {
+			throw new RuntimeException(exception);
+		}
+	}
+	
+	@Override
+	public OperationType delete(VirtualHost virtualHost) {
+		try {
+			virtualHost = load(virtualHost);
+			String hash = virtualHost.getResourceIdentifier().getHash();
+			FileUtils.forceDelete(new File(nginxRepository.configuration().virtualHost(),hash + ".conf"));
+			super.delete(virtualHost);
+			resourceIdentifierRepository.delete(hash);
+			return OperationType.DELETE;
+		} catch(Exception exception) {
 			throw new RuntimeException(exception);
 		}
 	}

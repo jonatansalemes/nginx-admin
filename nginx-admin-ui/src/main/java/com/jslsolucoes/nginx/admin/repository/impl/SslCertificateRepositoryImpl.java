@@ -26,27 +26,51 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.model.SslCertificate;
 import com.jslsolucoes.nginx.admin.repository.NginxRepository;
+import com.jslsolucoes.nginx.admin.repository.ResourceIdentifierRepository;
 import com.jslsolucoes.nginx.admin.repository.SslCertificateRepository;
 
 @RequestScoped
 public class SslCertificateRepositoryImpl extends RepositoryImpl<SslCertificate> implements SslCertificateRepository {
 
 	private NginxRepository nginxRepository;
+	private ResourceIdentifierRepository resourceIdentifierRepository;
 
 	public SslCertificateRepositoryImpl() {
 
 	}
 
 	@Inject
-	public SslCertificateRepositoryImpl(EntityManager entityManager, NginxRepository nginxRepository) {
+	public SslCertificateRepositoryImpl(EntityManager entityManager, NginxRepository nginxRepository,
+			ResourceIdentifierRepository resourceIdentifierRepository) {
 		super(entityManager);
 		this.nginxRepository = nginxRepository;
+		this.resourceIdentifierRepository = resourceIdentifierRepository;
+	}
+	
+	
+	@Override
+	public OperationType delete(SslCertificate sslCertificate) {
+		try {
+			File ssl = nginxRepository.configuration().ssl();
+			sslCertificate = load(sslCertificate);
+			String sslCertificateHash = sslCertificate.getCertificate();
+			String sslCertificatePrivateKeyHash = sslCertificate.getCertificatePrivateKey();
+			FileUtils.forceDelete(new File(ssl,sslCertificateHash + ".conf"));
+			FileUtils.forceDelete(new File(ssl,sslCertificatePrivateKeyHash + ".conf"));
+			super.delete(sslCertificate);
+			resourceIdentifierRepository.delete(sslCertificateHash);
+			resourceIdentifierRepository.delete(sslCertificatePrivateKeyHash); 
+			return OperationType.DELETE;
+		} catch(Exception exception) {
+			throw new RuntimeException(exception);
+		}
 	}
 
 	@Override
