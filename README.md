@@ -14,9 +14,8 @@ Nginx admin is an open source multiplatform manager for nginx software to easy a
 
 Screenshots : 
 
-[img]:https://img.shields.io/badge/License-Apache%202-blue.svg
-[img]:https://img.shields.io/badge/License-Apache%202-blue.svg
-[img]:https://img.shields.io/badge/License-Apache%202-blue.svg
+![alt tag](https://raw.githubusercontent.com/jslsolucoes/nginx-admin/tree/develop/nginx-admin-ui-screenshot/screenshot1.png)
+
  
 Supported operational system :
 <ul>
