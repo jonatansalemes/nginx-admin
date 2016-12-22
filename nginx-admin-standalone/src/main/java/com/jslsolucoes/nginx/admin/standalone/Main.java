@@ -37,7 +37,7 @@ public class Main {
 					.rootLogger(Level.ERROR));
 			swarm.start();
 
-			InputStream war = Main.class.getResourceAsStream("/nginx-admin-ui-1.0.2.war");
+			InputStream war = Main.class.getResourceAsStream("/nginx-admin-ui-1.0.3.war");
 			File file = File.createTempFile(UUID.randomUUID().toString(), ".war");
 			FileUtils.copyInputStreamToFile(war, file);
 			file.deleteOnExit();
