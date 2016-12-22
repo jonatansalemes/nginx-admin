@@ -15,43 +15,43 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.repository.impl;
 
-import java.util.UUID;
+import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
-import com.jslsolucoes.nginx.admin.model.ResourceIdentifier;
-import com.jslsolucoes.nginx.admin.repository.ResourceIdentifierRepository;
+import com.jslsolucoes.nginx.admin.model.VirtualHost;
+import com.jslsolucoes.nginx.admin.model.VirtualHostLocation;
+import com.jslsolucoes.nginx.admin.repository.VirtualHostLocationRepository;
 
 @RequestScoped
-public class ResourceIdentifierRepositoryImpl extends RepositoryImpl<ResourceIdentifier>
-		implements ResourceIdentifierRepository {
+public class VirtualHostLocationRepositoryImpl extends RepositoryImpl<VirtualHostLocation>
+		implements VirtualHostLocationRepository {
 
-	public ResourceIdentifierRepositoryImpl() {
+	public VirtualHostLocationRepositoryImpl() {
 
 	}
 
 	@Inject
-	public ResourceIdentifierRepositoryImpl(EntityManager entityManager) {
+	public VirtualHostLocationRepositoryImpl(EntityManager entityManager) {
 		super(entityManager);
 	}
 
 	@Override
-	public ResourceIdentifier create() {
-		ResourceIdentifier resourceIdentifier = new ResourceIdentifier(UUID.randomUUID().toString());
-		super.insert(resourceIdentifier);
-		return resourceIdentifier;
+	public void deleteAllFor(VirtualHost virtualHost) {
+		entityManager
+				.createQuery(
+						"delete from VirtualHostLocation virtualHostLocation where virtualHostLocation.virtualHost.id = :idVirtualHost")
+				.setParameter("idVirtualHost", virtualHost.getId()).executeUpdate();
 	}
 
 	@Override
-	public void delete(String hash) throws Exception {
-		super.delete(findByHash(hash));
+	public void recreate(VirtualHost virtualHost, List<VirtualHostLocation> aliases) {
+		deleteAllFor(virtualHost);
+		for (VirtualHostLocation virtualHostLocation : aliases) {
+			virtualHostLocation.setVirtualHost(virtualHost);
+			super.insert(virtualHostLocation);
+		}
 	}
-
-	private ResourceIdentifier findByHash(String hash) {
-		return (ResourceIdentifier) entityManager.createQuery("from ResourceIdentifier where hash = :hash")
-				.setParameter("hash", hash).getSingleResult();
-	}
-
 }

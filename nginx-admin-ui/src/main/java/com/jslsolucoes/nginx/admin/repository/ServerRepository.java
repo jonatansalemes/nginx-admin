@@ -10,7 +10,7 @@ public interface ServerRepository {
 
 	public List<Server> listAll();
 
-	public OperationType delete(Server server);
+	public OperationType delete(Server server) throws Exception;
 
 	public Server load(Server server);
 

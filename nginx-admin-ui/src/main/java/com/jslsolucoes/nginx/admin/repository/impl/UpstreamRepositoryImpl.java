@@ -96,18 +96,14 @@ public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements 
 	}
 
 	@Override
-	public OperationType delete(Upstream upstream) {
+	public OperationType delete(Upstream upstream) throws Exception {
 		upstreamServerRepository.deleteAllFor(upstream);
-		try {
-			upstream = load(upstream);
-			String hash = upstream.getResourceIdentifier().getHash();
-			FileUtils.forceDelete(new File(nginxRepository.configuration().upstream(),hash + ".conf"));
-			super.delete(upstream);
-			resourceIdentifierRepository.delete(hash);
-			return OperationType.DELETE;
-		} catch(Exception exception) {
-			throw new RuntimeException(exception);
-		}
+		upstream = load(upstream);
+		String hash = upstream.getResourceIdentifier().getHash();
+		FileUtils.forceDelete(new File(nginxRepository.configuration().upstream(),hash + ".conf"));
+		super.delete(upstream);
+		resourceIdentifierRepository.delete(hash);
+		return OperationType.DELETE;
 	}
 
 	@Override

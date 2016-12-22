@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
 
 import com.jslsolucoes.nginx.admin.nginx.parser.directive.Directive;
+import com.jslsolucoes.nginx.admin.nginx.parser.directive.LocationDirective;
 import com.jslsolucoes.nginx.admin.nginx.parser.directive.ServerDirective;
 
 public class ServerParser implements Parser {
@@ -47,14 +48,27 @@ public class ServerParser implements Parser {
 				virtualHost.setSslCertificateKey(sslCertificateKey.group(2));
 			}
 			
-			Matcher upstreams = Pattern.compile("proxy_pass(\\s{1,})(https?:\\/\\/)(.*?);").matcher(block);
-			while (upstreams.find()) {
-				virtualHost.setUpstream(upstreams.group(3));
-			}
-			
+			virtualHost.setLocations(locations(block));
 			virtualHosts.add(virtualHost);
 		}
 		return virtualHosts;
+	}
+
+	private List<LocationDirective> locations(String block) {
+		List<LocationDirective> locationDirectives = new ArrayList<LocationDirective>();
+		
+		Matcher locations = Pattern.compile("location(\\s{1,})(.*?)(\\s{0,})\\{(.*?)\\}",Pattern.DOTALL).matcher(block);
+		while (locations.find()) {	
+			LocationDirective locationDirective = new LocationDirective();
+			locationDirective.setPath(locations.group(2));
+			
+			Matcher upstream = Pattern.compile("proxy_pass(\\s{1,})(https?:\\/\\/)(.*?);").matcher(locations.group(4));
+			while (upstream.find()) {
+				locationDirective.setUpstream(upstream.group(3));
+			}
+			locationDirectives.add(locationDirective);
+		}
+		return locationDirectives;
 	}
 
 	private List<String> blocks() throws IOException {

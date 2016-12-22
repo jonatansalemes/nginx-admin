@@ -71,7 +71,7 @@ public class UpstreamController {
 	}
 
 	@Path("delete/{id}")
-	public void delete(Long id) {
+	public void delete(Long id) throws Exception {
 		this.result.include("operation", upstreamRepository.delete(new Upstream(id)));
 		this.result.redirectTo(this).list();
 	}

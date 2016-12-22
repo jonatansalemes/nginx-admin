@@ -92,11 +92,11 @@ public abstract class RepositoryImpl<T> {
 		return (Long) new Mirror().on(entity).invoke().getterFor(fields.get(0));
 	}
 
-	public OperationType delete(Long id) {
+	public OperationType delete(Long id) throws Exception {
 		return delete(load(id));
 	}
 
-	public OperationType delete(T entity) {
+	public OperationType delete(T entity) throws Exception {
 		this.entityManager.remove(load(entity));
 		return OperationType.DELETE;
 	}

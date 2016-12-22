@@ -71,6 +71,8 @@ public class ImportRepositoryImpl implements ImportRepository {
 				ServerDirective serverDirective = ((ServerDirective) directive);
 				serverDirective.getAliases().stream().forEach(alias -> {
 					try {
+						
+						/*
 						if(!StringUtils.isEmpty(serverDirective.getUpstream()) 
 								&& virtualHostRepository.hasEquals(new VirtualHost(alias)) == null){
 							SslCertificate sslCertificate = null;
@@ -85,6 +87,8 @@ public class ImportRepositoryImpl implements ImportRepository {
 								.saveOrUpdate(new VirtualHost(alias, (serverDirective.getPort() == 80 ? 0 : 1),
 										sslCertificate, upstreamRepository.findByName(serverDirective.getUpstream())));
 						}
+						*/
+						
 					} catch (Exception e) {
 						throw new RuntimeException(e);
 					}

@@ -11,8 +11,12 @@
 		<html:grid
 		 search="true" url="/virtualHost/list"
 		 data="${ virtualHostList }" var="virtualHost" label="{virtualHost.list}" paginate="false">
-			<html:gridColumn label="{virtualHost.domain}" exportable="true">
-				${ virtualHost.domain }
+			<html:gridColumn label="{virtualHost.aliases}">
+				<html:grid data="${ virtualHost.aliases }" var="virtualHostAlias" simple="true">
+					<html:gridColumn label="{virtualHost.alias}">
+						${ virtualHostAlias.alias }
+					</html:gridColumn>
+				</html:grid>
 			</html:gridColumn>
 			<html:gridColumn label="{virtualHost.https}" booleanType="true" exportable="true">
 				${ virtualHost.https }
@@ -20,8 +24,15 @@
 			<html:gridColumn label="{ssl.common.name}" exportable="true">
 				${ virtualHost.sslCertificate.commonName }
 			</html:gridColumn>
-			<html:gridColumn label="{upstream.name}" exportable="true">
-				${ virtualHost.upstream.name }
+			<html:gridColumn label="{virtualHost.locations}">
+				<html:grid data="${ virtualHost.locations }" var="virtualHostLocation" simple="true">
+					<html:gridColumn label="{virtualHost.location}">
+						${ virtualHostLocation.path }
+					</html:gridColumn>
+					<html:gridColumn label="{upstream.name}">
+						${ virtualHostLocation.upstream.name }
+					</html:gridColumn>
+				</html:grid>
 			</html:gridColumn>
 			<html:gridColumn>
 				<html:buttonGroup spaced="true">

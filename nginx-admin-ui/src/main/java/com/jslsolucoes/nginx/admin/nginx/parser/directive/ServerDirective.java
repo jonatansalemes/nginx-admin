@@ -8,7 +8,7 @@ public class ServerDirective implements Directive {
 	private List<String> aliases;
 	private String sslCertificate;
 	private String sslCertificateKey;
-	private String upstream;
+	private List<LocationDirective> locations;
 	
 	public Integer getPort() {
 		return port;
@@ -35,15 +35,16 @@ public class ServerDirective implements Directive {
 		this.sslCertificateKey = sslCertificateKey;
 	}
 	
+	public List<LocationDirective> getLocations() {
+		return locations;
+	}
+	public void setLocations(List<LocationDirective> locations) {
+		this.locations = locations;
+	}
+	
 	@Override
 	public DirectiveType type() {
 		return DirectiveType.SERVER;
-	}
-	public String getUpstream() {
-		return upstream;
-	}
-	public void setUpstream(String upstream) {
-		this.upstream = upstream;
 	}
 	
 }
