@@ -28,7 +28,6 @@ import javax.persistence.Query;
 import com.jslsolucoes.nginx.admin.i18n.Messages;
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.model.VirtualHost;
-import com.jslsolucoes.nginx.admin.nginx.runner.Runner;
 import com.jslsolucoes.nginx.admin.repository.NginxRepository;
 import com.jslsolucoes.nginx.admin.repository.ResourceIdentifierRepository;
 import com.jslsolucoes.nginx.admin.repository.VirtualHostRepository;
@@ -39,7 +38,7 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 
 	private ResourceIdentifierRepository resourceIdentifierRepository;
 	private NginxRepository nginxRepository;
-	private Runner runner;
+	
 
 	public VirtualHostRepositoryImpl() {
 
@@ -47,11 +46,10 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 
 	@Inject
 	public VirtualHostRepositoryImpl(EntityManager entityManager,
-			ResourceIdentifierRepository resourceIdentifierRepository, NginxRepository nginxRepository, Runner runner) {
+			ResourceIdentifierRepository resourceIdentifierRepository, NginxRepository nginxRepository) {
 		super(entityManager);
 		this.resourceIdentifierRepository = resourceIdentifierRepository;
 		this.nginxRepository = nginxRepository;
-		this.runner = runner;
 	}
 
 	@Override
@@ -66,7 +64,6 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 			OperationResult operationResult = super.saveOrUpdate(virtualHost);
 			flushAndClear();
 			configure(virtualHost);
-			runner.reload();
 			return operationResult;
 		} catch (Exception exception) {
 			throw new RuntimeException(exception);

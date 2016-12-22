@@ -31,7 +31,6 @@ import org.apache.commons.io.FileUtils;
 import com.jslsolucoes.nginx.admin.i18n.Messages;
 import com.jslsolucoes.nginx.admin.model.Upstream;
 import com.jslsolucoes.nginx.admin.model.UpstreamServer;
-import com.jslsolucoes.nginx.admin.nginx.runner.Runner;
 import com.jslsolucoes.nginx.admin.repository.NginxRepository;
 import com.jslsolucoes.nginx.admin.repository.ResourceIdentifierRepository;
 import com.jslsolucoes.nginx.admin.repository.UpstreamRepository;
@@ -44,7 +43,6 @@ public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements 
 	private UpstreamServerRepository upstreamServerRepository;
 	private NginxRepository nginxRepository;
 	private ResourceIdentifierRepository resourceIdentifierRepository;
-	private Runner runner;
 
 	public UpstreamRepositoryImpl() {
 
@@ -52,13 +50,11 @@ public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements 
 
 	@Inject
 	public UpstreamRepositoryImpl(EntityManager entityManager, UpstreamServerRepository upstreamServerRepository,
-			NginxRepository nginxRepository, ResourceIdentifierRepository resourceIdentifierRepository,
-			Runner runner) {
+			NginxRepository nginxRepository, ResourceIdentifierRepository resourceIdentifierRepository) {
 		super(entityManager);
 		this.upstreamServerRepository = upstreamServerRepository;
 		this.nginxRepository = nginxRepository;
 		this.resourceIdentifierRepository = resourceIdentifierRepository;
-		this.runner = runner;
 	}
 
 	@Override
@@ -71,7 +67,6 @@ public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements 
 		upstreamServerRepository.recreate(new Upstream(operationResult.getId()), upstreamServers);
 		flushAndClear();
 		configure(upstream);
-		runner.reload();
 		return operationResult;
 	}
 
