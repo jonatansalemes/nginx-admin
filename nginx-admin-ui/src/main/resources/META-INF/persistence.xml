@@ -17,6 +17,8 @@
 		<class>com.jslsolucoes.nginx.admin.model.Upstream</class>
 		<class>com.jslsolucoes.nginx.admin.model.UpstreamServer</class>
 		<class>com.jslsolucoes.nginx.admin.model.VirtualHost</class>
+		<class>com.jslsolucoes.nginx.admin.model.VirtualHostAlias</class>
+		<class>com.jslsolucoes.nginx.admin.model.VirtualHostLocation</class>
 		<class>com.jslsolucoes.nginx.admin.model.ResourceIdentifier</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />

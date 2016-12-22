@@ -20,7 +20,7 @@
 					<html:listGroupItem>
 						<html:input name="https" checked="${ virtualHost.https }"
 							value="1" type="checkbox"></html:input>
-						<fmt:message key="virtualHost.https"></fmt:message>
+						 <fmt:message key="virtualHost.https"></fmt:message>
 					</html:listGroupItem>
 				</html:listGroup>
 			</html:formGroup>
@@ -38,10 +38,10 @@
 			<html:formGroup>
 				<html:detailTable atLeast="1" data="${ virtualHost.aliases  }"
 					var="virtualHostAlias" label="{virtualHost.aliases}">
-					<html:formGroup label="{virtualHost.alias}" required="true">
+					<html:detailTableColumn label="{virtualHost.alias}" required="true">
 						<html:input name="aliases[]" value="${ virtualHostAlias.alias }"
 							placeholder="{virtualHost.alias.placeholder}" required="true"></html:input>
-					</html:formGroup>
+					</html:detailTableColumn>
 				</html:detailTable>
 			</html:formGroup>
 
