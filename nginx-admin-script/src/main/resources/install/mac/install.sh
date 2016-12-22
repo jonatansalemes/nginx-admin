@@ -79,7 +79,7 @@ if ! user_exists nginx-admin ; then
 fi
 
 if ! file_exists "/Library/LaunchDaemons/com.jslsolucoes.nginx.admin.plist" ; then 
-	sudo wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/develop/nginx-admin-script/src/main/resources/install/mac/com.jslsolucoes.nginx.admin.plist -O /Library/LaunchDaemons/com.jslsolucoes.nginx.admin.plist
+	sudo wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/master/nginx-admin-script/src/main/resources/install/mac/com.jslsolucoes.nginx.admin.plist -O /Library/LaunchDaemons/com.jslsolucoes.nginx.admin.plist
 	sudo launchctl load -w /Library/LaunchDaemons/com.jslsolucoes.nginx.admin.plist
 fi
 
