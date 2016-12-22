@@ -19,7 +19,7 @@ import com.jslsolucoes.nginx.admin.model.Server;
 import com.jslsolucoes.nginx.admin.model.SslCertificate;
 import com.jslsolucoes.nginx.admin.model.Upstream;
 import com.jslsolucoes.nginx.admin.model.UpstreamServer;
-import com.jslsolucoes.nginx.admin.model.VirtualDomain;
+import com.jslsolucoes.nginx.admin.model.VirtualHost;
 import com.jslsolucoes.nginx.admin.nginx.parser.NginxConfParser;
 import com.jslsolucoes.nginx.admin.nginx.parser.directive.Directive;
 import com.jslsolucoes.nginx.admin.nginx.parser.directive.DirectiveType;
@@ -31,7 +31,7 @@ import com.jslsolucoes.nginx.admin.repository.ServerRepository;
 import com.jslsolucoes.nginx.admin.repository.SslCertificateRepository;
 import com.jslsolucoes.nginx.admin.repository.StrategyRepository;
 import com.jslsolucoes.nginx.admin.repository.UpstreamRepository;
-import com.jslsolucoes.nginx.admin.repository.VirtualDomainRepository;
+import com.jslsolucoes.nginx.admin.repository.VirtualHostRepository;
 
 @RequestScoped
 public class ImportRepositoryImpl implements ImportRepository {
@@ -39,7 +39,7 @@ public class ImportRepositoryImpl implements ImportRepository {
 	private ServerRepository serverRepository;
 	private UpstreamRepository upstreamRepository;
 	private StrategyRepository strategyRepository;
-	private VirtualDomainRepository virtualDomainRepository;
+	private VirtualHostRepository virtualHostRepository;
 	private SslCertificateRepository sslCertificateRepository;
 
 	public ImportRepositoryImpl() {
@@ -48,12 +48,12 @@ public class ImportRepositoryImpl implements ImportRepository {
 
 	@Inject
 	public ImportRepositoryImpl(ServerRepository serverRepository, UpstreamRepository upstreamRepository,
-			StrategyRepository strategyRepository, VirtualDomainRepository virtualDomainRepository,
+			StrategyRepository strategyRepository, VirtualHostRepository virtualHostRepository,
 			SslCertificateRepository sslCertificateRepository) {
 		this.serverRepository = serverRepository;
 		this.upstreamRepository = upstreamRepository;
 		this.strategyRepository = strategyRepository;
-		this.virtualDomainRepository = virtualDomainRepository;
+		this.virtualHostRepository = virtualHostRepository;
 		this.sslCertificateRepository = sslCertificateRepository;
 	}
 
@@ -69,10 +69,10 @@ public class ImportRepositoryImpl implements ImportRepository {
 		directives.stream().filter(directive -> directive.type().equals(DirectiveType.SERVER)).forEach(directive -> {
 			try {
 				ServerDirective serverDirective = ((ServerDirective) directive);
-				serverDirective.getAliases().stream().forEach(domain -> {
+				serverDirective.getAliases().stream().forEach(alias -> {
 					try {
 						if(!StringUtils.isEmpty(serverDirective.getUpstream()) 
-								&& virtualDomainRepository.hasEquals(new VirtualDomain(domain)) == null){
+								&& virtualHostRepository.hasEquals(new VirtualHost(alias)) == null){
 							SslCertificate sslCertificate = null;
 							if (!StringUtils.isEmpty(serverDirective.getSslCertificate())) {
 								OperationResult operationResult = sslCertificateRepository.saveOrUpdate(
@@ -81,8 +81,8 @@ public class ImportRepositoryImpl implements ImportRepository {
 										new FileInputStream(new File(serverDirective.getSslCertificateKey())));
 								sslCertificate = new SslCertificate(operationResult.getId());
 							}
-							virtualDomainRepository
-								.saveOrUpdate(new VirtualDomain(domain, (serverDirective.getPort() == 80 ? 0 : 1),
+							virtualHostRepository
+								.saveOrUpdate(new VirtualHost(alias, (serverDirective.getPort() == 80 ? 0 : 1),
 										sslCertificate, upstreamRepository.findByName(serverDirective.getUpstream())));
 						}
 					} catch (Exception e) {

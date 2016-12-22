@@ -42,6 +42,6 @@ http {
     </#if>
     
     include  	${ nginx.settings }/upstream/*.conf;
-	include  	${ nginx.settings }/virtual-domain/*.conf;
+	include  	${ nginx.settings }/virtual-host/*.conf;
     
 }

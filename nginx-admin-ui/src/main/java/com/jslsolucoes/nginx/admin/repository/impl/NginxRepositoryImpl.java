@@ -100,7 +100,7 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 
 	private void root(Nginx nginx) throws Exception {
 		new TemplateProcessor().withTemplate("root.tpl").withData("nginx", nginx)
-		.toLocation(new File(nginx.virtualDomain(), "root.conf")).process();
+		.toLocation(new File(nginx.virtualHost(), "root.conf")).process();
 	}
 
 	private void conf(Nginx nginx) throws Exception {

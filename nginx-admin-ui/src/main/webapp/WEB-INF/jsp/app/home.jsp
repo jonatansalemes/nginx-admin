@@ -21,7 +21,7 @@
 				<html:menuItem target="content" url="/sslCertificate/list" icon="lock" label="{ssl.certificates}"></html:menuItem>
 				<html:menuItem target="content" url="/server/list" icon="list" label="{servers}"></html:menuItem>
 				<html:menuItem target="content" url="/upstream/list" icon="indent-left" label="{upstreams}"></html:menuItem>
-				<html:menuItem target="content" url="/virtualDomain/list" icon="globe" label="{virtual.domains}"></html:menuItem>
+				<html:menuItem target="content" url="/virtualHost/list" icon="globe" label="{virtual.hosts}"></html:menuItem>
 			</html:menuButton>
 		</html:container>
 	</html:nav>

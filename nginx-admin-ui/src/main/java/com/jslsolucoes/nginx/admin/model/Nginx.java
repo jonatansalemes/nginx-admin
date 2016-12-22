@@ -83,10 +83,6 @@ public class Nginx implements Serializable {
 	public File conf(){
 		return new File(settings, "nginx.conf");
 	}
-	
-	public File pid(){
-		return new File(settings, "nginx.pid");
-	}
 
 	public File ssl() {
 		return new File(settings, "ssl");
@@ -96,8 +92,8 @@ public class Nginx implements Serializable {
 		return new File(settings, "upstream");
 	}
 	
-	public File virtualDomain() {
-		return new File(settings, "virtual-domain");
+	public File virtualHost() {
+		return new File(settings, "virtual-host");
 	}
 
 	public File setting() {

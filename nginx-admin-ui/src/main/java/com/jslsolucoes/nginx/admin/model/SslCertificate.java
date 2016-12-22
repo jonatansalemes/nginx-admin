@@ -31,7 +31,7 @@ public class SslCertificate implements Serializable {
 	private String certificatePrivateKey;
 	
 	@OneToMany(fetch=FetchType.LAZY,mappedBy="sslCertificate")
-	private Set<VirtualDomain> virtualDomains;
+	private Set<VirtualHost> virtualHosts;
 
 	public SslCertificate() {
 
@@ -84,8 +84,8 @@ public class SslCertificate implements Serializable {
 		this.certificatePrivateKey = certificatePrivateKey;
 	}
 
-	public Set<VirtualDomain> getVirtualDomains() {
-		return virtualDomains;
+	public Set<VirtualHost> getVirtualHosts() {
+		return virtualHosts;
 	}
 
 }

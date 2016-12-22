@@ -15,8 +15,8 @@ import javax.persistence.Table;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "virtual_domain", schema = "admin")
-public class VirtualDomain implements Serializable {
+@Table(name = "virtual_host", schema = "admin")
+public class VirtualHost implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,15 +40,15 @@ public class VirtualDomain implements Serializable {
 	@JoinColumn(name = "id_resource_identifier")
 	private ResourceIdentifier resourceIdentifier;
 
-	public VirtualDomain() {
+	public VirtualHost() {
 
 	}
 	
-	public VirtualDomain(Long id) {
+	public VirtualHost(Long id) {
 		this.id = id;
 	}
 
-	public VirtualDomain(Long id, String domain, Integer https, SslCertificate sslCertificate, Upstream upstream,
+	public VirtualHost(Long id, String domain, Integer https, SslCertificate sslCertificate, Upstream upstream,
 			ResourceIdentifier resourceIdentifier) {
 		this.id = id;
 		this.domain = domain;
@@ -58,14 +58,14 @@ public class VirtualDomain implements Serializable {
 		this.resourceIdentifier = resourceIdentifier;
 	}
 
-	public VirtualDomain(String domain, Integer https, SslCertificate sslCertificate, Upstream upstream) {
+	public VirtualHost(String domain, Integer https, SslCertificate sslCertificate, Upstream upstream) {
 		this.domain = domain;
 		this.https = https;
 		this.sslCertificate = sslCertificate;
 		this.upstream = upstream;
 	}
 
-	public VirtualDomain(String domain) {
+	public VirtualHost(String domain) {
 		this.domain = domain;
 	}
 

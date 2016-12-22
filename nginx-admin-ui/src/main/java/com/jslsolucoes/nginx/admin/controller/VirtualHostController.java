@@ -5,10 +5,10 @@ import javax.inject.Inject;
 import com.jslsolucoes.nginx.admin.model.ResourceIdentifier;
 import com.jslsolucoes.nginx.admin.model.SslCertificate;
 import com.jslsolucoes.nginx.admin.model.Upstream;
-import com.jslsolucoes.nginx.admin.model.VirtualDomain;
+import com.jslsolucoes.nginx.admin.model.VirtualHost;
 import com.jslsolucoes.nginx.admin.repository.SslCertificateRepository;
 import com.jslsolucoes.nginx.admin.repository.UpstreamRepository;
-import com.jslsolucoes.nginx.admin.repository.VirtualDomainRepository;
+import com.jslsolucoes.nginx.admin.repository.VirtualHostRepository;
 import com.jslsolucoes.nginx.admin.repository.impl.OperationResult;
 import com.jslsolucoes.nginx.admin.util.HtmlUtil;
 
@@ -19,32 +19,32 @@ import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
 
 @Controller
-@Path("virtualDomain")
-public class VirtualDomainController {
+@Path("virtualHost")
+public class VirtualHostController {
 
 	private Result result;
-	private VirtualDomainRepository virtualDomainRepository;
+	private VirtualHostRepository virtualHostRepository;
 	private UpstreamRepository upstreamRepository;
 	private SslCertificateRepository sslCertificateRepository;
 
-	public VirtualDomainController() {
+	public VirtualHostController() {
 
 	}
 
 	@Inject
-	public VirtualDomainController(Result result, VirtualDomainRepository virtualDomainRepository,
+	public VirtualHostController(Result result, VirtualHostRepository virtualHostRepository,
 			UpstreamRepository upstreamRepository,SslCertificateRepository sslCertificateRepository) {
 		this.result = result;
-		this.virtualDomainRepository = virtualDomainRepository;
+		this.virtualHostRepository = virtualHostRepository;
 		this.upstreamRepository = upstreamRepository;
 		this.sslCertificateRepository = sslCertificateRepository;
 	}
 
 	public void list(boolean search,String term) {
 		if(search) {
-			this.result.include("virtualDomainList", virtualDomainRepository.search(term));
+			this.result.include("virtualHostList", virtualHostRepository.search(term));
 		} else {
-			this.result.include("virtualDomainList", virtualDomainRepository.listAll());
+			this.result.include("virtualHostList", virtualHostRepository.listAll());
 		}
 	}
 
@@ -57,8 +57,8 @@ public class VirtualDomainController {
 			Long idSslCertificate) {
 		this.result
 				.use(Results.json()).from(
-						HtmlUtil.convertToUnodernedList(virtualDomainRepository.validateBeforeSaveOrUpdate(
-								new VirtualDomain(id, domain, https, new SslCertificate(idSslCertificate),
+						HtmlUtil.convertToUnodernedList(virtualHostRepository.validateBeforeSaveOrUpdate(
+								new VirtualHost(id, domain, https, new SslCertificate(idSslCertificate),
 										new Upstream(idUpstream), new ResourceIdentifier(idResourceIdentifier)))),
 						"errors")
 				.serialize();
@@ -66,21 +66,21 @@ public class VirtualDomainController {
 
 	@Path("edit/{id}")
 	public void edit(Long id) {
-		this.result.include("virtualDomain", virtualDomainRepository.load(new VirtualDomain(id)));
+		this.result.include("virtualHost", virtualHostRepository.load(new VirtualHost(id)));
 		this.result.forwardTo(this).form();
 	}
 
 	@Path("delete/{id}")
 	public void delete(Long id) {
-		this.result.include("operation", virtualDomainRepository.delete(new VirtualDomain(id)));
+		this.result.include("operation", virtualHostRepository.delete(new VirtualHost(id)));
 		this.result.redirectTo(this).list(false,null);
 	}
 
 	@Post
 	public void saveOrUpdate(Long id, String domain, Integer https, Long idUpstream, Long idResourceIdentifier,
 			Long idSslCertificate) throws Exception {
-		OperationResult operationResult = virtualDomainRepository
-				.saveOrUpdate(new VirtualDomain(id, domain, https, new SslCertificate(idSslCertificate),
+		OperationResult operationResult = virtualHostRepository
+				.saveOrUpdate(new VirtualHost(id, domain, https, new SslCertificate(idSslCertificate),
 						new Upstream(idUpstream), new ResourceIdentifier(idResourceIdentifier)));
 		this.result.include("operation", operationResult.getOperationType());
 		this.result.redirectTo(this).edit(operationResult.getId());

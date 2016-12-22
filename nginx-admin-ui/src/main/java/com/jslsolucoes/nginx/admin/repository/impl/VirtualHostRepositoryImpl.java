@@ -27,26 +27,26 @@ import javax.persistence.Query;
 
 import com.jslsolucoes.nginx.admin.i18n.Messages;
 import com.jslsolucoes.nginx.admin.model.Nginx;
-import com.jslsolucoes.nginx.admin.model.VirtualDomain;
+import com.jslsolucoes.nginx.admin.model.VirtualHost;
 import com.jslsolucoes.nginx.admin.nginx.runner.Runner;
 import com.jslsolucoes.nginx.admin.repository.NginxRepository;
 import com.jslsolucoes.nginx.admin.repository.ResourceIdentifierRepository;
-import com.jslsolucoes.nginx.admin.repository.VirtualDomainRepository;
+import com.jslsolucoes.nginx.admin.repository.VirtualHostRepository;
 import com.jslsolucoes.nginx.admin.template.TemplateProcessor;
 
 @RequestScoped
-public class VirtualDomainRepositoryImpl extends RepositoryImpl<VirtualDomain> implements VirtualDomainRepository {
+public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> implements VirtualHostRepository {
 
 	private ResourceIdentifierRepository resourceIdentifierRepository;
 	private NginxRepository nginxRepository;
 	private Runner runner;
 
-	public VirtualDomainRepositoryImpl() {
+	public VirtualHostRepositoryImpl() {
 
 	}
 
 	@Inject
-	public VirtualDomainRepositoryImpl(EntityManager entityManager,
+	public VirtualHostRepositoryImpl(EntityManager entityManager,
 			ResourceIdentifierRepository resourceIdentifierRepository, NginxRepository nginxRepository, Runner runner) {
 		super(entityManager);
 		this.resourceIdentifierRepository = resourceIdentifierRepository;
@@ -55,17 +55,17 @@ public class VirtualDomainRepositoryImpl extends RepositoryImpl<VirtualDomain> i
 	}
 
 	@Override
-	public OperationResult saveOrUpdate(VirtualDomain virtualDomain) {
+	public OperationResult saveOrUpdate(VirtualHost virtualHost) {
 		try {
-			if (virtualDomain.getId() == null) {
-				virtualDomain.setResourceIdentifier(resourceIdentifierRepository.create());
+			if (virtualHost.getId() == null) {
+				virtualHost.setResourceIdentifier(resourceIdentifierRepository.create());
 			}
-			if (virtualDomain.getHttps() == 0) {
-				virtualDomain.setSslCertificate(null);
+			if (virtualHost.getHttps() == 0) {
+				virtualHost.setSslCertificate(null);
 			}
-			OperationResult operationResult = super.saveOrUpdate(virtualDomain);
+			OperationResult operationResult = super.saveOrUpdate(virtualHost);
 			flushAndClear();
-			configure(virtualDomain);
+			configure(virtualHost);
 			runner.reload();
 			return operationResult;
 		} catch (Exception exception) {
@@ -73,38 +73,38 @@ public class VirtualDomainRepositoryImpl extends RepositoryImpl<VirtualDomain> i
 		}
 	}
 
-	private void configure(VirtualDomain virtualDomain) throws Exception {
-		virtualDomain = load(virtualDomain);
+	private void configure(VirtualHost virtualHost) throws Exception {
+		virtualHost = load(virtualHost);
 		Nginx nginx = nginxRepository.configuration();
-		new TemplateProcessor().withTemplate("virtual-domain.tpl").withData("virtualDomain", virtualDomain)
+		new TemplateProcessor().withTemplate("virtual-host.tpl").withData("virtualHost", virtualHost)
 				.withData("nginx", nginx)
-				.toLocation(new File(nginx.virtualDomain(), virtualDomain.getResourceIdentifier().getHash() + ".conf"))
+				.toLocation(new File(nginx.virtualHost(), virtualHost.getResourceIdentifier().getHash() + ".conf"))
 				.process();
 	}
 
 	@Override
-	public List<String> validateBeforeSaveOrUpdate(VirtualDomain virtualDomain) {
+	public List<String> validateBeforeSaveOrUpdate(VirtualHost virtualHost) {
 		List<String> errors = new ArrayList<String>();
 
-		if (hasEquals(virtualDomain) != null) {
-			errors.add(Messages.getString("virtualDomain.already.exists"));
+		if (hasEquals(virtualHost) != null) {
+			errors.add(Messages.getString("virtualHost.already.exists"));
 		}
 
 		return errors;
 	}
 
 	@Override
-	public VirtualDomain hasEquals(VirtualDomain virtualDomain) {
+	public VirtualHost hasEquals(VirtualHost virtualHost) {
 		try {
-			StringBuilder hql = new StringBuilder("from VirtualDomain where domain = :domain ");
-			if (virtualDomain.getId() != null) {
+			StringBuilder hql = new StringBuilder("from VirtualHost where domain = :domain ");
+			if (virtualHost.getId() != null) {
 				hql.append("and id <> :id");
 			}
-			Query query = entityManager.createQuery(hql.toString()).setParameter("domain", virtualDomain.getDomain());
-			if (virtualDomain.getId() != null) {
-				query.setParameter("id", virtualDomain.getId());
+			Query query = entityManager.createQuery(hql.toString()).setParameter("domain", virtualHost.getDomain());
+			if (virtualHost.getId() != null) {
+				query.setParameter("id", virtualHost.getId());
 			}
-			return (VirtualDomain) query.getSingleResult();
+			return (VirtualHost) query.getSingleResult();
 		} catch (NoResultException e) {
 			return null;
 		}
@@ -112,8 +112,8 @@ public class VirtualDomainRepositoryImpl extends RepositoryImpl<VirtualDomain> i
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<VirtualDomain> search(String term) {
-		return entityManager.createQuery("from VirtualDomain where lower(domain) like lower(:term)")
+	public List<VirtualHost> search(String term) {
+		return entityManager.createQuery("from VirtualHost where lower(domain) like lower(:term)")
 				.setParameter("term","%" + term + "%")
 				.getResultList();
 	}

@@ -15,7 +15,7 @@
 			<html:gridColumn>
 				<html:buttonGroup spaced="true">
 					<html:button icon="pencil" url="/server/edit/${ server.id }"></html:button>
-					<html:button state="danger" id="${ server.id }" icon="trash" url="#"></html:button>
+					<html:button disabled="${ !empty(server.upstreamServers) }" state="danger" id="${ server.id }" icon="trash" url="#"></html:button>
 					<html:confirm attachTo="${ server.id }" url="/server/delete/${ server.id }">
 						<fmt:message key="server.delete.confirm">
 							<fmt:param value="${ server.ip }"></fmt:param>
