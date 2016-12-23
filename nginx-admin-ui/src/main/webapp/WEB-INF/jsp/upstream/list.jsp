@@ -25,17 +25,10 @@
 					</html:gridColumn>
 				</html:grid>
 			</html:gridColumn>
-			<html:gridColumn label="{virtual.hosts}" collapsable="true">
-				<html:grid data="${ upstream.virtualHosts }" var="virtualHost" simple="true">
-					<html:gridColumn label="{virtualHost.domain}">
-						${ virtualHost.domain }
-					</html:gridColumn>
-				</html:grid>
-			</html:gridColumn>
 			<html:gridColumn>
 				<html:buttonGroup spaced="true">
 					<html:button icon="pencil" url="/upstream/edit/${ upstream.id }"></html:button>
-					<html:button disabled="${ !empty(upstream.virtualHosts) }" state="danger" id="${ upstream.id }" icon="trash" url="#"></html:button>
+					<html:button disabled="${ !empty(upstream.virtualHostLocations) }" state="danger" id="${ upstream.id }" icon="trash" url="#"></html:button>
 					<html:confirm attachTo="${ upstream.id }" url="/upstream/delete/${ upstream.id }">
 						<fmt:message key="upstream.delete.confirm">
 							<fmt:param value="${ upstream.name }"></fmt:param>
