@@ -152,7 +152,7 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<VirtualHost> search(String term) {
-		return entityManager.createQuery("from VirtualHost where lower(domain) like lower(:term)")
+		return entityManager.createQuery("select distinct virtualHost from VirtualHost virtualHost inner join virtualHost.aliases aliases where lower(aliases.alias) like lower(:term)")
 				.setParameter("term","%" + term + "%")
 				.getResultList();
 	}

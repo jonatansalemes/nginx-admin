@@ -57,7 +57,7 @@ public class VirtualHost implements Serializable {
 		this.resourceIdentifier = resourceIdentifier;
 	}
 
-	public VirtualHost(String domain, Integer https, SslCertificate sslCertificate) {
+	public VirtualHost(Integer https, SslCertificate sslCertificate) {
 		this.https = https;
 		this.sslCertificate = sslCertificate;
 	}
