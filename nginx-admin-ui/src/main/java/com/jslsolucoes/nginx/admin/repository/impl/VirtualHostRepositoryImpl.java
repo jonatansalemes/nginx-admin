@@ -130,7 +130,7 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 	@Override
 	public VirtualHost hasEquals(VirtualHost virtualHost,List<VirtualHostAlias> aliases) {
 		try {
-			StringBuilder hql = new StringBuilder("from VirtualHost virtualHost inner join virtualHost.aliases aliases where aliases.alias in :aliases ");
+			StringBuilder hql = new StringBuilder("select distinct virtualHost from VirtualHost virtualHost inner join virtualHost.aliases aliases where aliases.alias in :aliases ");
 			if (virtualHost.getId() != null) {
 				hql.append("and virtualHost.id <> :id");
 			}
@@ -142,6 +142,7 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 			if (virtualHost.getId() != null) {
 				query.setParameter("id", virtualHost.getId());
 			}
+			
 			return (VirtualHost) query.getSingleResult();
 		} catch (NoResultException e) {
 			return null;
