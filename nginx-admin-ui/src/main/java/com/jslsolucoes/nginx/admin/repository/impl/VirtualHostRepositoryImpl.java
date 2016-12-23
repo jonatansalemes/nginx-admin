@@ -132,7 +132,7 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 		try {
 			StringBuilder hql = new StringBuilder("from VirtualHost virtualHost inner join virtualHost.aliases aliases where aliases.alias in :aliases ");
 			if (virtualHost.getId() != null) {
-				hql.append("and id <> :id");
+				hql.append("and virtualHost.id <> :id");
 			}
 			Query query = entityManager.createQuery(hql.toString())
 					.setParameter("aliases", aliases
