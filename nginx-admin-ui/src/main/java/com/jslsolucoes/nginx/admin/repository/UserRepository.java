@@ -35,7 +35,7 @@ public interface UserRepository {
 
 	public User load(User user);
 
-	public Boolean hasUsers();
+	public List<User> listAll();
 
 	public List<String>  validateBeforeCreateAdministrator(String login, String loginConfirm, String password,
 			String passwordConfirm);

@@ -35,13 +35,13 @@ public class InstallRepositoryImpl implements InstallRepository {
 
 	@Override
 	public List<String> validateBeforeInstall(String login, String loginConfirm, String adminPassword,
-			String adminPasswordConfirm, String nginxBin, String nginxSettings, String smtpHost,
-			Integer smtpPort, Integer smtpAuthenticate, Integer smtpTls, String smtpFromAddress, String smtpUsername,
+			String adminPasswordConfirm, String nginxBin, String nginxSettings, String smtpHost, Integer smtpPort,
+			Integer smtpAuthenticate, Integer smtpTls, String smtpFromAddress, String smtpUsername,
 			String smtpPassword) {
 		List<String> errors = new ArrayList<String>();
-		errors.addAll(userRepository.validateBeforeCreateAdministrator(login,loginConfirm,adminPassword,adminPasswordConfirm));
-		errors.addAll(smtpRepository.validateBeforeSaveOrUpdate(new Smtp(smtpHost, smtpPort, smtpAuthenticate, smtpUsername, smtpPassword, smtpTls, smtpFromAddress)));
-		errors.addAll(nginxRepository.validateBeforeSaveOrUpdate(new Nginx(nginxBin,nginxSettings)));
+		errors.addAll(userRepository.validateBeforeCreateAdministrator(login, loginConfirm, adminPassword,
+				adminPasswordConfirm));
+		errors.addAll(nginxRepository.validateBeforeSaveOrUpdate(new Nginx(nginxBin, nginxSettings)));
 		return errors;
 	}
 
@@ -50,8 +50,9 @@ public class InstallRepositoryImpl implements InstallRepository {
 			String nginxBin, String nginxSettings, String smtpHost, Integer smtpPort, Integer smtpAuthenticate,
 			Integer smtpTls, String smtpFromAddress, String smtpUsername, String smtpPassword) {
 		userRepository.createAdministrator(login, adminPassword);
-		nginxRepository.saveOrUpdate(new Nginx(nginxBin,nginxSettings));
-		smtpRepository.saveOrUpdate(new Smtp(smtpHost, smtpPort, smtpAuthenticate, smtpUsername, smtpPassword, smtpTls, smtpFromAddress));
+		nginxRepository.saveOrUpdate(new Nginx(nginxBin, nginxSettings));
+		smtpRepository.saveOrUpdate(
+				new Smtp(smtpHost, smtpPort, smtpAuthenticate, smtpUsername, smtpPassword, smtpTls, smtpFromAddress));
 	}
 
 }

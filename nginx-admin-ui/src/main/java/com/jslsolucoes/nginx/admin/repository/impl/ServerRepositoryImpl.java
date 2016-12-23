@@ -20,9 +20,10 @@ import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.Query;
+
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 import com.jslsolucoes.nginx.admin.i18n.Messages;
 import com.jslsolucoes.nginx.admin.model.Server;
@@ -36,8 +37,8 @@ public class ServerRepositoryImpl extends RepositoryImpl<Server> implements Serv
 	}
 
 	@Inject
-	public ServerRepositoryImpl(EntityManager entityManager) {
-		super(entityManager);
+	public ServerRepositoryImpl(Session session) {
+		super(session);
 	}
 
 	@Override
@@ -53,28 +54,18 @@ public class ServerRepositoryImpl extends RepositoryImpl<Server> implements Serv
 
 	@Override
 	public Server hasEquals(Server server) {
-		try {
-			StringBuilder hql = new StringBuilder("from Server where ip = :ip ");
-			if (server.getId() != null) {
-				hql.append("and id <> :id");
-			}
-			Query query = entityManager.createQuery(hql.toString()).setParameter("ip", server.getIp());
-			if (server.getId() != null) {
-				query.setParameter("id", server.getId());
-			}
-			return (Server) query.getSingleResult();
-		} catch (NoResultException e) {
-			return null;
+		Criteria criteria = session.createCriteria(Server.class);
+		criteria.add(Restrictions.eq("ip", server.getIp()));
+		if (server.getId() != null) {
+			criteria.add(Restrictions.ne("id", server.getId()));
 		}
+		return (Server) criteria.uniqueResult();
 	}
 
 	@Override
 	public Server findByIp(String ip) {
-		try {
-			return (Server) entityManager.createQuery("from Server where ip = :ip ").setParameter("ip", ip)
-					.getSingleResult();
-		} catch (NoResultException e) {
-			return null;
-		}
+		Criteria criteria = session.createCriteria(Server.class);
+		criteria.add(Restrictions.eq("ip", ip));
+		return (Server) criteria.uniqueResult();
 	}
 }

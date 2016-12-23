@@ -19,7 +19,11 @@ import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
+
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 
 import com.jslsolucoes.nginx.admin.model.Upstream;
 import com.jslsolucoes.nginx.admin.model.UpstreamServer;
@@ -33,20 +37,28 @@ public class UpstreamServerRepositoryImpl extends RepositoryImpl<UpstreamServer>
 	}
 
 	@Inject
-	public UpstreamServerRepositoryImpl(EntityManager entityManager) {
-		super(entityManager);
+	public UpstreamServerRepositoryImpl(Session session) {
+		super(session);
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	private List<UpstreamServer> listAll(Upstream upstream){
+		Criteria criteria = session.createCriteria(UpstreamServer.class);
+		criteria.createCriteria("upstream", "upstream", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.eq("upstream.id", upstream.getId()));
+		return criteria.list();
 	}
 
 	@Override
-	public void deleteAllFor(Upstream upstream) {
-		entityManager
-				.createQuery(
-						"delete from UpstreamServer upstreamServer where upstreamServer.upstream.id = :idUpstream")
-				.setParameter("idUpstream", upstream.getId()).executeUpdate();
+	public void deleteAllFor(Upstream upstream) throws Exception {
+		for(UpstreamServer upstreamServer : listAll(upstream)){
+			super.delete(upstreamServer);
+		}
 	}
 
 	@Override
-	public void recreate(Upstream upstream, List<UpstreamServer> upstreamServers) {
+	public void recreate(Upstream upstream, List<UpstreamServer> upstreamServers) throws Exception {
 		deleteAllFor(upstream);
 		for (UpstreamServer upstreamServer : upstreamServers) {
 			upstreamServer.setUpstream(upstream);

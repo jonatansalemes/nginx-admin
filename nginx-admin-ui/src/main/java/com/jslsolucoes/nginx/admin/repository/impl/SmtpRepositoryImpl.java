@@ -15,12 +15,11 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.repository.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
+
+import org.hibernate.Criteria;
+import org.hibernate.Session;
 
 import com.jslsolucoes.nginx.admin.model.Smtp;
 import com.jslsolucoes.nginx.admin.repository.SmtpRepository;
@@ -33,19 +32,13 @@ public class SmtpRepositoryImpl extends RepositoryImpl<Smtp> implements SmtpRepo
 	}
 
 	@Inject
-	public SmtpRepositoryImpl(EntityManager entityManager) {
-		super(entityManager);
+	public SmtpRepositoryImpl(Session session) {
+		super(session);
 	}
 
 	@Override
 	public Smtp configuration() {
-		return (Smtp) entityManager.createQuery("from Smtp").getSingleResult();
-	}
-
-	@Override
-	public List<String> validateBeforeSaveOrUpdate(Smtp smtp) {
-		List<String> errors = new ArrayList<String>();
-
-		return errors;
+		Criteria criteria = session.createCriteria(Smtp.class);
+		return (Smtp) criteria.uniqueResult();
 	}
 }

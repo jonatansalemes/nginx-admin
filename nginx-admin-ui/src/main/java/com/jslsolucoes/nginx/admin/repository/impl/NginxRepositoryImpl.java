@@ -27,10 +27,11 @@ import java.util.jar.JarEntry;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
 import org.jboss.vfs.VirtualFile;
 
 import com.jslsolucoes.nginx.admin.i18n.Messages;
@@ -46,13 +47,14 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 	}
 
 	@Inject
-	public NginxRepositoryImpl(EntityManager entityManager) {
-		super(entityManager);
+	public NginxRepositoryImpl(Session session) {
+		super(session);
 	}
 
 	@Override
 	public Nginx configuration() {
-		return (Nginx) entityManager.createQuery("from Nginx").getSingleResult();
+		Criteria criteria = session.createCriteria(Nginx.class);
+		return (Nginx) criteria.uniqueResult();
 	}
 
 	@Override

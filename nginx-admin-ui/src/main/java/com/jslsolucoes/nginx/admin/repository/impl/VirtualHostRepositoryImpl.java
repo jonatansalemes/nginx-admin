@@ -22,11 +22,13 @@ import java.util.stream.Collectors;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.Query;
 
 import org.apache.commons.io.FileUtils;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 
 import com.jslsolucoes.nginx.admin.i18n.Messages;
 import com.jslsolucoes.nginx.admin.model.Nginx;
@@ -54,11 +56,11 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 	}
 
 	@Inject
-	public VirtualHostRepositoryImpl(EntityManager entityManager,
+	public VirtualHostRepositoryImpl(Session session,
 			ResourceIdentifierRepository resourceIdentifierRepository, NginxRepository nginxRepository,
 			VirtualHostAliasRepository virtualHostAliasRepository,
 			VirtualHostLocationRepository virtualHostLocationRepository) {
-		super(entityManager);
+		super(session);
 		this.resourceIdentifierRepository = resourceIdentifierRepository;
 		this.nginxRepository = nginxRepository;
 		this.virtualHostAliasRepository = virtualHostAliasRepository;
@@ -129,32 +131,25 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 
 	@Override
 	public VirtualHost hasEquals(VirtualHost virtualHost,List<VirtualHostAlias> aliases) {
-		try {
-			StringBuilder hql = new StringBuilder("select distinct virtualHost from VirtualHost virtualHost inner join virtualHost.aliases aliases where aliases.alias in :aliases ");
-			if (virtualHost.getId() != null) {
-				hql.append("and virtualHost.id <> :id");
-			}
-			Query query = entityManager.createQuery(hql.toString())
-					.setParameter("aliases", aliases
+		Criteria criteria = session.createCriteria(VirtualHost.class);
+		criteria.createCriteria("aliases","virtualHostAlias", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.in("virtualHostAlias.alias", aliases
 							.stream()
 							.map(VirtualHostAlias::getAlias)
-							.collect(Collectors.toList()));
-			if (virtualHost.getId() != null) {
-				query.setParameter("id", virtualHost.getId());
-			}
-			
-			return (VirtualHost) query.getSingleResult();
-		} catch (NoResultException e) {
-			return null;
+							.collect(Collectors.toList())));
+		if (virtualHost.getId() != null) {
+			criteria.add(Restrictions.ne("id", virtualHost.getId()));
 		}
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		return (VirtualHost) criteria.uniqueResult();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<VirtualHost> search(String term) {
-		return entityManager.createQuery("select distinct virtualHost from VirtualHost virtualHost inner join virtualHost.aliases aliases where lower(aliases.alias) like lower(:term)")
-				.setParameter("term","%" + term + "%")
-				.getResultList();
+		Criteria criteria = session.createCriteria(VirtualHost.class);
+		criteria.createCriteria("aliases","virtualHostAlias", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.ilike("virtualHostAlias.alias", term, MatchMode.ANYWHERE));
+		return criteria.list();
 	}
-
 }

@@ -22,11 +22,11 @@ import java.util.stream.Collectors;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.Query;
 
 import org.apache.commons.io.FileUtils;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 import com.jslsolucoes.nginx.admin.i18n.Messages;
 import com.jslsolucoes.nginx.admin.model.Upstream;
@@ -49,9 +49,9 @@ public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements 
 	}
 
 	@Inject
-	public UpstreamRepositoryImpl(EntityManager entityManager, UpstreamServerRepository upstreamServerRepository,
+	public UpstreamRepositoryImpl(Session session, UpstreamServerRepository upstreamServerRepository,
 			NginxRepository nginxRepository, ResourceIdentifierRepository resourceIdentifierRepository) {
-		super(entityManager);
+		super(session);
 		this.upstreamServerRepository = upstreamServerRepository;
 		this.nginxRepository = nginxRepository;
 		this.resourceIdentifierRepository = resourceIdentifierRepository;
@@ -100,7 +100,7 @@ public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements 
 		upstreamServerRepository.deleteAllFor(upstream);
 		upstream = load(upstream);
 		String hash = upstream.getResourceIdentifier().getHash();
-		FileUtils.forceDelete(new File(nginxRepository.configuration().upstream(),hash + ".conf"));
+		FileUtils.forceDelete(new File(nginxRepository.configuration().upstream(), hash + ".conf"));
 		super.delete(upstream);
 		resourceIdentifierRepository.delete(hash);
 		return OperationType.DELETE;
@@ -108,30 +108,18 @@ public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements 
 
 	@Override
 	public Upstream hasEquals(Upstream upstream) {
-		try {
-			StringBuilder hql = new StringBuilder("from Upstream where name = :name ");
-			if (upstream.getId() != null) {
-				hql.append("and id <> :id");
-			}
-			Query query = entityManager.createQuery(hql.toString()).setParameter("name", upstream.getName());
-			if (upstream.getId() != null) {
-				query.setParameter("id", upstream.getId());
-			}
-			return (Upstream) query.getSingleResult();
-		} catch (NoResultException e) {
-			return null;
+		Criteria criteria = session.createCriteria(Upstream.class);
+		criteria.add(Restrictions.eq("name", upstream.getName()));
+		if (upstream.getId() != null) {
+			criteria.add(Restrictions.ne("id", upstream.getId()));
 		}
+		return (Upstream) criteria.uniqueResult();
 	}
 
 	@Override
 	public Upstream findByName(String name) {
-		try {
-			return (Upstream) entityManager
-					.createQuery("from Upstream where name = :name ")
-					.setParameter("name", name)
-					.getSingleResult();
-		} catch (NoResultException e) {
-			return null;
-		}
+		Criteria criteria = session.createCriteria(Upstream.class);
+		criteria.add(Restrictions.eq("name", name));
+		return (Upstream) criteria.uniqueResult();
 	}
 }

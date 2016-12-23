@@ -19,7 +19,11 @@ import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
+
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 
 import com.jslsolucoes.nginx.admin.model.VirtualHost;
 import com.jslsolucoes.nginx.admin.model.VirtualHostAlias;
@@ -34,20 +38,27 @@ public class VirtualHostAliasRepositoryImpl extends RepositoryImpl<VirtualHostAl
 	}
 
 	@Inject
-	public VirtualHostAliasRepositoryImpl(EntityManager entityManager) {
-		super(entityManager);
+	public VirtualHostAliasRepositoryImpl(Session session) {
+		super(session);
+	}
+	
+	@SuppressWarnings("unchecked")
+	private List<VirtualHostAlias> listAll(VirtualHost virtualHost){
+		Criteria criteria = session.createCriteria(VirtualHostAlias.class);
+		criteria.createCriteria("virtualHost", "virtualHost", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.eq("virtualHost.id", virtualHost.getId()));
+		return criteria.list();
 	}
 
 	@Override
-	public void deleteAllFor(VirtualHost virtualHost) {
-		entityManager
-				.createQuery(
-						"delete from VirtualHostAlias virtualHostAlias where virtualHostAlias.virtualHost.id = :idVirtualHost")
-				.setParameter("idVirtualHost", virtualHost.getId()).executeUpdate();
+	public void deleteAllFor(VirtualHost virtualHost) throws Exception {
+		for(VirtualHostAlias virtualHostAlias : listAll(virtualHost)){
+			super.delete(virtualHostAlias);
+		}
 	}
 
 	@Override
-	public void recreate(VirtualHost virtualHost, List<VirtualHostAlias> aliases) {
+	public void recreate(VirtualHost virtualHost, List<VirtualHostAlias> aliases) throws Exception {
 		deleteAllFor(virtualHost);
 		for (VirtualHostAlias virtualHostAlias : aliases) {
 			virtualHostAlias.setVirtualHost(virtualHost);

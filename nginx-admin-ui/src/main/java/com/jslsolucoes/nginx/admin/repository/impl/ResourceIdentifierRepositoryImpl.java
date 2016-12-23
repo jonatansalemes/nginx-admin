@@ -19,7 +19,10 @@ import java.util.UUID;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
+
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 import com.jslsolucoes.nginx.admin.model.ResourceIdentifier;
 import com.jslsolucoes.nginx.admin.repository.ResourceIdentifierRepository;
@@ -33,8 +36,8 @@ public class ResourceIdentifierRepositoryImpl extends RepositoryImpl<ResourceIde
 	}
 
 	@Inject
-	public ResourceIdentifierRepositoryImpl(EntityManager entityManager) {
-		super(entityManager);
+	public ResourceIdentifierRepositoryImpl(Session session) {
+		super(session);
 	}
 
 	@Override
@@ -50,8 +53,9 @@ public class ResourceIdentifierRepositoryImpl extends RepositoryImpl<ResourceIde
 	}
 
 	private ResourceIdentifier findByHash(String hash) {
-		return (ResourceIdentifier) entityManager.createQuery("from ResourceIdentifier where hash = :hash")
-				.setParameter("hash", hash).getSingleResult();
+		Criteria criteria = session.createCriteria(ResourceIdentifier.class);
+		criteria.add(Restrictions.eq("hash", hash));
+		return (ResourceIdentifier) criteria.uniqueResult();
 	}
 
 }

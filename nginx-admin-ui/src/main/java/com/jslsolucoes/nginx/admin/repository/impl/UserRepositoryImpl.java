@@ -20,13 +20,13 @@ import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 import com.jslsolucoes.nginx.admin.i18n.Messages;
 import com.jslsolucoes.nginx.admin.model.User;
@@ -43,20 +43,17 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 	}
 
 	@Inject
-	public UserRepositoryImpl(EntityManager entityManager, MailRepository mailRepository) {
-		super(entityManager);
+	public UserRepositoryImpl(Session session, MailRepository mailRepository) {
+		super(session);
 		this.mailRepository = mailRepository;
 	}
 
 	@Override
 	public User authenticate(User user) {
-		try {
-			return (User) entityManager.createQuery("from User where login = :login and password = :password")
-					.setParameter("login", user.getLogin())
-					.setParameter("password", DigestUtils.sha256Hex(user.getPassword())).getSingleResult();
-		} catch (NoResultException e) {
-			return null;
-		}
+		Criteria criteria = session.createCriteria(User.class);
+		criteria.add(Restrictions.eq("login", user.getLogin()));
+		criteria.add(Restrictions.eq("password", DigestUtils.sha256Hex(user.getPassword())));
+		return (User) criteria.uniqueResult();
 	}
 
 	@Override
@@ -69,12 +66,9 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 	}
 
 	private User getByLogin(User user) {
-		try {
-			return (User) entityManager.createQuery("from User where login = :login")
-					.setParameter("login", user.getLogin()).getSingleResult();
-		} catch (NoResultException e) {
-			return null;
-		}
+		Criteria criteria = session.createCriteria(User.class);
+		criteria.add(Restrictions.eq("login", user.getLogin()));
+		return (User) criteria.uniqueResult();
 	}
 
 	@Override
@@ -126,13 +120,16 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 
 	@Override
 	public User loadForSession(User user) {
-		return (User) entityManager.createQuery("from User where id = :id").setParameter("id", user.getId())
-				.getSingleResult();
+		Criteria criteria = session.createCriteria(User.class);
+		criteria.add(Restrictions.eq("id", user.getId()));
+		return (User) criteria.uniqueResult();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Boolean hasUsers() {
-		return !CollectionUtils.isEmpty(entityManager.createQuery("from User").getResultList());
+	public List<User> listAll() {
+		Criteria criteria = session.createCriteria(User.class);
+		return criteria.list();
 	}
 
 	@Override
