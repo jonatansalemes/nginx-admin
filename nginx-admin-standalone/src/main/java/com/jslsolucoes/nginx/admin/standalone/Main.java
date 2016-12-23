@@ -33,8 +33,13 @@ public class Main {
 				ds.userName("root");
 				ds.jndiName("java:jboss/datasources/nginx-admin");
 			}));
-			swarm.fraction(new LoggingFraction()
-					.rootLogger(Level.ERROR));
+			swarm.fraction(
+					new LoggingFraction()
+				    .consoleHandler("CONSOLE", f -> {				    	
+				      f.level(Level.INFO);
+				      f.formatter("%d{HH:mm:ss,SSS} %-5p [%c] (%t) %s%e%n");
+				    })
+				    .rootLogger(Level.ERROR, "CONSOLE"));
 			swarm.start();
 
 			InputStream war = Main.class.getResourceAsStream("/nginx-admin-ui-1.0.3.war");

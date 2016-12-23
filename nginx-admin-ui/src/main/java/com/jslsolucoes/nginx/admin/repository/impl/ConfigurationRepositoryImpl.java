@@ -20,6 +20,7 @@ import javax.inject.Inject;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 
 import com.jslsolucoes.nginx.admin.model.Configuration;
@@ -45,6 +46,7 @@ public class ConfigurationRepositoryImpl extends RepositoryImpl<Configuration> i
 
 	private String variable(ConfigurationType configurationType) {
 		Criteria criteria = session.createCriteria(Configuration.class);
+		criteria.setProjection(Property.forName("value"));
 		criteria.add(Restrictions.eq("variable", configurationType.getVariable()));
 		return (String) criteria.uniqueResult();
 	}

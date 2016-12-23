@@ -1,5 +1,5 @@
 <%@include file="../app/taglibs.jsp"%>
-<html:view>
+<html:view title="{title}">
 
 	<html:container>
 

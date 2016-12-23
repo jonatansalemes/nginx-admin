@@ -1,5 +1,5 @@
 <%@include file="../app/taglibs.jsp"%>
-<html:view>
+<html:view title="{title}">
 
 	<html:block>
 		<html:alert state="success" label="{nginx.update.success}" rendered="${ !empty(updated) && updated }"></html:alert>
