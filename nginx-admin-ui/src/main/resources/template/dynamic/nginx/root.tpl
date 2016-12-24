@@ -6,6 +6,10 @@ server {
             root   ${ nginx.settings }/html;
             index  index.html;
         }
+        
+        location /status {
+            stub_status on;
+        }
 
         error_page  401               /401.html;
         error_page  403               /403.html;
