@@ -55,7 +55,7 @@
 		<dependency>
 			<groupId>com.jslsolucoes</groupId>
 			<artifactId>tagria-lib</artifactId>
-			<version>1.0.7</version>
+			<version>1.0.8-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>br.com.caelum</groupId>
@@ -91,6 +91,11 @@
 			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
 			<version>3.21.0-GA</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss</groupId>

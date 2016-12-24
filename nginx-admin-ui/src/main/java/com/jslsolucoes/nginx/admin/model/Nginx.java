@@ -71,6 +71,9 @@ public class Nginx implements Serializable {
 		this.settings = settings;
 	}
 
+	public File setting() {
+		return new File(settings);
+	}
 	
 	public File binFolder(){
 		return bin().getParentFile();
@@ -81,23 +84,23 @@ public class Nginx implements Serializable {
 	}
 	
 	public File conf(){
-		return new File(settings, "nginx.conf");
+		return new File(setting(), "nginx.conf");
 	}
 
 	public File ssl() {
-		return new File(settings, "ssl");
+		return new File(setting(), "ssl");
 	}
 
 	public File upstream() {
-		return new File(settings, "upstream");
+		return new File(setting(), "upstream");
 	}
 	
 	public File virtualHost() {
-		return new File(settings, "virtual-host");
+		return new File(setting(), "virtual-host");
 	}
-
-	public File setting() {
-		return new File(settings);
+	
+	public File pid() {
+		return new File(setting(), "nginx.pid");
 	}
 
 	public Integer getGzip() {
@@ -115,6 +118,8 @@ public class Nginx implements Serializable {
 	public void setMaxPostSize(Integer maxPostSize) {
 		this.maxPostSize = maxPostSize;
 	}
+
+	
 
 	
 

@@ -16,7 +16,9 @@
 package com.jslsolucoes.nginx.admin.controller;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
+import com.jslsolucoes.nginx.admin.nginx.detail.NginxDetailReader;
 import com.jslsolucoes.nginx.admin.nginx.runner.Runner;
 import com.jslsolucoes.nginx.admin.os.OperationalSystem;
 import com.jslsolucoes.nginx.admin.repository.NginxRepository;
@@ -31,19 +33,27 @@ public class AdminController {
 
 	private Result result;
 	private Runner runner;
+	private HttpServletRequest httpServletRequest;
+	private NginxRepository nginxRepository;
 
 	public AdminController() {
 
 	}
 
 	@Inject
-	public AdminController(Result result, Runner runner, NginxRepository nginxRepository) {
+	public AdminController(Result result, Runner runner, NginxRepository nginxRepository,
+			HttpServletRequest httpServletRequest) {
 		this.result = result;
-		this.runner = runner.configure(nginxRepository.configuration());
+		this.runner = runner;
+		this.httpServletRequest = httpServletRequest;
+		this.nginxRepository = nginxRepository;
 	}
 
 	public void dashboard() {
 		this.result.include("so", OperationalSystem.info());
+		this.result.include("nginxDetail",
+				new NginxDetailReader(httpServletRequest.getRemoteAddr(), runner, nginxRepository.configuration())
+						.details());
 	}
 
 	public void configure() {

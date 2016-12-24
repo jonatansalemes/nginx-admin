@@ -3,6 +3,7 @@ package com.jslsolucoes.nginx.admin.controller;
 import javax.inject.Inject;
 
 import com.jslsolucoes.nginx.admin.model.Nginx;
+import com.jslsolucoes.nginx.admin.nginx.status.NginxStatusReader;
 import com.jslsolucoes.nginx.admin.repository.NginxRepository;
 import com.jslsolucoes.nginx.admin.util.HtmlUtil;
 
@@ -46,6 +47,11 @@ public class NginxController {
 		this.nginxRepository.saveOrUpdate(new Nginx(id, bin, settings,gzip, maxPostSize));
 		this.result.include("updated", true);
 		this.result.redirectTo(this).edit();
+	}
+	
+	
+	public void status() {
+		this.result.use(Results.json()).from(new NginxStatusReader().read()).serialize();
 	}
 
 }
