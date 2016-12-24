@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.jslsolucoes</groupId>
 		<artifactId>nginx-admin</artifactId>
-		<version>1.0.2</version>
+		<version>1.0.3</version>
 	</parent>
 	<artifactId>nginx-admin-standalone</artifactId>
 
@@ -116,7 +116,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.wildfly.swarm</groupId>
-			<artifactId>jpa</artifactId>
+			<artifactId>h2</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>

@@ -1,5 +1,5 @@
 <%@include file="../app/taglibs.jsp"%>
-<html:view>
+<html:view title="{title}">
 
 		<html:block>
 			<html:alert state="warning" label="{why.change.password}" rendered="${ userSession.user.passwordForceChange == 1 }"></html:alert>

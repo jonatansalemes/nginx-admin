@@ -5,14 +5,14 @@
 	<parent>
 		<groupId>com.jslsolucoes</groupId>
 		<artifactId>nginx-admin</artifactId>
-		<version>1.0.2</version>
+		<version>1.0.3</version>
 	</parent>
 	<artifactId>nginx-admin-ui</artifactId>
 	<packaging>war</packaging>
-	
+
 	<build>
-  	<plugins>
-  		<plugin>
+		<plugins>
+			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<executions>
 					<execution>
@@ -42,8 +42,8 @@
 					</dependency>
 				</dependencies>
 			</plugin>
-  	</plugins>
-  </build>
+		</plugins>
+	</build>
 
 	<dependencies>
 		<dependency>
@@ -55,7 +55,7 @@
 		<dependency>
 			<groupId>com.jslsolucoes</groupId>
 			<artifactId>tagria-lib</artifactId>
-			<version>1.0.6</version>
+			<version>1.0.7</version>
 		</dependency>
 		<dependency>
 			<groupId>br.com.caelum</groupId>
@@ -64,8 +64,8 @@
 		</dependency>
 		<dependency>
 			<groupId>br.com.caelum.vraptor</groupId>
-			<artifactId>vraptor-jpa</artifactId>
-			<version>4.0.5</version>
+			<artifactId>vraptor-hibernate</artifactId>
+			<version>4.0.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>

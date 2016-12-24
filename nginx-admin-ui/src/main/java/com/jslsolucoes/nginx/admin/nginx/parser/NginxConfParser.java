@@ -13,7 +13,8 @@ import org.apache.commons.io.filefilter.RegexFileFilter;
 import com.jslsolucoes.nginx.admin.nginx.parser.directive.Directive;
 
 public class NginxConfParser {
-
+	
+	
 	private String location;
 
 	public NginxConfParser(String location) {

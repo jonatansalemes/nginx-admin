@@ -39,7 +39,7 @@ public class Upstream implements Serializable {
 	private Set<UpstreamServer> servers;
 	
 	@OneToMany(fetch=FetchType.LAZY,mappedBy="upstream")
-	private Set<VirtualHost> virtualHosts;
+	private Set<VirtualHostLocation> virtualHostLocations;
 	
 	public Upstream() {
 	
@@ -101,7 +101,7 @@ public class Upstream implements Serializable {
 		this.resourceIdentifier = resourceIdentifier;
 	}
 
-	public Set<VirtualHost> getVirtualHosts() {
-		return virtualHosts;
+	public Set<VirtualHostLocation> getVirtualHostLocations() {
+		return virtualHostLocations;
 	}
 }

@@ -1,11 +1,14 @@
 <#if virtualHost.https == 1>
 server {
+
        listen               80;
-       server_name ${ virtualHost.domain };
+       
+       server_name <#list virtualHost.aliases as virtualHostAlias> ${ virtualHostAlias.alias } </#list>;
 
        location / {
             return 301 https://$server_name$request_uri;
        }
+       
 }
 </#if>
 
@@ -23,9 +26,13 @@ server {
 	 	listen               80;
 	</#if>
           
-        server_name ${ virtualHost.domain };
+       	server_name <#list virtualHost.aliases as virtualHostAlias> ${ virtualHostAlias.alias } </#list>;
         
-        location / {
-          proxy_pass  http://${ virtualHost.upstream.name };
-        }
+    <#list virtualHost.locations as virtualHostLocation>
+    	
+    	location ${ virtualHostLocation.path } {
+      		proxy_pass  http://${ virtualHostLocation.upstream.name };
+    	}
+    	
+    </#list>
 }

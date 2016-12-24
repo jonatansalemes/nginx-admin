@@ -65,6 +65,7 @@ public class DatabaseInstaller {
 			installedVersion = configurationRepository.getInteger(ConfigurationType.DB_VERSION);
 		} catch (Exception exception) {
 			logger.info("Database not installed yet. Installing ...");
+			exception.printStackTrace();
 		}
 
 		Integer actualVersion = Integer.valueOf(properties.getProperty("db.version"));

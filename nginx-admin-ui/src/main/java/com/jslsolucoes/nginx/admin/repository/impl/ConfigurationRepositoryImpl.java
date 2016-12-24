@@ -17,7 +17,11 @@ package com.jslsolucoes.nginx.admin.repository.impl;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
+
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Property;
+import org.hibernate.criterion.Restrictions;
 
 import com.jslsolucoes.nginx.admin.model.Configuration;
 import com.jslsolucoes.nginx.admin.model.ConfigurationType;
@@ -31,8 +35,8 @@ public class ConfigurationRepositoryImpl extends RepositoryImpl<Configuration> i
 	}
 
 	@Inject
-	public ConfigurationRepositoryImpl(EntityManager entityManager) {
-		super(entityManager);
+	public ConfigurationRepositoryImpl(Session session) {
+		super(session);
 	}
 
 	@Override
@@ -41,7 +45,9 @@ public class ConfigurationRepositoryImpl extends RepositoryImpl<Configuration> i
 	}
 
 	private String variable(ConfigurationType configurationType) {
-		return (String) entityManager.createQuery("select value from Configuration where variable = :variable ")
-				.setParameter("variable", configurationType.getVariable()).getSingleResult();
+		Criteria criteria = session.createCriteria(Configuration.class);
+		criteria.setProjection(Property.forName("value"));
+		criteria.add(Restrictions.eq("variable", configurationType.getVariable()));
+		return (String) criteria.uniqueResult();
 	}
 }

@@ -1,6 +1,6 @@
 <%@page isErrorPage="true"%>
 <%@include file="taglibs.jsp"%>
-<html:view>
+<html:view title="{title}">
 	<html:block>
 		<html:alert state="danger" label="{error}"></html:alert>
 	</html:block>

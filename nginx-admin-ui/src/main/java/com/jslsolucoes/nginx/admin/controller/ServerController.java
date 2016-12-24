@@ -52,7 +52,7 @@ public class ServerController {
 	}
 
 	@Path("delete/{id}")
-	public void delete(Long id) {
+	public void delete(Long id) throws Exception {
 		this.result.include("operation", serverRepository.delete(new Server(id)));
 		this.result.redirectTo(this).list();
 	}

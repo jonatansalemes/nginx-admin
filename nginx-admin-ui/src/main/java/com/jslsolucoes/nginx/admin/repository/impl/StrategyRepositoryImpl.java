@@ -17,8 +17,10 @@ package com.jslsolucoes.nginx.admin.repository.impl;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
+
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 import com.jslsolucoes.nginx.admin.model.Strategy;
 import com.jslsolucoes.nginx.admin.repository.StrategyRepository;
@@ -31,21 +33,15 @@ public class StrategyRepositoryImpl extends RepositoryImpl<Strategy> implements 
 	}
 
 	@Inject
-	public StrategyRepositoryImpl(EntityManager entityManager) {
-		super(entityManager);
+	public StrategyRepositoryImpl(Session session) {
+		super(session);
 	}
 
 	@Override
 	public Strategy findByName(String name) {
-		try {
-
-			return (Strategy) entityManager
-					.createQuery("from Strategy where name = :name ")
-					.setParameter("name", name)
-					.getSingleResult();
-		} catch (NoResultException e) {
-			return null;
-		}
+		Criteria criteria = session.createCriteria(Strategy.class);
+		criteria.add(Restrictions.eq("name", name));
+		return (Strategy) criteria.uniqueResult();
 	}
 
 }

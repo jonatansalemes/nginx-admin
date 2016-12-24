@@ -11,7 +11,7 @@ public interface UpstreamRepository {
 
 	public List<Upstream> listAll();
 
-	public OperationType delete(Upstream upstream);
+	public OperationType delete(Upstream upstream) throws Exception;
 
 	public Upstream load(Upstream upstream);
 

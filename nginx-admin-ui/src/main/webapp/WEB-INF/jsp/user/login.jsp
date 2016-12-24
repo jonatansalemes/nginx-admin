@@ -1,5 +1,5 @@
 <%@include file="../app/taglibs.jsp"%>
-<html:view>
+<html:view title="{title}">
 
 	<html:container>
 
@@ -65,7 +65,7 @@
 	
 	<ajax:function url="/installer/check" name="checkForInstall" executeOnDocumentLoad="true">
 		<ajax:onSuccess>
-			if(!data.hasUsers){
+			if(data.list.length == 0){
 				window.location = URL_BASE + '/installer/form';
 			}
 		</ajax:onSuccess>

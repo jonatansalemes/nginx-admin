@@ -34,7 +34,7 @@ public class InstallerController {
 	}
 
 	public void check() {
-		this.result.use(Results.json()).from(userRepository.hasUsers(), "hasUsers").serialize();
+		this.result.use(Results.json()).from(userRepository.listAll()).serialize();
 	}
 
 	public void form() {
