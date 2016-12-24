@@ -2,10 +2,18 @@ package com.jslsolucoes.nginx.admin.nginx.detail;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.net.Inet4Address;
+import java.net.NetworkInterface;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.Seconds;
 
@@ -14,19 +22,18 @@ import com.jslsolucoes.nginx.admin.nginx.runner.Runner;
 
 public class NginxDetailReader {
 
-	private String ip;
+	
 	private Runner runner;
 	private Nginx nginx;
 
-	public NginxDetailReader(String ip, Runner runner, Nginx nginx) {
-		this.ip = ip;
+	public NginxDetailReader(Runner runner, Nginx nginx) {
 		this.runner = runner;
 		this.nginx = nginx;
 	}
 
 	public NginxDetail details() {
 		NginxDetail nginxDetail = new NginxDetail();
-		nginxDetail.setAddress(ip);
+		nginxDetail.setAddress(address());
 		nginxDetail.setVersion(version());
 		try {
 			nginxDetail.setPid(Integer.valueOf(FileUtils.readFileToString(nginx.pid(), "UTF-8").trim()));
@@ -37,6 +44,27 @@ public class NginxDetailReader {
 		}
 
 		return nginxDetail;
+	}
+
+	private String address() {
+		try {
+			Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
+			Set<String> everything = new HashSet<String>();
+			while(networkInterfaces.hasMoreElements()){
+				NetworkInterface networkInterface = networkInterfaces.nextElement();
+				if(networkInterface.isUp() && !networkInterface.isLoopback()){
+					everything.addAll(Collections.list(networkInterface
+							.getInetAddresses())
+							.stream()
+							.filter(inetAddress -> (inetAddress instanceof Inet4Address))
+							.map(inetAddress -> inetAddress.getHostAddress())
+							.collect(Collectors.toSet()));
+				}
+			}
+			return StringUtils.join(everything,",");
+		} catch(Exception exception){
+			return "0.0.0.0";
+		}
 	}
 
 	private String version() {
