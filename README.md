@@ -14,9 +14,9 @@ Nginx admin is an open source multiplatform manager for nginx software to easy a
 
 Screenshots : 
 
-![alt tag](https://github.com/jslsolucoes/nginx-admin/blob/develop/nginx-admin-ui-screenshot/screenshot1.png)
-![alt tag](https://github.com/jslsolucoes/nginx-admin/blob/develop/nginx-admin-ui-screenshot/screenshot2.png)
-![alt tag](https://github.com/jslsolucoes/nginx-admin/blob/develop/nginx-admin-ui-screenshot/screenshot3.png)
+![alt tag](https://github.com/jslsolucoes/nginx-admin/blob/master/nginx-admin-ui-screenshot/screenshot1.png)
+![alt tag](https://github.com/jslsolucoes/nginx-admin/blob/master/nginx-admin-ui-screenshot/screenshot2.png)
+![alt tag](https://github.com/jslsolucoes/nginx-admin/blob/master/nginx-admin-ui-screenshot/screenshot3.png)
 
  
 Supported operational system :
@@ -41,7 +41,7 @@ Automatic installation :
 Red-hat distribution you follow this steps as root user : 
 <pre>
 	<code>
-wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/develop/nginx-admin-script/src/main/resources/scripts/red-hat/install.sh
+wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/master/nginx-admin-script/src/main/resources/scripts/red-hat/install.sh
 chmod +x install.sh
 ./install.sh 
 	</code>
@@ -51,7 +51,7 @@ chmod +x install.sh
 Debian distribution you follow this steps as root user : 
 <pre>
 	<code>
-wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/develop/nginx-admin-script/src/main/resources/scripts/debian/install.sh
+wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/master/nginx-admin-script/src/main/resources/scripts/debian/install.sh
 chmod +x install.sh
 ./install.sh 
 	</code>
@@ -63,7 +63,7 @@ Automatic update version :
 Red-hat distribution you follow this steps as root user : 
 <pre>
 	<code>
-wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/develop/nginx-admin-script/src/main/resources/scripts/red-hat/update.sh
+wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/master/nginx-admin-script/src/main/resources/scripts/red-hat/update.sh
 chmod +x update.sh
 ./update.sh 
 	</code>
@@ -72,7 +72,7 @@ chmod +x update.sh
 Debian distribution you follow this steps as root user : 
 <pre>
 	<code>
-wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/develop/nginx-admin-script/src/main/resources/scripts/debian/update.sh
+wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/master/nginx-admin-script/src/main/resources/scripts/debian/update.sh
 chmod +x update.sh
 ./update.sh 
 	</code>
