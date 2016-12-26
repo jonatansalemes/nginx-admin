@@ -82,7 +82,7 @@
 				<html:card>
 					<html:cardBody>
 						<html:panel>
-							<html:panelHead label="Nginx status"></html:panelHead>
+							<html:panelHead label="{nginx.status}"></html:panelHead>
 							<html:panelBody>
 								<html:listGroup>
 									<html:listGroupItem><fmt:message key="nginx.active" /> : <html:span
