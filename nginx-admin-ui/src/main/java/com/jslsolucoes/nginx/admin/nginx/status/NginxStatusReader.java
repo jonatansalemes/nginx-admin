@@ -33,8 +33,9 @@ public class NginxStatusReader {
 			nginxStatus.setHandled(handled(body));
 			nginxStatus.setRequests(requests(body));
 			return nginxStatus;
+		} else {
+			return new NginxStatus(0, 0, 0, 0, 0, 0, 0);
 		}
-		return null;
 	}
 	
 	private Integer accepts(String body){
