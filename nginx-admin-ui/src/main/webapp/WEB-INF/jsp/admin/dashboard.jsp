@@ -20,7 +20,7 @@
 		<html:card>
 			<html:cardBody>
 				<html:panel>
-					<html:panelHead label="Nginx operations"></html:panelHead>
+					<html:panelHead label="{nginx.operations}"></html:panelHead>
 					<html:panelBody>
 						<html:buttonGroup spaced="true">
 
@@ -85,25 +85,25 @@
 							<html:panelHead label="Nginx status"></html:panelHead>
 							<html:panelBody>
 								<html:listGroup>
-									<html:listGroupItem>Active : <html:span
+									<html:listGroupItem><fmt:message key="nginx.active" /> : <html:span
 											id="par_active_connection">0</html:span>
 									</html:listGroupItem>
-									<html:listGroupItem>Accepts : <html:span
+									<html:listGroupItem><fmt:message key="nginx.accepts" /> : <html:span
 											id="par_accepts">0</html:span>
 									</html:listGroupItem>
-									<html:listGroupItem>Handled : <html:span
+									<html:listGroupItem><fmt:message key="nginx.handled" /> : <html:span
 											id="par_handled">0</html:span>
 									</html:listGroupItem>
-									<html:listGroupItem>Requests : <html:span
+									<html:listGroupItem><fmt:message key="nginx.requests" /> : <html:span
 											id="par_requests">0</html:span>
 									</html:listGroupItem>
-									<html:listGroupItem>Reading : <html:span
+									<html:listGroupItem><fmt:message key="nginx.reading" /> : <html:span
 											id="par_reading">0</html:span>
 									</html:listGroupItem>
-									<html:listGroupItem>Writing : <html:span
+									<html:listGroupItem><fmt:message key="nginx.writing" /> : <html:span
 											id="par_writing">0</html:span>
 									</html:listGroupItem>
-									<html:listGroupItem>Waiting : <html:span
+									<html:listGroupItem><fmt:message key="nginx.waiting" /> : <html:span
 											id="par_waiting">0</html:span>
 									</html:listGroupItem>
 								</html:listGroup>
@@ -116,13 +116,13 @@
 				<html:card>
 					<html:cardBody>
 						<html:panel>
-							<html:panelHead label="Nginx details"></html:panelHead>
+							<html:panelHead label="{nginx.details}"></html:panelHead>
 							<html:panelBody>
 								<html:listGroup>
-									<html:listGroupItem>Version : ${ nginxDetail.version }</html:listGroupItem>
-									<html:listGroupItem>Address : ${ nginxDetail.address }</html:listGroupItem>
-									<html:listGroupItem>PID :     ${ nginxDetail.pid }</html:listGroupItem>
-									<html:listGroupItem>Uptime :  ${ nginxDetail.uptime } days</html:listGroupItem>
+									<html:listGroupItem><fmt:message key="nginx.version"></fmt:message> : ${ nginxDetail.version }</html:listGroupItem>
+									<html:listGroupItem><fmt:message key="nginx.address"></fmt:message> : ${ nginxDetail.address }</html:listGroupItem>
+									<html:listGroupItem><fmt:message key="nginx.pid"></fmt:message> :     ${ nginxDetail.pid }</html:listGroupItem>
+									<html:listGroupItem><fmt:message key="nginx.uptime"></fmt:message> :  ${ nginxDetail.uptime } days</html:listGroupItem>
 								</html:listGroup>
 							</html:panelBody>
 						</html:panel>
