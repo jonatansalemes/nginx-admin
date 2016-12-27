@@ -20,34 +20,25 @@ import javax.inject.Inject;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Property;
-import org.hibernate.criterion.Restrictions;
 
-import com.jslsolucoes.nginx.admin.model.Configuration;
-import com.jslsolucoes.nginx.admin.model.ConfigurationType;
-import com.jslsolucoes.nginx.admin.repository.ConfigurationRepository;
+import com.jslsolucoes.nginx.admin.model.Application;
+import com.jslsolucoes.nginx.admin.repository.ApplicationRepository;
 
 @RequestScoped
-public class ConfigurationRepositoryImpl extends RepositoryImpl<Configuration> implements ConfigurationRepository {
+public class ApplicationRepositoryImpl extends RepositoryImpl<Application> implements ApplicationRepository {
 
-	public ConfigurationRepositoryImpl() {
+	public ApplicationRepositoryImpl() {
 
 	}
 
 	@Inject
-	public ConfigurationRepositoryImpl(Session session) {
+	public ApplicationRepositoryImpl(Session session) {
 		super(session);
 	}
 
 	@Override
-	public Integer getInteger(ConfigurationType configurationType) {
-		return Integer.valueOf(variable(configurationType));
-	}
-
-	private String variable(ConfigurationType configurationType) {
-		Criteria criteria = session.createCriteria(Configuration.class);
-		criteria.setProjection(Property.forName("value"));
-		criteria.add(Restrictions.eq("variable", configurationType.getVariable()));
-		return (String) criteria.uniqueResult();
+	public Application configuration() {
+		Criteria criteria = session.createCriteria(Application.class);
+		return (Application) criteria.uniqueResult();
 	}
 }

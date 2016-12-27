@@ -117,6 +117,10 @@ public class Nginx implements Serializable {
 	public File pid() {
 		return new File(setting(), "nginx.pid");
 	}
+	
+	public File log() {
+		return new File(setting(), "log");
+	}
 
 	public Integer getGzip() {
 		return gzip;
@@ -133,9 +137,5 @@ public class Nginx implements Serializable {
 	public void setMaxPostSize(Integer maxPostSize) {
 		this.maxPostSize = maxPostSize;
 	}
-
-	
-
-	
 
 }

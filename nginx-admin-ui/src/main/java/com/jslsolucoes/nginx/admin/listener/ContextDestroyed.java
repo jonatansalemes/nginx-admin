@@ -13,13 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package com.jslsolucoes.nginx.admin.log;
+package com.jslsolucoes.nginx.admin.listener;
 
-import org.quartz.Job;
-import org.quartz.SimpleScheduleBuilder;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public interface CronTask extends Job {
+import javax.inject.Qualifier;
 
-	public SimpleScheduleBuilder frequency();
+@Qualifier
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ ElementType.PARAMETER, ElementType.FIELD })
+public @interface ContextDestroyed {
 
 }

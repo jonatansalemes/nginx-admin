@@ -31,8 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.jslsolucoes.nginx.admin.annotation.Application;
-import com.jslsolucoes.nginx.admin.model.ConfigurationType;
-import com.jslsolucoes.nginx.admin.repository.ConfigurationRepository;
+import com.jslsolucoes.nginx.admin.repository.ApplicationRepository;
 
 import br.com.caelum.vraptor.events.VRaptorInitialized;
 
@@ -44,7 +43,7 @@ public class DatabaseInstaller {
 	private Connection connection;
 
 	@Inject
-	private ConfigurationRepository configurationRepository;
+	private ApplicationRepository applicationRepository;
 
 	@Inject
 	@Application
@@ -54,7 +53,7 @@ public class DatabaseInstaller {
 
 		Integer installedVersion = 0;
 		try {
-			installedVersion = configurationRepository.getInteger(ConfigurationType.DB_VERSION);
+			installedVersion = applicationRepository.configuration().getDatabaseVersion();
 		} catch (Exception exception) {
 			logger.info("Database not installed yet. Installing ...");
 			exception.printStackTrace();

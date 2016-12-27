@@ -20,10 +20,10 @@ import java.util.concurrent.Future;
 
 import javax.inject.Inject;
 
-import com.jslsolucoes.nginx.admin.mail.MailStatus;
 import com.jslsolucoes.nginx.admin.model.Smtp;
 import com.jslsolucoes.nginx.admin.repository.MailRepository;
 import com.jslsolucoes.nginx.admin.repository.SmtpRepository;
+import com.jslsolucoes.nginx.admin.repository.impl.MailStatusType;
 
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Path;
@@ -62,7 +62,7 @@ public class SmtpController {
 
 	@Post
 	public void test(String to, String subject, String message) throws InterruptedException, ExecutionException {
-		Future<MailStatus> mailStatus = mailRepository.send(subject, to, message);
+		Future<MailStatusType> mailStatus = mailRepository.send(subject, to, message);
 		this.result.include("mailStatus", mailStatus.get());
 		this.result.include("sended", true);
 		this.result.include("to", to);

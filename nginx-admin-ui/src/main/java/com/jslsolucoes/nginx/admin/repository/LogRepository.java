@@ -13,24 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package com.jslsolucoes.nginx.admin.log;
+package com.jslsolucoes.nginx.admin.repository;
 
-import org.quartz.JobExecutionContext;
-import org.quartz.SimpleScheduleBuilder;
-
-public class LogCollector implements CronTask {
+public interface LogRepository {
 	
-	
-
-    @Override
-    public void execute(JobExecutionContext jobExecutionContext) {
-    	System.out.println("executing ..." + jobExecutionContext.getMergedJobDataMap().get("connection"));
-    }
-    
-    @Override
-    public SimpleScheduleBuilder frequency() {
-        return SimpleScheduleBuilder.simpleSchedule()
-	              .withIntervalInSeconds(5)
-	              .repeatForever();
-    }
+	public void collect();
 }

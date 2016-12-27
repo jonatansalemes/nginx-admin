@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package com.jslsolucoes.nginx.admin.mail;
+package com.jslsolucoes.nginx.admin.repository.impl;
 
-public enum MailStatus {
+public enum MailStatusType {
 	SENDED, NOT_SENDED
 }

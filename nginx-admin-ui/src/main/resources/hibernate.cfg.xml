@@ -23,6 +23,7 @@
 		<mapping class="com.jslsolucoes.nginx.admin.model.VirtualHostAlias"></mapping>
 		<mapping class="com.jslsolucoes.nginx.admin.model.VirtualHostLocation"></mapping>
 		<mapping class="com.jslsolucoes.nginx.admin.model.ResourceIdentifier"></mapping>
+		<mapping class="com.jslsolucoes.nginx.admin.model.Application"></mapping>
 
 	</session-factory>
 </hibernate-configuration>
