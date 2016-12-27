@@ -4,9 +4,10 @@ import org.quartz.JobExecutionContext;
 import org.quartz.SimpleScheduleBuilder;
 
 public class LogCollector implements CronTask {
+
     @Override
     public void execute(JobExecutionContext jobExecutionContext) {
-        System.out.println("executing job ...");
+        
     }
     
     @Override
