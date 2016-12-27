@@ -18,7 +18,7 @@ package com.jslsolucoes.nginx.admin.controller;
 import javax.inject.Inject;
 
 import com.jslsolucoes.nginx.admin.model.Nginx;
-import com.jslsolucoes.nginx.admin.nginx.status.NginxStatusReader;
+import com.jslsolucoes.nginx.admin.nginx.status.NginxStatus;
 import com.jslsolucoes.nginx.admin.repository.NginxRepository;
 import com.jslsolucoes.nginx.admin.util.HtmlUtil;
 
@@ -33,15 +33,17 @@ public class NginxController {
 
 	private Result result;
 	private NginxRepository nginxRepository;
+	private NginxStatus nginxStatus;
 
 	public NginxController() {
 
 	}
 
 	@Inject
-	public NginxController(Result result, NginxRepository nginxRepository) {
+	public NginxController(Result result, NginxRepository nginxRepository,NginxStatus nginxStatus) {
 		this.result = result;
 		this.nginxRepository = nginxRepository;
+		this.nginxStatus = nginxStatus;
 	}
 
 	public void validate(Long id, String bin, String settings, Integer gzip,
@@ -66,7 +68,7 @@ public class NginxController {
 	
 	
 	public void status() {
-		this.result.use(Results.json()).from(new NginxStatusReader().read()).serialize();
+		this.result.use(Results.json()).from(nginxStatus).serialize();
 	}
 
 }

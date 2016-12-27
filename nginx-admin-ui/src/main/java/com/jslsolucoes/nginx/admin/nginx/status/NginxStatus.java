@@ -15,6 +15,9 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.nginx.status;
 
+import javax.enterprise.inject.Vetoed;
+
+@Vetoed
 public class NginxStatus {
 
 	private Integer activeConnection;
@@ -24,21 +27,6 @@ public class NginxStatus {
 	private Integer reading;
 	private Integer writing;
 	private Integer waiting;
-
-	public NginxStatus() {
-
-	}
-
-	public NginxStatus(Integer activeConnection, Integer accepts, Integer handled, Integer requests, Integer reading,
-			Integer writing, Integer waiting) {
-		this.activeConnection = activeConnection;
-		this.accepts = accepts;
-		this.handled = handled;
-		this.requests = requests;
-		this.reading = reading;
-		this.writing = writing;
-		this.waiting = waiting;
-	}
 
 	public Integer getActiveConnection() {
 		return activeConnection;

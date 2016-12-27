@@ -35,7 +35,7 @@ import org.apache.http.util.EntityUtils;
 
 public class NginxStatusReader {
 
-	public NginxStatus read() {
+	public NginxStatus status() {
 		String body = body();
 		if(!StringUtils.isEmpty(body)){
 			NginxStatus nginxStatus = new NginxStatus();
@@ -49,7 +49,16 @@ public class NginxStatusReader {
 			nginxStatus.setRequests(requests(body));
 			return nginxStatus;
 		} else {
-			return new NginxStatus(0, 0, 0, 0, 0, 0, 0);
+			NginxStatus nginxStatus = new NginxStatus();
+			nginxStatus.setReading(0);
+			nginxStatus.setWriting(0);
+			nginxStatus.setActiveConnection(0);
+			nginxStatus.setAccepts(0);
+			nginxStatus.setWaiting(0);
+			nginxStatus.setAccepts(0);
+			nginxStatus.setHandled(0);
+			nginxStatus.setRequests(0);
+			return nginxStatus;
 		}
 	}
 	

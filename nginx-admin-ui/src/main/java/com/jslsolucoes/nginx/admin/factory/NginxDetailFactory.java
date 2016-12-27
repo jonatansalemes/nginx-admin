@@ -11,6 +11,7 @@ import com.jslsolucoes.nginx.admin.nginx.detail.NginxDetailReader;
 import com.jslsolucoes.nginx.admin.nginx.runner.Runner;
 import com.jslsolucoes.nginx.admin.repository.NginxRepository;
 
+@RequestScoped
 public class NginxDetailFactory {
 
 	@Inject
@@ -20,7 +21,6 @@ public class NginxDetailFactory {
 	private NginxRepository nginxRepository;
 	
 	@Produces
-	@RequestScoped
 	public NginxDetail getInstance() throws SQLException {
 		return new NginxDetailReader(runner, nginxRepository.configuration())
 				.details();
