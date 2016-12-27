@@ -15,30 +15,20 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.repository.impl;
 
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
+public enum ConfigurationType {
+	DB_VERSION("DB_VERSION"), URL_BASE("URL_BASE");
 
-import org.hibernate.Criteria;
-import org.hibernate.Session;
+	private String variable;
 
-import com.jslsolucoes.nginx.admin.model.Application;
-import com.jslsolucoes.nginx.admin.repository.ApplicationRepository;
-
-@RequestScoped
-public class ApplicationRepositoryImpl extends RepositoryImpl<Application> implements ApplicationRepository {
-
-	public ApplicationRepositoryImpl() {
-
+	ConfigurationType(String variable) {
+		this.variable = variable;
 	}
 
-	@Inject
-	public ApplicationRepositoryImpl(Session session) {
-		super(session);
+	public String getVariable() {
+		return variable;
 	}
 
-	@Override
-	public Application configuration() {
-		Criteria criteria = session.createCriteria(Application.class);
-		return (Application) criteria.uniqueResult();
+	public void setVariable(String variable) {
+		this.variable = variable;
 	}
 }

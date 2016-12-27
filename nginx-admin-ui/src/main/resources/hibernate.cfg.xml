@@ -11,7 +11,6 @@
 		<property name="hibernate.format_sql">false</property>
 		
 		<mapping class="com.jslsolucoes.nginx.admin.model.User"></mapping>
-		<mapping class="com.jslsolucoes.nginx.admin.model.Configuration"></mapping>
 		<mapping class="com.jslsolucoes.nginx.admin.model.Smtp"></mapping>
 		<mapping class="com.jslsolucoes.nginx.admin.model.Nginx"></mapping>
 		<mapping class="com.jslsolucoes.nginx.admin.model.SslCertificate"></mapping>
@@ -23,7 +22,7 @@
 		<mapping class="com.jslsolucoes.nginx.admin.model.VirtualHostAlias"></mapping>
 		<mapping class="com.jslsolucoes.nginx.admin.model.VirtualHostLocation"></mapping>
 		<mapping class="com.jslsolucoes.nginx.admin.model.ResourceIdentifier"></mapping>
-		<mapping class="com.jslsolucoes.nginx.admin.model.Application"></mapping>
+		<mapping class="com.jslsolucoes.nginx.admin.model.Configuration"></mapping>
 
 	</session-factory>
 </hibernate-configuration>

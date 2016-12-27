@@ -30,7 +30,8 @@ import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 
-import com.jslsolucoes.nginx.admin.repository.ApplicationRepository;
+import com.jslsolucoes.nginx.admin.repository.ConfigurationRepository;
+import com.jslsolucoes.nginx.admin.repository.impl.ConfigurationType;
 
 import br.com.caelum.vraptor.events.VRaptorInitialized;
 
@@ -38,15 +39,15 @@ import br.com.caelum.vraptor.events.VRaptorInitialized;
 public class SchedulerInitializer {
 
 	@Inject
-	private ApplicationRepository applicationRepository;
+	private ConfigurationRepository configurationRepository;
 
 	public void init(@Observes VRaptorInitialized vRaptorInitialized) throws SchedulerException, SQLException {
 
 		Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
 		JobDetail job = JobBuilder.newJob(HttpRequestJob.class)
-				.usingJobData("url_base", applicationRepository.configuration().getUrlBase()).build();
+				.usingJobData("url_base", configurationRepository.getString(ConfigurationType.URL_BASE)).build();
 		Trigger trigger = TriggerBuilder.newTrigger().startNow()
-				.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(5).repeatForever()).build();
+				.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(30).repeatForever()).build();
 		scheduler.scheduleJob(job, trigger);
 		scheduler.start();
 	}

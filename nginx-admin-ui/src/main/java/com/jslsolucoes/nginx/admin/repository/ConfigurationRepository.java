@@ -15,8 +15,13 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.repository;
 
-import com.jslsolucoes.nginx.admin.model.Application;
+import com.jslsolucoes.nginx.admin.repository.impl.ConfigurationType;
 
-public interface ApplicationRepository {
-	public Application configuration();
+public interface ConfigurationRepository {
+
+	public Integer getInteger(ConfigurationType configurationType);
+
+	public String getString(ConfigurationType urlBase);
+
+
 }

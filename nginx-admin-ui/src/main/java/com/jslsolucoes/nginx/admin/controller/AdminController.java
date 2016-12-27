@@ -17,10 +17,9 @@ package com.jslsolucoes.nginx.admin.controller;
 
 import javax.inject.Inject;
 
-import com.jslsolucoes.nginx.admin.nginx.detail.NginxDetailReader;
+import com.jslsolucoes.nginx.admin.nginx.detail.NginxDetail;
 import com.jslsolucoes.nginx.admin.nginx.runner.Runner;
 import com.jslsolucoes.nginx.admin.os.OperationalSystem;
-import com.jslsolucoes.nginx.admin.repository.NginxRepository;
 
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Path;
@@ -32,24 +31,23 @@ public class AdminController {
 
 	private Result result;
 	private Runner runner;
-	private NginxRepository nginxRepository;
+	private NginxDetail nginxDetail;
 
 	public AdminController() {
 
 	}
 
 	@Inject
-	public AdminController(Result result, Runner runner, NginxRepository nginxRepository) {
+	public AdminController(Result result, Runner runner, NginxDetail nginxDetail) {
 		this.result = result;
 		this.runner = runner;
-		this.nginxRepository = nginxRepository;
+		this.nginxDetail = nginxDetail;
+
 	}
 
 	public void dashboard() {
 		this.result.include("so", OperationalSystem.info());
-		this.result.include("nginxDetail",
-				new NginxDetailReader(runner, nginxRepository.configuration())
-						.details());
+		this.result.include("nginxDetail", nginxDetail);
 	}
 
 	public void configure() {
@@ -60,7 +58,7 @@ public class AdminController {
 		this.result.include("runtimeResult", runner.stop());
 		this.result.redirectTo(this).dashboard();
 	}
-	
+
 	public void reload() {
 		this.result.include("runtimeResult", runner.reload());
 		this.result.redirectTo(this).dashboard();

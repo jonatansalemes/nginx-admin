@@ -26,18 +26,18 @@ import javax.persistence.Table;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "application", schema = "admin")
-public class Application implements Serializable {
+@Table(name = "configuration", schema = "admin")
+public class Configuration implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "url_base")
-	private String urlBase;
-	
-	@Column(name = "db_version")
-	private Integer databaseVersion;
+	@Column(name = "variable")
+	private String variable;
+
+	@Column(name = "value")
+	private String value;
 
 	public Long getId() {
 		return id;
@@ -47,19 +47,20 @@ public class Application implements Serializable {
 		this.id = id;
 	}
 
-	public String getUrlBase() {
-		return urlBase;
+	public String getVariable() {
+		return variable;
 	}
 
-	public void setUrlBase(String urlBase) {
-		this.urlBase = urlBase;
+	public void setVariable(String variable) {
+		this.variable = variable;
 	}
 
-	public Integer getDatabaseVersion() {
-		return databaseVersion;
+	public String getValue() {
+		return value;
 	}
 
-	public void setDatabaseVersion(Integer databaseVersion) {
-		this.databaseVersion = databaseVersion;
+	public void setValue(String value) {
+		this.value = value;
 	}
+
 }

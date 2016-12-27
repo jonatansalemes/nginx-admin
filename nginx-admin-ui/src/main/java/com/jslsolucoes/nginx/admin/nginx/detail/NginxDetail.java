@@ -17,6 +17,9 @@ package com.jslsolucoes.nginx.admin.nginx.detail;
 
 import java.math.BigDecimal;
 
+import javax.enterprise.inject.Vetoed;
+
+@Vetoed
 public class NginxDetail {
 
 	private String version;
