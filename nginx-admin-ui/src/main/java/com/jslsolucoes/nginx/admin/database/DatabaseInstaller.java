@@ -40,23 +40,15 @@ public class DatabaseInstaller {
 
 	private static final Logger logger = LoggerFactory.getLogger(DatabaseInstaller.class);
 
+	@Inject
 	private Connection connection;
 
+	@Inject
 	private ConfigurationRepository configurationRepository;
 
-	private Properties properties;
-
-	public DatabaseInstaller() {
-
-	}
-
 	@Inject
-	public DatabaseInstaller(Connection connection, ConfigurationRepository configurationRepository,
-			@Application Properties properties) {
-		this.connection = connection;
-		this.configurationRepository = configurationRepository;
-		this.properties = properties;
-	}
+	@Application
+	private Properties properties;
 
 	public void contextInitialized(@Observes VRaptorInitialized vRaptorInitialized) throws IOException {
 
@@ -81,6 +73,7 @@ public class DatabaseInstaller {
 						}
 					});
 		}
+		logger.info("Database is up to date ...");
 	}
 
 	private String resource(String path) throws IOException {
