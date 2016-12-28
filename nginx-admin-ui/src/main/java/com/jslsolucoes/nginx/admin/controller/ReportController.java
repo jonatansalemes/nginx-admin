@@ -3,10 +3,11 @@ package com.jslsolucoes.nginx.admin.controller;
 import javax.inject.Inject;
 
 import com.jslsolucoes.nginx.admin.report.OriginStatistics;
+import com.jslsolucoes.nginx.admin.report.StatusCodeStatistics;
 import com.jslsolucoes.nginx.admin.report.UserAgentStatistics;
 import com.jslsolucoes.nginx.admin.repository.ReportRepository;
-import com.jslsolucoes.tagria.lib.chart.BarDataSet;
-import com.jslsolucoes.tagria.lib.chart.BarDataSetItem;
+import com.jslsolucoes.tagria.lib.chart.BarChartData;
+import com.jslsolucoes.tagria.lib.chart.BarChartDataSet;
 import com.jslsolucoes.tagria.lib.chart.PieDataSet;
 import com.jslsolucoes.tagria.lib.chart.PieDataSetItem;
 
@@ -33,23 +34,49 @@ public class ReportController {
 
 	public void dashboard() {
 		this.result.include("browsers", browsers());
-		this.result.include("ips", ips());
+		this.result.include("statuses", status());
+		this.result.include("origins", origins());
+	}
+
+	private PieDataSet status() {
+		PieDataSet pieDataSet = new PieDataSet();
+		for (StatusCodeStatistics statusCodeStatistics : reportRepository.statuses()) {
+			pieDataSet.add(new PieDataSetItem(String.valueOf(statusCodeStatistics.getStatus()),
+					statusCodeStatistics.getTotal()));
+		}
+		return pieDataSet;
 	}
 
 	private PieDataSet browsers() {
 		PieDataSet pieDataSet = new PieDataSet();
 		for (UserAgentStatistics userAgentStatistics : reportRepository.browsers()) {
-			pieDataSet.add(new PieDataSetItem(userAgentStatistics.getUserAgent(), userAgentStatistics.getCount()));
+			pieDataSet.add(new PieDataSetItem(userAgentStatistics.getUserAgent(), userAgentStatistics.getTotal()));
 		}
 		return pieDataSet;
 	}
-	
-	private BarDataSet ips() {
-		BarDataSet barDataSet = new BarDataSet();
+
+	private BarChartData origins() {
+		BarChartData barChartData = new BarChartData();
+
+		BarChartDataSet ip = new BarChartDataSet();
+		ip.setLabel("Hits");
+
+		BarChartDataSet request = new BarChartDataSet();
+		request.setLabel("Request total (Kbytes)");
+
+		BarChartDataSet response = new BarChartDataSet();
+		response.setLabel("Response total (Kbytes)");
+
 		for (OriginStatistics originStatistics : reportRepository.ips()) {
-			barDataSet.add(new BarDataSetItem(originStatistics.getIp(),originStatistics.getHits()));
+			barChartData.addLabel(originStatistics.getIp());
+			ip.addData(originStatistics.getTotal());
+			request.addData((originStatistics.getRequest() / 1024));
+			response.addData((originStatistics.getResponse() / 1024));
 		}
-		return barDataSet;
+		barChartData.addDataSet(ip);
+		barChartData.addDataSet(request);
+		barChartData.addDataSet(response);
+		return barChartData;
 	}
 
 }

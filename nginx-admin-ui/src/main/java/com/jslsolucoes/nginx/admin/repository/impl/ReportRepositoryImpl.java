@@ -12,6 +12,7 @@ import org.hibernate.transform.Transformers;
 
 import com.jslsolucoes.nginx.admin.model.AccessLog;
 import com.jslsolucoes.nginx.admin.report.OriginStatistics;
+import com.jslsolucoes.nginx.admin.report.StatusCodeStatistics;
 import com.jslsolucoes.nginx.admin.report.UserAgentStatistics;
 import com.jslsolucoes.nginx.admin.repository.ReportRepository;
 
@@ -35,7 +36,7 @@ public class ReportRepositoryImpl implements ReportRepository {
 		Criteria criteria = session.createCriteria(AccessLog.class);
 		criteria.setProjection(Projections
 			.projectionList()
-			.add(Projections.count("id").as("count"))
+			.add(Projections.count("id").as("total"))
 			.add(Projections
 					.groupProperty("httpUserAgent"),"userAgent")
 		);
@@ -49,11 +50,27 @@ public class ReportRepositoryImpl implements ReportRepository {
 		Criteria criteria = session.createCriteria(AccessLog.class);
 		criteria.setProjection(Projections
 			.projectionList()
-			.add(Projections.count("id").as("hits"))
+			.add(Projections.count("id").as("total"))
+			.add(Projections.sum("requestLength").as("request"))
+			.add(Projections.sum("bytesSent").as("response"))
 			.add(Projections
 					.groupProperty("remoteAddress"),"ip")
 		);
 		criteria.setResultTransformer(Transformers.aliasToBean(OriginStatistics.class));
+		return criteria.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<StatusCodeStatistics> statuses() {
+		Criteria criteria = session.createCriteria(AccessLog.class);
+		criteria.setProjection(Projections
+			.projectionList()
+			.add(Projections.count("id").as("total"))
+			.add(Projections
+					.groupProperty("status"),"status")
+		);
+		criteria.setResultTransformer(Transformers.aliasToBean(StatusCodeStatistics.class));
 		return criteria.list();
 	}
 }
