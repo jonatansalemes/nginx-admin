@@ -21,10 +21,10 @@ public interface InstallRepository {
 
 	public List<String> validateBeforeInstall(String login,String loginConfirm,String adminPassword,String adminPasswordConfirm,
 			String nginxBin,String nginxSettings,String smtpHost, Integer smtpPort, Integer smtpAuthenticate, Integer smtpTls, String smtpFromAddress,
-			String smtpUsername, String smtpPassword);
+			String smtpUsername, String smtpPassword, String urlBase);
 	
 	public void install(String login,String loginConfirm,String adminPassword,String adminPasswordConfirm,
 			String nginxBin,String nginxSettings,String smtpHost, Integer smtpPort, Integer smtpAuthenticate, Integer smtpTls, String smtpFromAddress,
-			String smtpUsername, String smtpPassword);
+			String smtpUsername, String smtpPassword, String urlBase);
 
 }

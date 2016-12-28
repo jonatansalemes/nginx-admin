@@ -23,6 +23,7 @@ import javax.inject.Inject;
 
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.model.Smtp;
+import com.jslsolucoes.nginx.admin.repository.ConfigurationRepository;
 import com.jslsolucoes.nginx.admin.repository.InstallRepository;
 import com.jslsolucoes.nginx.admin.repository.NginxRepository;
 import com.jslsolucoes.nginx.admin.repository.SmtpRepository;
@@ -34,6 +35,7 @@ public class InstallRepositoryImpl implements InstallRepository {
 	private SmtpRepository smtpRepository;
 	private NginxRepository nginxRepository;
 	private UserRepository userRepository;
+	private ConfigurationRepository configurationRepository;
 
 	public InstallRepositoryImpl() {
 
@@ -41,10 +43,11 @@ public class InstallRepositoryImpl implements InstallRepository {
 
 	@Inject
 	public InstallRepositoryImpl(SmtpRepository smtpRepository, NginxRepository nginxRepository,
-			UserRepository userRepository) {
+			UserRepository userRepository,ConfigurationRepository configurationRepository) {
 		this.smtpRepository = smtpRepository;
 		this.nginxRepository = nginxRepository;
 		this.userRepository = userRepository;
+		this.configurationRepository = configurationRepository;
 
 	}
 
@@ -52,7 +55,7 @@ public class InstallRepositoryImpl implements InstallRepository {
 	public List<String> validateBeforeInstall(String login, String loginConfirm, String adminPassword,
 			String adminPasswordConfirm, String nginxBin, String nginxSettings, String smtpHost, Integer smtpPort,
 			Integer smtpAuthenticate, Integer smtpTls, String smtpFromAddress, String smtpUsername,
-			String smtpPassword) {
+			String smtpPassword, String urlBase) {
 		List<String> errors = new ArrayList<String>();
 		errors.addAll(userRepository.validateBeforeCreateAdministrator(login, loginConfirm, adminPassword,
 				adminPasswordConfirm));
@@ -63,11 +66,12 @@ public class InstallRepositoryImpl implements InstallRepository {
 	@Override
 	public void install(String login, String loginConfirm, String adminPassword, String adminPasswordConfirm,
 			String nginxBin, String nginxSettings, String smtpHost, Integer smtpPort, Integer smtpAuthenticate,
-			Integer smtpTls, String smtpFromAddress, String smtpUsername, String smtpPassword) {
+			Integer smtpTls, String smtpFromAddress, String smtpUsername, String smtpPassword, String urlBase) {
 		userRepository.createAdministrator(login, adminPassword);
 		nginxRepository.saveOrUpdate(new Nginx(nginxBin, nginxSettings));
 		smtpRepository.saveOrUpdate(
 				new Smtp(smtpHost, smtpPort, smtpAuthenticate, smtpUsername, smtpPassword, smtpTls, smtpFromAddress));
+		configurationRepository.update(ConfigurationType.URL_BASE,urlBase);
 	}
 
 }

@@ -34,10 +34,11 @@ public class SchedulerRepositoryImpl implements SchedulerRepository {
 	@Override
 	public void scheduleJobs() throws SchedulerException {
 		JobDetail job = JobBuilder.newJob(CollectLogTask.class)
-				.usingJobData("url_base", configurationRepository.getString(ConfigurationType.URL_BASE)).build();
+				.usingJobData("url_base", configurationRepository.string(ConfigurationType.URL_BASE)).build();
 		Trigger trigger = TriggerBuilder.newTrigger().startNow()
 				.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(30).repeatForever()).build();
 		scheduler.scheduleJob(job, trigger);
+		scheduler.start();
 	}
 
 }

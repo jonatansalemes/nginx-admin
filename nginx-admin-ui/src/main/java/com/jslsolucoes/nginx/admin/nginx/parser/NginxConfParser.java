@@ -41,11 +41,14 @@ public class NginxConfParser {
 		Matcher includes = Pattern.compile("include (.*)/(.*);").matcher(content(new File(location)));
 		while (includes.find()) {
 			String directory = includes.group(1).trim();
-			String pattern = includes.group(2).trim().replaceAll("\\*", "\\.\\*");
-			for (File file : FileUtils.listFiles(new File(directory), new RegexFileFilter(pattern), null)) {
-				for(Parser parser : parsers(content(file))){
-					if(parser.accepts()){
-						directives.addAll(parser.parse());
+			File include = new File(directory);
+			if(include.exists()){
+				String pattern = includes.group(2).trim().replaceAll("\\*", "\\.\\*");
+				for (File file : FileUtils.listFiles(include, new RegexFileFilter(pattern), null)) {
+					for(Parser parser : parsers(content(file))){
+						if(parser.accepts()){
+							directives.addAll(parser.parse());
+						}
 					}
 				}
 			}

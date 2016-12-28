@@ -24,6 +24,7 @@ import com.jslsolucoes.nginx.admin.repository.NginxRepository;
 
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Path;
+import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
 
@@ -59,6 +60,7 @@ public class NginxController {
 		this.result.include("nginx", this.nginxRepository.configuration());
 	}
 
+	@Post
 	public void update(Long id, String bin, String settings, Integer gzip,
 			Integer maxPostSize) {
 		this.nginxRepository.saveOrUpdate(new Nginx(id, bin, settings,gzip, maxPostSize));

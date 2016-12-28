@@ -20,7 +20,6 @@ import javax.inject.Inject;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 
 import com.jslsolucoes.nginx.admin.model.Configuration;
@@ -39,19 +38,25 @@ public class ConfigurationRepositoryImpl extends RepositoryImpl<Configuration> i
 	}
 
 	@Override
-	public Integer getInteger(ConfigurationType configurationType) {
-		return Integer.valueOf(variable(configurationType));
+	public Integer integer(ConfigurationType configurationType) {
+		return Integer.valueOf(string(configurationType));
 	}
 
-	private String variable(ConfigurationType configurationType) {
+	private Configuration load(ConfigurationType configurationType) {
 		Criteria criteria = session.createCriteria(Configuration.class);
-		criteria.setProjection(Property.forName("value"));
 		criteria.add(Restrictions.eq("variable", configurationType.getVariable()));
-		return (String) criteria.uniqueResult();
+		return (Configuration) criteria.uniqueResult();
 	}
 
 	@Override
-	public String getString(ConfigurationType configurationType) {
-		return variable(configurationType);
+	public String string(ConfigurationType configurationType) {
+		Configuration configuration = load(configurationType);
+		return configuration.getValue();
+	}
+
+	@Override
+	public void update(ConfigurationType configurationType, String value) {
+		Configuration configuration = load(configurationType);
+		configuration.setValue(value);
 	}
 }

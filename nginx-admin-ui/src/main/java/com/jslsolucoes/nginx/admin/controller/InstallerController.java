@@ -15,9 +15,12 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.controller;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Properties;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 import com.jslsolucoes.nginx.admin.annotation.Application;
 import com.jslsolucoes.nginx.admin.annotation.Public;
@@ -38,40 +41,51 @@ public class InstallerController {
 	private Result result;
 	private InstallRepository installRepository;
 	private Properties properties;
+	private HttpServletRequest httpServletRequest;
 
 	public InstallerController() {
 
 	}
 
 	@Inject
-	public InstallerController(@Application Properties properties, Result result, InstallRepository installRepository) {
+	public InstallerController(@Application Properties properties, Result result, InstallRepository installRepository,
+			HttpServletRequest httpServletRequest) {
 		this.result = result;
 		this.properties = properties;
 		this.installRepository = installRepository;
+		this.httpServletRequest = httpServletRequest;
 	}
 
-	public void form() {
+	public void form() throws MalformedURLException {
 		this.result.include("version", properties.get("app.version"));
+		this.result.include("urlBase", urlBase());
+	}
+
+	private String urlBase() throws MalformedURLException {
+		URL url = new URL(httpServletRequest.getRequestURL().toString());
+		return url.getProtocol() + "://" + url.getHost() + ":" + url.getPort()
+				+ (httpServletRequest.getServletContext().getContextPath().equals("/") ? ""
+						: httpServletRequest.getServletContext().getContextPath());
 	}
 
 	@Post
 	public void validateBeforeInstall(String login, String loginConfirm, String adminPassword,
 			String adminPasswordConfirm, String nginxBin, String nginxSettings, String smtpHost, Integer smtpPort,
 			Integer smtpAuthenticate, Integer smtpTls, String smtpFromAddress, String smtpUsername,
-			String smtpPassword) {
+			String smtpPassword,String urlBase) {
 		this.result.use(Results.json())
 				.from(HtmlUtil.convertToUnodernedList(installRepository.validateBeforeInstall(login, loginConfirm,
 						adminPassword, adminPasswordConfirm, nginxBin, nginxSettings, smtpHost, smtpPort,
-						smtpAuthenticate, smtpTls, smtpFromAddress, smtpUsername, smtpPassword)), "errors")
+						smtpAuthenticate, smtpTls, smtpFromAddress, smtpUsername, smtpPassword,urlBase)), "errors")
 				.serialize();
 	}
 
 	@Post
 	public void install(String login, String loginConfirm, String adminPassword, String adminPasswordConfirm,
 			String nginxBin, String nginxSettings, String smtpHost, Integer smtpPort, Integer smtpAuthenticate,
-			Integer smtpTls, String smtpFromAddress, String smtpUsername, String smtpPassword) {
+			Integer smtpTls, String smtpFromAddress, String smtpUsername, String smtpPassword,String urlBase) {
 		installRepository.install(login, loginConfirm, adminPassword, adminPasswordConfirm, nginxBin, nginxSettings,
-				smtpHost, smtpPort, smtpAuthenticate, smtpTls, smtpFromAddress, smtpUsername, smtpPassword);
+				smtpHost, smtpPort, smtpAuthenticate, smtpTls, smtpFromAddress, smtpUsername, smtpPassword,urlBase);
 		this.result.redirectTo(UserController.class).login();
 	}
 

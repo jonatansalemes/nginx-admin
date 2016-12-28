@@ -67,7 +67,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 
 	public Integer installed(){
 		try {
-			return configurationRepository.getInteger(ConfigurationType.DB_VERSION);
+			return configurationRepository.integer(ConfigurationType.DB_VERSION);
 		} catch (Exception exception) {
 			return 0;
 		}
