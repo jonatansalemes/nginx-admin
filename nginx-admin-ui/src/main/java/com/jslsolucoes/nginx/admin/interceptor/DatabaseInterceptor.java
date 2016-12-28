@@ -15,42 +15,41 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.interceptor;
 
+import java.io.IOException;
+
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
-import com.jslsolucoes.nginx.admin.annotation.Public;
-import com.jslsolucoes.nginx.admin.controller.UserController;
-import com.jslsolucoes.nginx.admin.session.UserSession;
+import org.hibernate.HibernateException;
 
-import br.com.caelum.vraptor.Accepts;
+import com.jslsolucoes.nginx.admin.annotation.CheckForDatabaseUpdate;
+import com.jslsolucoes.nginx.admin.controller.DatabaseController;
+import com.jslsolucoes.nginx.admin.repository.DatabaseRepository;
+
 import br.com.caelum.vraptor.AroundCall;
 import br.com.caelum.vraptor.Intercepts;
 import br.com.caelum.vraptor.Result;
-import br.com.caelum.vraptor.controller.ControllerMethod;
+import br.com.caelum.vraptor.interceptor.AcceptsWithAnnotations;
 import br.com.caelum.vraptor.interceptor.SimpleInterceptorStack;
 
 @RequestScoped
-@Intercepts(after=DatabaseInterceptor.class)
-public class AuthenticationInterceptor {
-
-	@Inject
-	private UserSession userSession;
+@Intercepts
+@AcceptsWithAnnotations(CheckForDatabaseUpdate.class)
+public class DatabaseInterceptor {
 
 	@Inject
 	private Result result;
-
-	@Accepts
-	public boolean accepts(ControllerMethod controllerMethod) {
-		return !(controllerMethod.getController().getType().isAnnotationPresent(Public.class)
-				|| controllerMethod.containsAnnotation(Public.class));
-	}
+	
+	@Inject
+	private DatabaseRepository databaseRepository;
 
 	@AroundCall
-	public void intercept(SimpleInterceptorStack stack) {
-		if (userSession.getUser() != null) {
-			stack.next();
+	public void intercept(SimpleInterceptorStack stack) throws HibernateException, IOException {
+	
+		if(databaseRepository.installOrUpgradeRequired()){
+			this.result.redirectTo(DatabaseController.class).installOrUpgrade();
 		} else {
-			this.result.redirectTo(UserController.class).login();
+			stack.next();
 		}
 	}
 

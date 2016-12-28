@@ -18,19 +18,19 @@ public class TaskController {
 	private Result result;
 	private LogRepository logRepository;
 
-	
 	public TaskController() {
-		
+
 	}
-	
+
 	@Inject
-	public TaskController(Result result,LogRepository logRepository) {
+	public TaskController(Result result, LogRepository logRepository) {
 		this.result = result;
 		this.logRepository = logRepository;
+
 	}
-	
+
 	@Path("collect/log")
-	public void collectLog(){
+	public void collectLog() {
 		logRepository.collect();
 		this.result.use(Results.status()).ok();
 	}

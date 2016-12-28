@@ -13,37 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package com.jslsolucoes.nginx.admin.controller;
+package com.jslsolucoes.nginx.admin.annotation;
 
-import java.util.Properties;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import javax.inject.Inject;
-
-import com.jslsolucoes.nginx.admin.annotation.Application;
-
-import br.com.caelum.vraptor.Controller;
-import br.com.caelum.vraptor.Path;
-import br.com.caelum.vraptor.Result;
-
-@Controller
-public class AppController {
-
-	private Properties properties;
-	private Result result;
-
-	public AppController() {
-
-	}
-
-	@Inject
-	public AppController(@Application Properties properties, Result result) {
-		this.properties = properties;
-		this.result = result;
-	}
-
-	@Path(value = { "/", "/home" })
-	public void home() {
-		this.result.include("version",properties.get("app.version"));
-	}
-
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ ElementType.METHOD })
+public @interface CheckForScheduler {
 }

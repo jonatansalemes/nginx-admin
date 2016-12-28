@@ -15,42 +15,41 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.interceptor;
 
+import java.io.IOException;
+
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
-import com.jslsolucoes.nginx.admin.annotation.Public;
-import com.jslsolucoes.nginx.admin.controller.UserController;
-import com.jslsolucoes.nginx.admin.session.UserSession;
+import org.hibernate.HibernateException;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
 
-import br.com.caelum.vraptor.Accepts;
+import com.jslsolucoes.nginx.admin.annotation.CheckForScheduler;
+import com.jslsolucoes.nginx.admin.controller.SchedulerController;
+
 import br.com.caelum.vraptor.AroundCall;
 import br.com.caelum.vraptor.Intercepts;
 import br.com.caelum.vraptor.Result;
-import br.com.caelum.vraptor.controller.ControllerMethod;
+import br.com.caelum.vraptor.interceptor.AcceptsWithAnnotations;
 import br.com.caelum.vraptor.interceptor.SimpleInterceptorStack;
 
 @RequestScoped
-@Intercepts(after=DatabaseInterceptor.class)
-public class AuthenticationInterceptor {
-
-	@Inject
-	private UserSession userSession;
+@Intercepts(after = InstallerInterceptor.class)
+@AcceptsWithAnnotations(CheckForScheduler.class)
+public class SchedulerInterceptor {
 
 	@Inject
 	private Result result;
 
-	@Accepts
-	public boolean accepts(ControllerMethod controllerMethod) {
-		return !(controllerMethod.getController().getType().isAnnotationPresent(Public.class)
-				|| controllerMethod.containsAnnotation(Public.class));
-	}
+	@Inject
+	private Scheduler scheduler;
 
 	@AroundCall
-	public void intercept(SimpleInterceptorStack stack) {
-		if (userSession.getUser() != null) {
-			stack.next();
+	public void intercept(SimpleInterceptorStack stack) throws HibernateException, IOException, SchedulerException {
+		if (!scheduler.isStarted()) {
+			this.result.redirectTo(SchedulerController.class).scheduleJobs();
 		} else {
-			this.result.redirectTo(UserController.class).login();
+			stack.next();
 		}
 	}
 

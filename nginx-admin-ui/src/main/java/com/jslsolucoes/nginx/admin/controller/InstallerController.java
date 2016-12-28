@@ -15,11 +15,13 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.controller;
 
+import java.util.Properties;
+
 import javax.inject.Inject;
 
+import com.jslsolucoes.nginx.admin.annotation.Application;
 import com.jslsolucoes.nginx.admin.annotation.Public;
 import com.jslsolucoes.nginx.admin.repository.InstallRepository;
-import com.jslsolucoes.nginx.admin.repository.UserRepository;
 import com.jslsolucoes.nginx.admin.util.HtmlUtil;
 
 import br.com.caelum.vraptor.Controller;
@@ -33,33 +35,29 @@ import br.com.caelum.vraptor.view.Results;
 @Public
 public class InstallerController {
 
-	private UserRepository userRepository;
 	private Result result;
 	private InstallRepository installRepository;
+	private Properties properties;
 
 	public InstallerController() {
 
 	}
 
 	@Inject
-	public InstallerController(Result result, InstallRepository installRepository,UserRepository userRepository) {
+	public InstallerController(@Application Properties properties, Result result, InstallRepository installRepository) {
 		this.result = result;
+		this.properties = properties;
 		this.installRepository = installRepository;
-		this.userRepository = userRepository;
-	}
-
-	public void check() {
-		this.result.use(Results.json()).from(userRepository.listAll()).serialize();
 	}
 
 	public void form() {
-
+		this.result.include("version", properties.get("app.version"));
 	}
 
 	@Post
 	public void validateBeforeInstall(String login, String loginConfirm, String adminPassword,
-			String adminPasswordConfirm, String nginxBin, String nginxSettings, String smtpHost,
-			Integer smtpPort, Integer smtpAuthenticate, Integer smtpTls, String smtpFromAddress, String smtpUsername,
+			String adminPasswordConfirm, String nginxBin, String nginxSettings, String smtpHost, Integer smtpPort,
+			Integer smtpAuthenticate, Integer smtpTls, String smtpFromAddress, String smtpUsername,
 			String smtpPassword) {
 		this.result.use(Results.json())
 				.from(HtmlUtil.convertToUnodernedList(installRepository.validateBeforeInstall(login, loginConfirm,

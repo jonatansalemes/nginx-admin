@@ -13,18 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package com.jslsolucoes.nginx.admin.listener;
+package com.jslsolucoes.nginx.admin.factory;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-import javax.inject.Qualifier;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Disposes;
+import javax.enterprise.inject.Produces;
 
-@Qualifier
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.PARAMETER, ElementType.FIELD })
-public @interface ContextDestroyed {
+public class ExecutorServiceFactory {
+
+	@Produces
+	@ApplicationScoped
+	public ExecutorService getInstance() {
+		return Executors.newCachedThreadPool();
+	}
+
+	public void destroy(@Disposes ExecutorService executorService) {
+		if (!executorService.isShutdown()) {
+			executorService.shutdown();
+		}
+	}
 
 }

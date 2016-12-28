@@ -11,7 +11,7 @@
 			<html:div cssClass="text-center">
 				<html:h1>
 					<html:small>
-						<fmt:message key="title"></fmt:message> - v.<html:span id="par_version"></html:span>
+						<fmt:message key="title"></fmt:message> - ${ version }
 					</html:small>
 				</html:h1>
 			</html:div>
@@ -132,11 +132,6 @@
 			$('.auth').val('').parent().hide();
 		}
 	</html:jsEvent>
-	
-	<ajax:function url="/version" name="version" executeOnDocumentLoad="true">
-		<ajax:onSuccess>
-			<ajax:target type="html" data="version" target="version"></ajax:target>
-		</ajax:onSuccess>
-	</ajax:function>
+
 
 </html:view>

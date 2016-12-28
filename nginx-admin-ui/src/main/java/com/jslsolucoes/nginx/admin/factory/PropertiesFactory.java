@@ -13,18 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package com.jslsolucoes.nginx.admin.listener;
+package com.jslsolucoes.nginx.admin.factory;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.io.IOException;
+import java.util.Properties;
 
-import javax.inject.Qualifier;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Produces;
 
-@Qualifier
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.PARAMETER, ElementType.FIELD })
-public @interface ContextInitialized {
+import com.jslsolucoes.nginx.admin.annotation.Application;
 
+public class PropertiesFactory {
+
+	@Produces
+	@ApplicationScoped
+	@Application
+	public Properties getInstance() throws IOException {
+		Properties properties = new Properties();
+		properties.load(getClass().getResourceAsStream("/application.properties"));
+		return properties;
+	}
 }
