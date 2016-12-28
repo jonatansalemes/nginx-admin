@@ -12,6 +12,7 @@
 				<html:menuItem url="#" label="${ userSession.user.login }" icon="user"></html:menuItem>
 				<html:menuSeparator></html:menuSeparator>
 				<html:menuItem target="content" url="/settings/home" icon="cog" label="{settings}"></html:menuItem>
+				<html:menuItem target="content" url="/report/dashboard" icon="object-align-bottom" label="{reports}"></html:menuItem>
 				<html:menuItem url="/user/logout" icon="log-out" label="{logout}"></html:menuItem>
 			</html:menuButton>
 			<html:menuButton icon="cloud-upload" align="right">
