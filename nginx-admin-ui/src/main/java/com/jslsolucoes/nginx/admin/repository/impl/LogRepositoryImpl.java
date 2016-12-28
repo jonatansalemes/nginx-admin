@@ -15,37 +15,77 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.repository.impl;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.jslsolucoes.nginx.admin.model.AccessLog;
 import com.jslsolucoes.nginx.admin.model.Nginx;
+import com.jslsolucoes.nginx.admin.repository.AccessLogRepository;
 import com.jslsolucoes.nginx.admin.repository.LogRepository;
 import com.jslsolucoes.nginx.admin.repository.NginxRepository;
 
 @RequestScoped
 public class LogRepositoryImpl implements LogRepository {
-
+	
 	private NginxRepository nginxRepository;
+	private AccessLogRepository accessLogRepository;
 
-	
 	public LogRepositoryImpl() {
-		
+
 	}
-	
+
 	@Inject
-	public LogRepositoryImpl(NginxRepository nginxRepository) {
+	public LogRepositoryImpl(NginxRepository nginxRepository,AccessLogRepository accessLogRepository) {
 		this.nginxRepository = nginxRepository;
+		this.accessLogRepository = accessLogRepository;
 	}
-	
+
 	@Override
 	public void collect() {
 		Nginx nginx = nginxRepository.configuration();
-		FileUtils
-			.iterateFiles(nginx.log(),new String[]{".log"},true)
-			.forEachRemaining(file -> {
-				System.out.println(file.getName());
-			});
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
+		FileUtils.iterateFiles(nginx.log(), new String[] { "rotate" }, true).forEachRemaining(file -> {
+			try{
+				FileUtils
+				.readLines(file,"UTF-8")
+				.stream()
+				.filter(line -> line.trim().startsWith("{") && line.trim().endsWith("}"))
+				.forEach(line -> {
+					accessLogRepository.log(gson.fromJson(line, AccessLog.class));
+				});
+				FileUtils.forceDelete(file);
+			} catch(Exception exception){
+				exception.printStackTrace();
+			}
+		});
+	}
+
+	@Override
+	public void rotate() {
+		Nginx nginx = nginxRepository.configuration();
+		FileUtils.iterateFiles(nginx.log(), new String[] { "log" }, true).forEachRemaining(file -> {
+			if (file.length() > sizeLimit()) {
+				try {
+					FileUtils.copyFile(file,
+							new File(nginx.log(), FilenameUtils.getBaseName(file.getName()) + new SimpleDateFormat("_yyyy_MM_dd_HH_mm_ss").format(new Date()) + ".log.rotate"));
+					FileUtils.write(file,"","UTF-8");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	private long sizeLimit() {
+		return 2 * 1024;
 	}
 }

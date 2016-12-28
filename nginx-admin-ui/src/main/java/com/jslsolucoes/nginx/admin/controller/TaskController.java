@@ -49,4 +49,10 @@ public class TaskController {
 		logRepository.collect();
 		this.result.use(Results.status()).ok();
 	}
+	
+	@Path("rotate/log")
+	public void rotateLog() {
+		logRepository.rotate();
+		this.result.use(Results.status()).ok();
+	}
 }

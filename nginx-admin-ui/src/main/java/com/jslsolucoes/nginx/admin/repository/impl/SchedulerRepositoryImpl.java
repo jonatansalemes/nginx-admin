@@ -19,6 +19,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
 import org.quartz.JobBuilder;
+import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -29,6 +30,7 @@ import org.quartz.TriggerBuilder;
 import com.jslsolucoes.nginx.admin.repository.ConfigurationRepository;
 import com.jslsolucoes.nginx.admin.repository.SchedulerRepository;
 import com.jslsolucoes.nginx.admin.scheduler.task.CollectLogTask;
+import com.jslsolucoes.nginx.admin.scheduler.task.RotateLogTask;
 
 @RequestScoped
 public class SchedulerRepositoryImpl implements SchedulerRepository {
@@ -48,12 +50,28 @@ public class SchedulerRepositoryImpl implements SchedulerRepository {
 
 	@Override
 	public void scheduleJobs() throws SchedulerException {
-		JobDetail job = JobBuilder.newJob(CollectLogTask.class)
-				.usingJobData("url_base", configurationRepository.string(ConfigurationType.URL_BASE)).build();
-		Trigger trigger = TriggerBuilder.newTrigger().startNow()
-				.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(30).repeatForever()).build();
-		scheduler.scheduleJob(job, trigger);
+		
+		JobDataMap jobDataMap = new JobDataMap();
+		jobDataMap.put("urlBase", configurationRepository.string(ConfigurationType.URL_BASE));
+		scheduleCollectLog(jobDataMap);
+		scheduleRotateLog(jobDataMap);
 		scheduler.start();
+	}
+
+	private void scheduleRotateLog(JobDataMap jobDataMap) throws SchedulerException {
+		JobDetail job = JobBuilder.newJob(RotateLogTask.class)
+				.usingJobData(jobDataMap).build();
+		Trigger trigger = TriggerBuilder.newTrigger().startNow()
+				.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(30).repeatForever()).build();
+		scheduler.scheduleJob(job, trigger);
+	}
+
+	private void scheduleCollectLog(JobDataMap jobDataMap) throws SchedulerException {
+		JobDetail job = JobBuilder.newJob(CollectLogTask.class)
+				.usingJobData(jobDataMap).build();
+		Trigger trigger = TriggerBuilder.newTrigger().startNow()
+				.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(30).repeatForever()).build();
+		scheduler.scheduleJob(job, trigger);
 	}
 
 }

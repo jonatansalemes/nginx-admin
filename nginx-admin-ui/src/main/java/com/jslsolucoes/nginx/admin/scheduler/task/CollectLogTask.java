@@ -34,7 +34,7 @@ public class CollectLogTask implements Job {
 	@Override
 	public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
 		new HttpClientBuilder().client()
-				.get(jobExecutionContext.getMergedJobDataMap().getString("url_base") + "/task/collect/log")
+				.get(jobExecutionContext.getMergedJobDataMap().getString("urlBase") + "/task/collect/log")
 				.onNotStatus(HttpStatus.SC_OK,
 						closeableHttpResponse -> logger.error("Job cannot be executed : status code => "
 								+ closeableHttpResponse.getStatusLine().getStatusCode()))
