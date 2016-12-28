@@ -21,8 +21,8 @@ import javax.inject.Inject;
 
 import com.jslsolucoes.nginx.admin.annotation.Application;
 import com.jslsolucoes.nginx.admin.annotation.Public;
+import com.jslsolucoes.nginx.admin.html.HtmlUtil;
 import com.jslsolucoes.nginx.admin.repository.InstallRepository;
-import com.jslsolucoes.nginx.admin.util.HtmlUtil;
 
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Path;

@@ -17,10 +17,10 @@ package com.jslsolucoes.nginx.admin.controller;
 
 import javax.inject.Inject;
 
+import com.jslsolucoes.nginx.admin.html.HtmlUtil;
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.nginx.status.NginxStatus;
 import com.jslsolucoes.nginx.admin.repository.NginxRepository;
-import com.jslsolucoes.nginx.admin.util.HtmlUtil;
 
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Path;

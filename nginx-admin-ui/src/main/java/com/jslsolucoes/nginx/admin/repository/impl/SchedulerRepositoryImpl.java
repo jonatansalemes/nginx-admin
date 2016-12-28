@@ -13,7 +13,7 @@ import org.quartz.TriggerBuilder;
 
 import com.jslsolucoes.nginx.admin.repository.ConfigurationRepository;
 import com.jslsolucoes.nginx.admin.repository.SchedulerRepository;
-import com.jslsolucoes.nginx.admin.scheduler.HttpRequestJob;
+import com.jslsolucoes.nginx.admin.scheduler.task.CollectLogTask;
 
 @RequestScoped
 public class SchedulerRepositoryImpl implements SchedulerRepository {
@@ -33,7 +33,7 @@ public class SchedulerRepositoryImpl implements SchedulerRepository {
 
 	@Override
 	public void scheduleJobs() throws SchedulerException {
-		JobDetail job = JobBuilder.newJob(HttpRequestJob.class)
+		JobDetail job = JobBuilder.newJob(CollectLogTask.class)
 				.usingJobData("url_base", configurationRepository.getString(ConfigurationType.URL_BASE)).build();
 		Trigger trigger = TriggerBuilder.newTrigger().startNow()
 				.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(30).repeatForever()).build();

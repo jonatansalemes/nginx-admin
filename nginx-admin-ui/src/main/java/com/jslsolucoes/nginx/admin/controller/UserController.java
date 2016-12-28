@@ -24,10 +24,10 @@ import com.jslsolucoes.nginx.admin.annotation.CheckForDatabaseUpdate;
 import com.jslsolucoes.nginx.admin.annotation.CheckForInstaller;
 import com.jslsolucoes.nginx.admin.annotation.CheckForScheduler;
 import com.jslsolucoes.nginx.admin.annotation.Public;
+import com.jslsolucoes.nginx.admin.html.HtmlUtil;
 import com.jslsolucoes.nginx.admin.model.User;
 import com.jslsolucoes.nginx.admin.repository.UserRepository;
 import com.jslsolucoes.nginx.admin.session.UserSession;
-import com.jslsolucoes.nginx.admin.util.HtmlUtil;
 
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Post;

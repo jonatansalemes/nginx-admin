@@ -22,6 +22,7 @@ import javax.inject.Inject;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.jslsolucoes.nginx.admin.html.HtmlUtil;
 import com.jslsolucoes.nginx.admin.model.ResourceIdentifier;
 import com.jslsolucoes.nginx.admin.model.Server;
 import com.jslsolucoes.nginx.admin.model.Strategy;
@@ -31,7 +32,6 @@ import com.jslsolucoes.nginx.admin.repository.ServerRepository;
 import com.jslsolucoes.nginx.admin.repository.StrategyRepository;
 import com.jslsolucoes.nginx.admin.repository.UpstreamRepository;
 import com.jslsolucoes.nginx.admin.repository.impl.OperationResult;
-import com.jslsolucoes.nginx.admin.util.HtmlUtil;
 
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Path;
