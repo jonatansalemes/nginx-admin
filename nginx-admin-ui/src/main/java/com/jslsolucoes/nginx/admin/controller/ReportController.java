@@ -8,8 +8,8 @@ import com.jslsolucoes.nginx.admin.report.UserAgentStatistics;
 import com.jslsolucoes.nginx.admin.repository.ReportRepository;
 import com.jslsolucoes.tagria.lib.chart.BarChartData;
 import com.jslsolucoes.tagria.lib.chart.BarChartDataSet;
-import com.jslsolucoes.tagria.lib.chart.PieDataSet;
-import com.jslsolucoes.tagria.lib.chart.PieDataSetItem;
+import com.jslsolucoes.tagria.lib.chart.PieChartData;
+import com.jslsolucoes.tagria.lib.chart.PieChartDataSet;
 
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Path;
@@ -38,21 +38,26 @@ public class ReportController {
 		this.result.include("origins", origins());
 	}
 
-	private PieDataSet status() {
-		PieDataSet pieDataSet = new PieDataSet();
+	private PieChartData status() {
+		PieChartData pieChartData = new PieChartData();
+		PieChartDataSet pieChartDataSet = new PieChartDataSet();
 		for (StatusCodeStatistics statusCodeStatistics : reportRepository.statuses()) {
-			pieDataSet.add(new PieDataSetItem(String.valueOf(statusCodeStatistics.getStatus()),
-					statusCodeStatistics.getTotal()));
+			pieChartDataSet.addData(statusCodeStatistics.getTotal());	
+			pieChartData.addLabel(String.valueOf(statusCodeStatistics.getStatus()));
 		}
-		return pieDataSet;
+		pieChartData.addDataSet(pieChartDataSet);
+		return pieChartData;
 	}
 
-	private PieDataSet browsers() {
-		PieDataSet pieDataSet = new PieDataSet();
+	private PieChartData browsers() {
+		PieChartData pieChartData = new PieChartData();
+		PieChartDataSet pieChartDataSet = new PieChartDataSet();
 		for (UserAgentStatistics userAgentStatistics : reportRepository.browsers()) {
-			pieDataSet.add(new PieDataSetItem(userAgentStatistics.getUserAgent(), userAgentStatistics.getTotal()));
+			pieChartDataSet.addData(userAgentStatistics.getTotal());	
+			pieChartData.addLabel(userAgentStatistics.getUserAgent());
 		}
-		return pieDataSet;
+		pieChartData.addDataSet(pieChartDataSet);
+		return pieChartData;
 	}
 
 	private BarChartData origins() {

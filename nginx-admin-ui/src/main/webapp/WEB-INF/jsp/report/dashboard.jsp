@@ -17,8 +17,9 @@
 				label="{report.status.code.statistics}"></html:pieChart>
 		</html:col>
 		<html:col size="8">
-		
+			
 		</html:col>
 	</html:row>
 
+	
 </html:view>
