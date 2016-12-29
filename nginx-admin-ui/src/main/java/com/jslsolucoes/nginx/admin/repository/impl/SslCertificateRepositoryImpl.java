@@ -20,14 +20,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.util.UUID;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
 
 import com.jslsolucoes.nginx.admin.model.Nginx;
@@ -60,10 +58,10 @@ public class SslCertificateRepositoryImpl extends RepositoryImpl<SslCertificate>
 		try {
 			File ssl = nginxRepository.configuration().ssl();
 			sslCertificate = load(sslCertificate);
-			String sslCertificateHash = sslCertificate.getCertificate();
-			String sslCertificatePrivateKeyHash = sslCertificate.getCertificatePrivateKey();
-			FileUtils.forceDelete(new File(ssl,sslCertificateHash + ".conf"));
-			FileUtils.forceDelete(new File(ssl,sslCertificatePrivateKeyHash + ".conf"));
+			String sslCertificateHash = sslCertificate.getResourceIdentifierCertificate().getHash();
+			String sslCertificatePrivateKeyHash = sslCertificate.getResourceIdentifierCertificatePrivateKey().getHash();
+			FileUtils.forceDelete(new File(ssl,sslCertificateHash));
+			FileUtils.forceDelete(new File(ssl,sslCertificatePrivateKeyHash));
 			super.delete(sslCertificate);
 			resourceIdentifierRepository.delete(sslCertificateHash);
 			resourceIdentifierRepository.delete(sslCertificatePrivateKeyHash); 
@@ -78,17 +76,17 @@ public class SslCertificateRepositoryImpl extends RepositoryImpl<SslCertificate>
 			InputStream certificatePrivateKeyFile) throws Exception {
 		Nginx nginx = nginxRepository.configuration();
 		if (certificateFile != null) {
-			if (StringUtils.isEmpty(sslCertificate.getCertificate())) {
-				sslCertificate.setCertificate(UUID.randomUUID().toString() + ".cer");
+			if (sslCertificate.getResourceIdentifierCertificate().getId() == null) {
+				sslCertificate.setResourceIdentifierCertificate(resourceIdentifierRepository.create());
 			}
-			IOUtils.copy(certificateFile, new FileOutputStream(new File(nginx.ssl(), sslCertificate.getCertificate())));
+			IOUtils.copy(certificateFile, new FileOutputStream(new File(nginx.ssl(), sslCertificate.getResourceIdentifierCertificate().getHash())));
 		}
 		if (certificatePrivateKeyFile != null) {
-			if (StringUtils.isEmpty(sslCertificate.getCertificatePrivateKey())) {
-				sslCertificate.setCertificatePrivateKey(UUID.randomUUID().toString() + ".key");
+			if (sslCertificate.getResourceIdentifierCertificatePrivateKey().getId() == null) {
+				sslCertificate.setResourceIdentifierCertificatePrivateKey(resourceIdentifierRepository.create());
 			}
 			IOUtils.copy(certificatePrivateKeyFile,
-					new FileOutputStream(new File(nginx.ssl(), sslCertificate.getCertificatePrivateKey())));
+					new FileOutputStream(new File(nginx.ssl(), sslCertificate.getResourceIdentifierCertificatePrivateKey().getHash())));
 		}
 		return super.saveOrUpdate(sslCertificate);
 	}

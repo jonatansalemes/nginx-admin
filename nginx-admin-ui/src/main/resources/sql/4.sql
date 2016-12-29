@@ -1,3 +1,15 @@
+alter table admin.ssl_certificate add id_resource_identifier_certificate bigint(10) not null;
+alter table admin.ssl_certificate add id_resource_identifier_certificate_private_key bigint(10) not null;
+alter table admin.ssl_certificate add constraint ssl_certificate_fk1 foreign key(id_resource_identifier_certificate) references admin.resource_identifier(id);
+alter table admin.ssl_certificate add constraint ssl_certificate_fk2 foreign key(id_resource_identifier_certificate_private_key) references admin.resource_identifier(id);
+
+insert into admin.resource_identifier (hash) select certificate from admin.ssl_certificate;
+insert into admin.resource_identifier (hash) select certificate_private_key from admin.ssl_certificate;
+update admin.ssl_certificate set id_resource_identifier_certificate = (select id from admin.resource_identifier where hash = certificate);
+update admin.ssl_certificate set id_resource_identifier_certificate_private_key = (select id from admin.resource_identifier where hash = certificate_private_key);
+alter table admin.ssl_certificate drop certificate;
+alter table admin.ssl_certificate drop certificate_private_key;
+
 create table admin.access_log (
 	id bigint(10) auto_increment not null, 
 	date_time datetime not null,

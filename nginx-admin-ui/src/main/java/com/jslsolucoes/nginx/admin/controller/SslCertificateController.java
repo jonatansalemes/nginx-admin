@@ -20,6 +20,7 @@ import java.io.InputStream;
 
 import javax.inject.Inject;
 
+import com.jslsolucoes.nginx.admin.model.ResourceIdentifier;
 import com.jslsolucoes.nginx.admin.model.SslCertificate;
 import com.jslsolucoes.nginx.admin.repository.SslCertificateRepository;
 import com.jslsolucoes.nginx.admin.repository.impl.OperationResult;
@@ -76,10 +77,12 @@ public class SslCertificateController {
 	}
 
 	@Post
-	public void saveOrUpdate(Long id, String commonName, String certificate, String certificatePrivateKey,
+	public void saveOrUpdate(Long id, String commonName, Long idResourceIdentifierCertificate,Long idResourceIdentifierCertificatePrivateKey,
 			UploadedFile certificateFile, UploadedFile certificatePrivateKeyFile) throws Exception {
 		OperationResult operationResult = sslCertificateRepository.saveOrUpdate(
-				new SslCertificate(id, commonName, certificate, certificatePrivateKey),
+				new SslCertificate(id, commonName, 
+						new ResourceIdentifier(idResourceIdentifierCertificate), 
+						 new ResourceIdentifier(idResourceIdentifierCertificatePrivateKey)),
 				(certificateFile != null ? certificateFile.getFile() : null),
 				(certificatePrivateKeyFile != null ? certificatePrivateKeyFile.getFile() : null));
 		this.result.include("operation", operationResult.getOperationType());

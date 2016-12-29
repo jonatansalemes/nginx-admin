@@ -62,7 +62,7 @@ public class SchedulerRepositoryImpl implements SchedulerRepository {
 		JobDetail job = JobBuilder.newJob(RotateLogTask.class)
 				.usingJobData(jobDataMap).build();
 		Trigger trigger = TriggerBuilder.newTrigger().startNow()
-				.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(30).repeatForever()).build();
+				.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(30).repeatForever()).build();
 		scheduler.scheduleJob(job, trigger);
 	}
 
@@ -70,7 +70,7 @@ public class SchedulerRepositoryImpl implements SchedulerRepository {
 		JobDetail job = JobBuilder.newJob(CollectLogTask.class)
 				.usingJobData(jobDataMap).build();
 		Trigger trigger = TriggerBuilder.newTrigger().startNow()
-				.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(30).repeatForever()).build();
+				.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(35).repeatForever()).build();
 		scheduler.scheduleJob(job, trigger);
 	}
 
