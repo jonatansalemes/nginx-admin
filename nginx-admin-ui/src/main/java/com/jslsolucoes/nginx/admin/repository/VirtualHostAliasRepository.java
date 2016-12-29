@@ -26,4 +26,6 @@ public interface VirtualHostAliasRepository {
 
 	public void deleteAllFor(VirtualHost virtualHost) throws Exception;
 
+	public List<VirtualHostAlias> listAll(VirtualHost virtualHost);
+
 }

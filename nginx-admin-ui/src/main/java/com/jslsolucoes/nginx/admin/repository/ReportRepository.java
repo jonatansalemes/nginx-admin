@@ -15,18 +15,20 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.repository;
 
+import java.util.Date;
 import java.util.List;
 
+import com.jslsolucoes.nginx.admin.model.VirtualHost;
 import com.jslsolucoes.nginx.admin.report.OriginStatistics;
 import com.jslsolucoes.nginx.admin.report.StatusCodeStatistics;
 import com.jslsolucoes.nginx.admin.report.UserAgentStatistics;
 
 public interface ReportRepository {
 
-	public List<UserAgentStatistics> browsers();
+	public List<UserAgentStatistics> browsers(VirtualHost virtualHost,Date from,Date to);
 
-	public List<OriginStatistics> ips();
+	public List<OriginStatistics> ips(VirtualHost virtualHost, Date from, Date to);
 
-	public List<StatusCodeStatistics> statuses();
+	public List<StatusCodeStatistics> statuses(VirtualHost virtualHost, Date from, Date to);
 
 }

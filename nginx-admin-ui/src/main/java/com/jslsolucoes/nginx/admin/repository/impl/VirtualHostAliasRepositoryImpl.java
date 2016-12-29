@@ -43,7 +43,8 @@ public class VirtualHostAliasRepositoryImpl extends RepositoryImpl<VirtualHostAl
 	}
 	
 	@SuppressWarnings("unchecked")
-	private List<VirtualHostAlias> listAll(VirtualHost virtualHost){
+	@Override
+	public List<VirtualHostAlias> listAll(VirtualHost virtualHost){
 		Criteria criteria = session.createCriteria(VirtualHostAlias.class);
 		criteria.createCriteria("virtualHost", "virtualHost", JoinType.INNER_JOIN);
 		criteria.add(Restrictions.eq("virtualHost.id", virtualHost.getId()));
@@ -60,6 +61,7 @@ public class VirtualHostAliasRepositoryImpl extends RepositoryImpl<VirtualHostAl
 	@Override
 	public void recreate(VirtualHost virtualHost, List<VirtualHostAlias> aliases) throws Exception {
 		deleteAllFor(virtualHost);
+		flush();
 		for (VirtualHostAlias virtualHostAlias : aliases) {
 			virtualHostAlias.setVirtualHost(virtualHost);
 			super.insert(virtualHostAlias);
