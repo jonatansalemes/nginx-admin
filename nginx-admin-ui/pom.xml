@@ -69,6 +69,11 @@
 			<version>4.0.4</version>
 		</dependency>
 		<dependency>
+			<groupId>br.com.caelum.vraptor</groupId>
+			<artifactId>vraptor-jodatime</artifactId>
+			<version>4.1.0-RC3</version>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-email</artifactId>
 			<version>1.4</version>

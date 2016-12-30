@@ -2,8 +2,9 @@
 <html:view title="{title}">
 
 	<html:block>
-		<html:form label="Search" action="/report/dashboard">
-			<html:formGroup label="Virtual host">
+		<html:form label="{report.search}" action="/report/dashboard" 
+		  validation="/report/validate">
+			<html:formGroup label="{report.server.name}">
 				<html:select name="idVirtualHost"
 					data="${ virtualHostList }" var="virtualHost">
 					<html:option value="${ virtualHost.id }">
@@ -14,29 +15,45 @@
 			<html:formGroup>
 				<html:row>
 					<html:col size="6">
-						<html:formGroup label="From">
-							<html:input name="from"></html:input>
-							<html:mask mask="99/99/9999" attachTo="from"></html:mask>
-							<html:datePicker attachTo="from"></html:datePicker>
+						<html:formGroup label="{report.from}">
+							<html:row>
+								<html:col size="6">
+									<html:input name="from"></html:input>
+									<html:mask mask="99/99/9999" attachTo="from"></html:mask>
+									<html:datePicker attachTo="from"></html:datePicker>
+								</html:col>
+								<html:col size="6">
+									<html:input name="fromTime"></html:input>
+									<html:timePicker attachTo="fromTime" pattern="hh:mm TT"></html:timePicker>
+								</html:col>
+							</html:row>
 						</html:formGroup>
 					</html:col>
 					<html:col size="6">
-						<html:formGroup label="To">
-							<html:input name="to"></html:input>
-							<html:mask mask="99/99/9999" attachTo="to"></html:mask>
-							<html:datePicker attachTo="to"></html:datePicker>
+						<html:formGroup label="{report.to}">
+							<html:row>
+								<html:col size="6">
+									<html:input name="to"></html:input>
+									<html:mask mask="99/99/9999" attachTo="to"></html:mask>
+									<html:datePicker attachTo="to"></html:datePicker>
+								</html:col>
+								<html:col size="6">
+									<html:input name="toTime"></html:input>
+									<html:timePicker attachTo="toTime" pattern="hh:mm TT"></html:timePicker>
+								</html:col>
+							</html:row>
 						</html:formGroup>
 					</html:col>
 				</html:row>
 			</html:formGroup>
 			<html:toolbar>
-				<html:button type="submit" label="Search" state="primary"></html:button>
+				<html:button type="submit" label="{report.search}" state="primary"></html:button>
 			</html:toolbar>
 		</html:form>
 	</html:block>
 	
 	<html:block rendered="${ browsers == null && origins == null && statuses == null  }">
-		<html:alert state="warning" label="No data found matching your criteria"></html:alert>
+		<html:alert state="warning" label="{report.no.data}"></html:alert>
 	</html:block>
 
 	<html:block>
