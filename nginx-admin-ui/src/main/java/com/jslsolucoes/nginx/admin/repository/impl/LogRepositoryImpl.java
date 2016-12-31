@@ -86,6 +86,6 @@ public class LogRepositoryImpl implements LogRepository {
 	}
 
 	private long sizeLimit() {
-		return 2 * 1024;
+		return 1 * 1024 * 1024;
 	}
 }

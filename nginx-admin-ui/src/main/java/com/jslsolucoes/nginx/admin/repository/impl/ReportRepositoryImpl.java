@@ -74,28 +74,11 @@ public class ReportRepositoryImpl implements ReportRepository {
 		}
 		
 		if (virtualHost != null) {
-			criteria.add(Restrictions.in("host", virtualHostAliasRepository.listAll(virtualHost).stream()
+			criteria.add(Restrictions.in("server_name", virtualHostAliasRepository.listAll(virtualHost).stream()
 					.map(virtualHostAlias -> virtualHostAlias.getAlias()).collect(Collectors.toSet())));
 		}
 		criteria.setResultTransformer(Transformers.aliasToBean(UserAgentStatistics.class));
 		return criteria.list();
-	}
-	
-	public Date start(LocalDate localDate, LocalTime localTime){
-		if(localTime == null){
-			return localDate.toDateTimeAtStartOfDay().toDate();
-		} else {
-			return localDate.toDateTime(localTime).toDate();
-		}
-	}
-	
-	public Date end(LocalDate localDate, LocalTime localTime){
-		if(localTime == null){
-			return localDate.toDateTimeAtCurrentTime().hourOfDay().withMaximumValue().minuteOfHour().withMaximumValue()
-					.secondOfMinute().withMaximumValue().millisOfSecond().withMinimumValue().toDate();
-		} else {
-			return localDate.toDateTime(localTime).toDate();
-		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -115,7 +98,7 @@ public class ReportRepositoryImpl implements ReportRepository {
 		}
 		
 		if (virtualHost != null) {
-			criteria.add(Restrictions.in("host", virtualHostAliasRepository.listAll(virtualHost).stream()
+			criteria.add(Restrictions.in("server_name", virtualHostAliasRepository.listAll(virtualHost).stream()
 					.map(virtualHostAlias -> virtualHostAlias.getAlias()).collect(Collectors.toSet())));
 		}
 		criteria.setResultTransformer(Transformers.aliasToBean(OriginStatistics.class));
@@ -137,7 +120,7 @@ public class ReportRepositoryImpl implements ReportRepository {
 			criteria.add(Restrictions.le("timestamp", end(to,toTime)));
 		}
 		if (virtualHost != null) {
-			criteria.add(Restrictions.in("host", virtualHostAliasRepository.listAll(virtualHost).stream()
+			criteria.add(Restrictions.in("server_name", virtualHostAliasRepository.listAll(virtualHost).stream()
 					.map(virtualHostAlias -> virtualHostAlias.getAlias()).collect(Collectors.toSet())));
 		}
 		criteria.setResultTransformer(Transformers.aliasToBean(StatusCodeStatistics.class));
@@ -155,5 +138,22 @@ public class ReportRepositoryImpl implements ReportRepository {
 		}
 		return errors;
 		
+	}
+	
+	public Date start(LocalDate localDate, LocalTime localTime){
+		if(localTime == null){
+			return localDate.toDateTimeAtStartOfDay().toDate();
+		} else {
+			return localDate.toDateTime(localTime).toDate();
+		}
+	}
+	
+	public Date end(LocalDate localDate, LocalTime localTime){
+		if(localTime == null){
+			return localDate.toDateTimeAtCurrentTime().hourOfDay().withMaximumValue().minuteOfHour().withMaximumValue()
+					.secondOfMinute().withMaximumValue().millisOfSecond().withMinimumValue().toDate();
+		} else {
+			return localDate.toDateTime(localTime).toDate();
+		}
 	}
 }

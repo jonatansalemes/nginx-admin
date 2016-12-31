@@ -32,7 +32,7 @@ import com.google.gson.annotations.SerializedName;
 @Entity
 @Table(name = "access_log", schema = "admin")
 public class AccessLog implements Serializable {
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -44,16 +44,6 @@ public class AccessLog implements Serializable {
 	@SerializedName(value = "remote_addr")
 	private String remoteAddress;
 
-	@Column(name = "host")
-	private String host;
-
-	@Column(name = "scheme")
-	private String scheme;
-
-	@Column(name = "remote_user")
-	@SerializedName(value = "remote_user")
-	private String remoteUser;
-
 	@Column(name = "body_bytes_sent")
 	@SerializedName(value = "body_bytes_sent")
 	private Long bodyBytesSent;
@@ -61,7 +51,7 @@ public class AccessLog implements Serializable {
 	@Column(name = "bytes_sent")
 	@SerializedName(value = "bytes_sent")
 	private Long bytesSent;
-
+	
 	@Column(name = "connection")
 	private Long connection;
 
@@ -71,7 +61,16 @@ public class AccessLog implements Serializable {
 
 	@Column(name = "msec")
 	private BigDecimal msec;
+	
+	@Column(name = "request")
+	private String request;
 
+	@Column(name = "status")
+	private Integer status;
+	
+	@Column(name = "scheme")
+	private String scheme;
+	
 	@Column(name = "request_length")
 	@SerializedName(value = "request_length")
 	private Long requestLength;
@@ -80,15 +79,25 @@ public class AccessLog implements Serializable {
 	@SerializedName(value = "request_time")
 	private BigDecimal requestTime;
 
-	@Column(name = "status")
-	private Integer status;
-
-	@Column(name = "request")
-	private String request;
-
 	@Column(name = "request_method")
 	@SerializedName(value = "request_method")
 	private String requestMethod;
+	
+	@Column(name = "request_uri")
+	@SerializedName(value = "request_uri")
+	private String requestUri;
+	
+	@Column(name = "server_name")
+	@SerializedName(value = "server_name")
+	private String serverName;
+	
+	@Column(name = "server_port")
+	@SerializedName(value = "server_port")
+	private Integer serverPort;
+	
+	@Column(name = "server_protocol")
+	@SerializedName(value = "server_protocol")
+	private String serverProtocol;
 
 	@Column(name = "http_referrer")
 	@SerializedName(value = "http_referrer")
@@ -101,7 +110,7 @@ public class AccessLog implements Serializable {
 	@Column(name = "http_x_forwarded_for")
 	@SerializedName(value = "http_x_forwarded_for")
 	private String httpXForwardedFor;
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -124,30 +133,6 @@ public class AccessLog implements Serializable {
 
 	public void setRemoteAddress(String remoteAddress) {
 		this.remoteAddress = remoteAddress;
-	}
-
-	public String getHost() {
-		return host;
-	}
-
-	public void setHost(String host) {
-		this.host = host;
-	}
-
-	public String getScheme() {
-		return scheme;
-	}
-
-	public void setScheme(String scheme) {
-		this.scheme = scheme;
-	}
-
-	public String getRemoteUser() {
-		return remoteUser;
-	}
-
-	public void setRemoteUser(String remoteUser) {
-		this.remoteUser = remoteUser;
 	}
 
 	public Long getBodyBytesSent() {
@@ -190,6 +175,30 @@ public class AccessLog implements Serializable {
 		this.msec = msec;
 	}
 
+	public String getRequest() {
+		return request;
+	}
+
+	public void setRequest(String request) {
+		this.request = request;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public String getScheme() {
+		return scheme;
+	}
+
+	public void setScheme(String scheme) {
+		this.scheme = scheme;
+	}
+
 	public Long getRequestLength() {
 		return requestLength;
 	}
@@ -206,28 +215,44 @@ public class AccessLog implements Serializable {
 		this.requestTime = requestTime;
 	}
 
-	public Integer getStatus() {
-		return status;
-	}
-
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
-
-	public String getRequest() {
-		return request;
-	}
-
-	public void setRequest(String request) {
-		this.request = request;
-	}
-
 	public String getRequestMethod() {
 		return requestMethod;
 	}
 
 	public void setRequestMethod(String requestMethod) {
 		this.requestMethod = requestMethod;
+	}
+
+	public String getRequestUri() {
+		return requestUri;
+	}
+
+	public void setRequestUri(String requestUri) {
+		this.requestUri = requestUri;
+	}
+
+	public String getServerName() {
+		return serverName;
+	}
+
+	public void setServerName(String serverName) {
+		this.serverName = serverName;
+	}
+
+	public Integer getServerPort() {
+		return serverPort;
+	}
+
+	public void setServerPort(Integer serverPort) {
+		this.serverPort = serverPort;
+	}
+
+	public String getServerProtocol() {
+		return serverProtocol;
+	}
+
+	public void setServerProtocol(String serverProtocol) {
+		this.serverProtocol = serverProtocol;
 	}
 
 	public String getHttpReferrer() {
@@ -253,18 +278,6 @@ public class AccessLog implements Serializable {
 	public void setHttpXForwardedFor(String httpXForwardedFor) {
 		this.httpXForwardedFor = httpXForwardedFor;
 	}
-
-	@Override
-	public String toString() {
-		return "LogFormat [timestamp=" + timestamp + ", remoteAddress=" + remoteAddress + ", host=" + host + ", schema="
-				+ scheme + ", remoteUser=" + remoteUser + ", bodyBytesSent=" + bodyBytesSent + ", bytesSent="
-				+ bytesSent + ", connection=" + connection + ", connectionRequest=" + connectionRequest + ", msec="
-				+ msec + ", requestLength=" + requestLength + ", requestTime=" + requestTime + ", status=" + status
-				+ ", request=" + request + ", requestMethod=" + requestMethod + ", httpReferrer=" + httpReferrer
-				+ ", httpUserAgent=" + httpUserAgent + ", httpXForwardedFor=" + httpXForwardedFor + "]";
-	}
-
-	
 	
 }
 
