@@ -10,7 +10,7 @@ function download() {
 
 NGINX_ADMIN_HOME=/opt/nginx-admin
 NGINX_ADMIN_BIN=$NGINX_ADMIN_HOME/bin
-NGINX_ADMIN_VERSION=1.0.3
+NGINX_ADMIN_VERSION=1.0.4
 
 if ! file_exists "/etc/init.d/nginx-admin" ; then 
 	echo "Nginx admin seems not be installed yet"

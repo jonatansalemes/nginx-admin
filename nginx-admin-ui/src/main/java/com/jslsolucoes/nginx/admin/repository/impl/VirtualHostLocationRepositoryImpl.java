@@ -55,12 +55,12 @@ public class VirtualHostLocationRepositoryImpl extends RepositoryImpl<VirtualHos
 		for(VirtualHostLocation virtualHostLocation : listAll(virtualHost)){
 			super.delete(virtualHostLocation);
 		}
+		flush();
 	}
 
 	@Override
 	public void recreate(VirtualHost virtualHost, List<VirtualHostLocation> aliases) throws Exception {
 		deleteAllFor(virtualHost);
-		flush();
 		for (VirtualHostLocation virtualHostLocation : aliases) {
 			virtualHostLocation.setVirtualHost(virtualHost);
 			super.insert(virtualHostLocation);

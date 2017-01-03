@@ -56,12 +56,12 @@ public class VirtualHostAliasRepositoryImpl extends RepositoryImpl<VirtualHostAl
 		for(VirtualHostAlias virtualHostAlias : listAll(virtualHost)){
 			super.delete(virtualHostAlias);
 		}
+		flush();
 	}
 
 	@Override
 	public void recreate(VirtualHost virtualHost, List<VirtualHostAlias> aliases) throws Exception {
 		deleteAllFor(virtualHost);
-		flush();
 		for (VirtualHostAlias virtualHostAlias : aliases) {
 			virtualHostAlias.setVirtualHost(virtualHost);
 			super.insert(virtualHostAlias);

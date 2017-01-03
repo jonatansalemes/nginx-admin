@@ -101,10 +101,9 @@ public class NginxStatusReader {
 	}
 
 	private void checkForStatus() {
-		new HttpClientBuilder().client().get("http://localhost/status")
+		new HttpClientBuilder(exception -> empty()).client().get("http://localhost/status")
 		.onStatus(HttpStatus.SC_OK, closeableHttpResponse -> body(EntityUtils.toString(closeableHttpResponse.getEntity())))
 		.onNotStatus(HttpStatus.SC_OK, closeableHttpResponse -> empty())
-		.onError(exception -> empty())
 		.close();
 	}
 	

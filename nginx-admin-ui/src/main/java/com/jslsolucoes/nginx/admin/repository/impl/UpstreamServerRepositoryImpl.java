@@ -55,6 +55,7 @@ public class UpstreamServerRepositoryImpl extends RepositoryImpl<UpstreamServer>
 		for(UpstreamServer upstreamServer : listAll(upstream)){
 			super.delete(upstreamServer);
 		}
+		flush();
 	}
 
 	@Override

@@ -28,7 +28,11 @@ public class HttpClientBuilder {
 
 	private CloseableHttpClient closeableHttpClient;
 	private CloseableHttpResponse closeableHttpResponse;
-	private OnError onError = new DefaultOnError();
+	private OnError onError;
+	
+	public HttpClientBuilder(OnError onError) {
+		this.onError = onError;
+	}
 
 	public HttpClientBuilder client() {
 		try {
@@ -82,11 +86,6 @@ public class HttpClientBuilder {
 		} catch (Exception exception) {
 			onError.error(exception);
 		}
-		return this;
-	}
-
-	public HttpClientBuilder onError(OnError onError) {
-		this.onError = onError;
 		return this;
 	}
 }

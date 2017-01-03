@@ -17,16 +17,16 @@
 						<configuration>
 							<tasks>
 								<replaceregexp
-									file="${project.build.resources[0].directory}/install/red-hat/install.sh"
+									file="${project.build.resources[0].directory}/scripts/red-hat/install.sh"
 									match="NGINX_ADMIN_VERSION=(.*)" replace="NGINX_ADMIN_VERSION=${project.version}" />
 								<replaceregexp
-									file="${project.build.resources[0].directory}/install/red-hat/update.sh"
+									file="${project.build.resources[0].directory}/scripts/red-hat/update.sh"
 									match="NGINX_ADMIN_VERSION=(.*)" replace="NGINX_ADMIN_VERSION=${project.version}" />
 								<replaceregexp
-									file="${project.build.resources[0].directory}/install/debian/install.sh"
+									file="${project.build.resources[0].directory}/scripts/debian/install.sh"
 									match="NGINX_ADMIN_VERSION=(.*)" replace="NGINX_ADMIN_VERSION=${project.version}" />
 								<replaceregexp
-									file="${project.build.resources[0].directory}/install/debian/update.sh"
+									file="${project.build.resources[0].directory}/scripts/debian/update.sh"
 									match="NGINX_ADMIN_VERSION=(.*)" replace="NGINX_ADMIN_VERSION=${project.version}" />
 							</tasks>
 						</configuration>
