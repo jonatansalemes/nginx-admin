@@ -19,7 +19,6 @@
 						<phase>generate-resources</phase>
 						<configuration>
 							<tasks>
-								<echo>${project.build.resources[0].directory}\application.properties</echo>
 								<replaceregexp
 									file="${project.build.resources[0].directory}\application.properties"
 									match="app\.version=(.*)" replace="app\.version=v\.${project.version}" />
