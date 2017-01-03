@@ -74,7 +74,7 @@ public class ReportRepositoryImpl implements ReportRepository {
 		}
 		
 		if (virtualHost != null) {
-			criteria.add(Restrictions.in("server_name", virtualHostAliasRepository.listAll(virtualHost).stream()
+			criteria.add(Restrictions.in("serverName", virtualHostAliasRepository.listAll(virtualHost).stream()
 					.map(virtualHostAlias -> virtualHostAlias.getAlias()).collect(Collectors.toSet())));
 		}
 		criteria.setResultTransformer(Transformers.aliasToBean(UserAgentStatistics.class));
@@ -98,7 +98,7 @@ public class ReportRepositoryImpl implements ReportRepository {
 		}
 		
 		if (virtualHost != null) {
-			criteria.add(Restrictions.in("server_name", virtualHostAliasRepository.listAll(virtualHost).stream()
+			criteria.add(Restrictions.in("serverName", virtualHostAliasRepository.listAll(virtualHost).stream()
 					.map(virtualHostAlias -> virtualHostAlias.getAlias()).collect(Collectors.toSet())));
 		}
 		criteria.setResultTransformer(Transformers.aliasToBean(OriginStatistics.class));
@@ -120,7 +120,7 @@ public class ReportRepositoryImpl implements ReportRepository {
 			criteria.add(Restrictions.le("timestamp", end(to,toTime)));
 		}
 		if (virtualHost != null) {
-			criteria.add(Restrictions.in("server_name", virtualHostAliasRepository.listAll(virtualHost).stream()
+			criteria.add(Restrictions.in("serverName", virtualHostAliasRepository.listAll(virtualHost).stream()
 					.map(virtualHostAlias -> virtualHostAlias.getAlias()).collect(Collectors.toSet())));
 		}
 		criteria.setResultTransformer(Transformers.aliasToBean(StatusCodeStatistics.class));
