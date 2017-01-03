@@ -20,9 +20,7 @@ import java.util.Properties;
 import javax.inject.Inject;
 
 import com.jslsolucoes.nginx.admin.annotation.Application;
-import com.jslsolucoes.nginx.admin.annotation.CheckForDatabaseUpdate;
-import com.jslsolucoes.nginx.admin.annotation.CheckForInstaller;
-import com.jslsolucoes.nginx.admin.annotation.CheckForScheduler;
+import com.jslsolucoes.nginx.admin.annotation.CheckForPreDependency;
 import com.jslsolucoes.nginx.admin.annotation.Public;
 import com.jslsolucoes.nginx.admin.html.HtmlUtil;
 import com.jslsolucoes.nginx.admin.model.User;
@@ -103,9 +101,7 @@ public class UserController {
 	}
 
 	@Public
-	@CheckForDatabaseUpdate
-	@CheckForInstaller
-	@CheckForScheduler
+	@CheckForPreDependency
 	public void login() {
 		this.result.include("version",properties.get("app.version"));
 	}

@@ -20,11 +20,17 @@ import java.io.IOException;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.HibernateException;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
 
-import com.jslsolucoes.nginx.admin.annotation.CheckForDatabaseUpdate;
+import com.jslsolucoes.nginx.admin.annotation.CheckForPreDependency;
 import com.jslsolucoes.nginx.admin.controller.DatabaseController;
+import com.jslsolucoes.nginx.admin.controller.InstallerController;
+import com.jslsolucoes.nginx.admin.controller.SchedulerController;
 import com.jslsolucoes.nginx.admin.repository.DatabaseRepository;
+import com.jslsolucoes.nginx.admin.repository.UserRepository;
 
 import br.com.caelum.vraptor.AroundCall;
 import br.com.caelum.vraptor.Intercepts;
@@ -34,20 +40,31 @@ import br.com.caelum.vraptor.interceptor.SimpleInterceptorStack;
 
 @RequestScoped
 @Intercepts
-@AcceptsWithAnnotations(CheckForDatabaseUpdate.class)
-public class DatabaseInterceptor {
+@AcceptsWithAnnotations(CheckForPreDependency.class)
+public class CheckForPreDependencyInterceptor {
 
 	@Inject
 	private Result result;
 	
 	@Inject
 	private DatabaseRepository databaseRepository;
+	
+	@Inject
+	private UserRepository userRepository;
+	
+	@Inject
+	private Scheduler scheduler;
+
 
 	@AroundCall
-	public void intercept(SimpleInterceptorStack stack) throws HibernateException, IOException {
+	public void intercept(SimpleInterceptorStack stack) throws HibernateException, IOException, SchedulerException {
 	
 		if(databaseRepository.installOrUpgradeRequired()){
 			this.result.redirectTo(DatabaseController.class).installOrUpgrade();
+		} else if (CollectionUtils.isEmpty(userRepository.listAll())) {
+			this.result.redirectTo(InstallerController.class).form();
+		} else if (!scheduler.isStarted()) {
+			this.result.redirectTo(SchedulerController.class).scheduleJobs();
 		} else {
 			stack.next();
 		}

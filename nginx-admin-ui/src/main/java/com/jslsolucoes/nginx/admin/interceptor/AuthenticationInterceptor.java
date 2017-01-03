@@ -30,7 +30,7 @@ import br.com.caelum.vraptor.controller.ControllerMethod;
 import br.com.caelum.vraptor.interceptor.SimpleInterceptorStack;
 
 @RequestScoped
-@Intercepts(after=DatabaseInterceptor.class)
+@Intercepts(after=CheckForPreDependencyInterceptor.class)
 public class AuthenticationInterceptor {
 
 	@Inject
