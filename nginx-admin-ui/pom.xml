@@ -56,7 +56,7 @@
 		<dependency>
 			<groupId>com.jslsolucoes</groupId>
 			<artifactId>tagria-lib</artifactId>
-			<version>1.0.8-SNAPSHOT</version>
+			<version>1.0.8</version>
 		</dependency>
 		<dependency>
 			<groupId>br.com.caelum</groupId>
