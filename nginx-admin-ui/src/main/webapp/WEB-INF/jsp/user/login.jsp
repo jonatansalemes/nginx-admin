@@ -1,6 +1,10 @@
 <%@include file="../app/taglibs.jsp"%>
 <html:view title="{title}">
 
+
+	<html:localeSwitch></html:localeSwitch>
+	
+
 	<html:container>
 
 		<html:block>

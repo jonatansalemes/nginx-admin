@@ -24,6 +24,8 @@ import javax.inject.Inject;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -38,6 +40,7 @@ public class LogRepositoryImpl implements LogRepository {
 	
 	private NginxRepository nginxRepository;
 	private AccessLogRepository accessLogRepository;
+	private static Logger logger = LoggerFactory.getLogger(LogRepositoryImpl.class);
 
 	public LogRepositoryImpl() {
 
@@ -60,7 +63,11 @@ public class LogRepositoryImpl implements LogRepository {
 				.stream()
 				.filter(line -> line.trim().startsWith("{") && line.trim().endsWith("}"))
 				.forEach(line -> {
-					accessLogRepository.log(gson.fromJson(line, AccessLog.class));
+					try {
+						accessLogRepository.log(gson.fromJson(line, AccessLog.class));
+					} catch(Exception exception){
+						logger.error(line + " could'n be stored ");
+					}
 				});
 				FileUtils.forceDelete(file);
 			} catch(Exception exception){
