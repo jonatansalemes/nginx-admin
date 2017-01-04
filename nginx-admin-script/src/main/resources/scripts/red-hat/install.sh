@@ -1,3 +1,18 @@
+#*******************************************************************************
+# Copyright 2016 JSL Solucoes LTDA - https://jslsolucoes.com
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#*******************************************************************************
 #!/bin/bash 
 function package_exists(){
     rpm -q --quiet $1
@@ -15,7 +30,7 @@ NGINX_ADMIN_HOME=/opt/nginx-admin
 NGINX_ADMIN_CONF=$NGINX_ADMIN_HOME/conf
 NGINX_ADMIN_BIN=$NGINX_ADMIN_HOME/bin
 NGINX_ADMIN_LOG=$NGINX_ADMIN_HOME/log
-NGINX_ADMIN_VERSION=1.0.3
+NGINX_ADMIN_VERSION=1.0.4
 
 yum -y update
 

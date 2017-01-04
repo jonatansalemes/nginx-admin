@@ -55,6 +55,7 @@ public class VirtualHostLocationRepositoryImpl extends RepositoryImpl<VirtualHos
 		for(VirtualHostLocation virtualHostLocation : listAll(virtualHost)){
 			super.delete(virtualHostLocation);
 		}
+		flush();
 	}
 
 	@Override

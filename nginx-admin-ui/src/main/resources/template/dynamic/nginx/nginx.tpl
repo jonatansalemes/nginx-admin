@@ -22,10 +22,8 @@ http {
     proxy_set_header   					X-Real-IP        	$remote_addr;
     proxy_set_header 					X-Forwarded-Proto 	$scheme;
 
-    log_format  main  					'$remote_addr - $remote_user [$time_local] "$request" '
-                      					'$status $body_bytes_sent "$http_referer" '
-                      					'"$http_user_agent" "$http_x_forwarded_for"';
-
+    log_format 							main 				'{"timestamp":"$time_iso8601","remote_addr":"$remote_addr","body_bytes_sent":"$body_bytes_sent","bytes_sent":"$bytes_sent","connection":"$connection","connection_requests":"$connection_requests","msec":"$msec","request":"$request","status":"$status","scheme":"$scheme","request_length":"$request_length","request_time":"$request_time","request_method":"$request_method","request_uri":"$request_uri","server_name":"$server_name","server_port":"$server_port","server_protocol":"$server_protocol","http_x_forwarded_for":"$http_x_forwarded_for","http_referrer":"$http_referer","http_user_agent":"$http_user_agent"}';
+      					
     access_log  						${ nginx.settings }/log/access.log  main;
 
     sendfile        					on;

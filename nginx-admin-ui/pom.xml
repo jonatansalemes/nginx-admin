@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.jslsolucoes</groupId>
 		<artifactId>nginx-admin</artifactId>
-		<version>1.0.3</version>
+		<version>1.0.4</version>
 	</parent>
 	<artifactId>nginx-admin-ui</artifactId>
 	<packaging>war</packaging>
@@ -20,8 +20,8 @@
 						<configuration>
 							<tasks>
 								<replaceregexp
-									file="${project.build.resources[0].directory}/application.properties"
-									match="app\.version\=(.*)" replace="app.version=${project.version}" />
+									file="${project.build.resources[0].directory}\application.properties"
+									match="app\.version=(.*)" replace="app\.version=v\.${project.version}" />
 							</tasks>
 						</configuration>
 						<goals>
@@ -55,7 +55,7 @@
 		<dependency>
 			<groupId>com.jslsolucoes</groupId>
 			<artifactId>tagria-lib</artifactId>
-			<version>1.0.7</version>
+			<version>1.0.8</version>
 		</dependency>
 		<dependency>
 			<groupId>br.com.caelum</groupId>
@@ -66,6 +66,11 @@
 			<groupId>br.com.caelum.vraptor</groupId>
 			<artifactId>vraptor-hibernate</artifactId>
 			<version>4.0.4</version>
+		</dependency>
+		<dependency>
+			<groupId>br.com.caelum.vraptor</groupId>
+			<artifactId>vraptor-jodatime</artifactId>
+			<version>4.1.0-RC3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -93,10 +98,20 @@
 			<version>3.21.0-GA</version>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.2</version>
+		</dependency>
+		<dependency>
 			<groupId>org.jboss</groupId>
 			<artifactId>jboss-vfs</artifactId>
 			<version>3.2.12.Final</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>2.2.3</version>
 		</dependency>
 	</dependencies>
 

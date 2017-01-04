@@ -17,9 +17,9 @@ package com.jslsolucoes.nginx.admin.interceptor;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletResponse;
 
 import com.jslsolucoes.nginx.admin.annotation.Public;
+import com.jslsolucoes.nginx.admin.controller.UserController;
 import com.jslsolucoes.nginx.admin.session.UserSession;
 
 import br.com.caelum.vraptor.Accepts;
@@ -28,10 +28,9 @@ import br.com.caelum.vraptor.Intercepts;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.controller.ControllerMethod;
 import br.com.caelum.vraptor.interceptor.SimpleInterceptorStack;
-import br.com.caelum.vraptor.view.Results;
 
 @RequestScoped
-@Intercepts
+@Intercepts(after=CheckForPreDependencyInterceptor.class)
 public class AuthenticationInterceptor {
 
 	@Inject
@@ -51,7 +50,7 @@ public class AuthenticationInterceptor {
 		if (userSession.getUser() != null) {
 			stack.next();
 		} else {
-			this.result.use(Results.http()).sendError(HttpServletResponse.SC_UNAUTHORIZED);
+			this.result.redirectTo(UserController.class).login();
 		}
 	}
 

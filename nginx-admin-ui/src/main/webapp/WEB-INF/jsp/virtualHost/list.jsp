@@ -12,11 +12,7 @@
 		 search="true" url="/virtualHost/list"
 		 data="${ virtualHostList }" var="virtualHost" label="{virtualHost.list}" paginate="false">
 			<html:gridColumn label="{virtualHost.aliases}">
-				<html:listGroup>
-					<c:forEach items="${ virtualHost.aliases }" var="virtualHostAlias">
-						<html:listGroupItem>${ virtualHostAlias.alias }</html:listGroupItem>
-					</c:forEach>
-				</html:listGroup>
+				${ virtualHost.fullAliases }
 			</html:gridColumn>
 			<html:gridColumn label="{virtualHost.https}" booleanType="true" exportable="true">
 				${ virtualHost.https }

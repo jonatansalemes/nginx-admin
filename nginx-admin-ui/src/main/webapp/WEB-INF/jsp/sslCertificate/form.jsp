@@ -11,10 +11,12 @@
 	<html:block>
 		<html:form action="/sslCertificate/saveOrUpdate" multipart="true" label="{ssl.form}">
 			<html:input name="id" type="hidden" value="${ sslCertificate.id }"></html:input>
-			<html:input name="certificate" type="hidden"
-				value="${ sslCertificate.certificate }"></html:input>
-			<html:input name="certificatePrivateKey" type="hidden"
-				value="${ sslCertificate.certificatePrivateKey }"></html:input>
+			
+			<html:input name="idResourceIdentifierCertificate" type="hidden"
+				value="${ virtualHost.resourceIdentifierCertificate.id }"></html:input>
+			<html:input name="idResourceIdentifierCertificatePrivateKey" type="hidden"
+				value="${ virtualHost.resourceIdentifierCertificatePrivateKey.id }"></html:input>
+
 			<html:formGroup label="{ssl.common.name}" required="true">
 				<html:input name="commonName" value="${ sslCertificate.commonName }"
 					placeholder="{ssl.common.name.placeholder}" required="true"></html:input>
@@ -23,7 +25,7 @@
 				required="${ sslCertificate == null }">
 				<html:div>
 					<html:link rendered="${ sslCertificate != null }" target="_blank"
-						url="/sslCertificate/download/${ sslCertificate.certificate }"
+						url="/sslCertificate/download/${ sslCertificate.resourceIdentifierCertificate.hash }"
 						label="{ssl.certificate.download}"></html:link>
 				</html:div>
 				<html:input name="certificateFile"
@@ -34,7 +36,7 @@
 				required="${ sslCertificate == null }">
 				<html:div rendered="${ sslCertificate != null }" >
 					<html:link target="_blank"
-						url="/sslCertificate/download/${ sslCertificate.certificatePrivateKey }"
+						url="/sslCertificate/download/${ sslCertificate.resourceIdentifierCertificatePrivateKey.hash }"
 						label="{ssl.certificate.key.download}"></html:link>
 				</html:div>
 				<html:input name="certificatePrivateKeyFile"

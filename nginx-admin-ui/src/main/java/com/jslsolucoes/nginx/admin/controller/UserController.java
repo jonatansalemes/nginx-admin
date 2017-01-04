@@ -15,13 +15,17 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.controller;
 
+import java.util.Properties;
+
 import javax.inject.Inject;
 
+import com.jslsolucoes.nginx.admin.annotation.Application;
+import com.jslsolucoes.nginx.admin.annotation.CheckForPreDependency;
 import com.jslsolucoes.nginx.admin.annotation.Public;
+import com.jslsolucoes.nginx.admin.html.HtmlUtil;
 import com.jslsolucoes.nginx.admin.model.User;
 import com.jslsolucoes.nginx.admin.repository.UserRepository;
 import com.jslsolucoes.nginx.admin.session.UserSession;
-import com.jslsolucoes.nginx.admin.util.HtmlUtil;
 
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Post;
@@ -31,6 +35,7 @@ import br.com.caelum.vraptor.view.Results;
 @Controller
 public class UserController {
 
+	private Properties properties;
 	private UserSession userSession;
 	private Result result;
 	private UserRepository userRepository;
@@ -40,8 +45,10 @@ public class UserController {
 	}
 
 	@Inject
-	public UserController(UserSession userSession, Result result, UserRepository userRepository) {
+	public UserController(@Application Properties properties,
+			UserSession userSession, Result result, UserRepository userRepository) {
 		this.userSession = userSession;
+		this.properties = properties;
 		this.result = result;
 		this.userRepository = userRepository;
 	}
@@ -82,7 +89,7 @@ public class UserController {
 
 	@Public
 	public void resetPassword() {
-		
+		this.result.include("version",properties.get("app.version"));
 	}
 
 	@Public
@@ -94,8 +101,9 @@ public class UserController {
 	}
 
 	@Public
+	@CheckForPreDependency
 	public void login() {
-
+		this.result.include("version",properties.get("app.version"));
 	}
 
 	@Post

@@ -19,8 +19,8 @@ import java.io.IOException;
 
 import javax.inject.Inject;
 
+import com.jslsolucoes.nginx.admin.html.HtmlUtil;
 import com.jslsolucoes.nginx.admin.repository.ImportRepository;
-import com.jslsolucoes.nginx.admin.util.HtmlUtil;
 
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Path;

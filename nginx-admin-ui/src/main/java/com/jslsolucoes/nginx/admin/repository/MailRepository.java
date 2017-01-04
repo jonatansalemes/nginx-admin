@@ -17,10 +17,10 @@ package com.jslsolucoes.nginx.admin.repository;
 
 import java.util.concurrent.Future;
 
-import com.jslsolucoes.nginx.admin.mail.MailStatus;
+import com.jslsolucoes.nginx.admin.repository.impl.MailStatusType;
 
 public interface MailRepository {
 
-	public Future<MailStatus> send(String subject, String to, String message);
+	public Future<MailStatusType> send(String subject, String to, String message);
 
 }

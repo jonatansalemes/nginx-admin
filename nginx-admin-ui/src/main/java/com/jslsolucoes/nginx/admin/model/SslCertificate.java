@@ -1,3 +1,18 @@
+/*******************************************************************************
+ * Copyright 2016 JSL Solucoes LTDA - https://jslsolucoes.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *******************************************************************************/
 package com.jslsolucoes.nginx.admin.model;
 
 import java.io.Serializable;
@@ -9,7 +24,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @SuppressWarnings("serial")
@@ -23,12 +40,14 @@ public class SslCertificate implements Serializable {
 
 	@Column(name = "common_name")
 	private String commonName;
-
-	@Column(name = "certificate")
-	private String certificate;
-
-	@Column(name = "certificate_private_key")
-	private String certificatePrivateKey;
+	
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_resource_identifier_certificate")
+	private ResourceIdentifier resourceIdentifierCertificate;
+	
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_resource_identifier_certificate_private_key")
+	private ResourceIdentifier resourceIdentifierCertificatePrivateKey;
 	
 	@OneToMany(fetch=FetchType.LAZY,mappedBy="sslCertificate")
 	private Set<VirtualHost> virtualHosts;
@@ -37,11 +56,12 @@ public class SslCertificate implements Serializable {
 
 	}
 
-	public SslCertificate(Long id, String commonName, String certificate, String certificatePrivateKey) {
+	public SslCertificate(Long id, String commonName, ResourceIdentifier resourceIdentifierCertificate,
+			ResourceIdentifier resourceIdentifierCertificatePrivateKey) {
 		this.id = id;
 		this.commonName = commonName;
-		this.certificate = certificate;
-		this.certificatePrivateKey = certificatePrivateKey;
+		this.resourceIdentifierCertificate = resourceIdentifierCertificate;
+		this.resourceIdentifierCertificatePrivateKey = resourceIdentifierCertificatePrivateKey;
 	}
 
 	public SslCertificate(Long id) {
@@ -50,14 +70,6 @@ public class SslCertificate implements Serializable {
 
 	public SslCertificate(String commonName) {
 		this.commonName = commonName;
-	}
-
-	public String getCertificate() {
-		return certificate;
-	}
-
-	public void setCertificate(String certificate) {
-		this.certificate = certificate;
 	}
 
 	public String getCommonName() {
@@ -76,16 +88,24 @@ public class SslCertificate implements Serializable {
 		this.id = id;
 	}
 
-	public String getCertificatePrivateKey() {
-		return certificatePrivateKey;
-	}
-
-	public void setCertificatePrivateKey(String certificatePrivateKey) {
-		this.certificatePrivateKey = certificatePrivateKey;
-	}
-
 	public Set<VirtualHost> getVirtualHosts() {
 		return virtualHosts;
+	}
+
+	public ResourceIdentifier getResourceIdentifierCertificate() {
+		return resourceIdentifierCertificate;
+	}
+
+	public void setResourceIdentifierCertificate(ResourceIdentifier resourceIdentifierCertificate) {
+		this.resourceIdentifierCertificate = resourceIdentifierCertificate;
+	}
+
+	public ResourceIdentifier getResourceIdentifierCertificatePrivateKey() {
+		return resourceIdentifierCertificatePrivateKey;
+	}
+
+	public void setResourceIdentifierCertificatePrivateKey(ResourceIdentifier resourceIdentifierCertificatePrivateKey) {
+		this.resourceIdentifierCertificatePrivateKey = resourceIdentifierCertificatePrivateKey;
 	}
 
 }

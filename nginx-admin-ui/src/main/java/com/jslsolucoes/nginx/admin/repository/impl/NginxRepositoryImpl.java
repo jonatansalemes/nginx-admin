@@ -65,17 +65,29 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 			errors.add(Messages.getString("nginx.invalid.bin.file", nginx.getBin()));
 		}
 
-		
-		File settings = new File(nginx.getSettings());
+		File settings = new File(nginx.getSettings());	
+		if(!canWriteOnFolder(settings)){
+			errors.add(Messages.getString("nginx.invalid.settings.permission", nginx.getSettings()));
+		}
+		return errors;
+	}
+
+	private boolean canWriteOnFolder(File settings) {
 		if(!settings.exists()){
 			try {
 				FileUtils.forceMkdir(settings);
+				return true;
 			} catch(Exception exception){
-				errors.add(Messages.getString("nginx.invalid.home.permission", nginx.getSettings()));
+				return false;
+			}
+		} else {
+			try {
+				FileUtils.touch(new File(settings,"touch.txt"));
+				return true;
+			} catch(Exception exception){
+				return false;
 			}
 		}
-
-		return errors;
 	}
 
 	@Override
