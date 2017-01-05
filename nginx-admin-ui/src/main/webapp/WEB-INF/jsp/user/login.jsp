@@ -1,10 +1,5 @@
 <%@include file="../app/taglibs.jsp"%>
 <html:view title="{title}">
-
-
-	<html:localeSwitch></html:localeSwitch>
-	
-
 	<html:container>
 
 		<html:block>
@@ -23,8 +18,6 @@
 
 		<html:block>
 			<html:form action="/user/authenticate" label="{authentication}">
-				
-				
 				<html:formGroup>
 					<html:alert state="warning"
 						rendered="${ !empty(passwordRecoveryForLogin)}">

@@ -24,7 +24,7 @@
 								</html:col>
 								<html:col size="6">
 									<html:input name="fromTime"></html:input>
-									<html:timePicker attachTo="fromTime" pattern="hh:mm TT"></html:timePicker>
+									<html:timePicker attachTo="fromTime"></html:timePicker>
 								</html:col>
 							</html:row>
 						</html:formGroup>
@@ -39,7 +39,7 @@
 								</html:col>
 								<html:col size="6">
 									<html:input name="toTime"></html:input>
-									<html:timePicker attachTo="toTime" pattern="hh:mm TT"></html:timePicker>
+									<html:timePicker attachTo="toTime"></html:timePicker>
 								</html:col>
 							</html:row>
 						</html:formGroup>
