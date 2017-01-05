@@ -25,6 +25,7 @@ import javax.inject.Inject;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
@@ -77,6 +78,8 @@ public class ReportRepositoryImpl implements ReportRepository {
 			criteria.add(Restrictions.in("serverName", virtualHostAliasRepository.listAll(virtualHost).stream()
 					.map(virtualHostAlias -> virtualHostAlias.getAlias()).collect(Collectors.toSet())));
 		}
+		criteria.addOrder(Order.desc("total"));
+		criteria.setMaxResults(10);
 		criteria.setResultTransformer(Transformers.aliasToBean(UserAgentStatistics.class));
 		return criteria.list();
 	}
@@ -101,6 +104,8 @@ public class ReportRepositoryImpl implements ReportRepository {
 			criteria.add(Restrictions.in("serverName", virtualHostAliasRepository.listAll(virtualHost).stream()
 					.map(virtualHostAlias -> virtualHostAlias.getAlias()).collect(Collectors.toSet())));
 		}
+		criteria.addOrder(Order.desc("total"));
+		criteria.setMaxResults(10);
 		criteria.setResultTransformer(Transformers.aliasToBean(OriginStatistics.class));
 		return criteria.list();
 	}
