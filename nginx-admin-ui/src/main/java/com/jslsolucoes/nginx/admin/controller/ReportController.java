@@ -15,29 +15,23 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.controller;
 
-import java.util.List;
+import java.io.IOException;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.io.IOUtils;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
 import com.jslsolucoes.nginx.admin.html.HtmlUtil;
-import com.jslsolucoes.nginx.admin.i18n.Messages;
 import com.jslsolucoes.nginx.admin.model.VirtualHost;
-import com.jslsolucoes.nginx.admin.report.OriginStatistics;
-import com.jslsolucoes.nginx.admin.report.StatusCodeStatistics;
-import com.jslsolucoes.nginx.admin.report.UserAgentStatistics;
 import com.jslsolucoes.nginx.admin.repository.ReportRepository;
 import com.jslsolucoes.nginx.admin.repository.VirtualHostRepository;
-import com.jslsolucoes.tagria.lib.chart.BarChartData;
-import com.jslsolucoes.tagria.lib.chart.BarChartDataSet;
-import com.jslsolucoes.tagria.lib.chart.PieChartData;
-import com.jslsolucoes.tagria.lib.chart.PieChartDataSet;
 
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Path;
+import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
 
@@ -48,6 +42,7 @@ public class ReportController {
 	private Result result;
 	private ReportRepository reportRepository;
 	private VirtualHostRepository virtualHostRepository;
+	private HttpServletResponse httpServletResponse;
 
 	public ReportController() {
 
@@ -55,10 +50,11 @@ public class ReportController {
 
 	@Inject
 	public ReportController(Result result, ReportRepository reportRepository,
-			VirtualHostRepository virtualHostRepository) {
+			VirtualHostRepository virtualHostRepository,HttpServletResponse httpServletResponse) {
 		this.result = result;
 		this.reportRepository = reportRepository;
 		this.virtualHostRepository = virtualHostRepository;
+		this.httpServletResponse = httpServletResponse;
 	}
 
 	public void validate(Long idVirtualHost, LocalDate from, LocalTime fromTime, LocalDate to, LocalTime toTime) {
@@ -69,80 +65,24 @@ public class ReportController {
 				.serialize();
 	}
 
+	public void search() {
+		this.result.include("virtualHostList", virtualHostRepository.listAll());
+	}
+	
+	@Post
+	@Path("export.pdf")
+	public void export(Long idVirtualHost, LocalDate from, LocalTime fromTime, LocalDate to, LocalTime toTime) throws IOException{
+		httpServletResponse.setContentType("application/pdf");
+		IOUtils.copy(reportRepository.statistics(virtualHost(idVirtualHost), from, fromTime, to, toTime)
+				, httpServletResponse.getOutputStream());
+		this.result.use(Results.status()).ok();
+	}
+	
 	private VirtualHost virtualHost(Long id) {
 		VirtualHost virtualHost = null;
 		if (id != null) {
 			virtualHost = new VirtualHost(id);
 		}
 		return virtualHost;
-	}
-
-	public void dashboard(Long idVirtualHost, LocalDate from, LocalTime fromTime, LocalDate to, LocalTime toTime) {
-
-		this.result.include("virtualHostList", virtualHostRepository.listAll());
-		this.result.include("browsers", browsers(virtualHost(idVirtualHost), from, fromTime, to, toTime));
-		this.result.include("statuses", status(virtualHost(idVirtualHost), from, fromTime, to, toTime));
-		this.result.include("origins", origins(virtualHost(idVirtualHost), from, fromTime, to, toTime));
-	}
-
-	private PieChartData status(VirtualHost virtualHost, LocalDate from, LocalTime fromTime, LocalDate to,
-			LocalTime toTime) {
-		List<StatusCodeStatistics> statuses = reportRepository.statuses(virtualHost, from, fromTime, to, toTime);
-		if (!CollectionUtils.isEmpty(statuses)) {
-			PieChartData pieChartData = new PieChartData();
-			PieChartDataSet pieChartDataSet = new PieChartDataSet();
-			for (StatusCodeStatistics statusCodeStatistics : statuses) {
-				pieChartDataSet.addData(statusCodeStatistics.getTotal());
-				pieChartData.addLabel(String.valueOf(statusCodeStatistics.getStatus()));
-			}
-			pieChartData.addDataSet(pieChartDataSet);
-			return pieChartData;
-		}
-		return null;
-	}
-
-	private PieChartData browsers(VirtualHost virtualHost, LocalDate from, LocalTime fromTime, LocalDate to,
-			LocalTime toTime) {
-		List<UserAgentStatistics> browsers = reportRepository.browsers(virtualHost, from, fromTime, to, toTime);
-		if (!CollectionUtils.isEmpty(browsers)) {
-			PieChartData pieChartData = new PieChartData();
-			PieChartDataSet pieChartDataSet = new PieChartDataSet();
-			for (UserAgentStatistics userAgentStatistics : browsers) {
-				pieChartDataSet.addData(userAgentStatistics.getTotal());
-				pieChartData.addLabel(userAgentStatistics.getUserAgent());
-			}
-			pieChartData.addDataSet(pieChartDataSet);
-			return pieChartData;
-		}
-		return null;
-	}
-
-	private BarChartData origins(VirtualHost virtualHost, LocalDate from, LocalTime fromTime, LocalDate to,
-			LocalTime toTime) {
-		List<OriginStatistics> ips = reportRepository.ips(virtualHost, from, fromTime, to, toTime);
-		if (!CollectionUtils.isEmpty(ips)) {
-			BarChartData barChartData = new BarChartData();
-
-			BarChartDataSet ip = new BarChartDataSet();
-			ip.setLabel(Messages.getString("report.origin.statistics.hits"));
-
-			BarChartDataSet request = new BarChartDataSet();
-			request.setLabel(Messages.getString("report.origin.statistics.request"));
-
-			BarChartDataSet response = new BarChartDataSet();
-			response.setLabel(Messages.getString("report.origin.statistics.response"));
-
-			for (OriginStatistics originStatistics : ips) {
-				barChartData.addLabel(originStatistics.getIp());
-				ip.addData(originStatistics.getTotal());
-				request.addData((originStatistics.getRequest() / 1024));
-				response.addData((originStatistics.getResponse() / 1024));
-			}
-			barChartData.addDataSet(ip);
-			barChartData.addDataSet(request);
-			barChartData.addDataSet(response);
-			return barChartData;
-		}
-		return null;
 	}
 }

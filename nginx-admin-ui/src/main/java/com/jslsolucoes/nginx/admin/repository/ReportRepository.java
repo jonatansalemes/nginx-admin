@@ -15,28 +15,20 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.repository;
 
+import java.io.InputStream;
 import java.util.List;
 
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
 import com.jslsolucoes.nginx.admin.model.VirtualHost;
-import com.jslsolucoes.nginx.admin.report.OriginStatistics;
-import com.jslsolucoes.nginx.admin.report.StatusCodeStatistics;
-import com.jslsolucoes.nginx.admin.report.UserAgentStatistics;
 
 public interface ReportRepository {
 
-	public List<UserAgentStatistics> browsers(VirtualHost virtualHost,LocalDate from,LocalTime fromTime,LocalDate to,
-			LocalTime toTime);
-
-	public List<OriginStatistics> ips(VirtualHost virtualHost,LocalDate from,LocalTime fromTime,LocalDate to,
-			LocalTime toTime);
-
-	public List<StatusCodeStatistics> statuses(VirtualHost virtualHost,LocalDate from,LocalTime fromTime,LocalDate to,
-			LocalTime toTime);
-
 	public List<String> validateBeforeSearch(VirtualHost virtualHost, LocalDate from, LocalTime fromTime, LocalDate to,
+			LocalTime toTime);
+	
+	public InputStream statistics(VirtualHost virtualHost, LocalDate from, LocalTime fromTime, LocalDate to,
 			LocalTime toTime);
 
 }

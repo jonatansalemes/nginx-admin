@@ -2,8 +2,8 @@
 <html:view title="{title}">
 
 	<html:block>
-		<html:form label="{report.search}" action="/report/dashboard" 
-		  validation="/report/validate">
+		<html:form label="{report.search}" action="/report/export.pdf" 
+		  validation="/report/validate" target="_newtab">
 			<html:formGroup label="{report.server.name}">
 				<html:select name="idVirtualHost"
 					data="${ virtualHostList }" var="virtualHost">
@@ -47,28 +47,9 @@
 				</html:row>
 			</html:formGroup>
 			<html:toolbar>
-				<html:button type="submit" label="{report.search}" state="primary"></html:button>
+				<html:button type="submit" label="{report.export}" state="primary"></html:button>
 			</html:toolbar>
 		</html:form>
-	</html:block>
-	
-	<html:block rendered="${ browsers == null && origins == null && statuses == null  }">
-		<html:alert state="warning" label="{report.no.data}"></html:alert>
-	</html:block>
-
-	<html:block>
-		<html:div>
-			<html:pieChart dataset="${ browsers }"
-					label="{report.user.agent.statistics}" rendered="${ browsers!=null  }"></html:pieChart>
-		</html:div>
-		<html:div>
-			<html:pieChart dataset="${ statuses }"
-					label="{report.status.code.statistics}" rendered="${ statuses!=null  }"></html:pieChart>
-		</html:div>
-		<html:div>
-			<html:barChart dataset="${ origins }"
-					label="{report.origin.statistics}" horizontal="true" rendered="${ origins!=null  }"></html:barChart>
-		</html:div>
 	</html:block>
 	
 </html:view>
