@@ -1,19 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="statistics" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3916a44c-5f75-446d-8814-a4ba8bd5348b">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="statistics" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Key" uuid="3916a44c-5f75-446d-8814-a4ba8bd5348b">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="16"/>
+	<subDataset name="urls" uuid="4f42aa25-3dfc-457e-9174-24cce628433e">
+		<parameter name="FROM" class="java.util.Date">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<parameter name="TO" class="java.util.Date">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<parameter name="ID_VIRTUAL_HOST" class="java.lang.String">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<queryString>
+			<![CDATA[select count(id) as hits,request_uri as url,server_name as host,((cast(count(id) as decimal) *cast(100 as decimal)) / (select cast(count(id) as decimal) from admin.access_log where
+date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ID_VIRTUAL_HOST}))) as "%" from admin.access_log where
+date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ID_VIRTUAL_HOST}) group by request_uri,server_name order by hits desc]]>
+		</queryString>
+		<field name="HITS" class="java.lang.Long"/>
+		<field name="URL" class="java.lang.String"/>
+		<field name="HOST" class="java.lang.String"/>
+		<field name="%" class="java.math.BigDecimal"/>
+	</subDataset>
 	<parameter name="LOGO" class="java.lang.Object"/>
 	<parameter name="FROM" class="java.util.Date"/>
 	<parameter name="TO" class="java.util.Date"/>
-	<parameter name="ID_VIRTUAL_HOST" class="java.lang.Long">
+	<parameter name="ID_VIRTUAL_HOST" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select count(id) as total_request from admin.access_log
-]]>
+		<![CDATA[select count(id) as hits from admin.access_log where
+date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ID_VIRTUAL_HOST})]]>
 	</queryString>
-	<field name="TOTAL_REQUEST" class="java.lang.Long"/>
+	<field name="HITS" class="java.lang.Long"/>
 	<variable name="FROM" class="java.lang.String">
 		<variableExpression><![CDATA[($P{FROM} != null ? " and " : "")]]></variableExpression>
 	</variable>
@@ -26,24 +46,109 @@
 				<reportElement x="0" y="0" width="157" height="133" uuid="a5d32b79-372f-4c86-9932-be6821900434"/>
 				<imageExpression><![CDATA[$P{LOGO}]]></imageExpression>
 			</image>
+			<staticText>
+				<reportElement x="176" y="100" width="100" height="20" uuid="8dbe9376-8e28-4269-892f-5ddfb38b8b61"/>
+				<text><![CDATA[HITS]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="276" y="100" width="100" height="20" uuid="47c60cb6-8f4d-41bc-979a-42f6429e219b"/>
+				<textFieldExpression><![CDATA[$F{HITS}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="176" y="15" width="373" height="20" uuid="94df7f6d-7f6e-4438-906a-5dbc64325f64"/>
+				<text><![CDATA[Statistics report]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="176" y="35" width="37" height="20" uuid="6c594214-4943-46a4-a4f9-b2e8c8f710cf"/>
+				<text><![CDATA[From]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy HH:mm">
+				<reportElement x="213" y="35" width="336" height="20" uuid="bf2ddb40-f343-4c2c-83b9-2811bceb6e18"/>
+				<textFieldExpression><![CDATA[$P{FROM}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="176" y="55" width="37" height="20" uuid="206cd99f-43bd-4eb4-8ee1-24dc3d2700e5"/>
+				<text><![CDATA[To]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy HH:mm">
+				<reportElement x="213" y="55" width="336" height="20" uuid="f37bcd2e-8a9f-43b6-b87a-d9b66fd5b53d"/>
+				<textFieldExpression><![CDATA[$P{TO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="176" y="75" width="67" height="20" uuid="aee215fc-d6c9-4dd3-9a42-73e9423a17c4"/>
+				<text><![CDATA[Server name]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="243" y="75" width="306" height="20" uuid="ea8f38ca-067d-4d99-87ef-fbc73088c575"/>
+				<textFieldExpression><![CDATA[$P{ID_VIRTUAL_HOST}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
-		<band height="97" splitType="Stretch"/>
+		<band splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="125" splitType="Stretch"/>
+		<band height="211" splitType="Stretch">
+			<componentElement>
+				<reportElement x="0" y="55" width="555" height="29" uuid="56169595-b0f1-4bea-b314-7320527594e4"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="urls" uuid="92c9ef77-e595-47fa-bd40-2f2a51053ce1">
+						<datasetParameter name="FROM">
+							<datasetParameterExpression><![CDATA[$P{FROM}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="TO">
+							<datasetParameterExpression><![CDATA[$P{TO}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="ID_VIRTUAL_HOST">
+							<datasetParameterExpression><![CDATA[$P{ID_VIRTUAL_HOST}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="29" width="555">
+						<textField>
+							<reportElement x="0" y="5" width="57" height="20" uuid="fa80c537-5030-45a1-ba05-0ee26f3d9516"/>
+							<textFieldExpression><![CDATA[$F{HITS}]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true">
+							<reportElement x="108" y="5" width="295" height="20" uuid="73edfd53-e6b0-4c79-b939-0fa7d6a95531"/>
+							<textFieldExpression><![CDATA[$F{URL}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="403" y="5" width="152" height="20" uuid="c11b0028-1b87-4307-9fc9-bb4c42a60a96"/>
+							<textFieldExpression><![CDATA[$F{HOST}]]></textFieldExpression>
+						</textField>
+						<textField pattern="###0.00">
+							<reportElement x="57" y="5" width="51" height="20" uuid="b16476d7-1ba2-49ca-937f-14bb0f806396"/>
+							<textFieldExpression><![CDATA[$F{%}]]></textFieldExpression>
+						</textField>
+						<line>
+							<reportElement positionType="Float" x="0" y="0" width="555" height="1" uuid="6d2d1543-049d-4d00-8ba4-4821aa714fd7"/>
+						</line>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+		</band>
 	</detail>
 	<columnFooter>
-		<band height="45" splitType="Stretch"/>
+		<band splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="54" splitType="Stretch"/>
+		<band height="42" splitType="Stretch">
+			<textField>
+				<reportElement x="429" y="10" width="80" height="20" uuid="c782bb32-e63e-4d9a-8fe5-e3dc6ecfc06a"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="509" y="10" width="40" height="20" uuid="32394ce7-bc4f-4954-8f31-3a6f61d31fb6"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
 	</pageFooter>
 	<summary>
-		<band height="42" splitType="Stretch"/>
+		<band splitType="Stretch"/>
 	</summary>
 </jasperReport>
