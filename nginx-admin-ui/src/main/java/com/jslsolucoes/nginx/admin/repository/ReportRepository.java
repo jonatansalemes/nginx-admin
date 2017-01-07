@@ -21,14 +21,14 @@ import java.util.List;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
-import com.jslsolucoes.nginx.admin.model.VirtualHost;
+import com.jslsolucoes.nginx.admin.model.VirtualHostAlias;
 
 public interface ReportRepository {
 
-	public List<String> validateBeforeSearch(VirtualHost virtualHost, LocalDate from, LocalTime fromTime, LocalDate to,
+	public List<String> validateBeforeSearch(List<VirtualHostAlias> aliases, LocalDate from, LocalTime fromTime, LocalDate to,
 			LocalTime toTime);
 	
-	public InputStream statistics(VirtualHost virtualHost, LocalDate from, LocalTime fromTime, LocalDate to,
+	public InputStream statistics(List<VirtualHostAlias> aliases, LocalDate from, LocalTime fromTime, LocalDate to,
 			LocalTime toTime);
 
 }

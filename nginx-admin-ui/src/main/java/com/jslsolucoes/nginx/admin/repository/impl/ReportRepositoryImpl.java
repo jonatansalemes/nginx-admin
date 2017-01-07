@@ -18,6 +18,7 @@ package com.jslsolucoes.nginx.admin.repository.impl;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,21 +26,25 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.enterprise.context.RequestScoped;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
 import org.hibernate.jdbc.ReturningWork;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
+import org.springframework.util.CollectionUtils;
 
 import com.google.common.collect.Lists;
 import com.jslsolucoes.nginx.admin.i18n.Messages;
-import com.jslsolucoes.nginx.admin.model.VirtualHost;
+import com.jslsolucoes.nginx.admin.model.VirtualHostAlias;
 import com.jslsolucoes.nginx.admin.repository.ReportRepository;
+import com.jslsolucoes.nginx.admin.repository.VirtualHostAliasRepository;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -54,23 +59,29 @@ import net.sf.jasperreports.export.type.PdfaConformanceEnum;
 public class ReportRepositoryImpl implements ReportRepository {
 
 	private Session session;
+	private VirtualHostAliasRepository virtualHostAliasRepository;
 
 	public ReportRepositoryImpl() {
 
 	}
 
 	@Inject
-	public ReportRepositoryImpl(Session session) {
+	public ReportRepositoryImpl(Session session,VirtualHostAliasRepository virtualHostAliasRepository) {
 		this.session = session;
+		this.virtualHostAliasRepository = virtualHostAliasRepository;
 	}
 
 	@Override
-	public List<String> validateBeforeSearch(VirtualHost virtualHost, LocalDate from, LocalTime fromTime, LocalDate to,
+	public List<String> validateBeforeSearch(List<VirtualHostAlias> aliases, LocalDate from, LocalTime fromTime, LocalDate to,
 			LocalTime toTime) {
 
 		List<String> errors = new ArrayList<String>();
-		if (from != null && to != null && new DateTime(start(from, fromTime)).isAfter(new DateTime(end(to, toTime)))) {
+		if (new DateTime(start(from, fromTime)).isAfter(new DateTime(end(to, toTime)))) {
 			errors.add(Messages.getString("report.date.interval.invalid"));
+		}
+		
+		if(CollectionUtils.isEmpty(aliases)){
+			errors.add(Messages.getString("report.aliases.empty"));
 		}
 		return errors;
 
@@ -94,26 +105,21 @@ public class ReportRepositoryImpl implements ReportRepository {
 	}
 
 	@Override
-	public InputStream statistics(VirtualHost virtualHost, LocalDate from, LocalTime fromTime, LocalDate to,
+	public InputStream statistics(List<VirtualHostAlias> aliases, LocalDate from, LocalTime fromTime, LocalDate to,
 			LocalTime toTime) {
 		return session.doReturningWork(new ReturningWork<InputStream>() {
 			@Override
 			public InputStream execute(Connection connection) throws SQLException {
 				try {
 					Map<String, Object> parameters = defaultParameters();
-
-					if (from != null) {
-						parameters.put("FROM", start(from, fromTime));
-					}
-
-					if (to != null) {
-						parameters.put("TO", end(to, toTime));
-					}
-
-					if (virtualHost != null) {
-						parameters.put("ID_VIRTUAL_HOST", virtualHost.getId());
-					}
-
+					parameters.put("FROM", start(from, fromTime));
+					parameters.put("TO", end(to, toTime));
+					parameters.put("ALIASES", StringUtils.join(aliases
+										.stream()
+										.map(virtualHostAlias ->{
+											return "'" + virtualHostAliasRepository.load(virtualHostAlias).getAlias() + "'";
+										}).collect(Collectors.toSet())
+										,",") );
 					return export("statistics", parameters, connection);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -124,10 +130,7 @@ public class ReportRepositoryImpl implements ReportRepository {
 	}
 
 	/*
-	 select count(id) as hits from admin.access_log;
-	select count(id) as hits,remote_addr as ip,((cast(count(id) as decimal) *cast(100 as decimal)) / (select cast(count(id) as decimal) from admin.access_log)) as "%" from admin.access_log group by remote_addr order by hits desc;
 	select count(id) as hits,http_referrer as url,((cast(count(id) as decimal) *cast(100 as decimal)) / (select cast(count(id) as decimal) from admin.access_log)) as "%" from admin.access_log group by http_referrer order by hits desc;
-	select count(id) as hits,request_uri as url,server_name as host,((cast(count(id) as decimal) *cast(100 as decimal)) / (select cast(count(id) as decimal) from admin.access_log)) as "%" from admin.access_log group by request_uri,server_name order by hits desc;
 	select count(id) as hits,status as code,((cast(count(id) as decimal) *cast(100 as decimal)) / (select cast(count(id) as decimal) from admin.access_log)) as "%" from admin.access_log group by status order by hits desc;
 	select count(id) as hits,http_user_agent as browser,((cast(count(id) as decimal) *cast(100 as decimal)) / (select cast(count(id) as decimal) from admin.access_log)) as "%" from admin.access_log group by http_user_agent order by hits desc;
 	 */

@@ -28,4 +28,8 @@ public interface VirtualHostAliasRepository {
 
 	public List<VirtualHostAlias> listAll(VirtualHost virtualHost);
 
+	public List<VirtualHostAlias> listAll();
+
+	public VirtualHostAlias load(VirtualHostAlias virtualHostAlias);
+
 }

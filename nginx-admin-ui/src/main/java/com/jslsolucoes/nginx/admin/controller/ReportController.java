@@ -16,6 +16,8 @@
 package com.jslsolucoes.nginx.admin.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
@@ -25,9 +27,9 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
 import com.jslsolucoes.nginx.admin.html.HtmlUtil;
-import com.jslsolucoes.nginx.admin.model.VirtualHost;
+import com.jslsolucoes.nginx.admin.model.VirtualHostAlias;
 import com.jslsolucoes.nginx.admin.repository.ReportRepository;
-import com.jslsolucoes.nginx.admin.repository.VirtualHostRepository;
+import com.jslsolucoes.nginx.admin.repository.VirtualHostAliasRepository;
 
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Path;
@@ -41,7 +43,7 @@ public class ReportController {
 
 	private Result result;
 	private ReportRepository reportRepository;
-	private VirtualHostRepository virtualHostRepository;
+	private VirtualHostAliasRepository virtualHostAliasRepository;
 	private HttpServletResponse httpServletResponse;
 
 	public ReportController() {
@@ -50,39 +52,40 @@ public class ReportController {
 
 	@Inject
 	public ReportController(Result result, ReportRepository reportRepository,
-			VirtualHostRepository virtualHostRepository,HttpServletResponse httpServletResponse) {
+			VirtualHostAliasRepository virtualHostAliasRepository, HttpServletResponse httpServletResponse) {
 		this.result = result;
 		this.reportRepository = reportRepository;
-		this.virtualHostRepository = virtualHostRepository;
+		this.virtualHostAliasRepository = virtualHostAliasRepository;
 		this.httpServletResponse = httpServletResponse;
 	}
 
-	public void validate(Long idVirtualHost, LocalDate from, LocalTime fromTime, LocalDate to, LocalTime toTime) {
+	public void validate(List<Long> aliases, LocalDate from, LocalTime fromTime, LocalDate to, LocalTime toTime) {
 		this.result.use(Results.json())
 				.from(HtmlUtil.convertToUnodernedList(
-						reportRepository.validateBeforeSearch(virtualHost(idVirtualHost), from, fromTime, to, toTime)),
-						"errors")
+						reportRepository.validateBeforeSearch(convert(aliases), from, fromTime, to, toTime)), "errors")
 				.serialize();
 	}
 
 	public void search() {
-		this.result.include("virtualHostList", virtualHostRepository.listAll());
+		this.result.include("virtualHostAliasList", virtualHostAliasRepository.listAll());
 	}
-	
+
 	@Post
 	@Path("export.pdf")
-	public void export(Long idVirtualHost, LocalDate from, LocalTime fromTime, LocalDate to, LocalTime toTime) throws IOException{
+	public void export(List<Long> aliases, LocalDate from, LocalTime fromTime, LocalDate to, LocalTime toTime)
+			throws IOException {
 		httpServletResponse.setContentType("application/pdf");
-		IOUtils.copy(reportRepository.statistics(virtualHost(idVirtualHost), from, fromTime, to, toTime)
-				, httpServletResponse.getOutputStream());
+		IOUtils.copy(reportRepository.statistics(convert(aliases), from, fromTime, to, toTime),
+				httpServletResponse.getOutputStream());
 		this.result.use(Results.status()).ok();
 	}
-	
-	private VirtualHost virtualHost(Long id) {
-		VirtualHost virtualHost = null;
-		if (id != null) {
-			virtualHost = new VirtualHost(id);
+
+	private List<VirtualHostAlias> convert(List<Long> aliases) {
+		if(aliases == null) return null;
+		List<VirtualHostAlias> virtualHostAliases = new ArrayList<VirtualHostAlias>();
+		for (Long idVirtualHostAlias : aliases) {
+			virtualHostAliases.add(new VirtualHostAlias(idVirtualHostAlias));
 		}
-		return virtualHost;
+		return virtualHostAliases;
 	}
 }

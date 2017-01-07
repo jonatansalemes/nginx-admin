@@ -5,12 +5,13 @@
 		<html:form label="{report.search}" action="/report/export.pdf" 
 		  validation="/report/validate" target="_newtab">
 			<html:formGroup label="{report.server.name}">
-				<html:select name="idVirtualHost"
-					data="${ virtualHostList }" var="virtualHost">
-					<html:option value="${ virtualHost.id }">
-						${ virtualHost.fullAliases }
-					</html:option>
-				</html:select>
+				<html:listGroup>
+					<c:forEach var="virtualHostAlias" items="${ virtualHostAliasList }" varStatus="status">
+						<html:listGroupItem>
+							<html:input name="aliases[${ status.index }]" type="checkbox" value="${ virtualHostAlias.id }"></html:input> ${ virtualHostAlias.alias }
+						</html:listGroupItem>
+					</c:forEach>
+				</html:listGroup>
 			</html:formGroup>
 			<html:formGroup>
 				<html:row>
@@ -18,7 +19,7 @@
 						<html:formGroup label="{report.from}">
 							<html:row>
 								<html:col size="6">
-									<html:input name="from"></html:input>
+									<html:input name="from" required="true"></html:input>
 									<html:mask mask="99/99/9999" attachTo="from"></html:mask>
 									<html:datePicker attachTo="from"></html:datePicker>
 								</html:col>
@@ -33,7 +34,7 @@
 						<html:formGroup label="{report.to}">
 							<html:row>
 								<html:col size="6">
-									<html:input name="to"></html:input>
+									<html:input name="to" required="true"></html:input>
 									<html:mask mask="99/99/9999" attachTo="to"></html:mask>
 									<html:datePicker attachTo="to"></html:datePicker>
 								</html:col>
