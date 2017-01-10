@@ -50,9 +50,6 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
-import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
-import net.sf.jasperreports.export.type.PdfVersionEnum;
-import net.sf.jasperreports.export.type.PdfaConformanceEnum;
 
 @RequestScoped
 public class ReportRepositoryImpl implements ReportRepository {
@@ -131,14 +128,7 @@ public class ReportRepositoryImpl implements ReportRepository {
 	private InputStream export(String jasper, Map<String, Object> parameters, Connection connection)
 			throws JRException {
 		JRPdfExporter jrPdfExporter = new JRPdfExporter();
-		SimplePdfExporterConfiguration configuration = new SimplePdfExporterConfiguration();
-		configuration.setPdfaConformance(PdfaConformanceEnum.PDFA_1A);
-		configuration.setIccProfilePath("sRGB_v4_ICC_preference.icc");
-		configuration.setPdfVersion(PdfVersionEnum.VERSION_1_7);
-		configuration.setTagged(true);
-		configuration.setTagLanguage("pt-BR");
-
-		jrPdfExporter.setConfiguration(configuration);
+		
 		jrPdfExporter.setExporterInput(SimpleExporterInput.getInstance(Lists.newArrayList(JasperFillManager
 				.fillReport(getClass().getResourceAsStream("/report/" + jasper + ".jasper"), parameters, connection))));
 		java.io.ByteArrayOutputStream outputStream = new java.io.ByteArrayOutputStream();

@@ -84,14 +84,19 @@
 			<version>6.4.0</version>
 		</dependency>
 		<dependency>
-			<groupId>net.sf.jasperreports</groupId>
-			<artifactId>jasperreports-fonts</artifactId>
-			<version>6.0.0</version>
+			<groupId>org.apache.xmlgraphics</groupId>
+			<artifactId>batik-bridge</artifactId>
+			<version>1.8</version>
 		</dependency>
 		<dependency>
-			<groupId>com.adobe.xmp</groupId>
-			<artifactId>xmpcore</artifactId>
-			<version>5.1.2</version>
+			<groupId>org.apache.xmlgraphics</groupId>
+			<artifactId>batik-svggen</artifactId>
+			<version>1.8</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.xmlgraphics</groupId>
+			<artifactId>xmlgraphics-commons</artifactId>
+			<version>2.1</version>
 		</dependency>
 	</dependencies>
 
