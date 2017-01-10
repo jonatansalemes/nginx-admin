@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="statistics" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Key" uuid="3916a44c-5f75-446d-8814-a4ba8bd5348b">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="298"/>
+	<property name="ireport.y" value="144"/>
 	<subDataset name="urls" uuid="4f42aa25-3dfc-457e-9174-24cce628433e">
 		<parameter name="FROM" class="java.util.Date">
 			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -33,6 +33,43 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 		</queryString>
 		<field name="HITS" class="java.lang.Long"/>
 		<field name="IP" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="status" uuid="abcfdb0f-4634-46a6-b1ba-59f8a2252bc4">
+		<parameter name="FROM" class="java.util.Date"/>
+		<parameter name="TO" class="java.util.Date"/>
+		<parameter name="ALIASES" class="java.lang.String"/>
+		<parameter name="TOTAL" class="java.lang.Long"/>
+		<queryString>
+			<![CDATA[select count(id) as hits,status as code from admin.access_log where
+date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by status order by hits desc;
+	]]>
+		</queryString>
+		<field name="HITS" class="java.lang.Long"/>
+		<field name="CODE" class="java.lang.Integer"/>
+	</subDataset>
+	<subDataset name="browsers" uuid="a18d4e7c-3269-4daf-ae89-93f8f5724aa8">
+		<parameter name="FROM" class="java.util.Date"/>
+		<parameter name="TO" class="java.util.Date"/>
+		<parameter name="ALIASES" class="java.lang.String"/>
+		<parameter name="TOTAL" class="java.lang.Long"/>
+		<queryString>
+			<![CDATA[select count(id) as hits,http_user_agent as browser from admin.access_log where date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by http_user_agent order by hits desc;
+	]]>
+		</queryString>
+		<field name="HITS" class="java.lang.Long"/>
+		<field name="BROWSER" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="referers" uuid="ca936806-ecfe-4ac8-b2cf-2bef3c443303">
+		<parameter name="FROM" class="java.util.Date"/>
+		<parameter name="TO" class="java.util.Date"/>
+		<parameter name="ALIASES" class="java.lang.String"/>
+		<parameter name="TOTAL" class="java.lang.Long"/>
+		<queryString>
+			<![CDATA[select count(id) as hits,http_referrer as url from admin.access_log where date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by http_referrer order by hits desc;
+	]]>
+		</queryString>
+		<field name="HITS" class="java.lang.Long"/>
+		<field name="URL" class="java.lang.String"/>
 	</subDataset>
 	<parameter name="LOGO" class="java.lang.Object" isForPrompting="false"/>
 	<parameter name="FROM" class="java.util.Date"/>
@@ -136,9 +173,9 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="760" splitType="Stretch">
+		<band height="450" splitType="Stretch">
 			<componentElement>
-				<reportElement x="0" y="55" width="555" height="29" uuid="56169595-b0f1-4bea-b314-7320527594e4"/>
+				<reportElement x="0" y="55" width="555" height="30" uuid="56169595-b0f1-4bea-b314-7320527594e4"/>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="urls" uuid="101bd08d-d3bb-4b64-9dee-2edf644e2b16">
 						<datasetParameter name="FROM">
@@ -155,7 +192,7 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
-					<jr:listContents height="29" width="555">
+					<jr:listContents height="30" width="555">
 						<textField>
 							<reportElement x="0" y="5" width="57" height="20" uuid="fa80c537-5030-45a1-ba05-0ee26f3d9516"/>
 							<textElement textAlignment="Center">
@@ -223,11 +260,11 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 				<textElement textAlignment="Center">
 					<font size="14" isBold="true" isItalic="true"/>
 				</textElement>
-				<text><![CDATA[Requested URLs]]></text>
+				<text><![CDATA[Requested URLs statistics]]></text>
 			</staticText>
 			<componentElement>
-				<reportElement positionType="Float" x="0" y="151" width="555" height="29" uuid="aff4ef60-a541-4ac4-afb9-601418930524"/>
-				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+				<reportElement positionType="Float" x="0" y="151" width="555" height="30" uuid="aff4ef60-a541-4ac4-afb9-601418930524"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="origins" uuid="30dcd1cc-9cbc-491a-8187-df84965d327e">
 						<datasetParameter name="FROM">
 							<datasetParameterExpression><![CDATA[$P{FROM}]]></datasetParameterExpression>
@@ -243,7 +280,7 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
-					<jr:listContents height="29" width="555">
+					<jr:listContents height="30" width="555">
 						<textField>
 							<reportElement x="0" y="5" width="54" height="20" uuid="d1541afe-a068-41de-b31d-c0d42629a4d7"/>
 							<textElement textAlignment="Center">
@@ -276,7 +313,7 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 				<textElement textAlignment="Center">
 					<font size="14" isBold="true" isItalic="true"/>
 				</textElement>
-				<text><![CDATA[Origins IP access]]></text>
+				<text><![CDATA[Origins IP access statistics]]></text>
 			</staticText>
 			<staticText>
 				<reportElement positionType="Float" x="105" y="131" width="450" height="20" uuid="61133e15-3a42-43b0-9c63-c43fa2c0d9d7"/>
@@ -298,6 +335,228 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[%]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement positionType="Float" x="0" y="238" width="555" height="30" uuid="b534169e-5806-49e1-b0e6-35c565f2aa5a"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="status" uuid="37cae229-9062-48d2-9f1b-a04245b880d0">
+						<datasetParameter name="TO">
+							<datasetParameterExpression><![CDATA[$P{TO}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="FROM">
+							<datasetParameterExpression><![CDATA[$P{FROM}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="TOTAL">
+							<datasetParameterExpression><![CDATA[$F{HITS}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="ALIASES">
+							<datasetParameterExpression><![CDATA[$P{ALIASES}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="30" width="555">
+						<textField>
+							<reportElement x="0" y="5" width="54" height="20" uuid="6dea7638-6c40-4879-8ae1-081cfdecdabe"/>
+							<textElement textAlignment="Center">
+								<font size="12"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{HITS}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="105" y="5" width="450" height="20" uuid="4d8ed883-6dad-42c6-910b-5879eba643c8"/>
+							<textElement>
+								<font size="12"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{CODE}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="54" y="5" width="51" height="20" uuid="6591341d-0721-4702-9b2e-f830895da8c6"/>
+							<textElement textAlignment="Center">
+								<font size="12"/>
+							</textElement>
+							<textFieldExpression><![CDATA[new java.math.BigDecimal($F{HITS}).multiply(new java.math.BigDecimal(100)).divide(new java.math.BigDecimal($P{TOTAL}),2, java.math.RoundingMode.HALF_UP)]]></textFieldExpression>
+						</textField>
+						<line>
+							<reportElement x="0" y="0" width="555" height="1" uuid="2c030ddf-37c0-477b-949f-05ebe7b576e5"/>
+						</line>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="218" width="54" height="20" uuid="e5f45338-8aa0-4e51-8b91-689cc3cf21f0"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[HITS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="105" y="218" width="450" height="20" uuid="2740ddbb-6083-426c-aef0-51f4951c7f38"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Status Code]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="191" width="555" height="20" uuid="1a6dbafc-c904-4e62-b24b-78660d57c240"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Status code statistics]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="54" y="218" width="51" height="20" uuid="9b6633a4-1920-4cc6-985c-a3230a94ca3d"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[%]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement positionType="Float" x="0" y="330" width="555" height="30" uuid="b225569a-6b1c-4d67-996d-5261be7c2ad6"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="browsers" uuid="5dda976c-9fad-412a-8830-ba9335cfe8ab">
+						<datasetParameter name="FROM">
+							<datasetParameterExpression><![CDATA[$P{FROM}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="TO">
+							<datasetParameterExpression><![CDATA[$P{TO}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="TOTAL">
+							<datasetParameterExpression><![CDATA[$F{HITS}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="ALIASES">
+							<datasetParameterExpression><![CDATA[$P{ALIASES}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="30" width="555">
+						<textField>
+							<reportElement x="0" y="5" width="54" height="20" uuid="c6511646-adb1-4d1d-b786-ba15ed08746a"/>
+							<textElement textAlignment="Center">
+								<font size="12"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{HITS}]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true">
+							<reportElement x="105" y="5" width="450" height="20" uuid="b0995494-5df7-407b-ba0b-7695fe3ff267"/>
+							<textElement>
+								<font size="12"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{BROWSER}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="52" y="5" width="53" height="20" uuid="6c4036a0-9580-426a-9542-4ffb82d551ca"/>
+							<textElement textAlignment="Center">
+								<font size="12"/>
+							</textElement>
+							<textFieldExpression><![CDATA[new java.math.BigDecimal($F{HITS}).multiply(new java.math.BigDecimal(100)).divide(new java.math.BigDecimal($P{TOTAL}),2, java.math.RoundingMode.HALF_UP)]]></textFieldExpression>
+						</textField>
+						<line>
+							<reportElement x="0" y="0" width="555" height="1" uuid="e3559c9e-7db5-4df4-a6b6-6b14cec44176"/>
+						</line>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement positionType="Float" x="105" y="311" width="450" height="20" uuid="e26cb2c8-7b6b-40fb-aa4a-ac672e089dff"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[User agent]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="284" width="555" height="20" uuid="a951e376-6045-4266-a55d-89670adb5b9c"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[User agent statistics]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="54" y="311" width="51" height="20" uuid="4bce436b-d01a-41a1-bd30-65a9e4c48c85"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="311" width="54" height="20" uuid="1c0d8fae-8ca6-497a-aaf6-d720b41fb582"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[HITS]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement positionType="Float" x="0" y="420" width="555" height="30" uuid="ddb72da3-b290-4fba-b703-3642a0077885"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="referers" uuid="6b81a534-3aec-4012-b3fa-1eff540dbb30">
+						<datasetParameter name="FROM">
+							<datasetParameterExpression><![CDATA[$P{FROM}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="TO">
+							<datasetParameterExpression><![CDATA[$P{TO}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="ALIASES">
+							<datasetParameterExpression><![CDATA[$P{ALIASES}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="TOTAL">
+							<datasetParameterExpression><![CDATA[$F{HITS}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="30" width="555">
+						<textField>
+							<reportElement x="0" y="5" width="54" height="20" uuid="c4916823-3a40-4a20-8910-f1648b324513"/>
+							<textElement textAlignment="Center">
+								<font size="12"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{HITS}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="105" y="5" width="450" height="20" uuid="144ccfd7-d197-483d-8670-6e4e5958d980"/>
+							<textElement>
+								<font size="12"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{URL}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="54" y="5" width="51" height="20" uuid="b872283a-6d93-43f5-bd2c-cc16e1d9401a"/>
+							<textElement textAlignment="Center">
+								<font size="12"/>
+							</textElement>
+							<textFieldExpression><![CDATA[new java.math.BigDecimal($F{HITS}).multiply(new java.math.BigDecimal(100)).divide(new java.math.BigDecimal($P{TOTAL}),2, java.math.RoundingMode.HALF_UP)]]></textFieldExpression>
+						</textField>
+						<line>
+							<reportElement x="0" y="1" width="555" height="1" uuid="3cc37193-f88c-4f6d-9d5d-e527ac971e82"/>
+						</line>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement positionType="Float" x="105" y="399" width="450" height="20" uuid="6ab3aec3-6f00-4eaf-a332-f7702be3ab4c"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[URL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="399" width="54" height="20" uuid="6e309aaf-7b94-4e16-a707-15c50a0b5e58"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[HITS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="54" y="399" width="51" height="20" uuid="97c79a4e-3d8a-4c88-9217-ff2162817d1f"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="372" width="555" height="20" uuid="739e8f72-2ba1-4c61-a759-1d767cfc1635"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[URLs referrer statistics]]></text>
 			</staticText>
 		</band>
 	</detail>

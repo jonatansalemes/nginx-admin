@@ -18,7 +18,6 @@ package com.jslsolucoes.nginx.admin.repository.impl;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -128,12 +127,6 @@ public class ReportRepositoryImpl implements ReportRepository {
 			}
 		});
 	}
-
-	/*
-	select count(id) as hits,http_referrer as url,((cast(count(id) as decimal) *cast(100 as decimal)) / (select cast(count(id) as decimal) from admin.access_log)) as "%" from admin.access_log group by http_referrer order by hits desc;
-	select count(id) as hits,status as code,((cast(count(id) as decimal) *cast(100 as decimal)) / (select cast(count(id) as decimal) from admin.access_log)) as "%" from admin.access_log group by status order by hits desc;
-	select count(id) as hits,http_user_agent as browser,((cast(count(id) as decimal) *cast(100 as decimal)) / (select cast(count(id) as decimal) from admin.access_log)) as "%" from admin.access_log group by http_user_agent order by hits desc;
-	 */
 
 	private InputStream export(String jasper, Map<String, Object> parameters, Connection connection)
 			throws JRException {
