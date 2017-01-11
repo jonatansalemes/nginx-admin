@@ -51,6 +51,10 @@ public class VirtualHostAlias implements Serializable {
 		this.alias = alias;
 	}
 
+	public VirtualHostAlias(Long id) {
+		this.id = id;
+	}
+
 	public Long getId() {
 		return id;
 	}

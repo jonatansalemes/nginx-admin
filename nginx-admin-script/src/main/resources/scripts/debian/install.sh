@@ -30,10 +30,15 @@ NGINX_ADMIN_HOME=/opt/nginx-admin
 NGINX_ADMIN_CONF=$NGINX_ADMIN_HOME/conf
 NGINX_ADMIN_BIN=$NGINX_ADMIN_HOME/bin
 NGINX_ADMIN_LOG=$NGINX_ADMIN_HOME/log
-NGINX_ADMIN_VERSION=1.0.4
+NGINX_ADMIN_VERSION=1.0.5
 
-apt-get -y update
 
+echo "Can i update your distribution first with apt-get -y update [y]:"
+read update
+
+if [ "$update" == "y" ] || [ "$update" == "" ]  ; then 
+	apt-get -y update
+fi
 
 if ! package_exists sudo ; then 
 	echo "installing sudo ..."
@@ -75,7 +80,7 @@ printf 'nginx-admin ALL = NOPASSWD: /usr/sbin/nginx,/usr/bin/pgrep\n' >> /etc/su
 printf 'Defaults:nginx-admin !requiretty\n' >> /etc/sudoers
 
 if ! file_exists "/etc/init.d/nginx-admin" ; then 
-	wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/master/nginx-admin-script/src/main/resources/install/debian/nginx-admin.sh -O /etc/init.d/nginx-admin
+	wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/master/nginx-admin-script/src/main/resources/scripts/debian/nginx-admin.sh -O /etc/init.d/nginx-admin
 	chmod +x /etc/init.d/nginx-admin
 	chown root:root /etc/init.d/nginx-admin
 	update-rc.d nginx-admin defaults

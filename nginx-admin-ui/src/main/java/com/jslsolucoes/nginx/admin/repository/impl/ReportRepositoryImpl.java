@@ -15,31 +15,41 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.repository.impl;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.enterprise.context.RequestScoped;
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
 
-import org.hibernate.Criteria;
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.transform.Transformers;
+import org.hibernate.jdbc.ReturningWork;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
+import org.springframework.util.CollectionUtils;
 
+import com.google.common.collect.Lists;
 import com.jslsolucoes.nginx.admin.i18n.Messages;
-import com.jslsolucoes.nginx.admin.model.AccessLog;
-import com.jslsolucoes.nginx.admin.model.VirtualHost;
-import com.jslsolucoes.nginx.admin.report.OriginStatistics;
-import com.jslsolucoes.nginx.admin.report.StatusCodeStatistics;
-import com.jslsolucoes.nginx.admin.report.UserAgentStatistics;
+import com.jslsolucoes.nginx.admin.model.VirtualHostAlias;
 import com.jslsolucoes.nginx.admin.repository.ReportRepository;
 import com.jslsolucoes.nginx.admin.repository.VirtualHostAliasRepository;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 
 @RequestScoped
 public class ReportRepositoryImpl implements ReportRepository {
@@ -52,108 +62,84 @@ public class ReportRepositoryImpl implements ReportRepository {
 	}
 
 	@Inject
-	public ReportRepositoryImpl(Session session, VirtualHostAliasRepository virtualHostAliasRepository) {
+	public ReportRepositoryImpl(Session session,VirtualHostAliasRepository virtualHostAliasRepository) {
 		this.session = session;
 		this.virtualHostAliasRepository = virtualHostAliasRepository;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<UserAgentStatistics> browsers(VirtualHost virtualHost, LocalDate from, LocalTime fromTime, LocalDate to,
+	public List<String> validateBeforeSearch(List<VirtualHostAlias> aliases, LocalDate from, LocalTime fromTime, LocalDate to,
 			LocalTime toTime) {
-		Criteria criteria = session.createCriteria(AccessLog.class);
-		criteria.setProjection(Projections.projectionList().add(Projections.count("id").as("total"))
-				.add(Projections.groupProperty("httpUserAgent"), "userAgent"));
 
-		if (from != null) {
-			criteria.add(Restrictions.ge("timestamp",start(from,fromTime)));
-		}
-
-		if (to != null) {
-			criteria.add(Restrictions.le("timestamp", end(to,toTime)));
-		}
-		
-		if (virtualHost != null) {
-			criteria.add(Restrictions.in("serverName", virtualHostAliasRepository.listAll(virtualHost).stream()
-					.map(virtualHostAlias -> virtualHostAlias.getAlias()).collect(Collectors.toSet())));
-		}
-		criteria.setResultTransformer(Transformers.aliasToBean(UserAgentStatistics.class));
-		return criteria.list();
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<OriginStatistics> ips(VirtualHost virtualHost, LocalDate from, LocalTime fromTime, LocalDate to,
-			LocalTime toTime) {
-		Criteria criteria = session.createCriteria(AccessLog.class);
-		criteria.setProjection(Projections.projectionList().add(Projections.count("id").as("total"))
-				.add(Projections.sum("requestLength").as("request")).add(Projections.sum("bytesSent").as("response"))
-				.add(Projections.groupProperty("remoteAddress"), "ip"));
-		if (from != null) {
-			criteria.add(Restrictions.ge("timestamp",start(from,fromTime)));
-		}
-
-		if (to != null) {
-			criteria.add(Restrictions.le("timestamp", end(to,toTime)));
-		}
-		
-		if (virtualHost != null) {
-			criteria.add(Restrictions.in("serverName", virtualHostAliasRepository.listAll(virtualHost).stream()
-					.map(virtualHostAlias -> virtualHostAlias.getAlias()).collect(Collectors.toSet())));
-		}
-		criteria.setResultTransformer(Transformers.aliasToBean(OriginStatistics.class));
-		return criteria.list();
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<StatusCodeStatistics> statuses(VirtualHost virtualHost, LocalDate from, LocalTime fromTime,
-			LocalDate to, LocalTime toTime) {
-		Criteria criteria = session.createCriteria(AccessLog.class);
-		criteria.setProjection(Projections.projectionList().add(Projections.count("id").as("total"))
-				.add(Projections.groupProperty("status"), "status"));
-		if (from != null) {
-			criteria.add(Restrictions.ge("timestamp",start(from,fromTime)));
-		}
-
-		if (to != null) {
-			criteria.add(Restrictions.le("timestamp", end(to,toTime)));
-		}
-		if (virtualHost != null) {
-			criteria.add(Restrictions.in("serverName", virtualHostAliasRepository.listAll(virtualHost).stream()
-					.map(virtualHostAlias -> virtualHostAlias.getAlias()).collect(Collectors.toSet())));
-		}
-		criteria.setResultTransformer(Transformers.aliasToBean(StatusCodeStatistics.class));
-		return criteria.list();
-	}
-
-	@Override
-	public List<String> validateBeforeSearch(VirtualHost virtualHost, LocalDate from, LocalTime fromTime, LocalDate to,
-			LocalTime toTime) {
-		
 		List<String> errors = new ArrayList<String>();
-		if (from != null && to != null && 
-				new DateTime(start(from,fromTime)).isAfter(new DateTime(end(to, toTime)))) {
+		if (new DateTime(start(from, fromTime)).isAfter(new DateTime(end(to, toTime)))) {
 			errors.add(Messages.getString("report.date.interval.invalid"));
 		}
-		return errors;
 		
+		if(CollectionUtils.isEmpty(aliases)){
+			errors.add(Messages.getString("report.aliases.empty"));
+		}
+		return errors;
+
 	}
-	
-	public Date start(LocalDate localDate, LocalTime localTime){
-		if(localTime == null){
+
+	public Date start(LocalDate localDate, LocalTime localTime) {
+		if (localTime == null) {
 			return localDate.toDateTimeAtStartOfDay().toDate();
 		} else {
 			return localDate.toDateTime(localTime).toDate();
 		}
 	}
-	
-	public Date end(LocalDate localDate, LocalTime localTime){
-		if(localTime == null){
+
+	public Date end(LocalDate localDate, LocalTime localTime) {
+		if (localTime == null) {
 			return localDate.toDateTimeAtCurrentTime().hourOfDay().withMaximumValue().minuteOfHour().withMaximumValue()
 					.secondOfMinute().withMaximumValue().millisOfSecond().withMinimumValue().toDate();
 		} else {
 			return localDate.toDateTime(localTime).toDate();
 		}
+	}
+
+	@Override
+	public InputStream statistics(List<VirtualHostAlias> aliases, LocalDate from, LocalTime fromTime, LocalDate to,
+			LocalTime toTime) {
+		return session.doReturningWork(new ReturningWork<InputStream>() {
+			@Override
+			public InputStream execute(Connection connection) throws SQLException {
+				try {
+					Map<String, Object> parameters = defaultParameters();
+					parameters.put("FROM", start(from, fromTime));
+					parameters.put("TO", end(to, toTime));
+					parameters.put("ALIASES", StringUtils.join(aliases
+										.stream()
+										.map(virtualHostAlias ->{
+											return "'" + virtualHostAliasRepository.load(virtualHostAlias).getAlias() + "'";
+										}).collect(Collectors.toSet())
+										,",") );
+					return export("statistics", parameters, connection);
+				} catch (Exception e) {
+					e.printStackTrace();
+					return null;
+				}
+			}
+		});
+	}
+
+	private InputStream export(String jasper, Map<String, Object> parameters, Connection connection)
+			throws JRException {
+		JRPdfExporter jrPdfExporter = new JRPdfExporter();
+		
+		jrPdfExporter.setExporterInput(SimpleExporterInput.getInstance(Lists.newArrayList(JasperFillManager
+				.fillReport(getClass().getResourceAsStream("/report/" + jasper + ".jasper"), parameters, connection))));
+		java.io.ByteArrayOutputStream outputStream = new java.io.ByteArrayOutputStream();
+		jrPdfExporter.setExporterOutput(new SimpleOutputStreamExporterOutput(outputStream));
+		jrPdfExporter.exportReport();
+		return new ByteArrayInputStream(outputStream.toByteArray());
+	}
+
+	private Map<String, Object> defaultParameters() throws IOException {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("LOGO", ImageIO.read(getClass().getResourceAsStream("/report/image/logo.png")));
+		return parameters;
 	}
 }

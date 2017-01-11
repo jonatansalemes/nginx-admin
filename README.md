@@ -18,6 +18,7 @@ Screenshots :
 ![alt tag](https://github.com/jslsolucoes/nginx-admin/blob/master/nginx-admin-ui-screenshot/screenshot2.png)
 ![alt tag](https://github.com/jslsolucoes/nginx-admin/blob/master/nginx-admin-ui-screenshot/screenshot3.png)
 ![alt tag](https://github.com/jslsolucoes/nginx-admin/blob/master/nginx-admin-ui-screenshot/screenshot4.png)
+![alt tag](https://github.com/jslsolucoes/nginx-admin/blob/master/nginx-admin-ui-screenshot/screenshot5.png)
 
  
 Supported operational system :
@@ -33,6 +34,8 @@ Some features :
 	<li>Manager serves,ssl certificate,upstreams and virtual domains</li>
 	<li>Multiplatform</li>
 	<li>100% Java</li>
+	<li>Rotate and collect log</li>
+	<li>Log reports</li>
 </ul>
 
 
