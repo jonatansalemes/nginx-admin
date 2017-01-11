@@ -34,6 +34,8 @@ Some features :
 	<li>Manager serves,ssl certificate,upstreams and virtual domains</li>
 	<li>Multiplatform</li>
 	<li>100% Java</li>
+	<li>Rotate and collect log</li>
+	<li>Log reports</li>
 </ul>
 
 
