@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.jslsolucoes</groupId>
 		<artifactId>nginx-admin</artifactId>
-		<version>1.0.5</version>
+		<version>1.0.6</version>
 	</parent>
 	<artifactId>nginx-admin-ui</artifactId>
 	<packaging>war</packaging>
@@ -20,7 +20,7 @@
 		<dependency>
 			<groupId>com.jslsolucoes</groupId>
 			<artifactId>tagria-lib</artifactId>
-			<version>1.0.9</version>
+			<version>1.0.10-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>br.com.caelum</groupId>
