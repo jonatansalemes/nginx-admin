@@ -1,3 +1,4 @@
+#!/bin/sh
 #*******************************************************************************
 # Copyright 2016 JSL Solucoes LTDA - https://jslsolucoes.com
 #
@@ -13,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #*******************************************************************************
-#!/bin/sh
+
 #
 ### BEGIN INIT INFO
 # Provides:             nginx-admin
