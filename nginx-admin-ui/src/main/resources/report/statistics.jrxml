@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="statistics" pageWidth="595" pageHeight="1500" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Key" uuid="3916a44c-5f75-446d-8814-a4ba8bd5348b">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="144"/>
+	<property name="ireport.y" value="566"/>
 	<subDataset name="urls" uuid="4f42aa25-3dfc-457e-9174-24cce628433e">
 		<parameter name="FROM" class="java.util.Date">
 			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -41,7 +41,7 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 		<parameter name="TOTAL" class="java.lang.Long"/>
 		<queryString>
 			<![CDATA[select count(id) as hits,status as code from admin.access_log where
-date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by status order by hits desc;]]>
+date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by status order by hits desc]]>
 		</queryString>
 		<field name="HITS" class="java.lang.Long"/>
 		<field name="CODE" class="java.lang.Integer"/>
@@ -52,7 +52,7 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 		<parameter name="ALIASES" class="java.lang.String"/>
 		<parameter name="TOTAL" class="java.lang.Long"/>
 		<queryString>
-			<![CDATA[select count(id) as hits,http_user_agent as browser from admin.access_log where date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by http_user_agent order by hits desc;]]>
+			<![CDATA[select count(id) as hits,http_user_agent as browser from admin.access_log where date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by http_user_agent order by hits desc]]>
 		</queryString>
 		<field name="HITS" class="java.lang.Long"/>
 		<field name="BROWSER" class="java.lang.String"/>
@@ -63,7 +63,7 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 		<parameter name="ALIASES" class="java.lang.String"/>
 		<parameter name="TOTAL" class="java.lang.Long"/>
 		<queryString>
-			<![CDATA[select count(id) as hits,http_referrer as url from admin.access_log where date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by http_referrer order by hits desc;]]>
+			<![CDATA[select count(id) as hits,http_referrer as url from admin.access_log where date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by http_referrer order by hits desc]]>
 		</queryString>
 		<field name="HITS" class="java.lang.Long"/>
 		<field name="URL" class="java.lang.String"/>
@@ -127,10 +127,36 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 		<parameter name="ALIASES" class="java.lang.String"/>
 		<parameter name="TOTAL" class="java.lang.Long"/>
 		<queryString>
-			<![CDATA[select count(id) as hits,http_referrer as url from admin.access_log where date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by http_referrer order by hits desc;]]>
+			<![CDATA[select count(id) as hits,http_referrer as url from admin.access_log where date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by http_referrer order by hits desc limit 5]]>
 		</queryString>
 		<field name="HITS" class="java.lang.Long"/>
 		<field name="URL" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="notfound" uuid="c01b62ab-f50a-448c-81d0-9737182e9975">
+		<parameter name="FROM" class="java.util.Date"/>
+		<parameter name="TO" class="java.util.Date"/>
+		<parameter name="ALIASES" class="java.lang.String"/>
+		<parameter name="TOTAL" class="java.lang.Long"/>
+		<queryString>
+			<![CDATA[select count(id) as hits,request_uri as url,server_name as host from admin.access_log where
+date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) and status = 404 group by request_uri,server_name order by hits desc;]]>
+		</queryString>
+		<field name="HITS" class="java.lang.Long"/>
+		<field name="URL" class="java.lang.String"/>
+		<field name="HOST" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="notfound_top" uuid="63506390-f6ad-43f6-94c4-c412e7cfae5f">
+		<parameter name="FROM" class="java.util.Date"/>
+		<parameter name="TO" class="java.util.Date"/>
+		<parameter name="ALIASES" class="java.lang.String"/>
+		<parameter name="TOTAL" class="java.lang.Long"/>
+		<queryString>
+			<![CDATA[select count(id) as hits,request_uri as url,server_name as host from admin.access_log where
+date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) and status = 404 group by request_uri,server_name order by hits desc limit 5]]>
+		</queryString>
+		<field name="HITS" class="java.lang.Long"/>
+		<field name="URL" class="java.lang.String"/>
+		<field name="HOST" class="java.lang.String"/>
 	</subDataset>
 	<parameter name="LOGO" class="java.lang.Object" isForPrompting="false"/>
 	<parameter name="FROM" class="java.util.Date"/>
@@ -234,7 +260,7 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="1116" splitType="Stretch">
+		<band height="1211" splitType="Stretch">
 			<componentElement>
 				<reportElement positionType="Float" x="0" y="721" width="555" height="30" uuid="56169595-b0f1-4bea-b314-7320527594e4"/>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
@@ -786,6 +812,126 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 						</datasetRun>
 					</dataset>
 					<keyExpression><![CDATA[$F{BROWSER}]]></keyExpression>
+					<valueExpression><![CDATA[$F{HITS}]]></valueExpression>
+				</pieDataset>
+				<pie3DPlot isShowLabels="true" isCircular="true" labelFormat="{1}">
+					<plot/>
+					<itemLabel/>
+				</pie3DPlot>
+			</pie3DChart>
+			<componentElement>
+				<reportElement positionType="Float" x="0" y="1181" width="555" height="30" uuid="3a3b5304-7bf8-4be0-bf29-77ed6af6b3b6"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="notfound" uuid="ac65065a-0692-4a51-a9ec-a310e9bf9432">
+						<datasetParameter name="FROM">
+							<datasetParameterExpression><![CDATA[$P{FROM}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="TO">
+							<datasetParameterExpression><![CDATA[$P{TO}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="ALIASES">
+							<datasetParameterExpression><![CDATA[$P{ALIASES}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="TOTAL">
+							<datasetParameterExpression><![CDATA[$F{HITS}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="30" width="555">
+						<textField>
+							<reportElement positionType="Float" x="0" y="5" width="54" height="20" uuid="56ab4c80-9a5f-413e-a642-32483a2ef625"/>
+							<textElement>
+								<font size="12"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{HITS}]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true">
+							<reportElement positionType="Float" x="105" y="5" width="298" height="20" uuid="6adc4783-9bcb-4adc-8958-03f6087dca87"/>
+							<textElement>
+								<font size="12"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{URL}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="403" y="5" width="152" height="20" uuid="c3dfdea4-74e2-42e3-bf67-7b533212a6fb"/>
+							<textElement>
+								<font size="12"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{HOST}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="54" y="5" width="51" height="20" uuid="bc175f11-1de3-4087-97d6-0e25d487d6f0"/>
+							<textElement>
+								<font size="12"/>
+							</textElement>
+							<textFieldExpression><![CDATA[new java.math.BigDecimal($F{HITS}).multiply(new java.math.BigDecimal(100)).divide(new java.math.BigDecimal($P{TOTAL}),2, java.math.RoundingMode.HALF_UP)]]></textFieldExpression>
+						</textField>
+						<line>
+							<reportElement positionType="Float" x="0" y="0" width="555" height="1" uuid="a440426f-9d16-4853-9974-46264b9ec87f"/>
+						</line>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="1130" width="555" height="20" uuid="a1a07233-0443-4ff8-9e01-68af70a8d9bd"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[HTTP 404 Not Found URLs]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="54" y="1161" width="51" height="20" uuid="79b44683-aced-4963-be2f-b03db37b6c7f"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="1161" width="54" height="20" uuid="a82dc1e8-b287-4e02-be2f-cfd875f530d7"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[HITS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="105" y="1161" width="298" height="20" uuid="64f3b3b4-9d2d-44aa-9235-89e53f67367a"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[URL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="403" y="1161" width="152" height="20" uuid="fd2baf26-c749-43eb-a0ac-490684a7d6c9"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[HOST]]></text>
+			</staticText>
+			<pie3DChart>
+				<chart renderType="svg">
+					<reportElement positionType="Float" mode="Opaque" x="280" y="428" width="275" height="200" uuid="5a65603b-7802-40fd-a14c-fccfef849352"/>
+					<chartTitle>
+						<titleExpression><![CDATA["HTTP 404 Not Found URLs"]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<pieDataset>
+					<dataset>
+						<datasetRun subDataset="notfound_top" uuid="1f8b3e24-45e6-4cf7-8187-1c60360ca031">
+							<datasetParameter name="TO">
+								<datasetParameterExpression><![CDATA[$P{TO}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="FROM">
+								<datasetParameterExpression><![CDATA[$P{FROM}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="ALIASES">
+								<datasetParameterExpression><![CDATA[$P{ALIASES}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+					</dataset>
+					<keyExpression><![CDATA[$F{URL}]]></keyExpression>
 					<valueExpression><![CDATA[$F{HITS}]]></valueExpression>
 				</pieDataset>
 				<pie3DPlot isShowLabels="true" isCircular="true" labelFormat="{1}">
