@@ -40,7 +40,7 @@ public class Main {
 		Launcher launcher = launchMode.launcher();
 		
 		if (!launcher.getQuit()) {
-			args = new String []{"-Dswarm.http.port="+launcher.getPort()};
+			args = new String []{"-Dswarm.http.port="+launcher.getPort(),"-Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel"};
 			
 			Swarm swarm = new Swarm(args);
 			swarm.fraction(new DatasourcesFraction().dataSource("NginxAdminDataSource", (ds) -> {
@@ -58,7 +58,7 @@ public class Main {
 				    .rootLogger(Level.ERROR, "CONSOLE"));
 			swarm.start();
 
-			InputStream war = Main.class.getResourceAsStream("/nginx-admin-ui-1.0.5.war");
+			InputStream war = Main.class.getResourceAsStream("/nginx-admin-ui-1.0.6.war");
 			File file = File.createTempFile(UUID.randomUUID().toString(), ".war");
 			FileUtils.copyInputStreamToFile(war, file);
 			file.deleteOnExit();

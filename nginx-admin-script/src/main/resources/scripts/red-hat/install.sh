@@ -31,7 +31,7 @@ NGINX_ADMIN_HOME=/opt/nginx-admin
 NGINX_ADMIN_CONF=$NGINX_ADMIN_HOME/conf
 NGINX_ADMIN_BIN=$NGINX_ADMIN_HOME/bin
 NGINX_ADMIN_LOG=$NGINX_ADMIN_HOME/log
-NGINX_ADMIN_VERSION=1.0.5
+NGINX_ADMIN_VERSION=1.0.6
 
 
 echo "Can i update your distribution first with yum -y update [y]:"
