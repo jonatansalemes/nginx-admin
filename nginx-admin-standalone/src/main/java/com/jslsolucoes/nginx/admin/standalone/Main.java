@@ -40,7 +40,7 @@ public class Main {
 		Launcher launcher = launchMode.launcher();
 		
 		if (!launcher.getQuit()) {
-			args = new String []{"-Dswarm.http.port="+launcher.getPort()};
+			args = new String []{"-Dswarm.http.port="+launcher.getPort(),"-Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel"};
 			
 			Swarm swarm = new Swarm(args);
 			swarm.fraction(new DatasourcesFraction().dataSource("NginxAdminDataSource", (ds) -> {

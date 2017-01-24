@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="statistics" pageWidth="595" pageHeight="1500" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Key" uuid="3916a44c-5f75-446d-8814-a4ba8bd5348b">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="509"/>
+	<property name="ireport.y" value="0"/>
 	<subDataset name="urls" uuid="4f42aa25-3dfc-457e-9174-24cce628433e">
 		<parameter name="FROM" class="java.util.Date">
 			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -766,7 +766,7 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 			</staticText>
 			<pie3DChart>
 				<chart renderType="svg">
-					<reportElement positionType="Float" mode="Opaque" x="5" y="365" width="275" height="170" uuid="8541a7dd-f7a1-4b7e-97e6-869292748c29"/>
+					<reportElement positionType="Float" mode="Opaque" x="0" y="360" width="275" height="170" uuid="8541a7dd-f7a1-4b7e-97e6-869292748c29"/>
 					<chartTitle>
 						<font isBold="true" isItalic="true"/>
 						<titleExpression><![CDATA["Referrer URLs"]]></titleExpression>

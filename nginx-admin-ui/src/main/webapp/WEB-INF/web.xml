@@ -10,17 +10,6 @@
 	</context-param>
 	
 	<filter>
-		<filter-name>csrf</filter-name>
-		<filter-class>com.jslsolucoes.tagria.lib.filter.CsrfFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>csrf</filter-name>
-		<url-pattern>/*</url-pattern>
-		<dispatcher>FORWARD</dispatcher>
-		<dispatcher>REQUEST</dispatcher>
-	</filter-mapping>	
-
-	<filter>
 		<filter-name>vraptor</filter-name>
 		<filter-class>br.com.caelum.vraptor.VRaptor</filter-class>
 	</filter>
