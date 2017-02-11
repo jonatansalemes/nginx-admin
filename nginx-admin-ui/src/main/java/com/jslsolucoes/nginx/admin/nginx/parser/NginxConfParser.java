@@ -38,7 +38,7 @@ public class NginxConfParser {
 	}
 
 	public List<Directive> parse() throws IOException {
-		List<Directive> directives = new ArrayList<Directive>();
+		List<Directive> directives = new ArrayList<>();
 		Matcher includes = Pattern.compile("include (.*)/(.*);").matcher(content(new File(location)));
 		while (includes.find()) {
 			String directory = includes.group(1).trim();

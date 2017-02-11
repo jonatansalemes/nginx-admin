@@ -48,7 +48,7 @@ public class UpstreamServer implements Serializable {
 	private Integer port;
 
 	public UpstreamServer() {
-
+		//default constructor
 	}
 
 	public UpstreamServer(Server server, Integer port) {

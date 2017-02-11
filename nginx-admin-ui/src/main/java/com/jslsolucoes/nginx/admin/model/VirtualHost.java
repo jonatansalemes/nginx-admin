@@ -60,7 +60,7 @@ public class VirtualHost implements Serializable {
 	private Set<VirtualHostLocation> locations;
 
 	public VirtualHost() {
-
+		//default constructor
 	}
 
 	public VirtualHost(Long id) {
@@ -69,7 +69,7 @@ public class VirtualHost implements Serializable {
 
 	public VirtualHost(Long id, Integer https, SslCertificate sslCertificate, ResourceIdentifier resourceIdentifier) {
 		this.id = id;
-		this.https = (https == null ? 0 : https);
+		this.https = https == null ? 0 : https;
 		this.sslCertificate = sslCertificate;
 		this.resourceIdentifier = resourceIdentifier;
 	}
@@ -120,8 +120,7 @@ public class VirtualHost implements Serializable {
 	}
 
 	public String getFullAliases() {
-		return StringUtils.join(
-				aliases.stream().map(virtualHostAlias -> virtualHostAlias.getAlias()).collect(Collectors.toSet()), " ");
+		return StringUtils.join(aliases.stream().map(VirtualHostAlias::getAlias).collect(Collectors.toSet()), " ");
 	}
 
 }

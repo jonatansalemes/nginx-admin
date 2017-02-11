@@ -43,7 +43,7 @@ public class Server implements Serializable {
 	private Set<UpstreamServer> upstreamServers;
 
 	public Server() {
-
+		//default constructor
 	}
 
 	public Server(Long id) {

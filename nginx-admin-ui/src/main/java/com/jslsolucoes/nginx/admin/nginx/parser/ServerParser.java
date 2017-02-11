@@ -37,8 +37,9 @@ public class ServerParser implements Parser {
 		this.fileContent = fileContent;
 	}
 
+	@Override
 	public List<Directive> parse() throws IOException {
-		List<Directive> virtualHosts = new ArrayList<Directive>();
+		List<Directive> virtualHosts = new ArrayList<>();
 		for (String block : blocks()) {
 
 			ServerDirective virtualHost = new ServerDirective();
@@ -70,7 +71,7 @@ public class ServerParser implements Parser {
 	}
 
 	private List<LocationDirective> locations(String block) {
-		List<LocationDirective> locationDirectives = new ArrayList<LocationDirective>();
+		List<LocationDirective> locationDirectives = new ArrayList<>();
 
 		Matcher locations = Pattern.compile("location(\\s{1,})(.*?)(\\s{0,})\\{(.*?)\\}", Pattern.DOTALL)
 				.matcher(block);
@@ -88,7 +89,7 @@ public class ServerParser implements Parser {
 	}
 
 	private List<String> blocks() throws IOException {
-		List<String> blocks = new ArrayList<String>();
+		List<String> blocks = new ArrayList<>();
 		List<String> lines = Arrays.asList(fileContent.split("\n"));
 
 		AtomicInteger atomicInteger = new AtomicInteger(0);

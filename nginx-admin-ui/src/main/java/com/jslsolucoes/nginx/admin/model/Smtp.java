@@ -55,7 +55,7 @@ public class Smtp implements Serializable {
 	private String fromAddress;
 
 	public Smtp() {
-
+		//default constructor
 	}
 
 	public Smtp(String host, Integer port, Integer authenticate, String userName, String password, Integer tls,

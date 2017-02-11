@@ -51,7 +51,7 @@ public class AdminController {
 	}
 
 	public void configure() {
-
+		//configure logic
 	}
 
 	public void stop() {

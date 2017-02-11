@@ -48,7 +48,7 @@ public class VirtualHostLocation implements Serializable {
 	private VirtualHost virtualHost;
 
 	public VirtualHostLocation() {
-
+		//default constructor
 	}
 
 	public VirtualHostLocation(String path, Upstream upstream) {

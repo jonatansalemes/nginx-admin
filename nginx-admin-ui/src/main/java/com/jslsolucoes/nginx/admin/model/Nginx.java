@@ -47,7 +47,7 @@ public class Nginx implements Serializable {
 	private Integer maxPostSize;
 
 	public Nginx() {
-
+		//default constructor
 	}
 
 	public Nginx(String bin, String home) {

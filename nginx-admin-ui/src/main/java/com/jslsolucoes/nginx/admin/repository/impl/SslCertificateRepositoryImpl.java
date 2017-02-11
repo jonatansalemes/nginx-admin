@@ -69,7 +69,7 @@ public class SslCertificateRepositoryImpl extends RepositoryImpl<SslCertificate>
 
 	@Override
 	public OperationResult saveOrUpdate(SslCertificate sslCertificate, InputStream certificateFile,
-			InputStream certificatePrivateKeyFile) throws FileNotFoundException, IOException {
+			InputStream certificatePrivateKeyFile) throws IOException {
 		Nginx nginx = nginxRepository.configuration();
 		if (certificateFile != null) {
 			if (sslCertificate.getResourceIdentifierCertificate().getId() == null) {

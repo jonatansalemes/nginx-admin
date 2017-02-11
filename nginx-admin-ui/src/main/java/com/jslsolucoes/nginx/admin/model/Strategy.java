@@ -37,7 +37,7 @@ public class Strategy implements Serializable {
 	private String name;
 
 	public Strategy() {
-
+		//default constructor
 	}
 
 	public Strategy(Long id) {

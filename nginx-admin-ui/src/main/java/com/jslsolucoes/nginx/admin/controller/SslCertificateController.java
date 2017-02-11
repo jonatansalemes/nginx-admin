@@ -15,7 +15,6 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.controller;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -80,12 +79,12 @@ public class SslCertificateController {
 	@Post
 	public void saveOrUpdate(Long id, String commonName, Long idResourceIdentifierCertificate,
 			Long idResourceIdentifierCertificatePrivateKey, UploadedFile certificateFile,
-			UploadedFile certificatePrivateKeyFile) throws FileNotFoundException, IOException {
+			UploadedFile certificatePrivateKeyFile) throws  IOException {
 		OperationResult operationResult = sslCertificateRepository.saveOrUpdate(
 				new SslCertificate(id, commonName, new ResourceIdentifier(idResourceIdentifierCertificate),
 						new ResourceIdentifier(idResourceIdentifierCertificatePrivateKey)),
-				(certificateFile != null ? certificateFile.getFile() : null),
-				(certificatePrivateKeyFile != null ? certificatePrivateKeyFile.getFile() : null));
+				certificateFile != null ? certificateFile.getFile() : null,
+				certificatePrivateKeyFile != null ? certificatePrivateKeyFile.getFile() : null);
 		this.result.include("operation", operationResult.getOperationType());
 		this.result.redirectTo(this).edit(operationResult.getId());
 	}

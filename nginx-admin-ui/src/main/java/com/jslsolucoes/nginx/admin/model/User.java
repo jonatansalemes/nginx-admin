@@ -46,7 +46,7 @@ public class User implements Serializable {
 	private Integer admin;
 
 	public User() {
-
+		//default constructor
 	}
 
 	public User(String login, String password) {

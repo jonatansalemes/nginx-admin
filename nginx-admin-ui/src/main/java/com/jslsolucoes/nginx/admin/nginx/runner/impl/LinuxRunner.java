@@ -30,16 +30,17 @@ import com.jslsolucoes.nginx.admin.runtime.RuntimeUtils;
 public class LinuxRunner implements Runner {
 
 	private Nginx nginx;
+	private static final String SUDO = "sudo ";
 
 	@Override
 	public RuntimeResult start() {
-		RuntimeUtils.command("sudo " + executable() + " -c " + nginx.conf().getAbsolutePath(), nginx.binFolder(), 3);
+		RuntimeUtils.command(SUDO + executable() + " -c " + nginx.conf().getAbsolutePath(), nginx.binFolder(), 3);
 		return status();
 	}
 
 	@Override
 	public RuntimeResult stop() {
-		RuntimeUtils.command("sudo " + executable() + " -c " + nginx.conf().getAbsolutePath() + " -s quit",
+		RuntimeUtils.command(SUDO + executable() + " -c " + nginx.conf().getAbsolutePath() + " -s quit",
 				nginx.binFolder(), 3);
 		return status();
 	}
@@ -53,7 +54,7 @@ public class LinuxRunner implements Runner {
 
 	@Override
 	public RuntimeResult status() {
-		RuntimeResult runtimeResult = RuntimeUtils.command("sudo pgrep " + executable());
+		RuntimeResult runtimeResult = RuntimeUtils.command(SUDO + " pgrep " + executable());
 		if (runtimeResult.getRuntimeResultType().equals(RuntimeResultType.SUCCESS)) {
 			return new RuntimeResult(RuntimeResultType.SUCCESS, Messages.getString("running"));
 		} else {
@@ -70,7 +71,7 @@ public class LinuxRunner implements Runner {
 	@Override
 	public RuntimeResult testConfig() {
 		RuntimeResult runtimeResult = RuntimeUtils
-				.command("sudo " + executable() + " -c " + nginx.conf().getAbsolutePath() + " -t", nginx.binFolder());
+				.command(SUDO + executable() + " -c " + nginx.conf().getAbsolutePath() + " -t", nginx.binFolder());
 		if (runtimeResult.getRuntimeResultType().equals(RuntimeResultType.SUCCESS)) {
 			if (runtimeResult.getOutput().contains("syntax is ok")) {
 				return new RuntimeResult(RuntimeResultType.SUCCESS, Messages.getString("syntax.ok"));
@@ -87,13 +88,13 @@ public class LinuxRunner implements Runner {
 
 	@Override
 	public RuntimeResult version() {
-		return RuntimeUtils.command("sudo " + executable() + " -c " + nginx.conf().getAbsolutePath() + " -v",
+		return RuntimeUtils.command(SUDO + executable() + " -c " + nginx.conf().getAbsolutePath() + " -v",
 				nginx.binFolder());
 	}
 
 	@Override
 	public RuntimeResult reload() {
-		return RuntimeUtils.command("sudo " + executable() + "  -c " + nginx.conf().getAbsolutePath() + " -s reload",
+		return RuntimeUtils.command(SUDO + executable() + "  -c " + nginx.conf().getAbsolutePath() + " -s reload",
 				nginx.binFolder());
 	}
 

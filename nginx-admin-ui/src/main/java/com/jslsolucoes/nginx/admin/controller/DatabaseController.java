@@ -19,8 +19,6 @@ import java.io.IOException;
 
 import javax.inject.Inject;
 
-import org.hibernate.HibernateException;
-
 import com.jslsolucoes.nginx.admin.annotation.Public;
 import com.jslsolucoes.nginx.admin.repository.DatabaseRepository;
 
@@ -46,7 +44,7 @@ public class DatabaseController {
 		this.databaseRepository = databaseRepository;
 	}
 
-	public void installOrUpgrade() throws HibernateException, IOException {
+	public void installOrUpgrade() throws IOException {
 		databaseRepository.installOrUpgrade();
 		this.result.redirectTo(UserController.class).login();
 	}

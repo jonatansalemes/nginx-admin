@@ -35,8 +35,9 @@ public class UpstreamParser implements Parser {
 		this.fileContent = fileContent;
 	}
 
+	@Override
 	public List<Directive> parse() throws IOException {
-		List<Directive> upstreams = new ArrayList<Directive>();
+		List<Directive> upstreams = new ArrayList<>();
 		Matcher upstreamers = Pattern.compile("upstream(\\s{1,})(.*?)\\{(.*?)\\}", Pattern.DOTALL).matcher(fileContent);
 		while (upstreamers.find()) {
 			String name = upstreamers.group(2).trim();
@@ -47,7 +48,7 @@ public class UpstreamParser implements Parser {
 	}
 
 	private List<UpstreamDirectiveServer> servers(String body) {
-		List<UpstreamDirectiveServer> servers = new ArrayList<UpstreamDirectiveServer>();
+		List<UpstreamDirectiveServer> servers = new ArrayList<>();
 		Matcher ips = Pattern.compile("server(\\s{1,})(.*?)(:([0-9]{2,}))?(\\s(.*?))?;").matcher(body);
 		while (ips.find()) {
 			UpstreamDirectiveServer server = new UpstreamDirectiveServer();

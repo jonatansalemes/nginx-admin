@@ -33,7 +33,7 @@ public interface SslCertificateRepository {
 	public SslCertificate load(SslCertificate sslCertificate);
 
 	public OperationResult saveOrUpdate(SslCertificate sslCertificate, InputStream certificate, InputStream privateKey)
-			throws FileNotFoundException, IOException;
+			throws IOException;
 
 	public InputStream download(String hash) throws FileNotFoundException;
 }

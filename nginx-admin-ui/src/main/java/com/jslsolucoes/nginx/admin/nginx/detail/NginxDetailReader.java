@@ -70,7 +70,7 @@ public class NginxDetailReader {
 	private String address() {
 		try {
 			Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
-			Set<String> everything = new HashSet<String>();
+			Set<String> everything = new HashSet<>();
 			while (networkInterfaces.hasMoreElements()) {
 				NetworkInterface networkInterface = networkInterfaces.nextElement();
 				if (networkInterface.isUp() && !networkInterface.isLoopback()) {
