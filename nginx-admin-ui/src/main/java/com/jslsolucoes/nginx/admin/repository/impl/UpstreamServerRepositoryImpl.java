@@ -40,10 +40,9 @@ public class UpstreamServerRepositoryImpl extends RepositoryImpl<UpstreamServer>
 	public UpstreamServerRepositoryImpl(Session session) {
 		super(session);
 	}
-	
-	
+
 	@SuppressWarnings("unchecked")
-	private List<UpstreamServer> listAll(Upstream upstream){
+	private List<UpstreamServer> listAll(Upstream upstream) {
 		Criteria criteria = session.createCriteria(UpstreamServer.class);
 		criteria.createCriteria("upstream", "upstream", JoinType.INNER_JOIN);
 		criteria.add(Restrictions.eq("upstream.id", upstream.getId()));
@@ -52,14 +51,14 @@ public class UpstreamServerRepositoryImpl extends RepositoryImpl<UpstreamServer>
 
 	@Override
 	public void deleteAllFor(Upstream upstream) {
-		for(UpstreamServer upstreamServer : listAll(upstream)){
+		for (UpstreamServer upstreamServer : listAll(upstream)) {
 			super.delete(upstreamServer);
 		}
 		flush();
 	}
 
 	@Override
-	public void recreate(Upstream upstream, List<UpstreamServer> upstreamServers) throws Exception {
+	public void recreate(Upstream upstream, List<UpstreamServer> upstreamServers) {
 		deleteAllFor(upstream);
 		for (UpstreamServer upstreamServer : upstreamServers) {
 			upstreamServer.setUpstream(upstream);

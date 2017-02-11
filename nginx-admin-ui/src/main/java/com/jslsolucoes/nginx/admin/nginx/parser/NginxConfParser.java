@@ -30,8 +30,7 @@ import org.apache.commons.io.filefilter.TrueFileFilter;
 import com.jslsolucoes.nginx.admin.nginx.parser.directive.Directive;
 
 public class NginxConfParser {
-	
-	
+
 	private String location;
 
 	public NginxConfParser(String location) {
@@ -44,11 +43,11 @@ public class NginxConfParser {
 		while (includes.find()) {
 			String directory = includes.group(1).trim();
 			File include = new File(directory);
-			if(include.exists()){
+			if (include.exists()) {
 				String pattern = includes.group(2).trim().replaceAll("\\*", "\\.\\*");
 				for (File file : FileUtils.listFiles(include, new RegexFileFilter(pattern), TrueFileFilter.TRUE)) {
-					for(Parser parser : parsers(content(file))){
-						if(parser.accepts()){
+					for (Parser parser : parsers(content(file))) {
+						if (parser.accepts()) {
 							directives.addAll(parser.parse());
 						}
 					}
@@ -57,13 +56,12 @@ public class NginxConfParser {
 		}
 		return directives;
 	}
-	
 
-	private List<Parser> parsers(String fileContent){
-		return Arrays.asList(new UpstreamParser(fileContent),new ServerParser(fileContent));
+	private List<Parser> parsers(String fileContent) {
+		return Arrays.asList(new UpstreamParser(fileContent), new ServerParser(fileContent));
 	}
-	
+
 	private String content(File file) throws IOException {
-		return FileUtils.readFileToString(file, "UTF-8").replaceAll("#(.*)","");
+		return FileUtils.readFileToString(file, "UTF-8").replaceAll("#(.*)", "");
 	}
 }

@@ -105,25 +105,22 @@ public class NginxStatusReader {
 	}
 
 	private void checkForStatus() {
-		HttpClientBuilder.build().onError(exception -> empty())
-		.client().get("http://localhost/status")
-		.onStatus(HttpStatus.SC_OK, closeableHttpResponse -> {
-				try {
-					body(EntityUtils.toString(closeableHttpResponse.getEntity()));
-				} catch (IOException iOException) {
-					logger.error("Could not read status",iOException);
-					empty();
-				}
-		})
-		.onNotStatus(HttpStatus.SC_OK, closeableHttpResponse -> empty())
-		.close();
+		HttpClientBuilder.build().onError(exception -> empty()).client().get("http://localhost/status")
+				.onStatus(HttpStatus.SC_OK, closeableHttpResponse -> {
+					try {
+						body(EntityUtils.toString(closeableHttpResponse.getEntity()));
+					} catch (IOException iOException) {
+						logger.error("Could not read status", iOException);
+						empty();
+					}
+				}).onNotStatus(HttpStatus.SC_OK, closeableHttpResponse -> empty()).close();
 	}
-	
+
 	private void empty() {
 		this.body = "";
 	}
 
-	private void body(String body){
+	private void body(String body) {
 		this.body = body;
 	}
 }

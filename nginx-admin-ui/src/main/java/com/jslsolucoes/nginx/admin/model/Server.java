@@ -35,17 +35,17 @@ public class Server implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@Column(name = "ip")
 	private String ip;
-	
-	@OneToMany(fetch=FetchType.LAZY,mappedBy="server")
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "server")
 	private Set<UpstreamServer> upstreamServers;
-	
+
 	public Server() {
-	
+
 	}
-	
+
 	public Server(Long id) {
 		this.id = id;
 	}

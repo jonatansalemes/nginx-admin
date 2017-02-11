@@ -25,7 +25,7 @@ public interface ServerRepository {
 
 	public List<Server> listAll();
 
-	public OperationType delete(Server server) throws Exception;
+	public OperationType delete(Server server);
 
 	public Server load(Server server);
 

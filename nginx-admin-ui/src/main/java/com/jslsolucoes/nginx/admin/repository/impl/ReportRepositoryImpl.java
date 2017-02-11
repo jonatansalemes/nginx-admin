@@ -65,21 +65,21 @@ public class ReportRepositoryImpl implements ReportRepository {
 	}
 
 	@Inject
-	public ReportRepositoryImpl(Session session,VirtualHostAliasRepository virtualHostAliasRepository) {
+	public ReportRepositoryImpl(Session session, VirtualHostAliasRepository virtualHostAliasRepository) {
 		this.session = session;
 		this.virtualHostAliasRepository = virtualHostAliasRepository;
 	}
 
 	@Override
-	public List<String> validateBeforeSearch(List<VirtualHostAlias> aliases, LocalDate from, LocalTime fromTime, LocalDate to,
-			LocalTime toTime) {
+	public List<String> validateBeforeSearch(List<VirtualHostAlias> aliases, LocalDate from, LocalTime fromTime,
+			LocalDate to, LocalTime toTime) {
 
 		List<String> errors = new ArrayList<String>();
 		if (new DateTime(start(from, fromTime)).isAfter(new DateTime(end(to, toTime)))) {
 			errors.add(Messages.getString("report.date.interval.invalid"));
 		}
-		
-		if(CollectionUtils.isEmpty(aliases)){
+
+		if (CollectionUtils.isEmpty(aliases)) {
 			errors.add(Messages.getString("report.aliases.empty"));
 		}
 		return errors;
@@ -113,14 +113,11 @@ public class ReportRepositoryImpl implements ReportRepository {
 					Map<String, Object> parameters = defaultParameters();
 					parameters.put("FROM", start(from, fromTime));
 					parameters.put("TO", end(to, toTime));
-					parameters.put("ALIASES", StringUtils.join(aliases
-										.stream()
-										.map(virtualHostAlias ->{
-											return "'" + virtualHostAliasRepository.load(virtualHostAlias).getAlias() + "'";
-										}).collect(Collectors.toSet())
-										,",") );
+					parameters.put("ALIASES", StringUtils.join(aliases.stream().map(virtualHostAlias -> {
+						return "'" + virtualHostAliasRepository.load(virtualHostAlias).getAlias() + "'";
+					}).collect(Collectors.toSet()), ","));
 					return export("statistics", parameters, connection);
-				} catch (JRException|IOException exception) {
+				} catch (JRException | IOException exception) {
 					logger.error("Could not render report", exception);
 					return null;
 				}
@@ -131,7 +128,7 @@ public class ReportRepositoryImpl implements ReportRepository {
 	private InputStream export(String jasper, Map<String, Object> parameters, Connection connection)
 			throws JRException {
 		JRPdfExporter jrPdfExporter = new JRPdfExporter();
-		
+
 		jrPdfExporter.setExporterInput(SimpleExporterInput.getInstance(Lists.newArrayList(JasperFillManager
 				.fillReport(getClass().getResourceAsStream("/report/" + jasper + ".jasper"), parameters, connection))));
 		java.io.ByteArrayOutputStream outputStream = new java.io.ByteArrayOutputStream();

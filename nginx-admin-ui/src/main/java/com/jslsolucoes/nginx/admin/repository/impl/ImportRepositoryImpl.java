@@ -17,6 +17,7 @@ package com.jslsolucoes.nginx.admin.repository.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +53,8 @@ import com.jslsolucoes.nginx.admin.repository.StrategyRepository;
 import com.jslsolucoes.nginx.admin.repository.UpstreamRepository;
 import com.jslsolucoes.nginx.admin.repository.VirtualHostRepository;
 
+import freemarker.template.TemplateException;
+
 @RequestScoped
 public class ImportRepositoryImpl implements ImportRepository {
 
@@ -62,7 +65,7 @@ public class ImportRepositoryImpl implements ImportRepository {
 	private SslCertificateRepository sslCertificateRepository;
 
 	public ImportRepositoryImpl() {
-
+		this(null, null, null, null, null);
 	}
 
 	@Inject
@@ -77,76 +80,67 @@ public class ImportRepositoryImpl implements ImportRepository {
 	}
 
 	@Override
-	public void importFrom(String nginxConf) throws IOException {
+	public void importFrom(String nginxConf) throws IOException, TemplateException {
 		List<Directive> directives = new NginxConfParser(nginxConf).parse();
 		servers(directives);
 		upstreams(directives);
 		virtualHosts(directives);
 	}
-
-	private void virtualHosts(List<Directive> directives) {
-		directives.stream().filter(directive -> directive.type().equals(DirectiveType.SERVER)).forEach(directive -> {
-			try {
-				ServerDirective serverDirective = ((ServerDirective) directive);
-
-				List<VirtualHostAlias> aliases = serverDirective.getAliases().stream()
-				.map(alias -> {
-					return new VirtualHostAlias(alias);
-				})
-				.collect(Collectors.toList());
-
-				List<VirtualHostLocation> locations = serverDirective.getLocations().stream()
-				.filter(location -> !StringUtils.isEmpty(location.getUpstream()))
-				.map(location -> {
-					return new VirtualHostLocation(location.getPath(),
-							upstreamRepository.findByName(location.getUpstream()));
-				})
-				.collect(Collectors.toList());
-
-				if (!CollectionUtils.isEmpty(aliases) && !CollectionUtils.isEmpty(locations)
-						&& virtualHostRepository.hasEquals(new VirtualHost(), aliases) == null) {
-					SslCertificate sslCertificate = null;
-					if (!StringUtils.isEmpty(serverDirective.getSslCertificate())) {
-						OperationResult operationResult = sslCertificateRepository.saveOrUpdate(
-								new SslCertificate(UUID.randomUUID().toString()),
-								new FileInputStream(new File(serverDirective.getSslCertificate())),
-								new FileInputStream(new File(serverDirective.getSslCertificateKey())));
-						sslCertificate = new SslCertificate(operationResult.getId());
-					}
-					virtualHostRepository.saveOrUpdate(
-							new VirtualHost((serverDirective.getPort() == 80 ? 0 : 1), sslCertificate), aliases,
-							locations);
-				}
-
-			} catch (Exception e) {
-				throw new RuntimeException(e);
-			}
-		});
+	
+	private List<Directive> filter(List<Directive> directives,DirectiveType directiveType){
+		return directives.stream().filter(directive -> directive.type().equals(DirectiveType.SERVER)).collect(Collectors.toList());
 	}
 
-	private void upstreams(List<Directive> directives) {
-		directives.stream().filter(directive -> directive.type().equals(DirectiveType.UPSTREAM)).forEach(directive -> {
-			try {
-				UpstreamDirective upstreamDirective = ((UpstreamDirective) directive);
-				if (upstreamRepository.hasEquals(new Upstream(upstreamDirective.getName())) == null) {
-					upstreamRepository.saveOrUpdate(
-							new Upstream(upstreamDirective.getName(),
-									strategyRepository.findByName(upstreamDirective.getStrategy())),
-							Lists.transform(upstreamDirective.getServers(),
-									new Function<UpstreamDirectiveServer, UpstreamServer>() {
-										@Override
-										public UpstreamServer apply(UpstreamDirectiveServer upstreamDirectiveServer) {
-											return new UpstreamServer(
-													serverRepository.findByIp(upstreamDirectiveServer.getIp()),
-													(upstreamDirectiveServer.getPort() == null ? 80
-															: upstreamDirectiveServer.getPort()));
-										}
-									}));
+	private void virtualHosts(List<Directive> directives) throws FileNotFoundException, IOException, TemplateException {
+		for(Directive directive : filter(directives,DirectiveType.SERVER)){
+			ServerDirective serverDirective = ((ServerDirective) directive);
+
+			List<VirtualHostAlias> aliases = serverDirective.getAliases().stream().map(alias -> {
+				return new VirtualHostAlias(alias);
+			}).collect(Collectors.toList());
+
+			List<VirtualHostLocation> locations = serverDirective.getLocations().stream()
+					.filter(location -> !StringUtils.isEmpty(location.getUpstream())).map(location -> {
+						return new VirtualHostLocation(location.getPath(),
+								upstreamRepository.findByName(location.getUpstream()));
+					}).collect(Collectors.toList());
+
+			if (!CollectionUtils.isEmpty(aliases) && !CollectionUtils.isEmpty(locations)
+					&& virtualHostRepository.hasEquals(new VirtualHost(), aliases) == null) {
+				SslCertificate sslCertificate = null;
+				if (!StringUtils.isEmpty(serverDirective.getSslCertificate())) {
+					OperationResult operationResult = sslCertificateRepository.saveOrUpdate(
+							new SslCertificate(UUID.randomUUID().toString()),
+							new FileInputStream(new File(serverDirective.getSslCertificate())),
+							new FileInputStream(new File(serverDirective.getSslCertificateKey())));
+					sslCertificate = new SslCertificate(operationResult.getId());
 				}
-			} catch (Exception e) {
-				throw new RuntimeException(e);
+				virtualHostRepository.saveOrUpdate(
+						new VirtualHost((serverDirective.getPort() == 80 ? 0 : 1), sslCertificate), aliases,
+						locations);
 			}
-		});
+		}
+	}
+
+	private void upstreams(List<Directive> directives) throws IOException, TemplateException {
+		for(Directive directive : filter(directives,DirectiveType.UPSTREAM)){
+			UpstreamDirective upstreamDirective = ((UpstreamDirective) directive);
+			if (upstreamRepository.hasEquals(new Upstream(upstreamDirective.getName())) == null) {
+				upstreamRepository.saveOrUpdate(
+						new Upstream(upstreamDirective.getName(),
+								strategyRepository.findByName(upstreamDirective.getStrategy())),
+						Lists.transform(upstreamDirective.getServers(),
+								new Function<UpstreamDirectiveServer, UpstreamServer>() {
+									@Override
+									public UpstreamServer apply(UpstreamDirectiveServer upstreamDirectiveServer) {
+										return new UpstreamServer(
+												serverRepository.findByIp(upstreamDirectiveServer.getIp()),
+												(upstreamDirectiveServer.getPort() == null ? 80
+														: upstreamDirectiveServer.getPort()));
+									}
+								}));
+			}
+		}
 	}
 
 	private void servers(List<Directive> directives) {
@@ -163,7 +157,7 @@ public class ImportRepositoryImpl implements ImportRepository {
 
 	@Override
 	public List<String> validateBeforeImport(String nginxConf) {
-		List<String> errors = new ArrayList<String>();
+		List<String> errors = new ArrayList<>();
 
 		if (!new File(nginxConf).exists()) {
 			errors.add(Messages.getString("import.nginx.conf.invalid", nginxConf));

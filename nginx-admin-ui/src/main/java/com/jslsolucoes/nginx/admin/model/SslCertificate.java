@@ -40,16 +40,16 @@ public class SslCertificate implements Serializable {
 
 	@Column(name = "common_name")
 	private String commonName;
-	
+
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_resource_identifier_certificate")
 	private ResourceIdentifier resourceIdentifierCertificate;
-	
+
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_resource_identifier_certificate_private_key")
 	private ResourceIdentifier resourceIdentifierCertificatePrivateKey;
-	
-	@OneToMany(fetch=FetchType.LAZY,mappedBy="sslCertificate")
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "sslCertificate")
 	private Set<VirtualHost> virtualHosts;
 
 	public SslCertificate() {

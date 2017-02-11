@@ -44,7 +44,6 @@ public class SchedulerController {
 		this.schedulerRepository = schedulerRepository;
 	}
 
-	
 	public void scheduleJobs() throws SchedulerException {
 		schedulerRepository.scheduleJobs();
 		this.result.redirectTo(UserController.class).login();

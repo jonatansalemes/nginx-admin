@@ -15,6 +15,8 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.controller;
 
+import java.io.IOException;
+
 import javax.inject.Inject;
 
 import com.jslsolucoes.nginx.admin.html.HtmlUtil;
@@ -27,6 +29,7 @@ import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
+import freemarker.template.TemplateException;
 
 @Controller
 @Path("nginx")
@@ -41,17 +44,16 @@ public class NginxController {
 	}
 
 	@Inject
-	public NginxController(Result result, NginxRepository nginxRepository,NginxStatus nginxStatus) {
+	public NginxController(Result result, NginxRepository nginxRepository, NginxStatus nginxStatus) {
 		this.result = result;
 		this.nginxRepository = nginxRepository;
 		this.nginxStatus = nginxStatus;
 	}
 
-	public void validate(Long id, String bin, String settings, Integer gzip,
-			Integer maxPostSize) {
+	public void validate(Long id, String bin, String settings, Integer gzip, Integer maxPostSize) {
 		this.result.use(Results.json())
-				.from(HtmlUtil.convertToUnodernedList(nginxRepository
-						.validateBeforeSaveOrUpdate(new Nginx(id, bin, settings,  gzip, maxPostSize))),
+				.from(HtmlUtil.convertToUnodernedList(
+						nginxRepository.validateBeforeSaveOrUpdate(new Nginx(id, bin, settings, gzip, maxPostSize))),
 						"errors")
 				.serialize();
 	}
@@ -61,14 +63,13 @@ public class NginxController {
 	}
 
 	@Post
-	public void update(Long id, String bin, String settings, Integer gzip,
-			Integer maxPostSize) {
-		this.nginxRepository.saveOrUpdate(new Nginx(id, bin, settings,gzip, maxPostSize));
+	public void update(Long id, String bin, String settings, Integer gzip, Integer maxPostSize)
+			throws IOException, TemplateException {
+		this.nginxRepository.saveOrUpdateAndConfigure(new Nginx(id, bin, settings, gzip, maxPostSize));
 		this.result.include("updated", true);
 		this.result.redirectTo(this).edit();
 	}
-	
-	
+
 	public void status() {
 		this.result.use(Results.json()).from(nginxStatus).serialize();
 	}

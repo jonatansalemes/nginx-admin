@@ -32,7 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class OperationalSystem {
-	
+
 	private static Logger logger = LoggerFactory.getLogger(OperationalSystem.class);
 
 	public static OperationalSystemInfo info() {
@@ -70,7 +70,7 @@ public class OperationalSystem {
 				try {
 					return FileUtils.readFileToString(file, "UTF-8").toLowerCase();
 				} catch (IOException iOException) {
-					logger.debug("Try to find another location",iOException);
+					logger.debug("Try to find another location", iOException);
 				}
 			}
 		}

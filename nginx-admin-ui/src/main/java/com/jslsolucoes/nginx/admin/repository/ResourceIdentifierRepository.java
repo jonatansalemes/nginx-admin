@@ -20,6 +20,6 @@ import com.jslsolucoes.nginx.admin.model.ResourceIdentifier;
 public interface ResourceIdentifierRepository {
 
 	public ResourceIdentifier create();
-	
+
 	public void delete(String hash);
 }

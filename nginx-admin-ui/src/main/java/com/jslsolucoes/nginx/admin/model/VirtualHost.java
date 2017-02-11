@@ -121,8 +121,7 @@ public class VirtualHost implements Serializable {
 
 	public String getFullAliases() {
 		return StringUtils.join(
-				aliases.stream().map(virtualHostAlias -> virtualHostAlias.getAlias())
-				.collect(Collectors.toSet()), " ");
+				aliases.stream().map(virtualHostAlias -> virtualHostAlias.getAlias()).collect(Collectors.toSet()), " ");
 	}
 
 }

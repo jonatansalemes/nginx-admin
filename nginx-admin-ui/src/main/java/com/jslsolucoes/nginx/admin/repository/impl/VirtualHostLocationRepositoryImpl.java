@@ -41,9 +41,9 @@ public class VirtualHostLocationRepositoryImpl extends RepositoryImpl<VirtualHos
 	public VirtualHostLocationRepositoryImpl(Session session) {
 		super(session);
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	private List<VirtualHostLocation> listAll(VirtualHost virtualHost){
+	private List<VirtualHostLocation> listAll(VirtualHost virtualHost) {
 		Criteria criteria = session.createCriteria(VirtualHostLocation.class);
 		criteria.createCriteria("virtualHost", "virtualHost", JoinType.INNER_JOIN);
 		criteria.add(Restrictions.eq("virtualHost.id", virtualHost.getId()));
@@ -52,14 +52,14 @@ public class VirtualHostLocationRepositoryImpl extends RepositoryImpl<VirtualHos
 
 	@Override
 	public void deleteAllFor(VirtualHost virtualHost) {
-		for(VirtualHostLocation virtualHostLocation : listAll(virtualHost)){
+		for (VirtualHostLocation virtualHostLocation : listAll(virtualHost)) {
 			super.delete(virtualHostLocation);
 		}
 		flush();
 	}
 
 	@Override
-	public void recreate(VirtualHost virtualHost, List<VirtualHostLocation> aliases) throws Exception {
+	public void recreate(VirtualHost virtualHost, List<VirtualHostLocation> aliases) {
 		deleteAllFor(virtualHost);
 		for (VirtualHostLocation virtualHostLocation : aliases) {
 			virtualHostLocation.setVirtualHost(virtualHost);

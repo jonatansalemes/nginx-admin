@@ -42,8 +42,8 @@ public class VirtualHostLocation implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_upstream")
 	private Upstream upstream;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
+
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_virtual_host")
 	private VirtualHost virtualHost;
 

@@ -38,6 +38,8 @@ import com.jslsolucoes.nginx.admin.repository.UpstreamRepository;
 import com.jslsolucoes.nginx.admin.repository.UpstreamServerRepository;
 import com.jslsolucoes.nginx.admin.template.TemplateProcessor;
 
+import freemarker.template.TemplateException;
+
 @RequestScoped
 public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements UpstreamRepository {
 
@@ -46,7 +48,7 @@ public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements 
 	private ResourceIdentifierRepository resourceIdentifierRepository;
 
 	public UpstreamRepositoryImpl() {
-
+		this(null, null, null, null);
 	}
 
 	@Inject
@@ -59,7 +61,8 @@ public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements 
 	}
 
 	@Override
-	public OperationResult saveOrUpdate(Upstream upstream, List<UpstreamServer> upstreamServers) throws Exception {
+	public OperationResult saveOrUpdate(Upstream upstream, List<UpstreamServer> upstreamServers)
+			throws IOException, TemplateException {
 
 		if (upstream.getId() == null) {
 			upstream.setResourceIdentifier(resourceIdentifierRepository.create());
@@ -71,11 +74,11 @@ public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements 
 		return operationResult;
 	}
 
-	private void configure(Upstream upstream) throws Exception {
-		upstream = load(upstream);
-		new TemplateProcessor().withTemplate("upstream.tpl").withData("upstream", upstream)
+	private void configure(Upstream upstream) throws IOException, TemplateException {
+		Upstream upstreamToConfigure = load(upstream);
+		new TemplateProcessor().withTemplate("upstream.tpl").withData("upstream", upstreamToConfigure)
 				.toLocation(new File(nginxRepository.configuration().upstream(),
-						upstream.getResourceIdentifier().getHash() + ".conf"))
+						upstreamToConfigure.getResourceIdentifier().getHash() + ".conf"))
 				.process();
 	}
 
@@ -99,10 +102,10 @@ public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements 
 	@Override
 	public OperationType deleteWithResource(Upstream upstream) throws IOException {
 		upstreamServerRepository.deleteAllFor(upstream);
-		upstream = load(upstream);
-		String hash = upstream.getResourceIdentifier().getHash();
+		Upstream upstreamToDelete = load(upstream);
+		String hash = upstreamToDelete.getResourceIdentifier().getHash();
 		FileUtils.forceDelete(new File(nginxRepository.configuration().upstream(), hash + ".conf"));
-		super.delete(upstream);
+		super.delete(upstreamToDelete);
 		resourceIdentifierRepository.delete(hash);
 		return OperationType.DELETE;
 	}

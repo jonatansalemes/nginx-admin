@@ -81,7 +81,8 @@ public class ReportController {
 	}
 
 	private List<VirtualHostAlias> convert(List<Long> aliases) {
-		if(aliases == null) return null;
+		if (aliases == null)
+			return null;
 		List<VirtualHostAlias> virtualHostAliases = new ArrayList<VirtualHostAlias>();
 		for (Long idVirtualHostAlias : aliases) {
 			virtualHostAliases.add(new VirtualHostAlias(idVirtualHostAlias));

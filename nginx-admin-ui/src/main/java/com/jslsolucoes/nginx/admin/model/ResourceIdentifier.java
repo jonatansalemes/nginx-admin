@@ -32,12 +32,12 @@ public class ResourceIdentifier implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@Column(name = "hash")
 	private String hash;
-	
+
 	public ResourceIdentifier() {
-	
+
 	}
 
 	public ResourceIdentifier(String hash) {

@@ -33,8 +33,8 @@ public class WindowsRunner implements Runner {
 
 	@Override
 	public RuntimeResult start() {
-		RuntimeUtils.command("cmd.exe /c " + executable() + " -c " + nginx.conf().getAbsolutePath(),
-				nginx.binFolder(), 1);
+		RuntimeUtils.command("cmd.exe /c " + executable() + " -c " + nginx.conf().getAbsolutePath(), nginx.binFolder(),
+				1);
 		return status();
 	}
 
@@ -55,14 +55,14 @@ public class WindowsRunner implements Runner {
 	@Override
 	public RuntimeResult status() {
 		RuntimeResult runtimeResult = RuntimeUtils.command("tasklist /fi \"imagename eq " + executable() + "\"");
-		if(runtimeResult.getRuntimeResultType().equals(RuntimeResultType.SUCCESS)){
-			if(runtimeResult.getOutput().contains(executable())){
+		if (runtimeResult.getRuntimeResultType().equals(RuntimeResultType.SUCCESS)) {
+			if (runtimeResult.getOutput().contains(executable())) {
 				return new RuntimeResult(RuntimeResultType.SUCCESS, Messages.getString("running"));
 			} else {
 				return new RuntimeResult(RuntimeResultType.SUCCESS, Messages.getString("stopped"));
 			}
 		}
-		return runtimeResult; 
+		return runtimeResult;
 	}
 
 	@Override
@@ -73,16 +73,16 @@ public class WindowsRunner implements Runner {
 
 	@Override
 	public RuntimeResult testConfig() {
-		RuntimeResult runtimeResult = RuntimeUtils.command("cmd.exe /c " + executable() + " -t -c " + nginx.conf().getAbsolutePath(),
-				nginx.binFolder());
-		if(runtimeResult.getRuntimeResultType().equals(RuntimeResultType.SUCCESS)){
-			if(runtimeResult.getOutput().contains("syntax is ok")){
+		RuntimeResult runtimeResult = RuntimeUtils
+				.command("cmd.exe /c " + executable() + " -t -c " + nginx.conf().getAbsolutePath(), nginx.binFolder());
+		if (runtimeResult.getRuntimeResultType().equals(RuntimeResultType.SUCCESS)) {
+			if (runtimeResult.getOutput().contains("syntax is ok")) {
 				return new RuntimeResult(RuntimeResultType.SUCCESS, Messages.getString("syntax.ok"));
 			} else {
 				return new RuntimeResult(RuntimeResultType.ERROR, runtimeResult.getOutput());
 			}
 		}
-		return runtimeResult; 
+		return runtimeResult;
 	}
 
 	private String executable() {
@@ -91,13 +91,13 @@ public class WindowsRunner implements Runner {
 
 	@Override
 	public RuntimeResult version() {
-		return RuntimeUtils.command("cmd.exe /c " + executable() + " -v ",
-				nginx.binFolder());
+		return RuntimeUtils.command("cmd.exe /c " + executable() + " -v ", nginx.binFolder());
 	}
 
 	@Override
 	public RuntimeResult reload() {
-		return RuntimeUtils.command("cmd.exe /c " + executable() + " -s reload -c " + nginx.conf().getAbsolutePath(), nginx.binFolder());
+		return RuntimeUtils.command("cmd.exe /c " + executable() + " -s reload -c " + nginx.conf().getAbsolutePath(),
+				nginx.binFolder());
 	}
 
 }

@@ -62,7 +62,7 @@ public class ServerParser implements Parser {
 			if (sslCertificateKey.find()) {
 				virtualHost.setSslCertificateKey(sslCertificateKey.group(2));
 			}
-			
+
 			virtualHost.setLocations(locations(block));
 			virtualHosts.add(virtualHost);
 		}
@@ -71,12 +71,13 @@ public class ServerParser implements Parser {
 
 	private List<LocationDirective> locations(String block) {
 		List<LocationDirective> locationDirectives = new ArrayList<LocationDirective>();
-		
-		Matcher locations = Pattern.compile("location(\\s{1,})(.*?)(\\s{0,})\\{(.*?)\\}",Pattern.DOTALL).matcher(block);
-		while (locations.find()) {	
+
+		Matcher locations = Pattern.compile("location(\\s{1,})(.*?)(\\s{0,})\\{(.*?)\\}", Pattern.DOTALL)
+				.matcher(block);
+		while (locations.find()) {
 			LocationDirective locationDirective = new LocationDirective();
 			locationDirective.setPath(locations.group(2));
-			
+
 			Matcher upstream = Pattern.compile("proxy_pass(\\s{1,})(https?:\\/\\/)(.*?);").matcher(locations.group(4));
 			while (upstream.find()) {
 				locationDirective.setUpstream(upstream.group(3));
@@ -89,7 +90,7 @@ public class ServerParser implements Parser {
 	private List<String> blocks() throws IOException {
 		List<String> blocks = new ArrayList<String>();
 		List<String> lines = Arrays.asList(fileContent.split("\n"));
-		
+
 		AtomicInteger atomicInteger = new AtomicInteger(0);
 		AtomicInteger currentLine = new AtomicInteger(1);
 		Integer indexStart = 0;
@@ -115,5 +116,4 @@ public class ServerParser implements Parser {
 		return Pattern.compile("server(\\s{1,})\\{").matcher(fileContent).find();
 	}
 
-	
 }

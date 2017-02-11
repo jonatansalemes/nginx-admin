@@ -33,17 +33,23 @@ import org.apache.commons.io.FilenameUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.jboss.vfs.VirtualFile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.jslsolucoes.nginx.admin.i18n.Messages;
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.repository.NginxRepository;
 import com.jslsolucoes.nginx.admin.template.TemplateProcessor;
 
+import freemarker.template.TemplateException;
+
 @RequestScoped
 public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxRepository {
+	
+	private static Logger logger = LoggerFactory.getLogger(LogRepositoryImpl.class);
 
 	public NginxRepositoryImpl() {
-
+		this(null);
 	}
 
 	@Inject
@@ -59,81 +65,78 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 
 	@Override
 	public List<String> validateBeforeSaveOrUpdate(Nginx nginx) {
-		List<String> errors = new ArrayList<String>();
+		List<String> errors = new ArrayList<>();
 
 		if (!new File(nginx.getBin()).exists()) {
 			errors.add(Messages.getString("nginx.invalid.bin.file", nginx.getBin()));
 		}
 
-		File settings = new File(nginx.getSettings());	
-		if(!canWriteOnFolder(settings)){
+		File settings = new File(nginx.getSettings());
+		if (!canWriteOnFolder(settings)) {
 			errors.add(Messages.getString("nginx.invalid.settings.permission", nginx.getSettings()));
 		}
 		return errors;
 	}
 
 	private boolean canWriteOnFolder(File settings) {
-		if(!settings.exists()){
+		if (!settings.exists()) {
 			try {
 				FileUtils.forceMkdir(settings);
 				return true;
-			} catch(Exception exception){
+			} catch (IOException exception) {
+				logger.error("Could not create on folder",exception);
 				return false;
 			}
 		} else {
 			try {
-				FileUtils.touch(new File(settings,"touch.txt"));
+				FileUtils.touch(new File(settings, "touch.txt"));
 				return true;
-			} catch(Exception exception){
+			} catch (IOException exception) {
+				logger.error("Could not touch on folder",exception);
 				return false;
 			}
 		}
 	}
 
 	@Override
-	public OperationResult saveOrUpdate(Nginx nginx) {
-		try {
-			nginx.setSettings(normalize(nginx.getSettings()));
-			nginx.setBin(normalize(nginx.getBin()));
-			configure(nginx);
-			return super.saveOrUpdate(nginx);
-		} catch (Exception exception) {
-			throw new RuntimeException(exception);
-		}
+	public OperationResult saveOrUpdateAndConfigure(Nginx nginx) throws IOException, TemplateException {
+		nginx.setSettings(normalize(nginx.getSettings()));
+		nginx.setBin(normalize(nginx.getBin()));
+		configure(nginx);
+		return super.saveOrUpdate(nginx);
 	}
 
 	private String normalize(String path) {
 		return path.replaceAll("\\\\", "/");
 	}
 
-	private void configure(Nginx nginx) throws Exception {
+	private void configure(Nginx nginx) throws IOException, TemplateException {
 		copy(nginx);
 		conf(nginx);
 		root(nginx);
 	}
 
-	private void root(Nginx nginx) throws Exception {
+	private void root(Nginx nginx) throws IOException, TemplateException {
 		new TemplateProcessor().withTemplate("root.tpl").withData("nginx", nginx)
-		.toLocation(new File(nginx.virtualHost(), "root.conf")).process();
+				.toLocation(new File(nginx.virtualHost(), "root.conf")).process();
 	}
 
-	private void conf(Nginx nginx) throws Exception {
-		new TemplateProcessor().withTemplate("nginx.tpl")
-			.withData("nginx", nginx)
-			.toLocation(new File(nginx.setting(), "nginx.conf")).process();
+	private void conf(Nginx nginx) throws IOException, TemplateException {
+		new TemplateProcessor().withTemplate("nginx.tpl").withData("nginx", nginx)
+				.toLocation(new File(nginx.setting(), "nginx.conf")).process();
 	}
 
 	private void copy(Nginx nginx) throws IOException {
 		FileUtils.forceMkdir(nginx.setting());
 		copyToDirectory(getClass().getResource("/template/fixed/nginx"), nginx.setting(), file -> {
-			return !FilenameUtils.getExtension(file.getName()).equals("tpl");
+			return ! "tpl".equals(FilenameUtils.getExtension(file.getName()));
 		});
 	}
 
 	public void copyToDirectory(URL url, File destination, FileFilter fileFilter) throws IOException {
-		if (url.getProtocol().equals("vfs")) {
+		if ("vfs".equals(url.getProtocol())) {
 			copyFromVFS((VirtualFile) url.getContent(), destination, fileFilter);
-		} else if (url.getProtocol().equals("jar")) {
+		} else if ("jar".equals(url.getProtocol())) {
 			copyFromJar(url, destination, fileFilter);
 		} else {
 			copyFromFile(url, destination, fileFilter);

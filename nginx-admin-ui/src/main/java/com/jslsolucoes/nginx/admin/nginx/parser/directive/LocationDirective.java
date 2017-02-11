@@ -35,6 +35,5 @@ public class LocationDirective {
 	public void setUpstream(String upstream) {
 		this.upstream = upstream;
 	}
-	
-	
+
 }

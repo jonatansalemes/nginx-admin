@@ -38,15 +38,15 @@ public class VirtualHostAlias implements Serializable {
 
 	@Column(name = "alias")
 	private String alias;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
+
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_virtual_host")
 	private VirtualHost virtualHost;
 
 	public VirtualHostAlias() {
 
 	}
-	
+
 	public VirtualHostAlias(String alias) {
 		this.alias = alias;
 	}

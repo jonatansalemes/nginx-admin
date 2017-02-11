@@ -68,6 +68,4 @@ public class OperationalSystemInfo {
 		this.distribution = distribution;
 	}
 
-	
-
 }

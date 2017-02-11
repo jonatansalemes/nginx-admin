@@ -32,11 +32,11 @@ import com.google.gson.annotations.SerializedName;
 @Entity
 @Table(name = "access_log", schema = "admin")
 public class AccessLog implements Serializable {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@Column(name = "date_time")
 	private Date timestamp;
 
@@ -51,7 +51,7 @@ public class AccessLog implements Serializable {
 	@Column(name = "bytes_sent")
 	@SerializedName(value = "bytes_sent")
 	private Long bytesSent;
-	
+
 	@Column(name = "connection")
 	private Long connection;
 
@@ -61,16 +61,16 @@ public class AccessLog implements Serializable {
 
 	@Column(name = "msec")
 	private BigDecimal msec;
-	
+
 	@Column(name = "request")
 	private String request;
 
 	@Column(name = "status")
 	private Integer status;
-	
+
 	@Column(name = "scheme")
 	private String scheme;
-	
+
 	@Column(name = "request_length")
 	@SerializedName(value = "request_length")
 	private Long requestLength;
@@ -82,19 +82,19 @@ public class AccessLog implements Serializable {
 	@Column(name = "request_method")
 	@SerializedName(value = "request_method")
 	private String requestMethod;
-	
+
 	@Column(name = "request_uri")
 	@SerializedName(value = "request_uri")
 	private String requestUri;
-	
+
 	@Column(name = "server_name")
 	@SerializedName(value = "server_name")
 	private String serverName;
-	
+
 	@Column(name = "server_port")
 	@SerializedName(value = "server_port")
 	private Integer serverPort;
-	
+
 	@Column(name = "server_protocol")
 	@SerializedName(value = "server_protocol")
 	private String serverProtocol;
@@ -278,6 +278,5 @@ public class AccessLog implements Serializable {
 	public void setHttpXForwardedFor(String httpXForwardedFor) {
 		this.httpXForwardedFor = httpXForwardedFor;
 	}
-	
-}
 
+}

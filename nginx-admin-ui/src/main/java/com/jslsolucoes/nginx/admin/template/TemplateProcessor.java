@@ -16,6 +16,7 @@
 package com.jslsolucoes.nginx.admin.template;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.HashMap;
@@ -26,6 +27,7 @@ import org.apache.commons.io.FileUtils;
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
 
 public class TemplateProcessor {
@@ -49,13 +51,13 @@ public class TemplateProcessor {
 		return this;
 	}
 
-	public void process() throws Exception {
+	public void process() throws IOException, TemplateException {
 		Configuration configuration = new Configuration(Configuration.VERSION_2_3_23);
 		configuration.setTemplateLoader(new ClassTemplateLoader(TemplateProcessor.class, "/template/dynamic/nginx"));
 		configuration.setDefaultEncoding("UTF-8");
 		configuration.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
 		configuration.setLogTemplateExceptions(false);
-		
+
 		Template template = configuration.getTemplate(this.template);
 		Writer writer = new StringWriter();
 		template.process(data, writer);

@@ -32,14 +32,14 @@ public class Strategy implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@Column(name = "name")
 	private String name;
-	
+
 	public Strategy() {
-	
+
 	}
-	
+
 	public Strategy(Long id) {
 		this.id = id;
 	}

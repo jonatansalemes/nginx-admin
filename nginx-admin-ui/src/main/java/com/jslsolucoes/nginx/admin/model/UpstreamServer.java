@@ -36,22 +36,22 @@ public class UpstreamServer implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_upstream")
 	private Upstream upstream;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
+
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_server")
 	private Server server;
-	
+
 	@Column(name = "port")
 	private Integer port;
-	
+
 	public UpstreamServer() {
-	
+
 	}
 
-	public UpstreamServer(Server server,Integer port) {
+	public UpstreamServer(Server server, Integer port) {
 		this.server = server;
 		this.port = port;
 	}
@@ -87,5 +87,5 @@ public class UpstreamServer implements Serializable {
 	public void setPort(Integer port) {
 		this.port = port;
 	}
-	
+
 }

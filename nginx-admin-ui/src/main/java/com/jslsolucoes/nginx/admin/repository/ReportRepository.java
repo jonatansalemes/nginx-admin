@@ -25,9 +25,9 @@ import com.jslsolucoes.nginx.admin.model.VirtualHostAlias;
 
 public interface ReportRepository {
 
-	public List<String> validateBeforeSearch(List<VirtualHostAlias> aliases, LocalDate from, LocalTime fromTime, LocalDate to,
-			LocalTime toTime);
-	
+	public List<String> validateBeforeSearch(List<VirtualHostAlias> aliases, LocalDate from, LocalTime fromTime,
+			LocalDate to, LocalTime toTime);
+
 	public InputStream statistics(List<VirtualHostAlias> aliases, LocalDate from, LocalTime fromTime, LocalDate to,
 			LocalTime toTime);
 

@@ -30,6 +30,8 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
 import org.hibernate.jdbc.Work;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.jslsolucoes.nginx.admin.annotation.Application;
 import com.jslsolucoes.nginx.admin.repository.ConfigurationRepository;
@@ -37,10 +39,11 @@ import com.jslsolucoes.nginx.admin.repository.DatabaseRepository;
 
 @RequestScoped
 public class DatabaseRepositoryImpl implements DatabaseRepository {
-	
+
 	private Session session;
 	private ConfigurationRepository configurationRepository;
 	private Properties properties;
+	private static Logger logger = LoggerFactory.getLogger(LogRepositoryImpl.class);
 
 	public DatabaseRepositoryImpl() {
 		this(null, null, null);
@@ -59,16 +62,14 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 		AtomicInteger installed = new AtomicInteger(installed());
 		while (installed.get() < actual()) {
 			Arrays.asList(resource("/sql/" + installed.incrementAndGet() + ".sql").split(";")).stream()
-					.filter(StringUtils::isNotEmpty).forEach(statement -> 
-						session.doWork(new Work() {
-							@Override
-							public void execute(Connection connection) throws SQLException {
-								try (PreparedStatement preparedStatement = connection.prepareStatement(statement)){
-									preparedStatement.executeUpdate();
-								}
+					.filter(StringUtils::isNotEmpty).forEach(statement -> session.doWork(new Work() {
+						@Override
+						public void execute(Connection connection) throws SQLException {
+							try (PreparedStatement preparedStatement = connection.prepareStatement(statement)) {
+								preparedStatement.executeUpdate();
 							}
-						})
-					);
+						}
+					}));
 		}
 	}
 
@@ -76,15 +77,16 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 		return IOUtils.toString(getClass().getResourceAsStream(path), "UTF-8");
 	}
 
-	public Integer installed(){
+	public Integer installed() {
 		try {
 			return configurationRepository.integer(ConfigurationType.DB_VERSION);
 		} catch (Exception exception) {
+			logger.error("Database is not installed",exception);
 			return 0;
 		}
 	}
-	
-	public Integer actual(){
+
+	public Integer actual() {
 		return Integer.valueOf(properties.getProperty("db.version"));
 	}
 

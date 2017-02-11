@@ -28,7 +28,7 @@ public interface UserRepository {
 
 	public List<String> validateBeforeChangePassword(User user, String oldPassword, String password,
 			String passwordConfirm);
-	
+
 	public void changePassword(User user, String password);
 
 	public User loadForSession(User user);
@@ -37,8 +37,8 @@ public interface UserRepository {
 
 	public List<User> listAll();
 
-	public List<String>  validateBeforeCreateAdministrator(String login, String loginConfirm, String password,
+	public List<String> validateBeforeCreateAdministrator(String login, String loginConfirm, String password,
 			String passwordConfirm);
-	
-	public void createAdministrator(String login,String password);
+
+	public void createAdministrator(String login, String password);
 }

@@ -34,23 +34,23 @@ import com.jslsolucoes.nginx.admin.scheduler.task.RotateLogTask;
 
 @RequestScoped
 public class SchedulerRepositoryImpl implements SchedulerRepository {
-	
+
 	private Scheduler scheduler;
 	private ConfigurationRepository configurationRepository;
 
 	public SchedulerRepositoryImpl() {
-		
+
 	}
-	
+
 	@Inject
-	public SchedulerRepositoryImpl(Scheduler scheduler,ConfigurationRepository configurationRepository){
+	public SchedulerRepositoryImpl(Scheduler scheduler, ConfigurationRepository configurationRepository) {
 		this.scheduler = scheduler;
 		this.configurationRepository = configurationRepository;
 	}
 
 	@Override
 	public void scheduleJobs() throws SchedulerException {
-		
+
 		JobDataMap jobDataMap = new JobDataMap();
 		jobDataMap.put("urlBase", configurationRepository.string(ConfigurationType.URL_BASE));
 		scheduleCollectLog(jobDataMap);
@@ -59,16 +59,14 @@ public class SchedulerRepositoryImpl implements SchedulerRepository {
 	}
 
 	private void scheduleRotateLog(JobDataMap jobDataMap) throws SchedulerException {
-		JobDetail job = JobBuilder.newJob(RotateLogTask.class)
-				.usingJobData(jobDataMap).build();
+		JobDetail job = JobBuilder.newJob(RotateLogTask.class).usingJobData(jobDataMap).build();
 		Trigger trigger = TriggerBuilder.newTrigger().startNow()
 				.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(30).repeatForever()).build();
 		scheduler.scheduleJob(job, trigger);
 	}
 
 	private void scheduleCollectLog(JobDataMap jobDataMap) throws SchedulerException {
-		JobDetail job = JobBuilder.newJob(CollectLogTask.class)
-				.usingJobData(jobDataMap).build();
+		JobDetail job = JobBuilder.newJob(CollectLogTask.class).usingJobData(jobDataMap).build();
 		Trigger trigger = TriggerBuilder.newTrigger().startNow()
 				.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(35).repeatForever()).build();
 		scheduler.scheduleJob(job, trigger);

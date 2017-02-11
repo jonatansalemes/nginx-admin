@@ -41,7 +41,7 @@ public class User implements Serializable {
 
 	@Column(name = "password_force_change")
 	private Integer passwordForceChange;
-	
+
 	@Column(name = "admin")
 	private Integer admin;
 

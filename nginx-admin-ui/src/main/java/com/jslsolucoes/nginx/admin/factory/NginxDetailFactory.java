@@ -31,13 +31,12 @@ public class NginxDetailFactory {
 
 	@Inject
 	private Runner runner;
-	
+
 	@Inject
 	private NginxRepository nginxRepository;
-	
+
 	@Produces
 	public NginxDetail getInstance() throws SQLException {
-		return new NginxDetailReader(runner, nginxRepository.configuration())
-				.details();
+		return new NginxDetailReader(runner, nginxRepository.configuration()).details();
 	}
 }

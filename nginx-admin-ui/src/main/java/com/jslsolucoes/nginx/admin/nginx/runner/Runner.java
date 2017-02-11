@@ -22,7 +22,7 @@ public interface Runner {
 	public Runner configure(Nginx nginx);
 
 	public RuntimeResult start();
-	
+
 	public RuntimeResult version();
 
 	public RuntimeResult stop();
@@ -30,7 +30,7 @@ public interface Runner {
 	public RuntimeResult restart();
 
 	public RuntimeResult status();
-	
+
 	public RuntimeResult reload();
 
 	public RuntimeResult testConfig();

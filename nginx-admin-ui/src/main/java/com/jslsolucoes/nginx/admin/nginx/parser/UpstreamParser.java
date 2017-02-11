@@ -37,8 +37,7 @@ public class UpstreamParser implements Parser {
 
 	public List<Directive> parse() throws IOException {
 		List<Directive> upstreams = new ArrayList<Directive>();
-		Matcher upstreamers = Pattern.compile("upstream(\\s{1,})(.*?)\\{(.*?)\\}", Pattern.DOTALL)
-				.matcher(fileContent);
+		Matcher upstreamers = Pattern.compile("upstream(\\s{1,})(.*?)\\{(.*?)\\}", Pattern.DOTALL).matcher(fileContent);
 		while (upstreamers.find()) {
 			String name = upstreamers.group(2).trim();
 			String body = upstreamers.group(3);
@@ -74,7 +73,6 @@ public class UpstreamParser implements Parser {
 
 	@Override
 	public Boolean accepts() throws IOException {
-		return Pattern.compile("upstream(\\s{1,})(.*?)\\{(.*?)\\}", Pattern.DOTALL)
-				.matcher(fileContent).find();
+		return Pattern.compile("upstream(\\s{1,})(.*?)\\{(.*?)\\}", Pattern.DOTALL).matcher(fileContent).find();
 	}
 }

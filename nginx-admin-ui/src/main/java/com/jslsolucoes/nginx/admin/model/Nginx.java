@@ -39,22 +39,22 @@ public class Nginx implements Serializable {
 
 	@Column(name = "settings")
 	private String settings;
-	
+
 	@Column(name = "gzip")
 	private Integer gzip;
-	
+
 	@Column(name = "max_post_size")
 	private Integer maxPostSize;
 
 	public Nginx() {
 
 	}
-	
+
 	public Nginx(String bin, String home) {
-		this(null, bin, home,1,100);
+		this(null, bin, home, 1, 100);
 	}
 
-	public Nginx(Long id, String bin, String settings,Integer gzip,Integer maxPostSize) {
+	public Nginx(Long id, String bin, String settings, Integer gzip, Integer maxPostSize) {
 		this.id = id;
 		this.bin = bin;
 		this.settings = settings;
@@ -77,7 +77,7 @@ public class Nginx implements Serializable {
 	public void setBin(String bin) {
 		this.bin = bin;
 	}
-	
+
 	public String getSettings() {
 		return settings;
 	}
@@ -89,16 +89,16 @@ public class Nginx implements Serializable {
 	public File setting() {
 		return new File(settings);
 	}
-	
-	public File binFolder(){
+
+	public File binFolder() {
 		return bin().getParentFile();
 	}
-	
-	public File bin(){
+
+	public File bin() {
 		return new File(bin);
 	}
-	
-	public File conf(){
+
+	public File conf() {
 		return new File(setting(), "nginx.conf");
 	}
 
@@ -109,15 +109,15 @@ public class Nginx implements Serializable {
 	public File upstream() {
 		return new File(setting(), "upstream");
 	}
-	
+
 	public File virtualHost() {
 		return new File(setting(), "virtual-host");
 	}
-	
+
 	public File pid() {
 		return new File(setting(), "nginx.pid");
 	}
-	
+
 	public File log() {
 		return new File(setting(), "log");
 	}

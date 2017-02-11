@@ -43,7 +43,6 @@ import com.jslsolucoes.nginx.admin.nginx.runner.Runner;
 
 public class NginxDetailReader {
 
-	
 	private Runner runner;
 	private Nginx nginx;
 	private static Logger logger = LoggerFactory.getLogger(NginxDetailReader.class);
@@ -72,21 +71,18 @@ public class NginxDetailReader {
 		try {
 			Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
 			Set<String> everything = new HashSet<String>();
-			while(networkInterfaces.hasMoreElements()){
+			while (networkInterfaces.hasMoreElements()) {
 				NetworkInterface networkInterface = networkInterfaces.nextElement();
-				if(networkInterface.isUp() && !networkInterface.isLoopback()){
-					everything.addAll(Collections.list(networkInterface
-							.getInetAddresses())
-							.stream()
-							.filter(inetAddress -> inetAddress instanceof Inet4Address)
-							.map(InetAddress::getHostAddress)
+				if (networkInterface.isUp() && !networkInterface.isLoopback()) {
+					everything.addAll(Collections.list(networkInterface.getInetAddresses()).stream()
+							.filter(inetAddress -> inetAddress instanceof Inet4Address).map(InetAddress::getHostAddress)
 							.collect(Collectors.toSet()));
 				}
 			}
-			return StringUtils.join(everything,",");
-		} catch(SocketException socketException){
+			return StringUtils.join(everything, ",");
+		} catch (SocketException socketException) {
 			logger.error("Could not read network interfaces", socketException);
-			return "("+Messages.getString("nginx.network.card.not.found")+")";
+			return "(" + Messages.getString("nginx.network.card.not.found") + ")";
 		}
 	}
 

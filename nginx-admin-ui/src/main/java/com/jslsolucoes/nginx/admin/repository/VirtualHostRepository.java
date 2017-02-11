@@ -24,6 +24,8 @@ import com.jslsolucoes.nginx.admin.model.VirtualHostLocation;
 import com.jslsolucoes.nginx.admin.repository.impl.OperationResult;
 import com.jslsolucoes.nginx.admin.repository.impl.OperationType;
 
+import freemarker.template.TemplateException;
+
 public interface VirtualHostRepository {
 
 	public List<VirtualHost> listAll();
@@ -32,11 +34,13 @@ public interface VirtualHostRepository {
 
 	public VirtualHost load(VirtualHost virtualHost);
 
-	public OperationResult saveOrUpdate(VirtualHost virtualHost,List<VirtualHostAlias> aliases,List<VirtualHostLocation> locations) throws Exception;
+	public OperationResult saveOrUpdate(VirtualHost virtualHost, List<VirtualHostAlias> aliases,
+			List<VirtualHostLocation> locations) throws IOException, TemplateException;
 
-	public List<String> validateBeforeSaveOrUpdate(VirtualHost virtualHost,List<VirtualHostAlias> aliases,List<VirtualHostLocation> locations);
+	public List<String> validateBeforeSaveOrUpdate(VirtualHost virtualHost, List<VirtualHostAlias> aliases,
+			List<VirtualHostLocation> locations);
 
-	public VirtualHost hasEquals(VirtualHost virtualHost,List<VirtualHostAlias> aliases);
+	public VirtualHost hasEquals(VirtualHost virtualHost, List<VirtualHostAlias> aliases);
 
 	public List<VirtualHost> search(String term);
 }

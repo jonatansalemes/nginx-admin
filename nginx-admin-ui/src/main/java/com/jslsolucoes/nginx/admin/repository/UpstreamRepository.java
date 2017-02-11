@@ -23,6 +23,8 @@ import com.jslsolucoes.nginx.admin.model.UpstreamServer;
 import com.jslsolucoes.nginx.admin.repository.impl.OperationResult;
 import com.jslsolucoes.nginx.admin.repository.impl.OperationType;
 
+import freemarker.template.TemplateException;
+
 public interface UpstreamRepository {
 
 	public List<Upstream> listAll();
@@ -31,8 +33,9 @@ public interface UpstreamRepository {
 
 	public Upstream load(Upstream upstream);
 
-	public OperationResult saveOrUpdate(Upstream upstream, List<UpstreamServer> upstreamServers) throws Exception;
-	
+	public OperationResult saveOrUpdate(Upstream upstream, List<UpstreamServer> upstreamServers)
+			throws IOException, TemplateException;
+
 	public List<String> validateBeforeSaveOrUpdate(Upstream upstream, List<UpstreamServer> upstreamServers);
 
 	public Upstream findByName(String name);

@@ -39,6 +39,7 @@ import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
+import freemarker.template.TemplateException;
 
 @Controller
 @Path("upstream")
@@ -94,10 +95,10 @@ public class UpstreamController {
 
 	@Post
 	public void saveOrUpdate(Long id, String name, Long idStrategy, List<Long> servers, List<Integer> ports,
-			Long idResourceIdentifier)
-			throws Exception {
-		OperationResult operationResult = upstreamRepository
-				.saveOrUpdate(new Upstream(id, name, new Strategy(idStrategy), new ResourceIdentifier(idResourceIdentifier)), convert(servers, ports));
+			Long idResourceIdentifier) throws IOException, TemplateException {
+		OperationResult operationResult = upstreamRepository.saveOrUpdate(
+				new Upstream(id, name, new Strategy(idStrategy), new ResourceIdentifier(idResourceIdentifier)),
+				convert(servers, ports));
 		this.result.include("operation", operationResult.getOperationType());
 		this.result.redirectTo(this).edit(operationResult.getId());
 	}

@@ -45,8 +45,8 @@ public class UserController {
 	}
 
 	@Inject
-	public UserController(@Application Properties properties,
-			UserSession userSession, Result result, UserRepository userRepository) {
+	public UserController(@Application Properties properties, UserSession userSession, Result result,
+			UserRepository userRepository) {
 		this.userSession = userSession;
 		this.properties = properties;
 		this.result = result;
@@ -89,7 +89,7 @@ public class UserController {
 
 	@Public
 	public void resetPassword() {
-		this.result.include("version",properties.get("app.version"));
+		this.result.include("version", properties.get("app.version"));
 	}
 
 	@Public
@@ -103,7 +103,7 @@ public class UserController {
 	@Public
 	@CheckForPreDependency
 	public void login() {
-		this.result.include("version",properties.get("app.version"));
+		this.result.include("version", properties.get("app.version"));
 	}
 
 	@Post

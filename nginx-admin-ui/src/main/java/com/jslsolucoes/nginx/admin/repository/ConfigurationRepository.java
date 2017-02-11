@@ -25,5 +25,4 @@ public interface ConfigurationRepository {
 
 	public void update(ConfigurationType configurationType, String value);
 
-
 }

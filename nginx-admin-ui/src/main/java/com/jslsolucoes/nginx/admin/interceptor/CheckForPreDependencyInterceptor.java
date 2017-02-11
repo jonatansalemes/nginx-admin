@@ -45,21 +45,20 @@ public class CheckForPreDependencyInterceptor {
 
 	@Inject
 	private Result result;
-	
+
 	@Inject
 	private DatabaseRepository databaseRepository;
-	
+
 	@Inject
 	private UserRepository userRepository;
-	
+
 	@Inject
 	private Scheduler scheduler;
 
-
 	@AroundCall
 	public void intercept(SimpleInterceptorStack stack) throws HibernateException, IOException, SchedulerException {
-	
-		if(databaseRepository.installOrUpgradeRequired()){
+
+		if (databaseRepository.installOrUpgradeRequired()) {
 			this.result.redirectTo(DatabaseController.class).installOrUpgrade();
 		} else if (CollectionUtils.isEmpty(userRepository.listAll())) {
 			this.result.redirectTo(InstallerController.class).form();

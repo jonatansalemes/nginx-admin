@@ -29,12 +29,12 @@ public class HttpClientBuilder {
 	private CloseableHttpClient closeableHttpClient;
 	private CloseableHttpResponse closeableHttpResponse;
 	private OnError onError;
-	
-	public static HttpClientBuilder build(){
+
+	public static HttpClientBuilder build() {
 		return new HttpClientBuilder();
 	}
-	
-	public HttpClientBuilder onError(OnError onError){
+
+	public HttpClientBuilder onError(OnError onError) {
 		this.onError = onError;
 		return this;
 	}

@@ -23,7 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Messages {
-	
+
 	private static Logger logger = LoggerFactory.getLogger(Messages.class);
 
 	public static String getString(String key) {

@@ -22,7 +22,7 @@ import com.jslsolucoes.nginx.admin.model.VirtualHostAlias;
 
 public interface VirtualHostAliasRepository {
 
-	public void recreate(VirtualHost virtualHost, List<VirtualHostAlias> aliases) throws Exception;
+	public void recreate(VirtualHost virtualHost, List<VirtualHostAlias> aliases);
 
 	public void deleteAllFor(VirtualHost virtualHost);
 

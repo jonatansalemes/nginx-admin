@@ -38,7 +38,7 @@ import com.jslsolucoes.nginx.admin.repository.NginxRepository;
 
 @RequestScoped
 public class LogRepositoryImpl implements LogRepository {
-	
+
 	private NginxRepository nginxRepository;
 	private AccessLogRepository accessLogRepository;
 	private static Logger logger = LoggerFactory.getLogger(LogRepositoryImpl.class);
@@ -48,7 +48,7 @@ public class LogRepositoryImpl implements LogRepository {
 	}
 
 	@Inject
-	public LogRepositoryImpl(NginxRepository nginxRepository,AccessLogRepository accessLogRepository) {
+	public LogRepositoryImpl(NginxRepository nginxRepository, AccessLogRepository accessLogRepository) {
 		this.nginxRepository = nginxRepository;
 		this.accessLogRepository = accessLogRepository;
 	}
@@ -58,21 +58,18 @@ public class LogRepositoryImpl implements LogRepository {
 		Nginx nginx = nginxRepository.configuration();
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
 		FileUtils.iterateFiles(nginx.log(), new String[] { "rotate" }, true).forEachRemaining(file -> {
-			try{
-				FileUtils
-				.readLines(file,"UTF-8")
-				.stream()
-				.filter(line -> line.trim().startsWith("{") && line.trim().endsWith("}"))
-				.forEach(line -> {
-					try {
-						accessLogRepository.log(gson.fromJson(line, AccessLog.class));
-					} catch(Exception exception){
-						logger.error(line + " could'n be stored ",exception);
-					}
-				});
+			try {
+				FileUtils.readLines(file, "UTF-8").stream()
+						.filter(line -> line.trim().startsWith("{") && line.trim().endsWith("}")).forEach(line -> {
+							try {
+								accessLogRepository.log(gson.fromJson(line, AccessLog.class));
+							} catch (Exception exception) {
+								logger.error(line + " could'n be stored ", exception);
+							}
+						});
 				FileUtils.forceDelete(file);
 			} catch (IOException iOException) {
-				logger.error("Could not collect file log",iOException);
+				logger.error("Could not collect file log", iOException);
 			}
 		});
 	}
@@ -83,17 +80,17 @@ public class LogRepositoryImpl implements LogRepository {
 		FileUtils.iterateFiles(nginx.log(), new String[] { "log" }, true).forEachRemaining(file -> {
 			if (file.length() > sizeLimit()) {
 				try {
-					FileUtils.copyFile(file,
-							new File(nginx.log(), FilenameUtils.getBaseName(file.getName()) + new SimpleDateFormat("_yyyy_MM_dd_HH_mm_ss").format(new Date()) + ".log.rotate"));
-					FileUtils.write(file,"","UTF-8");
+					FileUtils.copyFile(file, new File(nginx.log(), FilenameUtils.getBaseName(file.getName())
+							+ new SimpleDateFormat("_yyyy_MM_dd_HH_mm_ss").format(new Date()) + ".log.rotate"));
+					FileUtils.write(file, "", "UTF-8");
 				} catch (IOException iOException) {
-					logger.error("Could not rotate file",iOException);
+					logger.error("Could not rotate file", iOException);
 				}
 			}
 		});
 	}
 
 	private long sizeLimit() {
-		return 1 * 1024 * 1024;
+		return 1L * 1024L * 1024L;
 	}
 }

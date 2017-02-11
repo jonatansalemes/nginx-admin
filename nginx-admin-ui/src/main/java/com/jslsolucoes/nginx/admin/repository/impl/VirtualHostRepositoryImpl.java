@@ -43,6 +43,8 @@ import com.jslsolucoes.nginx.admin.repository.VirtualHostLocationRepository;
 import com.jslsolucoes.nginx.admin.repository.VirtualHostRepository;
 import com.jslsolucoes.nginx.admin.template.TemplateProcessor;
 
+import freemarker.template.TemplateException;
+
 @RequestScoped
 public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> implements VirtualHostRepository {
 
@@ -50,16 +52,14 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 	private NginxRepository nginxRepository;
 	private VirtualHostAliasRepository virtualHostAliasRepository;
 	private VirtualHostLocationRepository virtualHostLocationRepository;
-	
 
 	public VirtualHostRepositoryImpl() {
-
+		this(null, null, null, null, null);
 	}
 
 	@Inject
-	public VirtualHostRepositoryImpl(Session session,
-			ResourceIdentifierRepository resourceIdentifierRepository, NginxRepository nginxRepository,
-			VirtualHostAliasRepository virtualHostAliasRepository,
+	public VirtualHostRepositoryImpl(Session session, ResourceIdentifierRepository resourceIdentifierRepository,
+			NginxRepository nginxRepository, VirtualHostAliasRepository virtualHostAliasRepository,
 			VirtualHostLocationRepository virtualHostLocationRepository) {
 		super(session);
 		this.resourceIdentifierRepository = resourceIdentifierRepository;
@@ -69,7 +69,8 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 	}
 
 	@Override
-	public OperationResult saveOrUpdate(VirtualHost virtualHost,List<VirtualHostAlias> aliases,List<VirtualHostLocation> locations) throws Exception {
+	public OperationResult saveOrUpdate(VirtualHost virtualHost, List<VirtualHostAlias> aliases,
+			List<VirtualHostLocation> locations) throws IOException, TemplateException {
 		if (virtualHost.getId() == null) {
 			virtualHost.setResourceIdentifier(resourceIdentifierRepository.create());
 		}
@@ -83,47 +84,44 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 		configure(virtualHost);
 		return operationResult;
 	}
-	
+
 	@Override
 	public OperationType deleteWithResource(VirtualHost virtualHost) throws IOException {
 		virtualHostAliasRepository.deleteAllFor(virtualHost);
 		virtualHostLocationRepository.deleteAllFor(virtualHost);
-		virtualHost = load(virtualHost);
-		String hash = virtualHost.getResourceIdentifier().getHash();
-		FileUtils.forceDelete(new File(nginxRepository.configuration().virtualHost(),hash + ".conf"));
-		super.delete(virtualHost);
+		
+		VirtualHost virtualHostToDelete = load(virtualHost);
+		String hash = virtualHostToDelete.getResourceIdentifier().getHash();
+		FileUtils.forceDelete(new File(nginxRepository.configuration().virtualHost(), hash + ".conf"));
+		super.delete(virtualHostToDelete);
 		resourceIdentifierRepository.delete(hash);
 		return OperationType.DELETE;
 	}
 
-	private void configure(VirtualHost virtualHost) throws Exception {
-		virtualHost = load(virtualHost);
+	private void configure(VirtualHost virtualHost) throws IOException, TemplateException  {
+		VirtualHost virtualHostToConfigure = load(virtualHost);
 		Nginx nginx = nginxRepository.configuration();
-		new TemplateProcessor().withTemplate("virtual-host.tpl").withData("virtualHost", virtualHost)
+		new TemplateProcessor().withTemplate("virtual-host.tpl").withData("virtualHost", virtualHostToConfigure)
 				.withData("nginx", nginx)
-				.toLocation(new File(nginx.virtualHost(), virtualHost.getResourceIdentifier().getHash() + ".conf"))
+				.toLocation(new File(nginx.virtualHost(), virtualHostToConfigure.getResourceIdentifier().getHash() + ".conf"))
 				.process();
 	}
 
 	@Override
-	public List<String> validateBeforeSaveOrUpdate(VirtualHost virtualHost,List<VirtualHostAlias> aliases,List<VirtualHostLocation> locations) {
+	public List<String> validateBeforeSaveOrUpdate(VirtualHost virtualHost, List<VirtualHostAlias> aliases,
+			List<VirtualHostLocation> locations) {
 		List<String> errors = new ArrayList<String>();
 
-		if (hasEquals(virtualHost,aliases) != null) {
+		if (hasEquals(virtualHost, aliases) != null) {
 			errors.add(Messages.getString("virtualHost.already.exists"));
 		}
-		
-		if (aliases
-				.stream()
-				.map(VirtualHostAlias::getAlias)
-				.collect(Collectors.toSet()).size() != aliases.size()) {
+
+		if (aliases.stream().map(VirtualHostAlias::getAlias).collect(Collectors.toSet()).size() != aliases.size()) {
 			errors.add(Messages.getString("virtualHost.alias.mapped.twice"));
 		}
-		
-		if (locations
-				.stream()
-				.map(VirtualHostLocation::getPath)
-				.collect(Collectors.toSet()).size() != locations.size()) {
+
+		if (locations.stream().map(VirtualHostLocation::getPath).collect(Collectors.toSet()).size() != locations
+				.size()) {
 			errors.add(Messages.getString("virtualHost.location.mapped.twice"));
 		}
 
@@ -131,13 +129,11 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 	}
 
 	@Override
-	public VirtualHost hasEquals(VirtualHost virtualHost,List<VirtualHostAlias> aliases) {
+	public VirtualHost hasEquals(VirtualHost virtualHost, List<VirtualHostAlias> aliases) {
 		Criteria criteria = session.createCriteria(VirtualHost.class);
-		criteria.createCriteria("aliases","virtualHostAlias", JoinType.INNER_JOIN);
-		criteria.add(Restrictions.in("virtualHostAlias.alias", aliases
-							.stream()
-							.map(VirtualHostAlias::getAlias)
-							.collect(Collectors.toList())));
+		criteria.createCriteria("aliases", "virtualHostAlias", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.in("virtualHostAlias.alias",
+				aliases.stream().map(VirtualHostAlias::getAlias).collect(Collectors.toList())));
 		if (virtualHost.getId() != null) {
 			criteria.add(Restrictions.ne("id", virtualHost.getId()));
 		}
@@ -149,7 +145,7 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 	@Override
 	public List<VirtualHost> search(String term) {
 		Criteria criteria = session.createCriteria(VirtualHost.class);
-		criteria.createCriteria("aliases","virtualHostAlias", JoinType.INNER_JOIN);
+		criteria.createCriteria("aliases", "virtualHostAlias", JoinType.INNER_JOIN);
 		criteria.add(Restrictions.ilike("virtualHostAlias.alias", term, MatchMode.ANYWHERE));
 		return criteria.list();
 	}

@@ -39,7 +39,7 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 	private MailRepository mailRepository;
 
 	public UserRepositoryImpl() {
-
+		this(null, null);
 	}
 
 	@Inject
@@ -58,7 +58,7 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 
 	@Override
 	public List<String> validateBeforeResetPassword(User user) {
-		List<String> errors = new ArrayList<String>();
+		List<String> errors = new ArrayList<>();
 		if (getByLogin(user) == null) {
 			errors.add(Messages.getString("invalid.login"));
 		}
@@ -74,18 +74,18 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 	@Override
 	public void resetPassword(User user) {
 		String password = RandomStringUtils.randomAlphanumeric(8);
-		user = getByLogin(user);
-		user.setPassword(DigestUtils.sha256Hex(password));
-		user.setPasswordForceChange(1);
-		mailRepository.send(Messages.getString("reset.mail.subject"), user.getLogin(),
-				Messages.getString("reset.mail.body", user.getLogin(), password));
+		User userToReset = getByLogin(user);
+		userToReset.setPassword(DigestUtils.sha256Hex(password));
+		userToReset.setPasswordForceChange(1);
+		mailRepository.send(Messages.getString("reset.mail.subject"), userToReset.getLogin(),
+				Messages.getString("reset.mail.body", userToReset.getLogin(), password));
 	}
 
 	@Override
-	public List<String> validateBeforeChangePassword(User user, String oldPassword, String password,
+	public List<String> validateBeforeChangePassword(User userParam, String oldPassword, String password,
 			String passwordConfirm) {
 		List<String> errors = new ArrayList<String>();
-		user = load(user);
+		User user = load(userParam);
 
 		errors.addAll(validatePasswordPair(password, passwordConfirm));
 
@@ -113,9 +113,9 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 
 	@Override
 	public void changePassword(User user, String password) {
-		user = load(user);
-		user.setPasswordForceChange(0);
-		user.setPassword(DigestUtils.sha256Hex(password));
+		User userToChange = load(user);
+		userToChange.setPasswordForceChange(0);
+		userToChange.setPassword(DigestUtils.sha256Hex(password));
 	}
 
 	@Override
@@ -136,7 +136,7 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 	public List<String> validateBeforeCreateAdministrator(String login, String loginConfirm, String password,
 			String passwordConfirm) {
 
-		List<String> errors = new ArrayList<String>();
+		List<String> errors = new ArrayList<>();
 		errors.addAll(validatePasswordPair(password, passwordConfirm));
 
 		if (!StringUtils.equals(login, loginConfirm)) {

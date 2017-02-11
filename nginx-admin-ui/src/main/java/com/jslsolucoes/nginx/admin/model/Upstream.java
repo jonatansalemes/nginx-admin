@@ -42,31 +42,31 @@ public class Upstream implements Serializable {
 	@Column(name = "name")
 	private String name;
 
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_strategy")
 	private Strategy strategy;
-	
-	@OneToOne(fetch=FetchType.LAZY)
+
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_resource_identifier")
 	private ResourceIdentifier resourceIdentifier;
-	
-	@OneToMany(fetch=FetchType.LAZY,mappedBy="upstream")
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "upstream")
 	private Set<UpstreamServer> servers;
-	
-	@OneToMany(fetch=FetchType.LAZY,mappedBy="upstream")
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "upstream")
 	private Set<VirtualHostLocation> virtualHostLocations;
-	
+
 	public Upstream() {
-	
+
 	}
-	
-	public Upstream(Long id,String name,Strategy strategy,ResourceIdentifier resourceIdentifier) {
+
+	public Upstream(Long id, String name, Strategy strategy, ResourceIdentifier resourceIdentifier) {
 		this.id = id;
 		this.name = name;
 		this.strategy = strategy;
 		this.resourceIdentifier = resourceIdentifier;
 	}
-	
+
 	public Upstream(Long id) {
 		this.id = id;
 	}

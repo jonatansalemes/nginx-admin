@@ -15,16 +15,21 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.repository;
 
+import java.io.IOException;
 import java.util.List;
+
+import freemarker.template.TemplateException;
 
 public interface InstallRepository {
 
-	public List<String> validateBeforeInstall(String login,String loginConfirm,String adminPassword,String adminPasswordConfirm,
-			String nginxBin,String nginxSettings,String smtpHost, Integer smtpPort, Integer smtpAuthenticate, Integer smtpTls, String smtpFromAddress,
-			String smtpUsername, String smtpPassword, String urlBase);
-	
-	public void install(String login,String loginConfirm,String adminPassword,String adminPasswordConfirm,
-			String nginxBin,String nginxSettings,String smtpHost, Integer smtpPort, Integer smtpAuthenticate, Integer smtpTls, String smtpFromAddress,
-			String smtpUsername, String smtpPassword, String urlBase);
+	public List<String> validateBeforeInstall(String login, String loginConfirm, String adminPassword,
+			String adminPasswordConfirm, String nginxBin, String nginxSettings, String smtpHost, Integer smtpPort,
+			Integer smtpAuthenticate, Integer smtpTls, String smtpFromAddress, String smtpUsername, String smtpPassword,
+			String urlBase);
+
+	public void install(String login, String loginConfirm, String adminPassword, String adminPasswordConfirm,
+			String nginxBin, String nginxSettings, String smtpHost, Integer smtpPort, Integer smtpAuthenticate,
+			Integer smtpTls, String smtpFromAddress, String smtpUsername, String smtpPassword, String urlBase)
+			throws IOException, TemplateException;
 
 }

@@ -40,7 +40,8 @@ public class AppController {
 	}
 
 	@Inject
-	public AppController(@Application Properties properties, Result result,ConfigurationRepository configurationRepository) {
+	public AppController(@Application Properties properties, Result result,
+			ConfigurationRepository configurationRepository) {
 		this.properties = properties;
 		this.result = result;
 		this.configurationRepository = configurationRepository;
@@ -48,14 +49,14 @@ public class AppController {
 
 	@Path(value = { "/", "/home" })
 	public void home() {
-		this.result.include("version",properties.get("app.version"));
+		this.result.include("version", properties.get("app.version"));
 	}
-	
+
 	@Path("/app/edit")
 	public void edit() {
-		this.result.include("urlBase",configurationRepository.string(ConfigurationType.URL_BASE));
+		this.result.include("urlBase", configurationRepository.string(ConfigurationType.URL_BASE));
 	}
-	
+
 	@Path("/app/update")
 	@Post
 	public void update(String urlBase) {
@@ -63,5 +64,5 @@ public class AppController {
 		this.result.include("updated", true);
 		this.result.redirectTo(this).edit();
 	}
-	
+
 }

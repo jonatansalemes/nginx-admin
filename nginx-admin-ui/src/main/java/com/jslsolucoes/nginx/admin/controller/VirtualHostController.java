@@ -40,6 +40,7 @@ import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
+import freemarker.template.TemplateException;
 
 @Controller
 @Path("virtualHost")
@@ -51,20 +52,20 @@ public class VirtualHostController {
 	private SslCertificateRepository sslCertificateRepository;
 
 	public VirtualHostController() {
-
+		this(null, null, null, null);
 	}
 
 	@Inject
 	public VirtualHostController(Result result, VirtualHostRepository virtualHostRepository,
-			UpstreamRepository upstreamRepository,SslCertificateRepository sslCertificateRepository) {
+			UpstreamRepository upstreamRepository, SslCertificateRepository sslCertificateRepository) {
 		this.result = result;
 		this.virtualHostRepository = virtualHostRepository;
 		this.upstreamRepository = upstreamRepository;
 		this.sslCertificateRepository = sslCertificateRepository;
 	}
 
-	public void list(boolean search,String term) {
-		if(search) {
+	public void list(boolean search, String term) {
+		if (search) {
 			this.result.include("virtualHostList", virtualHostRepository.search(term));
 		} else {
 			this.result.include("virtualHostList", virtualHostRepository.listAll());
@@ -72,18 +73,17 @@ public class VirtualHostController {
 	}
 
 	public void form() {
-		this.result.include("upstreamList",upstreamRepository.listAll());
-		this.result.include("sslCertificateList",sslCertificateRepository.listAll());
+		this.result.include("upstreamList", upstreamRepository.listAll());
+		this.result.include("sslCertificateList", sslCertificateRepository.listAll());
 	}
 
-	public void validate(Long id, Integer https, Long idUpstream, String idResourceIdentifier,
-			Long idSslCertificate,List<String> aliases,
-			List<String> locations, List<Long> upstreams) {
-		this.result
-				.use(Results.json()).from(
-						HtmlUtil.convertToUnodernedList(virtualHostRepository.validateBeforeSaveOrUpdate(
-								new VirtualHost(id, https, new SslCertificate(idSslCertificate), new ResourceIdentifier(idResourceIdentifier)),convert(aliases),convert(locations,upstreams))),
-						"errors")
+	public void validate(Long id, Integer https, Long idUpstream, String idResourceIdentifier, Long idSslCertificate,
+			List<String> aliases, List<String> locations, List<Long> upstreams) {
+		this.result.use(Results.json())
+				.from(HtmlUtil.convertToUnodernedList(virtualHostRepository.validateBeforeSaveOrUpdate(
+						new VirtualHost(id, https, new SslCertificate(idSslCertificate),
+								new ResourceIdentifier(idResourceIdentifier)),
+						convert(aliases), convert(locations, upstreams))), "errors")
 				.serialize();
 	}
 
@@ -94,32 +94,33 @@ public class VirtualHostController {
 	}
 
 	@Path("delete/{id}")
-	public void delete(Long id) throws IOException  {
+	public void delete(Long id) throws IOException {
 		this.result.include("operation", virtualHostRepository.deleteWithResource(new VirtualHost(id)));
-		this.result.redirectTo(this).list(false,null);
+		this.result.redirectTo(this).list(false, null);
 	}
 
 	@Post
-	public void saveOrUpdate(Long id, Integer https, Long idUpstream, Long idResourceIdentifier,
-			Long idSslCertificate,List<String> aliases,
-			List<String> locations, List<Long> upstreams) throws Exception {
+	public void saveOrUpdate(Long id, Integer https, Long idUpstream, Long idResourceIdentifier, Long idSslCertificate,
+			List<String> aliases, List<String> locations, List<Long> upstreams) throws IOException, TemplateException  {
 		OperationResult operationResult = virtualHostRepository
-				.saveOrUpdate(new VirtualHost(id,  https, new SslCertificate(idSslCertificate),
-						 new ResourceIdentifier(idResourceIdentifier)),convert(aliases),convert(locations,upstreams));
+				.saveOrUpdate(
+						new VirtualHost(id, https, new SslCertificate(idSslCertificate),
+								new ResourceIdentifier(idResourceIdentifier)),
+						convert(aliases), convert(locations, upstreams));
 		this.result.include("operation", operationResult.getOperationType());
 		this.result.redirectTo(this).edit(operationResult.getId());
 	}
-	
+
 	private List<VirtualHostLocation> convert(List<String> locations, List<Long> upstreams) {
 		AtomicInteger atomicInteger = new AtomicInteger(0);
 		return Lists.transform(locations, new Function<String, VirtualHostLocation>() {
 			@Override
 			public VirtualHostLocation apply(String location) {
-				return new VirtualHostLocation(location,new Upstream(upstreams.get(atomicInteger.getAndIncrement())));
+				return new VirtualHostLocation(location, new Upstream(upstreams.get(atomicInteger.getAndIncrement())));
 			}
 		});
 	}
-	
+
 	private List<VirtualHostAlias> convert(List<String> aliases) {
 		return Lists.transform(aliases, new Function<String, VirtualHostAlias>() {
 			@Override

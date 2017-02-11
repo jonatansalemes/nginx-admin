@@ -27,6 +27,7 @@ import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
+import freemarker.template.TemplateException;
 
 @Controller
 @Path("import")
@@ -56,7 +57,7 @@ public class ImportController {
 	}
 
 	@Post
-	public void execute(String nginxConf) throws IOException {
+	public void execute(String nginxConf) throws IOException, TemplateException {
 		importRepository.importFrom(nginxConf);
 		this.result.include("imported", true);
 		this.result.redirectTo(this).form();
