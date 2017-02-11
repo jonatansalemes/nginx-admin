@@ -48,7 +48,7 @@ public class ResourceIdentifierRepositoryImpl extends RepositoryImpl<ResourceIde
 	}
 
 	@Override
-	public void delete(String hash) throws Exception {
+	public void delete(String hash) {
 		super.delete(findByHash(hash));
 	}
 

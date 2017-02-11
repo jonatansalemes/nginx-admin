@@ -24,6 +24,6 @@ public interface UpstreamServerRepository {
 
 	public void recreate(Upstream upstream, List<UpstreamServer> upstreamServers) throws Exception;
 
-	public void deleteAllFor(Upstream upstream) throws Exception;
+	public void deleteAllFor(Upstream upstream);
 	
 }

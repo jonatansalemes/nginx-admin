@@ -28,7 +28,4 @@ public enum ConfigurationType {
 		return variable;
 	}
 
-	public void setVariable(String variable) {
-		this.variable = variable;
-	}
 }

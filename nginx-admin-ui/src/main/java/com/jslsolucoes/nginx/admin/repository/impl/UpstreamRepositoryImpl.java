@@ -16,6 +16,7 @@
 package com.jslsolucoes.nginx.admin.repository.impl;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -96,7 +97,7 @@ public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements 
 	}
 
 	@Override
-	public OperationType delete(Upstream upstream) throws Exception {
+	public OperationType deleteWithResource(Upstream upstream) throws IOException {
 		upstreamServerRepository.deleteAllFor(upstream);
 		upstream = load(upstream);
 		String hash = upstream.getResourceIdentifier().getHash();

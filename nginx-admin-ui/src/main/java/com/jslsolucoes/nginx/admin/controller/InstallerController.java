@@ -64,7 +64,7 @@ public class InstallerController {
 	private String urlBase() throws MalformedURLException {
 		URL url = new URL(httpServletRequest.getRequestURL().toString());
 		return url.getProtocol() + "://" + url.getHost() + ":" + url.getPort()
-				+ (httpServletRequest.getServletContext().getContextPath().equals("/") ? ""
+				+ ("/".equals(httpServletRequest.getServletContext().getContextPath()) ? ""
 						: httpServletRequest.getServletContext().getContextPath());
 	}
 

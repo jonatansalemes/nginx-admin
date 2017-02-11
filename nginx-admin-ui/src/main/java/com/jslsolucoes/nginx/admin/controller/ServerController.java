@@ -73,7 +73,7 @@ public class ServerController {
 	}
 
 	@Post
-	public void saveOrUpdate(Long id, String ip) throws Exception {
+	public void saveOrUpdate(Long id, String ip) {
 		OperationResult operationResult = serverRepository.saveOrUpdate(new Server(id, ip));
 		this.result.include("operation", operationResult.getOperationType());
 		this.result.redirectTo(this).edit(operationResult.getId());

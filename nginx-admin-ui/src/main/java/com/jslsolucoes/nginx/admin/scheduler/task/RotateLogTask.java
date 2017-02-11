@@ -30,7 +30,7 @@ public class RotateLogTask implements Job {
 
 	@Override
 	public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-		new HttpClientBuilder(exception -> exception.printStackTrace()).client()
+		HttpClientBuilder.build().onError(exception -> logger.error("Error on calling task ", exception)).client()
 				.get(jobExecutionContext.getMergedJobDataMap().getString("urlBase") + "/task/rotate/log")
 				.onNotStatus(HttpStatus.SC_OK,
 						closeableHttpResponse -> logger.error("Job cannot be executed : status code => "

@@ -19,7 +19,12 @@ import java.text.MessageFormat;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class Messages {
+	
+	private static Logger logger = LoggerFactory.getLogger(Messages.class);
 
 	public static String getString(String key) {
 		return getString(key, new Object[] {});
@@ -28,7 +33,8 @@ public class Messages {
 	public static String getString(String key, Object... params) {
 		try {
 			return MessageFormat.format(ResourceBundle.getBundle("messages").getString(key), params);
-		} catch (MissingResourceException e) {
+		} catch (MissingResourceException missingResourceException) {
+			logger.error("Could not load key on bundle", missingResourceException);
 			return '!' + key + '!';
 		}
 	}

@@ -15,17 +15,21 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.nginx.status;
 
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.http.HttpStatus;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.jslsolucoes.nginx.admin.http.HttpClientBuilder;
 
 public class NginxStatusReader {
 
 	protected String body;
+	private static Logger logger = LoggerFactory.getLogger(NginxStatusReader.class);
 
 	public NginxStatusReader() {
 		checkForStatus();
@@ -101,8 +105,16 @@ public class NginxStatusReader {
 	}
 
 	private void checkForStatus() {
-		new HttpClientBuilder(exception -> empty()).client().get("http://localhost/status")
-		.onStatus(HttpStatus.SC_OK, closeableHttpResponse -> body(EntityUtils.toString(closeableHttpResponse.getEntity())))
+		HttpClientBuilder.build().onError(exception -> empty())
+		.client().get("http://localhost/status")
+		.onStatus(HttpStatus.SC_OK, closeableHttpResponse -> {
+				try {
+					body(EntityUtils.toString(closeableHttpResponse.getEntity()));
+				} catch (IOException iOException) {
+					logger.error("Could not read status",iOException);
+					empty();
+				}
+		})
 		.onNotStatus(HttpStatus.SC_OK, closeableHttpResponse -> empty())
 		.close();
 	}

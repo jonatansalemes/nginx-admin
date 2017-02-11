@@ -24,7 +24,7 @@ public interface VirtualHostAliasRepository {
 
 	public void recreate(VirtualHost virtualHost, List<VirtualHostAlias> aliases) throws Exception;
 
-	public void deleteAllFor(VirtualHost virtualHost) throws Exception;
+	public void deleteAllFor(VirtualHost virtualHost);
 
 	public List<VirtualHostAlias> listAll(VirtualHost virtualHost);
 

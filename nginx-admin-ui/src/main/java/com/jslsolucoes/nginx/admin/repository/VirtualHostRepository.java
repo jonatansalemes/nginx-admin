@@ -15,6 +15,7 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.repository;
 
+import java.io.IOException;
 import java.util.List;
 
 import com.jslsolucoes.nginx.admin.model.VirtualHost;
@@ -27,7 +28,7 @@ public interface VirtualHostRepository {
 
 	public List<VirtualHost> listAll();
 
-	public OperationType delete(VirtualHost virtualHost) throws Exception;
+	public OperationType deleteWithResource(VirtualHost virtualHost) throws IOException;
 
 	public VirtualHost load(VirtualHost virtualHost);
 

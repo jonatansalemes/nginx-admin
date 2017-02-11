@@ -24,6 +24,6 @@ public interface VirtualHostLocationRepository {
 
 	public void recreate(VirtualHost virtualHost, List<VirtualHostLocation> locations) throws Exception;
 
-	public void deleteAllFor(VirtualHost virtualHost) throws Exception;
+	public void deleteAllFor(VirtualHost virtualHost);
 
 }

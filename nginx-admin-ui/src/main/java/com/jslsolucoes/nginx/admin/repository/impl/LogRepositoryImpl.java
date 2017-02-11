@@ -16,6 +16,7 @@
 package com.jslsolucoes.nginx.admin.repository.impl;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -66,12 +67,12 @@ public class LogRepositoryImpl implements LogRepository {
 					try {
 						accessLogRepository.log(gson.fromJson(line, AccessLog.class));
 					} catch(Exception exception){
-						logger.error(line + " could'n be stored ");
+						logger.error(line + " could'n be stored ",exception);
 					}
 				});
 				FileUtils.forceDelete(file);
-			} catch(Exception exception){
-				exception.printStackTrace();
+			} catch (IOException iOException) {
+				logger.error("Could not collect file log",iOException);
 			}
 		});
 	}
@@ -85,8 +86,8 @@ public class LogRepositoryImpl implements LogRepository {
 					FileUtils.copyFile(file,
 							new File(nginx.log(), FilenameUtils.getBaseName(file.getName()) + new SimpleDateFormat("_yyyy_MM_dd_HH_mm_ss").format(new Date()) + ".log.rotate"));
 					FileUtils.write(file,"","UTF-8");
-				} catch (Exception e) {
-					e.printStackTrace();
+				} catch (IOException iOException) {
+					logger.error("Could not rotate file",iOException);
 				}
 			}
 		});

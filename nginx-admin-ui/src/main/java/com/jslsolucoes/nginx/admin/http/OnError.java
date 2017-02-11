@@ -15,6 +15,7 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.http;
 
+@FunctionalInterface
 public interface OnError {
 	public void error(Exception exception);
 }

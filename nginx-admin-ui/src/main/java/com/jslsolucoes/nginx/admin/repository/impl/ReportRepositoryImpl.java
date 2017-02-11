@@ -37,6 +37,8 @@ import org.hibernate.jdbc.ReturningWork;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
 import com.google.common.collect.Lists;
@@ -56,6 +58,7 @@ public class ReportRepositoryImpl implements ReportRepository {
 
 	private Session session;
 	private VirtualHostAliasRepository virtualHostAliasRepository;
+	private static Logger logger = LoggerFactory.getLogger(ReportRepository.class);
 
 	public ReportRepositoryImpl() {
 
@@ -117,8 +120,8 @@ public class ReportRepositoryImpl implements ReportRepository {
 										}).collect(Collectors.toSet())
 										,",") );
 					return export("statistics", parameters, connection);
-				} catch (Exception e) {
-					e.printStackTrace();
+				} catch (JRException|IOException exception) {
+					logger.error("Could not render report", exception);
 					return null;
 				}
 			}

@@ -18,12 +18,14 @@ package com.jslsolucoes.nginx.admin.nginx.parser;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.RegexFileFilter;
+import org.apache.commons.io.filefilter.TrueFileFilter;
 
 import com.jslsolucoes.nginx.admin.nginx.parser.directive.Directive;
 
@@ -44,7 +46,7 @@ public class NginxConfParser {
 			File include = new File(directory);
 			if(include.exists()){
 				String pattern = includes.group(2).trim().replaceAll("\\*", "\\.\\*");
-				for (File file : FileUtils.listFiles(include, new RegexFileFilter(pattern), null)) {
+				for (File file : FileUtils.listFiles(include, new RegexFileFilter(pattern), TrueFileFilter.TRUE)) {
 					for(Parser parser : parsers(content(file))){
 						if(parser.accepts()){
 							directives.addAll(parser.parse());
@@ -56,12 +58,9 @@ public class NginxConfParser {
 		return directives;
 	}
 	
-	@SuppressWarnings("serial")
+
 	private List<Parser> parsers(String fileContent){
-		return new ArrayList<Parser>(){{
-			add(new UpstreamParser(fileContent));
-			add(new ServerParser(fileContent));
-		}};
+		return Arrays.asList(new UpstreamParser(fileContent),new ServerParser(fileContent));
 	}
 	
 	private String content(File file) throws IOException {

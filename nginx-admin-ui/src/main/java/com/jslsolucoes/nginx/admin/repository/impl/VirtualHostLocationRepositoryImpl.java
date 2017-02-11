@@ -51,7 +51,7 @@ public class VirtualHostLocationRepositoryImpl extends RepositoryImpl<VirtualHos
 	}
 
 	@Override
-	public void deleteAllFor(VirtualHost virtualHost) throws Exception {
+	public void deleteAllFor(VirtualHost virtualHost) {
 		for(VirtualHostLocation virtualHostLocation : listAll(virtualHost)){
 			super.delete(virtualHostLocation);
 		}

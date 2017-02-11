@@ -16,6 +16,7 @@
 package com.jslsolucoes.nginx.admin.repository.impl;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -84,7 +85,7 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 	}
 	
 	@Override
-	public OperationType delete(VirtualHost virtualHost) throws Exception {
+	public OperationType deleteWithResource(VirtualHost virtualHost) throws IOException {
 		virtualHostAliasRepository.deleteAllFor(virtualHost);
 		virtualHostLocationRepository.deleteAllFor(virtualHost);
 		virtualHost = load(virtualHost);

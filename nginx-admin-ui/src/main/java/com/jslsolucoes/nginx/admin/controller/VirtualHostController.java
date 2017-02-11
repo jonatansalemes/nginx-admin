@@ -15,6 +15,7 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -93,8 +94,8 @@ public class VirtualHostController {
 	}
 
 	@Path("delete/{id}")
-	public void delete(Long id) throws Exception {
-		this.result.include("operation", virtualHostRepository.delete(new VirtualHost(id)));
+	public void delete(Long id) throws IOException  {
+		this.result.include("operation", virtualHostRepository.deleteWithResource(new VirtualHost(id)));
 		this.result.redirectTo(this).list(false,null);
 	}
 

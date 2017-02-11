@@ -21,5 +21,5 @@ public interface ResourceIdentifierRepository {
 
 	public ResourceIdentifier create();
 	
-	public void delete(String hash) throws Exception;
+	public void delete(String hash);
 }

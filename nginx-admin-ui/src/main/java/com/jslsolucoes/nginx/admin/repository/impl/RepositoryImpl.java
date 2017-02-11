@@ -26,6 +26,8 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Property;
 
+import com.jslsolucoes.nginx.admin.error.NginxAdminRuntimeException;
+
 import net.vidageek.mirror.dsl.Mirror;
 import net.vidageek.mirror.list.dsl.Matcher;
 
@@ -77,28 +79,24 @@ public abstract class RepositoryImpl<T> {
 	}
 
 	private Long id(T entity) {
-		Matcher<Field> matcher = new Matcher<Field>() {
-			@Override
-			public boolean accepts(Field field) {
-				return field.isAnnotationPresent(Id.class);
-			}
-		};
-		List<Field> fields = new Mirror().on(clazz).reflectAll().fields().matching(matcher);
+		List<Field> fields = new Mirror().on(clazz).reflectAll().fields()
+				.matching(new Matcher<Field>() {
+					@Override
+					public boolean accepts(Field field) {
+						return field.isAnnotationPresent(Id.class);
+					}
+				});
 		if (CollectionUtils.isEmpty(fields)) {
-			try {
-				throw new Exception("Class" + this.clazz + " doesn't have @Id annotation");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			throw new NginxAdminRuntimeException("Class" + this.clazz + " doesn't have @Id annotation");
 		}
 		return (Long) new Mirror().on(entity).invoke().getterFor(fields.get(0));
 	}
 
-	public OperationType delete(Long id) throws Exception {
+	public OperationType delete(Long id) {
 		return delete(load(id));
 	}
 
-	public OperationType delete(T entity) throws Exception {
+	public OperationType delete(T entity) {
 		this.session.delete(load(entity));
 		return OperationType.DELETE;
 	}

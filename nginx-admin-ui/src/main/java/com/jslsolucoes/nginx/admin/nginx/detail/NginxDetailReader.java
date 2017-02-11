@@ -15,10 +15,13 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.nginx.detail;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.Inet4Address;
+import java.net.InetAddress;
 import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -31,7 +34,10 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.Seconds;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import com.jslsolucoes.nginx.admin.i18n.Messages;
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.nginx.runner.Runner;
 
@@ -40,6 +46,7 @@ public class NginxDetailReader {
 	
 	private Runner runner;
 	private Nginx nginx;
+	private static Logger logger = LoggerFactory.getLogger(NginxDetailReader.class);
 
 	public NginxDetailReader(Runner runner, Nginx nginx) {
 		this.runner = runner;
@@ -53,11 +60,11 @@ public class NginxDetailReader {
 		try {
 			nginxDetail.setPid(Integer.valueOf(FileUtils.readFileToString(nginx.pid(), "UTF-8").trim()));
 			nginxDetail.setUptime(uptime());
-		} catch (Exception e) {
+		} catch (IOException ioException) {
+			logger.error("Could not read pid file", ioException);
 			nginxDetail.setPid(0);
 			nginxDetail.setUptime(BigDecimal.ZERO);
 		}
-
 		return nginxDetail;
 	}
 
@@ -71,14 +78,15 @@ public class NginxDetailReader {
 					everything.addAll(Collections.list(networkInterface
 							.getInetAddresses())
 							.stream()
-							.filter(inetAddress -> (inetAddress instanceof Inet4Address))
-							.map(inetAddress -> inetAddress.getHostAddress())
+							.filter(inetAddress -> inetAddress instanceof Inet4Address)
+							.map(InetAddress::getHostAddress)
 							.collect(Collectors.toSet()));
 				}
 			}
 			return StringUtils.join(everything,",");
-		} catch(Exception exception){
-			return "0.0.0.0";
+		} catch(SocketException socketException){
+			logger.error("Could not read network interfaces", socketException);
+			return "("+Messages.getString("nginx.network.card.not.found")+")";
 		}
 	}
 

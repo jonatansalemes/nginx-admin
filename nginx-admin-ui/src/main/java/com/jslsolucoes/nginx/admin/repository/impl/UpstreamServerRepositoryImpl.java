@@ -51,7 +51,7 @@ public class UpstreamServerRepositoryImpl extends RepositoryImpl<UpstreamServer>
 	}
 
 	@Override
-	public void deleteAllFor(Upstream upstream) throws Exception {
+	public void deleteAllFor(Upstream upstream) {
 		for(UpstreamServer upstreamServer : listAll(upstream)){
 			super.delete(upstreamServer);
 		}

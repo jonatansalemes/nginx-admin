@@ -52,7 +52,7 @@ public class VirtualHostAliasRepositoryImpl extends RepositoryImpl<VirtualHostAl
 	}
 
 	@Override
-	public void deleteAllFor(VirtualHost virtualHost) throws Exception {
+	public void deleteAllFor(VirtualHost virtualHost) {
 		for(VirtualHostAlias virtualHostAlias : listAll(virtualHost)){
 			super.delete(virtualHostAlias);
 		}

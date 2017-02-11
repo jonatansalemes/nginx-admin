@@ -17,8 +17,9 @@ package com.jslsolucoes.nginx.admin.http;
 
 import org.apache.http.client.methods.CloseableHttpResponse;
 
+@FunctionalInterface
 public interface OnResponse {
 
-	public void response(CloseableHttpResponse closeableHttpResponse) throws Exception;
+	public void response(CloseableHttpResponse closeableHttpResponse);
 
 }

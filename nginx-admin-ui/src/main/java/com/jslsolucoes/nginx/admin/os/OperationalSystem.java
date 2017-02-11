@@ -16,6 +16,7 @@
 package com.jslsolucoes.nginx.admin.os;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
 import java.util.ArrayList;
@@ -27,9 +28,12 @@ import java.util.Set;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class OperationalSystem {
+	
+	private static Logger logger = LoggerFactory.getLogger(OperationalSystem.class);
 
 	public static OperationalSystemInfo info() {
 		OperatingSystemMXBean operatingSystemMXBean = ManagementFactory.getOperatingSystemMXBean();
@@ -41,16 +45,16 @@ public class OperationalSystem {
 		} else if (operationalSystem.contains("linux")) {
 			operationalSystemInfo.setOperationalSystemType(OperationalSystemType.LINUX);
 			operationalSystemInfo.setDistribution(distribution());
-		} else if (operationalSystem.contains("mac")||operationalSystem.contains("darwin")) {
+		} else if (operationalSystem.contains("mac") || operationalSystem.contains("darwin")) {
 			operationalSystemInfo.setOperationalSystemType(OperationalSystemType.MAC);
-		}  else {
+		} else {
 			operationalSystemInfo.setOperationalSystemType(OperationalSystemType.NOT_IMPLEMENTED);
 		}
 		return operationalSystemInfo;
 	}
 
 	private static String distribution() {
-		Set<String> locations = new HashSet<String>();
+		Set<String> locations = new HashSet<>();
 		locations.add("/etc/system-release");
 		locations.add("/proc/version");
 		locations.add("/etc/issue");
@@ -65,8 +69,8 @@ public class OperationalSystem {
 			if (file.exists()) {
 				try {
 					return FileUtils.readFileToString(file, "UTF-8").toLowerCase();
-				} catch (Exception exception) {
-					exception.printStackTrace();
+				} catch (IOException iOException) {
+					logger.debug("Try to find another location",iOException);
 				}
 			}
 		}
@@ -74,7 +78,7 @@ public class OperationalSystem {
 	}
 
 	private static List<String> releases() {
-		List<String> locations = new ArrayList<String>();
+		List<String> locations = new ArrayList<>();
 		Iterator<File> files = FileUtils.iterateFiles(new File("/etc"),
 				new WildcardFileFilter(new String[] { "*-release", "*_version" }), new IOFileFilter() {
 					@Override

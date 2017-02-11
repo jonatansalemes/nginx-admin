@@ -15,6 +15,7 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.repository;
 
+import java.io.IOException;
 import java.util.List;
 
 import com.jslsolucoes.nginx.admin.model.Upstream;
@@ -26,7 +27,7 @@ public interface UpstreamRepository {
 
 	public List<Upstream> listAll();
 
-	public OperationType delete(Upstream upstream) throws Exception;
+	public OperationType deleteWithResource(Upstream upstream) throws IOException;
 
 	public Upstream load(Upstream upstream);
 

@@ -22,10 +22,14 @@ import java.util.concurrent.Future;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
 import org.apache.commons.mail.Email;
+import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.jslsolucoes.nginx.admin.model.Smtp;
 import com.jslsolucoes.nginx.admin.repository.MailRepository;
@@ -36,6 +40,7 @@ public class MailRepositoryImpl implements MailRepository {
 
 	private ExecutorService executorService;
 	private SmtpRepository smtpRepository;
+	private static Logger logger = LoggerFactory.getLogger(MailRepositoryImpl.class);
 
 	public MailRepositoryImpl() {
 
@@ -73,8 +78,8 @@ public class MailRepositoryImpl implements MailRepository {
 					email.setTo(Arrays.asList(InternetAddress.parse(to)));
 					email.send();
 					return MailStatusType.SENDED;
-				} catch (Exception exception) {
-					exception.printStackTrace();
+				} catch (EmailException | AddressException exception) {
+					logger.error("Could not setn email", exception);
 					return MailStatusType.NOT_SENDED;
 				}
 			}
