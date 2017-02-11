@@ -34,6 +34,10 @@ import org.slf4j.LoggerFactory;
 public class OperationalSystem {
 
 	private static Logger logger = LoggerFactory.getLogger(OperationalSystem.class);
+	
+	private OperationalSystem(){
+		
+	}
 
 	public static OperationalSystemInfo info() {
 		OperatingSystemMXBean operatingSystemMXBean = ManagementFactory.getOperatingSystemMXBean();

@@ -30,6 +30,7 @@ public class IndexController {
 	private Result result;
 
 	public IndexController() {
+		this(null);
 	}
 
 	@Inject

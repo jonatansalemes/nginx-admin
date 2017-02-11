@@ -35,7 +35,7 @@ public class SchedulerController {
 	private SchedulerRepository schedulerRepository;
 
 	public SchedulerController() {
-
+		this(null, null);
 	}
 
 	@Inject

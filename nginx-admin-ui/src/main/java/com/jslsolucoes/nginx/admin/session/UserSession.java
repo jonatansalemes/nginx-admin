@@ -29,10 +29,6 @@ public class UserSession implements Serializable {
 
 	private User user;
 
-	public UserSession() {
-
-	}
-
 	public void logout() {
 		this.user = null;
 	}

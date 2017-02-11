@@ -101,7 +101,7 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 	private void configure(VirtualHost virtualHost) throws IOException, TemplateException  {
 		VirtualHost virtualHostToConfigure = load(virtualHost);
 		Nginx nginx = nginxRepository.configuration();
-		new TemplateProcessor().withTemplate("virtual-host.tpl").withData("virtualHost", virtualHostToConfigure)
+		TemplateProcessor.build().withTemplate("virtual-host.tpl").withData("virtualHost", virtualHostToConfigure)
 				.withData("nginx", nginx)
 				.toLocation(new File(nginx.virtualHost(), virtualHostToConfigure.getResourceIdentifier().getHash() + ".conf"))
 				.process();
@@ -110,7 +110,7 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 	@Override
 	public List<String> validateBeforeSaveOrUpdate(VirtualHost virtualHost, List<VirtualHostAlias> aliases,
 			List<VirtualHostLocation> locations) {
-		List<String> errors = new ArrayList<String>();
+		List<String> errors = new ArrayList<>();
 
 		if (hasEquals(virtualHost, aliases) != null) {
 			errors.add(Messages.getString("virtualHost.already.exists"));

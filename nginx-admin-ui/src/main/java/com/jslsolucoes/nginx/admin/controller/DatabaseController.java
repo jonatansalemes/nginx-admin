@@ -37,7 +37,7 @@ public class DatabaseController {
 	private DatabaseRepository databaseRepository;
 
 	public DatabaseController() {
-
+		this(null, null);
 	}
 
 	@Inject

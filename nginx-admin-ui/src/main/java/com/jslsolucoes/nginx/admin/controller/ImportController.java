@@ -37,7 +37,7 @@ public class ImportController {
 	private ImportRepository importRepository;
 
 	public ImportController() {
-
+		this(null, null);
 	}
 
 	@Inject

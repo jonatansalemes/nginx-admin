@@ -24,6 +24,10 @@ import org.zeroturnaround.exec.ProcessExecutor;
 import org.zeroturnaround.exec.ProcessResult;
 
 public class RuntimeUtils {
+	
+	private RuntimeUtils(){
+		
+	}
 
 	public static RuntimeResult command(String command) {
 		return command(command, null, null, null);

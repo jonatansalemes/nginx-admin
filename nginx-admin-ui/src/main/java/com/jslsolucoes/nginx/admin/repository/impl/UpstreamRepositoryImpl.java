@@ -76,7 +76,7 @@ public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements 
 
 	private void configure(Upstream upstream) throws IOException, TemplateException {
 		Upstream upstreamToConfigure = load(upstream);
-		new TemplateProcessor().withTemplate("upstream.tpl").withData("upstream", upstreamToConfigure)
+		TemplateProcessor.build().withTemplate("upstream.tpl").withData("upstream", upstreamToConfigure)
 				.toLocation(new File(nginxRepository.configuration().upstream(),
 						upstreamToConfigure.getResourceIdentifier().getHash() + ".conf"))
 				.process();
@@ -84,11 +84,11 @@ public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements 
 
 	@Override
 	public List<String> validateBeforeSaveOrUpdate(Upstream upstream, List<UpstreamServer> upstreamServers) {
-		List<String> errors = new ArrayList<String>();
+		List<String> errors = new ArrayList<>();
 
-		if (upstreamServers.stream().map(upstreamServer -> {
-			return upstreamServer.getServer().getId() + ":" + upstreamServer.getPort();
-		}).collect(Collectors.toSet()).size() != upstreamServers.size()) {
+		if (upstreamServers.stream()
+				.map(upstreamServer -> upstreamServer.getServer().getId() + ":" + upstreamServer.getPort())
+				.collect(Collectors.toSet()).size() != upstreamServers.size()) {
 			errors.add(Messages.getString("upstream.servers.mapped.twice"));
 		}
 

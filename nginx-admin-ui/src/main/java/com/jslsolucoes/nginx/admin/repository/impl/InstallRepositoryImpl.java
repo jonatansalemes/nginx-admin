@@ -41,7 +41,7 @@ public class InstallRepositoryImpl implements InstallRepository {
 	private ConfigurationRepository configurationRepository;
 
 	public InstallRepositoryImpl() {
-
+		this(null, null, null, null);
 	}
 
 	@Inject
@@ -59,7 +59,7 @@ public class InstallRepositoryImpl implements InstallRepository {
 			String adminPasswordConfirm, String nginxBin, String nginxSettings, String smtpHost, Integer smtpPort,
 			Integer smtpAuthenticate, Integer smtpTls, String smtpFromAddress, String smtpUsername, String smtpPassword,
 			String urlBase) {
-		List<String> errors = new ArrayList<String>();
+		List<String> errors = new ArrayList<>();
 		errors.addAll(userRepository.validateBeforeCreateAdministrator(login, loginConfirm, adminPassword,
 				adminPasswordConfirm));
 		errors.addAll(nginxRepository.validateBeforeSaveOrUpdate(new Nginx(nginxBin, nginxSettings)));

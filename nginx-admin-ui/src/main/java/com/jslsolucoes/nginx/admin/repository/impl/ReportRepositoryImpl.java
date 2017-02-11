@@ -61,7 +61,7 @@ public class ReportRepositoryImpl implements ReportRepository {
 	private static Logger logger = LoggerFactory.getLogger(ReportRepository.class);
 
 	public ReportRepositoryImpl() {
-
+		this(null, null);
 	}
 
 	@Inject
@@ -74,7 +74,7 @@ public class ReportRepositoryImpl implements ReportRepository {
 	public List<String> validateBeforeSearch(List<VirtualHostAlias> aliases, LocalDate from, LocalTime fromTime,
 			LocalDate to, LocalTime toTime) {
 
-		List<String> errors = new ArrayList<String>();
+		List<String> errors = new ArrayList<>();
 		if (new DateTime(start(from, fromTime)).isAfter(new DateTime(end(to, toTime)))) {
 			errors.add(Messages.getString("report.date.interval.invalid"));
 		}
@@ -113,9 +113,13 @@ public class ReportRepositoryImpl implements ReportRepository {
 					Map<String, Object> parameters = defaultParameters();
 					parameters.put("FROM", start(from, fromTime));
 					parameters.put("TO", end(to, toTime));
-					parameters.put("ALIASES", StringUtils.join(aliases.stream().map(virtualHostAlias -> {
-						return "'" + virtualHostAliasRepository.load(virtualHostAlias).getAlias() + "'";
-					}).collect(Collectors.toSet()), ","));
+					parameters
+							.put("ALIASES",
+									StringUtils
+											.join(aliases.stream()
+													.map(virtualHostAlias -> "'" + virtualHostAliasRepository
+															.load(virtualHostAlias).getAlias() + "'")
+													.collect(Collectors.toSet()), ","));
 					return export("statistics", parameters, connection);
 				} catch (JRException | IOException exception) {
 					logger.error("Could not render report", exception);
@@ -138,7 +142,7 @@ public class ReportRepositoryImpl implements ReportRepository {
 	}
 
 	private Map<String, Object> defaultParameters() throws IOException {
-		Map<String, Object> parameters = new HashMap<String, Object>();
+		Map<String, Object> parameters = new HashMap<>();
 		parameters.put("LOGO", ImageIO.read(getClass().getResourceAsStream("/report/image/logo.png")));
 		return parameters;
 	}

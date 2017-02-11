@@ -51,7 +51,7 @@ public class UpstreamController {
 	private StrategyRepository strategyRepository;
 
 	public UpstreamController() {
-
+		this(null, null,null,null);
 	}
 
 	@Inject

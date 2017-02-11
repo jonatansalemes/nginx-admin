@@ -29,7 +29,6 @@ import org.hibernate.criterion.Property;
 import com.jslsolucoes.nginx.admin.error.NginxAdminRuntimeException;
 
 import net.vidageek.mirror.dsl.Mirror;
-import net.vidageek.mirror.list.dsl.Matcher;
 
 public abstract class RepositoryImpl<T> {
 
@@ -37,7 +36,7 @@ public abstract class RepositoryImpl<T> {
 	private Class<T> clazz;
 
 	public RepositoryImpl() {
-
+		this(null);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -79,12 +78,8 @@ public abstract class RepositoryImpl<T> {
 	}
 
 	private Long id(T entity) {
-		List<Field> fields = new Mirror().on(clazz).reflectAll().fields().matching(new Matcher<Field>() {
-			@Override
-			public boolean accepts(Field field) {
-				return field.isAnnotationPresent(Id.class);
-			}
-		});
+		List<Field> fields = new Mirror().on(clazz).reflectAll().fields()
+				.matching(field -> field.isAnnotationPresent(Id.class));
 		if (CollectionUtils.isEmpty(fields)) {
 			throw new NginxAdminRuntimeException("Class" + this.clazz + " doesn't have @Id annotation");
 		}

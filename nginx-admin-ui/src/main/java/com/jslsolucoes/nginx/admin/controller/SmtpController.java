@@ -39,7 +39,7 @@ public class SmtpController {
 	private MailRepository mailRepository;
 
 	public SmtpController() {
-
+		this(null, null,null);
 	}
 
 	@Inject

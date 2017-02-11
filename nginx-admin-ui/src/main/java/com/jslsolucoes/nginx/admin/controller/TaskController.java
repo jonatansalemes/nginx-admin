@@ -34,7 +34,7 @@ public class TaskController {
 	private LogRepository logRepository;
 
 	public TaskController() {
-
+		this(null, null);
 	}
 
 	@Inject

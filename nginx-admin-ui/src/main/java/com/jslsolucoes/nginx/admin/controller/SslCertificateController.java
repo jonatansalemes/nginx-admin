@@ -42,7 +42,7 @@ public class SslCertificateController {
 	private SslCertificateRepository sslCertificateRepository;
 
 	public SslCertificateController() {
-
+		this(null, null);
 	}
 
 	@Inject

@@ -26,15 +26,22 @@ import org.apache.commons.io.FileUtils;
 
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.template.Configuration;
-import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
 
 public class TemplateProcessor {
 
-	private Map<String, Object> data = new HashMap<String, Object>();
+	private Map<String, Object> data = new HashMap<>();
 	private String template;
 	private File location;
+	
+	private TemplateProcessor(){
+		
+	}
+	
+	public static TemplateProcessor build(){
+		return new TemplateProcessor();
+	}
 
 	public TemplateProcessor withTemplate(String template) {
 		this.template = template;
@@ -58,11 +65,10 @@ public class TemplateProcessor {
 		configuration.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
 		configuration.setLogTemplateExceptions(false);
 
-		Template template = configuration.getTemplate(this.template);
-		Writer writer = new StringWriter();
-		template.process(data, writer);
-		writer.close();
-		FileUtils.writeStringToFile(location, writer.toString(), "UTF-8");
+		try(Writer writer = new StringWriter()){
+			configuration.getTemplate(template).process(data, writer);
+			FileUtils.writeStringToFile(location, writer.toString(), "UTF-8");
+		}
 	}
 
 }

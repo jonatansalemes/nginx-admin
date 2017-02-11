@@ -23,10 +23,10 @@ import br.com.caelum.vraptor.Path;
 public class SettingsController {
 
 	public void home() {
-
+		//home logic
 	}
 
 	public void welcome() {
-
+		//welcome logic
 	}
 }

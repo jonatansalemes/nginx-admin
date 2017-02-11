@@ -29,6 +29,7 @@ import com.jslsolucoes.nginx.admin.http.HttpClientBuilder;
 public class NginxStatusReader {
 
 	protected String body;
+	private static final String PATTERN = "([0-9]{1,})\\s([0-9]{1,})\\s([0-9]{1,})";
 	private static Logger logger = LoggerFactory.getLogger(NginxStatusReader.class);
 
 	public NginxStatusReader() {
@@ -49,7 +50,7 @@ public class NginxStatusReader {
 	}
 
 	private Integer accepts() {
-		Matcher accepts = Pattern.compile("([0-9]{1,})\\s([0-9]{1,})\\s([0-9]{1,})").matcher(body);
+		Matcher accepts = Pattern.compile(PATTERN).matcher(body);
 		if (accepts.find()) {
 			return Integer.valueOf(accepts.group(1));
 		}
@@ -57,7 +58,7 @@ public class NginxStatusReader {
 	}
 
 	private Integer handled() {
-		Matcher handled = Pattern.compile("([0-9]{1,})\\s([0-9]{1,})\\s([0-9]{1,})").matcher(body);
+		Matcher handled = Pattern.compile(PATTERN).matcher(body);
 		if (handled.find()) {
 			return Integer.valueOf(handled.group(2));
 		}
@@ -65,7 +66,7 @@ public class NginxStatusReader {
 	}
 
 	private Integer requests() {
-		Matcher requests = Pattern.compile("([0-9]{1,})\\s([0-9]{1,})\\s([0-9]{1,})").matcher(body);
+		Matcher requests = Pattern.compile(PATTERN).matcher(body);
 		if (requests.find()) {
 			return Integer.valueOf(requests.group(3));
 		}

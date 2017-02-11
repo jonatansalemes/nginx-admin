@@ -39,7 +39,7 @@ public class SchedulerRepositoryImpl implements SchedulerRepository {
 	private ConfigurationRepository configurationRepository;
 
 	public SchedulerRepositoryImpl() {
-
+		this(null,null);
 	}
 
 	@Inject

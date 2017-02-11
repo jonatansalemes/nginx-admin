@@ -88,7 +88,7 @@ public class ImportRepositoryImpl implements ImportRepository {
 	}
 	
 	private List<Directive> filter(List<Directive> directives,DirectiveType directiveType){
-		return directives.stream().filter(directive -> directive.type().equals(DirectiveType.SERVER)).collect(Collectors.toList());
+		return directives.stream().filter(directive -> directive.type().equals(directiveType)).collect(Collectors.toList());
 	}
 
 	private void virtualHosts(List<Directive> directives) throws FileNotFoundException, IOException, TemplateException {

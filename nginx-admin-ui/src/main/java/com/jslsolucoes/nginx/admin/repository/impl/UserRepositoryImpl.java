@@ -84,7 +84,7 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 	@Override
 	public List<String> validateBeforeChangePassword(User userParam, String oldPassword, String password,
 			String passwordConfirm) {
-		List<String> errors = new ArrayList<String>();
+		List<String> errors = new ArrayList<>();
 		User user = load(userParam);
 
 		errors.addAll(validatePasswordPair(password, passwordConfirm));
@@ -100,7 +100,7 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 	}
 
 	private List<String> validatePasswordPair(String password, String passwordConfirm) {
-		List<String> errors = new ArrayList<String>();
+		List<String> errors = new ArrayList<>();
 		Integer passwordSize = 8;
 		if (password.length() < passwordSize) {
 			errors.add(Messages.getString("invalid.password.size", passwordSize));

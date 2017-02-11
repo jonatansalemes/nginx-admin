@@ -36,7 +36,7 @@ public class AppController {
 	private ConfigurationRepository configurationRepository;
 
 	public AppController() {
-
+		this(null, null,null);
 	}
 
 	@Inject

@@ -44,7 +44,7 @@ public class LogRepositoryImpl implements LogRepository {
 	private static Logger logger = LoggerFactory.getLogger(LogRepositoryImpl.class);
 
 	public LogRepositoryImpl() {
-
+		this(null, null);
 	}
 
 	@Inject

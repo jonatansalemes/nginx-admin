@@ -16,7 +16,6 @@
 package com.jslsolucoes.nginx.admin.repository.impl;
 
 import java.util.Arrays;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
@@ -43,7 +42,7 @@ public class MailRepositoryImpl implements MailRepository {
 	private static Logger logger = LoggerFactory.getLogger(MailRepositoryImpl.class);
 
 	public MailRepositoryImpl() {
-
+		this(null, null);
 	}
 
 	@Inject
@@ -54,37 +53,32 @@ public class MailRepositoryImpl implements MailRepository {
 
 	@Override
 	public Future<MailStatusType> send(String subject, String to, String message) {
-
 		Smtp smtp = smtpRepository.configuration();
-		Callable<MailStatusType> task = new Callable<MailStatusType>() {
-			@Override
-			public MailStatusType call() {
-				try {
-					Email email = new HtmlEmail();
-					email.setHostName(smtp.getHost());
-					email.setSmtpPort(smtp.getPort());
-					email.setFrom(smtp.getFromAddress());
-					if (smtp.getTls() == 1) {
-						email.setStartTLSEnabled(true);
-						email.setSSLOnConnect(true);
-						email.setStartTLSRequired(true);
-					}
-					email.setCharset("ISO-8859-1");
-					if (smtp.getAuthenticate() == 1) {
-						email.setAuthentication(smtp.getUserName(), smtp.getPassword());
-					}
-					email.setSubject(subject);
-					email.setMsg(message);
-					email.setTo(Arrays.asList(InternetAddress.parse(to)));
-					email.send();
-					return MailStatusType.SENDED;
-				} catch (EmailException | AddressException exception) {
-					logger.error("Could not setn email", exception);
-					return MailStatusType.NOT_SENDED;
+		return this.executorService.submit(()-> {
+			try {
+				Email email = new HtmlEmail();
+				email.setHostName(smtp.getHost());
+				email.setSmtpPort(smtp.getPort());
+				email.setFrom(smtp.getFromAddress());
+				if (smtp.getTls() == 1) {
+					email.setStartTLSEnabled(true);
+					email.setSSLOnConnect(true);
+					email.setStartTLSRequired(true);
 				}
+				email.setCharset("ISO-8859-1");
+				if (smtp.getAuthenticate() == 1) {
+					email.setAuthentication(smtp.getUserName(), smtp.getPassword());
+				}
+				email.setSubject(subject);
+				email.setMsg(message);
+				email.setTo(Arrays.asList(InternetAddress.parse(to)));
+				email.send();
+				return MailStatusType.SENDED;
+			} catch (EmailException | AddressException exception) {
+				logger.error("Could not setn email", exception);
+				return MailStatusType.NOT_SENDED;
 			}
-		};
-		return this.executorService.submit(task);
+		});
 	}
 
 }

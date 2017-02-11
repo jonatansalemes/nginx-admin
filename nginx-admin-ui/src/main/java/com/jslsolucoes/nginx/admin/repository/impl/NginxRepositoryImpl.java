@@ -45,7 +45,7 @@ import freemarker.template.TemplateException;
 
 @RequestScoped
 public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxRepository {
-	
+
 	private static Logger logger = LoggerFactory.getLogger(LogRepositoryImpl.class);
 
 	public NginxRepositoryImpl() {
@@ -84,7 +84,7 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 				FileUtils.forceMkdir(settings);
 				return true;
 			} catch (IOException exception) {
-				logger.error("Could not create on folder",exception);
+				logger.error("Could not create on folder", exception);
 				return false;
 			}
 		} else {
@@ -92,7 +92,7 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 				FileUtils.touch(new File(settings, "touch.txt"));
 				return true;
 			} catch (IOException exception) {
-				logger.error("Could not touch on folder",exception);
+				logger.error("Could not touch on folder", exception);
 				return false;
 			}
 		}
@@ -117,20 +117,19 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 	}
 
 	private void root(Nginx nginx) throws IOException, TemplateException {
-		new TemplateProcessor().withTemplate("root.tpl").withData("nginx", nginx)
+		TemplateProcessor.build().withTemplate("root.tpl").withData("nginx", nginx)
 				.toLocation(new File(nginx.virtualHost(), "root.conf")).process();
 	}
 
 	private void conf(Nginx nginx) throws IOException, TemplateException {
-		new TemplateProcessor().withTemplate("nginx.tpl").withData("nginx", nginx)
+		TemplateProcessor.build().withTemplate("nginx.tpl").withData("nginx", nginx)
 				.toLocation(new File(nginx.setting(), "nginx.conf")).process();
 	}
 
 	private void copy(Nginx nginx) throws IOException {
 		FileUtils.forceMkdir(nginx.setting());
-		copyToDirectory(getClass().getResource("/template/fixed/nginx"), nginx.setting(), file -> {
-			return ! "tpl".equals(FilenameUtils.getExtension(file.getName()));
-		});
+		copyToDirectory(getClass().getResource("/template/fixed/nginx"), nginx.setting(),
+				file -> !"tpl".equals(FilenameUtils.getExtension(file.getName())));
 	}
 
 	public void copyToDirectory(URL url, File destination, FileFilter fileFilter) throws IOException {

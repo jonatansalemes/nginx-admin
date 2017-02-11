@@ -34,7 +34,7 @@ public class AdminController {
 	private NginxDetail nginxDetail;
 
 	public AdminController() {
-
+		this(null, null,null);
 	}
 
 	@Inject

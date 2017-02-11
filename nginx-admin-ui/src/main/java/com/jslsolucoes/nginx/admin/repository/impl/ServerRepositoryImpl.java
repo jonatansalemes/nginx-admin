@@ -33,7 +33,7 @@ import com.jslsolucoes.nginx.admin.repository.ServerRepository;
 public class ServerRepositoryImpl extends RepositoryImpl<Server> implements ServerRepository {
 
 	public ServerRepositoryImpl() {
-
+		this(null);
 	}
 
 	@Inject
@@ -43,7 +43,7 @@ public class ServerRepositoryImpl extends RepositoryImpl<Server> implements Serv
 
 	@Override
 	public List<String> validateBeforeSaveOrUpdate(Server server) {
-		List<String> errors = new ArrayList<String>();
+		List<String> errors = new ArrayList<>();
 
 		if (hasEquals(server) != null) {
 			errors.add(Messages.getString("server.already.exists"));

@@ -30,17 +30,18 @@ import com.jslsolucoes.nginx.admin.runtime.RuntimeUtils;
 public class WindowsRunner implements Runner {
 
 	private Nginx nginx;
+	private static final String CMD = "cmd.exe /c ";
 
 	@Override
 	public RuntimeResult start() {
-		RuntimeUtils.command("cmd.exe /c " + executable() + " -c " + nginx.conf().getAbsolutePath(), nginx.binFolder(),
+		RuntimeUtils.command(CMD + executable() + " -c " + nginx.conf().getAbsolutePath(), nginx.binFolder(),
 				1);
 		return status();
 	}
 
 	@Override
 	public RuntimeResult stop() {
-		RuntimeUtils.command("cmd.exe /c " + executable() + " -s quit", nginx.binFolder());
+		RuntimeUtils.command(CMD + executable() + " -s quit", nginx.binFolder());
 		RuntimeUtils.command("taskkill /f /im " + executable());
 		return status();
 	}
@@ -74,7 +75,7 @@ public class WindowsRunner implements Runner {
 	@Override
 	public RuntimeResult testConfig() {
 		RuntimeResult runtimeResult = RuntimeUtils
-				.command("cmd.exe /c " + executable() + " -t -c " + nginx.conf().getAbsolutePath(), nginx.binFolder());
+				.command(CMD + executable() + " -t -c " + nginx.conf().getAbsolutePath(), nginx.binFolder());
 		if (runtimeResult.getRuntimeResultType().equals(RuntimeResultType.SUCCESS)) {
 			if (runtimeResult.getOutput().contains("syntax is ok")) {
 				return new RuntimeResult(RuntimeResultType.SUCCESS, Messages.getString("syntax.ok"));
@@ -91,12 +92,12 @@ public class WindowsRunner implements Runner {
 
 	@Override
 	public RuntimeResult version() {
-		return RuntimeUtils.command("cmd.exe /c " + executable() + " -v ", nginx.binFolder());
+		return RuntimeUtils.command(CMD + executable() + " -v ", nginx.binFolder());
 	}
 
 	@Override
 	public RuntimeResult reload() {
-		return RuntimeUtils.command("cmd.exe /c " + executable() + " -s reload -c " + nginx.conf().getAbsolutePath(),
+		return RuntimeUtils.command(CMD + executable() + " -s reload -c " + nginx.conf().getAbsolutePath(),
 				nginx.binFolder());
 	}
 

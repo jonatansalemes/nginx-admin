@@ -19,6 +19,7 @@ import java.util.concurrent.Future;
 
 import com.jslsolucoes.nginx.admin.repository.impl.MailStatusType;
 
+@FunctionalInterface
 public interface MailRepository {
 
 	public Future<MailStatusType> send(String subject, String to, String message);
