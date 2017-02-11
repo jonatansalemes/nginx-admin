@@ -44,7 +44,7 @@ public class InstallerController {
 	private HttpServletRequest httpServletRequest;
 
 	public InstallerController() {
-
+		this(null, null, null, null);
 	}
 
 	@Inject

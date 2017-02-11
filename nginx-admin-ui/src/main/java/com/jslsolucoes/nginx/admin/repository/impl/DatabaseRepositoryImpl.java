@@ -28,7 +28,6 @@ import javax.inject.Inject;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.jdbc.Work;
 
@@ -44,6 +43,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 	private Properties properties;
 
 	public DatabaseRepositoryImpl() {
+		this(null, null, null);
 	}
 
 	@Inject
@@ -55,24 +55,20 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 	}
 
 	@Override
-	public void installOrUpgrade() throws HibernateException, IOException {
+	public void installOrUpgrade() throws IOException {
 		AtomicInteger installed = new AtomicInteger(installed());
 		while (installed.get() < actual()) {
 			Arrays.asList(resource("/sql/" + installed.incrementAndGet() + ".sql").split(";")).stream()
-					.filter(StringUtils::isNotEmpty).forEach(statement -> {
+					.filter(StringUtils::isNotEmpty).forEach(statement -> 
 						session.doWork(new Work() {
 							@Override
 							public void execute(Connection connection) throws SQLException {
-								try {
-									PreparedStatement preparedStatement = connection.prepareStatement(statement);
+								try (PreparedStatement preparedStatement = connection.prepareStatement(statement)){
 									preparedStatement.executeUpdate();
-									preparedStatement.close();
-								} catch (SQLException sqlException) {
-									throw new RuntimeException(sqlException);
 								}
 							}
-						});
-					});
+						})
+					);
 		}
 	}
 
