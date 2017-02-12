@@ -10,8 +10,7 @@
 
 [sonar]:https://sonarqube.com/dashboard/index/com.jslsolucoes:nginx-admin:develop
 [sonar img]:https://sonarqube.com/api/badges/gate?key=com.jslsolucoes:nginx-admin:develop
-[sonar img]:https://sonarqube.com/api/badges/measure?key=com.jslsolucoes:nginx-admin:develop&metric=ncloc
-
+[sonar-nloc img]:https://sonarqube.com/api/badges/measure?key=com.jslsolucoes:nginx-admin:develop&metric=ncloc
 
 
 # nginx-admin
