@@ -21,7 +21,6 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.hibernate.HibernateException;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 
@@ -56,7 +55,7 @@ public class CheckForPreDependencyInterceptor {
 	private Scheduler scheduler;
 
 	@AroundCall
-	public void intercept(SimpleInterceptorStack stack) throws HibernateException, IOException, SchedulerException {
+	public void intercept(SimpleInterceptorStack stack) throws IOException, SchedulerException {
 
 		if (databaseRepository.installOrUpgradeRequired()) {
 			this.result.redirectTo(DatabaseController.class).installOrUpgrade();

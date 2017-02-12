@@ -34,7 +34,7 @@ public class VirtualHostAliasRepositoryImpl extends RepositoryImpl<VirtualHostAl
 		implements VirtualHostAliasRepository {
 
 	public VirtualHostAliasRepositoryImpl() {
-		this(null);
+		//Default constructor
 	}
 
 	@Inject

@@ -34,12 +34,12 @@ public class TemplateProcessor {
 	private Map<String, Object> data = new HashMap<>();
 	private String template;
 	private File location;
-	
-	private TemplateProcessor(){
-		
+
+	private TemplateProcessor() {
+
 	}
-	
-	public static TemplateProcessor build(){
+
+	public static TemplateProcessor build() {
 		return new TemplateProcessor();
 	}
 
@@ -65,7 +65,7 @@ public class TemplateProcessor {
 		configuration.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
 		configuration.setLogTemplateExceptions(false);
 
-		try(Writer writer = new StringWriter()){
+		try (Writer writer = new StringWriter()) {
 			configuration.getTemplate(template).process(data, writer);
 			FileUtils.writeStringToFile(location, writer.toString(), "UTF-8");
 		}

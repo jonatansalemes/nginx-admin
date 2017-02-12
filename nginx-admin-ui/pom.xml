@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.jslsolucoes</groupId>
 		<artifactId>nginx-admin</artifactId>
-		<version>1.0.6</version>
+		<version>1.0.7</version>
 	</parent>
 	<artifactId>nginx-admin-ui</artifactId>
 	<packaging>war</packaging>
@@ -25,6 +25,11 @@
 			<groupId>br.com.caelum</groupId>
 			<artifactId>vraptor</artifactId>
 			<version>4.2.0-RC5</version>
+		</dependency>
+		<dependency>
+			<groupId>br.com.caelum.vraptor</groupId>
+			<artifactId>vraptor-java8</artifactId>
+			<version>4.0.0.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>br.com.caelum.vraptor</groupId>

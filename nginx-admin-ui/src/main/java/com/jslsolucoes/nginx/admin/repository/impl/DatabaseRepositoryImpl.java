@@ -46,7 +46,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 	private static Logger logger = LoggerFactory.getLogger(LogRepositoryImpl.class);
 
 	public DatabaseRepositoryImpl() {
-		this(null, null, null);
+		//Default constructor
 	}
 
 	@Inject
@@ -81,7 +81,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 		try {
 			return configurationRepository.integer(ConfigurationType.DB_VERSION);
 		} catch (Exception exception) {
-			logger.error("Database is not installed",exception);
+			logger.error("Database is not installed", exception);
 			return 0;
 		}
 	}

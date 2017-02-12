@@ -41,7 +41,7 @@ public class UserController {
 	private UserRepository userRepository;
 
 	public UserController() {
-		this(null, null,null,null);
+		this(null, null, null, null);
 	}
 
 	@Inject

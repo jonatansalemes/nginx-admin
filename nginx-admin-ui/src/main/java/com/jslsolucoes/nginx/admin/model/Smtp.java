@@ -55,7 +55,7 @@ public class Smtp implements Serializable {
 	private String fromAddress;
 
 	public Smtp() {
-		//default constructor
+		// default constructor
 	}
 
 	public Smtp(String host, Integer port, Integer authenticate, String userName, String password, Integer tls,
@@ -68,8 +68,8 @@ public class Smtp implements Serializable {
 		this.id = id;
 		this.host = host;
 		this.port = port;
-		this.authenticate = (authenticate == null ? 0 : authenticate);
-		this.tls = (tls == null ? 0 : tls);
+		this.authenticate = authenticate == null ? 0 : authenticate;
+		this.tls = tls == null ? 0 : tls;
 		this.userName = userName;
 		this.password = password;
 		this.fromAddress = fromAddress;

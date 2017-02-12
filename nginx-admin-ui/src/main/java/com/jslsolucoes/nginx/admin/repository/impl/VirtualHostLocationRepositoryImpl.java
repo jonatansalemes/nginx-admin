@@ -34,7 +34,7 @@ public class VirtualHostLocationRepositoryImpl extends RepositoryImpl<VirtualHos
 		implements VirtualHostLocationRepository {
 
 	public VirtualHostLocationRepositoryImpl() {
-		this(null);
+		//Default constructor
 	}
 
 	@Inject

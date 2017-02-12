@@ -54,7 +54,7 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 	private VirtualHostLocationRepository virtualHostLocationRepository;
 
 	public VirtualHostRepositoryImpl() {
-		this(null, null, null, null, null);
+		//Default constructor
 	}
 
 	@Inject
@@ -89,7 +89,7 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 	public OperationType deleteWithResource(VirtualHost virtualHost) throws IOException {
 		virtualHostAliasRepository.deleteAllFor(virtualHost);
 		virtualHostLocationRepository.deleteAllFor(virtualHost);
-		
+
 		VirtualHost virtualHostToDelete = load(virtualHost);
 		String hash = virtualHostToDelete.getResourceIdentifier().getHash();
 		FileUtils.forceDelete(new File(nginxRepository.configuration().virtualHost(), hash + ".conf"));
@@ -98,12 +98,12 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 		return OperationType.DELETE;
 	}
 
-	private void configure(VirtualHost virtualHost) throws IOException, TemplateException  {
+	private void configure(VirtualHost virtualHost) throws IOException, TemplateException {
 		VirtualHost virtualHostToConfigure = load(virtualHost);
 		Nginx nginx = nginxRepository.configuration();
 		TemplateProcessor.build().withTemplate("virtual-host.tpl").withData("virtualHost", virtualHostToConfigure)
-				.withData("nginx", nginx)
-				.toLocation(new File(nginx.virtualHost(), virtualHostToConfigure.getResourceIdentifier().getHash() + ".conf"))
+				.withData("nginx", nginx).toLocation(new File(nginx.virtualHost(),
+						virtualHostToConfigure.getResourceIdentifier().getHash() + ".conf"))
 				.process();
 	}
 

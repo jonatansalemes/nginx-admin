@@ -49,7 +49,7 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 	private static Logger logger = LoggerFactory.getLogger(LogRepositoryImpl.class);
 
 	public NginxRepositoryImpl() {
-		this(null);
+		//Default constructor
 	}
 
 	@Inject

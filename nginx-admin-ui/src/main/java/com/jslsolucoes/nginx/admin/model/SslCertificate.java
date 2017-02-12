@@ -53,7 +53,7 @@ public class SslCertificate implements Serializable {
 	private Set<VirtualHost> virtualHosts;
 
 	public SslCertificate() {
-		//default constructor
+		// default constructor
 	}
 
 	public SslCertificate(Long id, String commonName, ResourceIdentifier resourceIdentifierCertificate,

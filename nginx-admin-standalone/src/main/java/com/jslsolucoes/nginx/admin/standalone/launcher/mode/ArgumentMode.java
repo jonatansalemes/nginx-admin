@@ -21,10 +21,15 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.jslsolucoes.nginx.admin.standalone.launcher.Launcher;
 
 public class ArgumentMode implements LauncherMode {
+	
+	private static Logger logger = LoggerFactory.getLogger(ArgumentMode.class);
 
 	private String[] args;
 
@@ -33,40 +38,47 @@ public class ArgumentMode implements LauncherMode {
 	}
 
 	@Override
-	public Launcher launcher() throws Exception {
-		Options options = new Options();
-	    options.addOption(new Option("help", false, "Help"));
-	    options.addOption(new Option("p", true, "Port to manager listening (default 3000)"));
-	    options.addOption(new Option("h", true, "Home folder (default user home)"));
-		
-		CommandLineParser commandLineParser = new DefaultParser();
-		CommandLine commandLine = commandLineParser.parse(options, args);
-		
-		Launcher launch = new Launcher();
-		launch.setQuit(false);
-		
-		if (commandLine.hasOption("help")) {
-			HelpFormatter helpFormatter = new HelpFormatter();
-			helpFormatter.printHelp("java -jar nginx-admin-standalone-1.0.0-swarm.jar", options);
+	public Launcher launcher() {
+		try {
+			Options options = new Options();
+		    options.addOption(new Option("help", false, "Help"));
+		    options.addOption(new Option("p", true, "Port to manager listening (default 3000)"));
+		    options.addOption(new Option("h", true, "Home folder (default user home)"));
+			
+			CommandLineParser commandLineParser = new DefaultParser();
+			CommandLine commandLine = commandLineParser.parse(options, args);
+			
+			Launcher launch = new Launcher();
+			launch.setQuit(false);
+			
+			if (commandLine.hasOption("help")) {
+				HelpFormatter helpFormatter = new HelpFormatter();
+				helpFormatter.printHelp("java -jar nginx-admin-standalone-1.0.0-swarm.jar", options);
+				launch.setQuit(true);
+			}
+			
+			if(!launch.getQuit()){
+				
+				if(commandLine.hasOption("h")){
+					launch.setHome(commandLine.getOptionValue("h"));
+				} else {
+					launch.setHome("~");
+				}
+				
+				if(commandLine.hasOption("p")){
+					launch.setPort(Integer.valueOf(commandLine.getOptionValue("p")));
+				} else {
+					launch.setPort(3000);
+				}
+			}
+			
+			return launch;
+		} catch(ParseException parseException){
+			logger.error("Could not parse options", parseException);
+			Launcher launch = new Launcher();
 			launch.setQuit(true);
+			return launch;
 		}
-		
-		if(!launch.getQuit()){
-			
-			if(commandLine.hasOption("h")){
-				launch.setHome(commandLine.getOptionValue("h"));
-			} else {
-				launch.setHome("~");
-			}
-			
-			if(commandLine.hasOption("p")){
-				launch.setPort(Integer.valueOf(commandLine.getOptionValue("p")));
-			} else {
-				launch.setPort(3000);
-			}
-		}
-		
-		return launch;
 	}
 
 }

@@ -33,32 +33,34 @@ import com.jslsolucoes.nginx.admin.standalone.launcher.mode.ArgumentMode;
 import com.jslsolucoes.nginx.admin.standalone.launcher.mode.LauncherMode;
 
 public class Main {
+	
+	private Main(){
+		
+	}
 
 	public static void main(String[] args) throws Exception {
-		
+
 		LauncherMode launchMode = new ArgumentMode(args);
 		Launcher launcher = launchMode.launcher();
-		
+
 		if (!launcher.getQuit()) {
-			args = new String []{"-Dswarm.http.port="+launcher.getPort(),"-Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel"};
-			
-			Swarm swarm = new Swarm(args);
-			swarm.fraction(new DatasourcesFraction().dataSource("NginxAdminDataSource", (ds) -> {
+
+			Swarm swarm = new Swarm(new String[] { "-Dswarm.http.port=" + launcher.getPort(),
+					"-Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel" });
+			swarm.fraction(new DatasourcesFraction().dataSource("NginxAdminDataSource", ds -> {
 				ds.driverName("h2");
-				ds.connectionUrl("jdbc:h2:"+launcher.getHome()+"/database/nginx-admin;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
+				ds.connectionUrl("jdbc:h2:" + launcher.getHome()
+						+ "/database/nginx-admin;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
 				ds.userName("root");
 				ds.jndiName("java:jboss/datasources/nginx-admin");
 			}));
-			swarm.fraction(
-					new LoggingFraction()
-				    .consoleHandler("CONSOLE", f -> {				    	
-				      f.level(Level.INFO);
-				      f.formatter("%d{HH:mm:ss,SSS} %-5p [%c] (%t) %s%e%n");
-				    })
-				    .rootLogger(Level.ERROR, "CONSOLE"));
+			swarm.fraction(new LoggingFraction().consoleHandler("CONSOLE", f -> {
+				f.level(Level.INFO);
+				f.formatter("%d{HH:mm:ss,SSS} %-5p [%c] (%t) %s%e%n");
+			}).rootLogger(Level.ERROR, "CONSOLE"));
 			swarm.start();
 
-			InputStream war = Main.class.getResourceAsStream("/nginx-admin-ui-1.0.6.war");
+			InputStream war = Main.class.getResourceAsStream("/nginx-admin-ui-1.0.7.war");
 			File file = File.createTempFile(UUID.randomUUID().toString(), ".war");
 			FileUtils.copyInputStreamToFile(war, file);
 			file.deleteOnExit();
@@ -66,6 +68,6 @@ public class Main {
 			WARArchive warArchive = ShrinkWrap.createFromZipFile(WARArchive.class, file);
 			swarm.deploy(warArchive);
 		}
-		
+
 	}
 }

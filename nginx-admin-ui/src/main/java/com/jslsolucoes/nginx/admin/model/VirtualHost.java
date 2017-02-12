@@ -60,7 +60,7 @@ public class VirtualHost implements Serializable {
 	private Set<VirtualHostLocation> locations;
 
 	public VirtualHost() {
-		//default constructor
+		// default constructor
 	}
 
 	public VirtualHost(Long id) {

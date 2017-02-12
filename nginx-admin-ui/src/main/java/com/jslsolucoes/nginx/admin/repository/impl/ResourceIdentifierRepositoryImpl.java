@@ -32,7 +32,7 @@ public class ResourceIdentifierRepositoryImpl extends RepositoryImpl<ResourceIde
 		implements ResourceIdentifierRepository {
 
 	public ResourceIdentifierRepositoryImpl() {
-		this(null);
+		//Default constructor
 	}
 
 	@Inject

@@ -34,7 +34,7 @@ public class AdminController {
 	private NginxDetail nginxDetail;
 
 	public AdminController() {
-		this(null, null,null);
+		this(null, null, null);
 	}
 
 	@Inject
@@ -51,7 +51,7 @@ public class AdminController {
 	}
 
 	public void configure() {
-		//configure logic
+		// configure logic
 	}
 
 	public void stop() {

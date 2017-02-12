@@ -1,6 +1,5 @@
 package com.jslsolucoes.nginx.admin.error;
 
-
 @SuppressWarnings("serial")
 public class NginxAdminRuntimeException extends RuntimeException {
 

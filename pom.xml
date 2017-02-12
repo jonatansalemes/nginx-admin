@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.jslsolucoes</groupId>
 	<artifactId>nginx-admin</artifactId>
-	<version>1.0.6</version>
+	<version>1.0.7</version>
 	<packaging>pom</packaging>
  
  
@@ -38,6 +38,7 @@
 					<target>${java.version}</target>
 					<compilerArgs>
 						<arg>-Xlint</arg>
+						<arg>-parameters</arg>
 					</compilerArgs>
 				</configuration>
 			</plugin>

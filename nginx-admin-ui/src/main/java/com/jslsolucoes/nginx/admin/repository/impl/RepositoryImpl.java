@@ -36,7 +36,7 @@ public abstract class RepositoryImpl<T> {
 	private Class<T> clazz;
 
 	public RepositoryImpl() {
-		this(null);
+		//default constructor
 	}
 
 	@SuppressWarnings("unchecked")

@@ -44,7 +44,7 @@ public class VirtualHostAlias implements Serializable {
 	private VirtualHost virtualHost;
 
 	public VirtualHostAlias() {
-		//default constructor
+		// default constructor
 	}
 
 	public VirtualHostAlias(String alias) {

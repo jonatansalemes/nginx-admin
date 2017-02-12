@@ -62,7 +62,7 @@ public class ImportRepositoryImpl implements ImportRepository {
 	private SslCertificateRepository sslCertificateRepository;
 
 	public ImportRepositoryImpl() {
-		this(null, null, null, null, null);
+		//Default constructor
 	}
 
 	@Inject
@@ -120,14 +120,14 @@ public class ImportRepositoryImpl implements ImportRepository {
 
 	private void upstreams(List<Directive> directives) throws IOException, TemplateException {
 		for (Directive directive : filter(directives, DirectiveType.UPSTREAM)) {
-			UpstreamDirective upstreamDirective = ((UpstreamDirective) directive);
+			UpstreamDirective upstreamDirective = (UpstreamDirective) directive;
 			if (upstreamRepository.hasEquals(new Upstream(upstreamDirective.getName())) == null) {
 				upstreamRepository.saveOrUpdate(
 						new Upstream(upstreamDirective.getName(),
 								strategyRepository.findByName(upstreamDirective.getStrategy())),
 						Lists.transform(upstreamDirective.getServers(), upstreamDirectiveServer -> new UpstreamServer(
 								serverRepository.findByIp(upstreamDirectiveServer.getIp()),
-								(upstreamDirectiveServer.getPort() == null ? 80 : upstreamDirectiveServer.getPort()))));
+								upstreamDirectiveServer.getPort() == null ? 80 : upstreamDirectiveServer.getPort())));
 
 			}
 		}
@@ -135,7 +135,7 @@ public class ImportRepositoryImpl implements ImportRepository {
 
 	private void servers(List<Directive> directives) {
 		directives.stream().filter(directive -> directive.type().equals(DirectiveType.UPSTREAM)).forEach(directive -> {
-			UpstreamDirective upstreamDirective = ((UpstreamDirective) directive);
+			UpstreamDirective upstreamDirective = (UpstreamDirective) directive;
 
 			upstreamDirective.getServers().stream().forEach(server -> {
 				if (serverRepository.hasEquals(new Server(server.getIp())) == null) {

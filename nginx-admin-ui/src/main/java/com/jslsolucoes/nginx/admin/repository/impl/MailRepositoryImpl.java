@@ -42,7 +42,7 @@ public class MailRepositoryImpl implements MailRepository {
 	private static Logger logger = LoggerFactory.getLogger(MailRepositoryImpl.class);
 
 	public MailRepositoryImpl() {
-		this(null, null);
+		//Default constructor
 	}
 
 	@Inject
@@ -54,7 +54,7 @@ public class MailRepositoryImpl implements MailRepository {
 	@Override
 	public Future<MailStatusType> send(String subject, String to, String message) {
 		Smtp smtp = smtpRepository.configuration();
-		return this.executorService.submit(()-> {
+		return this.executorService.submit(() -> {
 			try {
 				Email email = new HtmlEmail();
 				email.setHostName(smtp.getHost());

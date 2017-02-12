@@ -21,7 +21,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.inject.Inject;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.jslsolucoes.nginx.admin.html.HtmlUtil;
 import com.jslsolucoes.nginx.admin.model.ResourceIdentifier;
@@ -51,7 +50,7 @@ public class UpstreamController {
 	private StrategyRepository strategyRepository;
 
 	public UpstreamController() {
-		this(null, null,null,null);
+		this(null, null, null, null);
 	}
 
 	@Inject
@@ -105,11 +104,7 @@ public class UpstreamController {
 
 	private List<UpstreamServer> convert(List<Long> servers, List<Integer> ports) {
 		AtomicInteger atomicInteger = new AtomicInteger(0);
-		return Lists.transform(servers, new Function<Long, UpstreamServer>() {
-			@Override
-			public UpstreamServer apply(Long idServer) {
-				return new UpstreamServer(new Server(idServer), ports.get(atomicInteger.getAndIncrement()));
-			}
-		});
+		return Lists.transform(servers,
+				server -> new UpstreamServer(new Server(server), ports.get(atomicInteger.getAndIncrement())));
 	}
 }

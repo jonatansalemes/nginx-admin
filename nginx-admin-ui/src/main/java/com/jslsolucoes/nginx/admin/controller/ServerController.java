@@ -35,7 +35,6 @@ public class ServerController {
 	private Result result;
 	private ServerRepository serverRepository;
 
-
 	public ServerController() {
 		this(null, null);
 	}
@@ -51,7 +50,7 @@ public class ServerController {
 	}
 
 	public void form() {
-		//form logic
+		// form logic
 	}
 
 	public void validate(Long id, String ip) {
@@ -68,7 +67,7 @@ public class ServerController {
 	}
 
 	@Path("delete/{id}")
-	public void delete(Long id)  {
+	public void delete(Long id) {
 		this.result.include("operation", serverRepository.delete(new Server(id)));
 		this.result.redirectTo(this).list();
 	}

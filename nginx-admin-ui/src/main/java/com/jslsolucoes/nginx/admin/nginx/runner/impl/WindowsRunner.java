@@ -34,8 +34,7 @@ public class WindowsRunner implements Runner {
 
 	@Override
 	public RuntimeResult start() {
-		RuntimeUtils.command(CMD + executable() + " -c " + nginx.conf().getAbsolutePath(), nginx.binFolder(),
-				1);
+		RuntimeUtils.command(CMD + executable() + " -c " + nginx.conf().getAbsolutePath(), nginx.binFolder(), 1);
 		return status();
 	}
 

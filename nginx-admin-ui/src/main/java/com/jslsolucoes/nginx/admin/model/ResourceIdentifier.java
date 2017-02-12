@@ -37,7 +37,7 @@ public class ResourceIdentifier implements Serializable {
 	private String hash;
 
 	public ResourceIdentifier() {
-		//default constructor
+		// default constructor
 	}
 
 	public ResourceIdentifier(String hash) {

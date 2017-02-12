@@ -57,7 +57,7 @@ public class Upstream implements Serializable {
 	private Set<VirtualHostLocation> virtualHostLocations;
 
 	public Upstream() {
-		//default constructor
+		// default constructor
 	}
 
 	public Upstream(Long id, String name, Strategy strategy, ResourceIdentifier resourceIdentifier) {

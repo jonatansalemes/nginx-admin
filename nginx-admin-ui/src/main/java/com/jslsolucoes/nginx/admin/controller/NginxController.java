@@ -40,7 +40,7 @@ public class NginxController {
 	private NginxStatus nginxStatus;
 
 	public NginxController() {
-		this(null, null,null);
+		this(null, null, null);
 	}
 
 	@Inject

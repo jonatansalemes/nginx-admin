@@ -26,6 +26,10 @@ public class Messages {
 
 	private static Logger logger = LoggerFactory.getLogger(Messages.class);
 
+	private Messages() {
+
+	}
+
 	public static String getString(String key) {
 		return getString(key, new Object[] {});
 	}

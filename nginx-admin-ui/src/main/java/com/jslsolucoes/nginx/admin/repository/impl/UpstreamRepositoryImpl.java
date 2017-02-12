@@ -48,7 +48,7 @@ public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements 
 	private ResourceIdentifierRepository resourceIdentifierRepository;
 
 	public UpstreamRepositoryImpl() {
-		this(null, null, null, null);
+		//Default constructor
 	}
 
 	@Inject

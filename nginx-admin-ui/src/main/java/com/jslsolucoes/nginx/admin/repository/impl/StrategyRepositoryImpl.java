@@ -29,7 +29,7 @@ import com.jslsolucoes.nginx.admin.repository.StrategyRepository;
 public class StrategyRepositoryImpl extends RepositoryImpl<Strategy> implements StrategyRepository {
 
 	public StrategyRepositoryImpl() {
-		this(null);
+		//Default constructor
 	}
 
 	@Inject

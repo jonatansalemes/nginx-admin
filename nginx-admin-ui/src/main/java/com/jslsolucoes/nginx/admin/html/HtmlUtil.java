@@ -23,6 +23,11 @@ import com.jslsolucoes.tagria.lib.html.Li;
 import com.jslsolucoes.tagria.lib.html.Ul;
 
 public class HtmlUtil {
+
+	private HtmlUtil() {
+
+	}
+
 	public static String convertToUnodernedList(List<String> items) {
 		if (CollectionUtils.isEmpty(items)) {
 			return "";

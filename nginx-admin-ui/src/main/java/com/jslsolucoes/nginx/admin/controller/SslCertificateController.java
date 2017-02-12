@@ -55,7 +55,7 @@ public class SslCertificateController {
 	}
 
 	public void form() {
-
+		// form logic
 	}
 
 	@Path("download/{hash}")
@@ -79,7 +79,7 @@ public class SslCertificateController {
 	@Post
 	public void saveOrUpdate(Long id, String commonName, Long idResourceIdentifierCertificate,
 			Long idResourceIdentifierCertificatePrivateKey, UploadedFile certificateFile,
-			UploadedFile certificatePrivateKeyFile) throws  IOException {
+			UploadedFile certificatePrivateKeyFile) throws IOException {
 		OperationResult operationResult = sslCertificateRepository.saveOrUpdate(
 				new SslCertificate(id, commonName, new ResourceIdentifier(idResourceIdentifierCertificate),
 						new ResourceIdentifier(idResourceIdentifierCertificatePrivateKey)),

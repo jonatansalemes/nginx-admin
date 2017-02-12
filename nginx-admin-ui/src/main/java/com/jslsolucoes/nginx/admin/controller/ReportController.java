@@ -47,7 +47,7 @@ public class ReportController {
 	private HttpServletResponse httpServletResponse;
 
 	public ReportController() {
-		this(null, null,null,null);
+		this(null, null, null, null);
 	}
 
 	@Inject

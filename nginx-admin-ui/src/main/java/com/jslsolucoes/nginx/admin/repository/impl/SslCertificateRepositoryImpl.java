@@ -42,7 +42,7 @@ public class SslCertificateRepositoryImpl extends RepositoryImpl<SslCertificate>
 	private ResourceIdentifierRepository resourceIdentifierRepository;
 
 	public SslCertificateRepositoryImpl() {
-		this(null, null, null);
+		//Default constructor
 	}
 
 	@Inject
@@ -58,7 +58,8 @@ public class SslCertificateRepositoryImpl extends RepositoryImpl<SslCertificate>
 		File ssl = nginxRepository.configuration().ssl();
 		SslCertificate sslCertificateToDelete = load(sslCertificate);
 		String sslCertificateHash = sslCertificateToDelete.getResourceIdentifierCertificate().getHash();
-		String sslCertificatePrivateKeyHash = sslCertificateToDelete.getResourceIdentifierCertificatePrivateKey().getHash();
+		String sslCertificatePrivateKeyHash = sslCertificateToDelete.getResourceIdentifierCertificatePrivateKey()
+				.getHash();
 		FileUtils.forceDelete(new File(ssl, sslCertificateHash));
 		FileUtils.forceDelete(new File(ssl, sslCertificatePrivateKeyHash));
 		super.delete(sslCertificateToDelete);

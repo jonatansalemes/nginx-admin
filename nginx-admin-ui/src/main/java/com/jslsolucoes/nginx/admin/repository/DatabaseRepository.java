@@ -19,7 +19,7 @@ import java.io.IOException;
 
 public interface DatabaseRepository {
 
-	public void installOrUpgrade() throws  IOException;
+	public void installOrUpgrade() throws IOException;
 
 	public Boolean installOrUpgradeRequired();
 

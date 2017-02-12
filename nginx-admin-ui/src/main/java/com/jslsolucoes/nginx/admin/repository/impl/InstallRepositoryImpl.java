@@ -41,7 +41,7 @@ public class InstallRepositoryImpl implements InstallRepository {
 	private ConfigurationRepository configurationRepository;
 
 	public InstallRepositoryImpl() {
-		this(null, null, null, null);
+		//Default constructor
 	}
 
 	@Inject

@@ -61,7 +61,7 @@ public class ReportRepositoryImpl implements ReportRepository {
 	private static Logger logger = LoggerFactory.getLogger(ReportRepository.class);
 
 	public ReportRepositoryImpl() {
-		this(null, null);
+		//Default constructor
 	}
 
 	@Inject
