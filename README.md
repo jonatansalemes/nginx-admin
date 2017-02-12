@@ -1,6 +1,11 @@
 [![][travis img]][travis]
 [![][license img]][license]
 [![][sonar img]][sonar]
+[![][bugs img]][bugs]
+[![][coverage img]][coverage]
+[![][lines img]][lines]
+[![][vulnerabilities img]][vulnerabilities]
+[![][code_smells img]][code_smells]
 
 [travis]:https://travis-ci.org/jslsolucoes/nginx-admin
 [travis img]:https://travis-ci.org/jslsolucoes/nginx-admin.svg?branch=master
@@ -10,7 +15,24 @@
 
 [sonar]:https://sonarqube.com/dashboard/index/com.jslsolucoes:nginx-admin:develop
 [sonar img]:https://sonarqube.com/api/badges/gate?key=com.jslsolucoes:nginx-admin:develop
-[sonar-nloc img]:https://sonarqube.com/api/badges/measure?key=com.jslsolucoes:nginx-admin:develop&metric=ncloc
+
+[bugs]:https://sonarqube.com/dashboard/index/com.jslsolucoes:nginx-admin:develop
+[bugs img]:https://sonarqube.com/api/badges/measure?key=com.jslsolucoes:nginx-admin:develop&metric=bugs
+
+[coverage]:https://sonarqube.com/dashboard/index/com.jslsolucoes:nginx-admin:develop
+[coverage img]:https://sonarqube.com/api/badges/measure?key=com.jslsolucoes:nginx-admin:develop&metric=coverage
+
+[bugs]:https://sonarqube.com/dashboard/index/com.jslsolucoes:nginx-admin:develop
+[bugs img]:https://sonarqube.com/api/badges/measure?key=com.jslsolucoes:nginx-admin:develop&metric=bugs
+
+[lines]:https://sonarqube.com/dashboard/index/com.jslsolucoes:nginx-admin:develop
+[lines img]:https://sonarqube.com/api/badges/measure?key=com.jslsolucoes:nginx-admin:develop&metric=lines
+
+[vulnerabilities]:https://sonarqube.com/dashboard/index/com.jslsolucoes:nginx-admin:develop
+[vulnerabilities img]:https://sonarqube.com/api/badges/measure?key=com.jslsolucoes:nginx-admin:develop&metric=vulnerabilities
+
+[code_smells]:https://sonarqube.com/dashboard/index/com.jslsolucoes:nginx-admin:develop
+[code_smells img]:https://sonarqube.com/api/badges/measure?key=com.jslsolucoes:nginx-admin:develop&metric=code_smells
 
 
 # nginx-admin
