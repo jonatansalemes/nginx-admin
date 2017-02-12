@@ -5,6 +5,9 @@ addons:
   sonarqube:
     token:
       secure: "km5O+vNGwOIe1kntux/8Ww6qnHEZQ2MsFTSQEPHsHQj+iiyBFC0oE80pJD6g0QXTXhutWc3jNzID5TUF9K7stka+KKOfeWtxZakxHdSnxtCHwPLSjYOks7SqTZ+Uu925sq4/EVuEEwzZmiRgrqVKTFl/iiNf13o8Ibzcg8c7FEohOoR/nOtRzFuZZfy8yoc2W1H4C0HIS7etByFBsrVAiXFSaShgowWCvj5bwCcm6340NMZU11wrlGsUg5kMNau8s7gYe0bg+6BaHeaXVHohAzsLy26vlj5QJ0D2/Wc6z8dBEK1mZHz1fnMPiLkyNfGFGLLkhFs6PxJR82MarB4P5cVLVAAxSwsvtc/a5k3zl9OY0kmC4CHDL8AdJjpRLIv4CAswqU54yRL3ifiheSeDpcwpISGZerFz3x2ohmagmWYKIeZ8uIdgq9wAeg/cL/e4QEI231gUJE65W8XzkE84ibX/kItk+dBNDzN/9S0jpGrdgtMuxB1IJPWtXAUuP4MmmkuYpvc1l2afwW5iQa1E0iWXcLcYzU0IrPkD9SY49zKowTz+0evRSlhVy4GTEEm5lYL99TojVUJWAn94S3ERZ6ChUg24HT+Zn77WtdvjOEzUU5XV5ZlPzBYoyJhTUbC+LSKkQmCpYKqB0UXU7Q6NUqQHRSbqBfv7AHeTK5l1zKI="
+    branches:
+	- develop
+	- master
 jdk:
   - oraclejdk8
 script:
