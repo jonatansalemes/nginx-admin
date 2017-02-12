@@ -5,7 +5,7 @@ install: true
 addons:
   sonarqube:
     token:
-      secure: "NCQvaCib2YS4Q3l27YtHP4GEKrKqVJZBdQ69f29E/VCS7l3MO2VUeZv8+ZCtpkq2WpqRN5iJrtMK+3BFqQAVzJpsutUbZucFJGloivnuacIwqbApxIVPN+vCNlX4W5avfCY2fAyCtQhp+TgxG6/tseUpSm8pbn+WyFbzGznQhLy8Fi/UZFIigiWAVvaHaNr//XMlvgAKVQBZQUXQA9uUPXMqaXYO7LEZrHwPi9yGQtewwvBwAyv0Z6oksMSfQtBi07tMo9iHNegbvVFs/11c2euHDCRJo84rWSW3h+CmPsaXQQIGuiBTxtzKkBI3HgU/9yW2HRx1zXzYxKoBIcrtQuExw8KhWXcxhVpttG0JaIUTj6crtU1iZM+OrWCKJA7elxsEXt7Fs2N0s3V9d/DhS77OqmEiKrQgGm1fAruNOfmIsP7ncpug2p3HzDHqwJuYXjQUFViEWSdIOoQDJli0cLc/FXDQR/wvCkthBm0h8jOasbU6wInPeNWfVjLpoNBIMv8BQ9wF2xldQA+ozMfywCvjq5oQRWarqpfp7bA8tBCFcEV+1ySINaXICi2siWOPCbx1oPzWa78X4+6l2K1eKk+5ocWIamDhyr8DjGd5VMwz/Y+VZVxiEx/3sMPWfnyBadFwRYi0un12phjw6VOQ6pGW7w4oXtIo8ndCW1F7fjU="
+      secure: "LsefO1i40ZPw/Zn67VDGANAonTzWzVUY7DKe1YgYp8P9T/mHTCKZeEcIN9rO9LObQTGBfYUEVEvVxNO5EggYZ4BR1vh6gCfQiJICi8oi3vp8qorbDH+STNnPazmyr3TQrZREO2wYjUx4Ve2Up0bKutZvf3K0fnJwz9FOhP61qCGHbdYOqKFdQpt9rPDIdOMv1AR79zygPnqTA2od2P3RttsajP3LgyEdAwAZolRzqv1mWPn+Mo6jRmz1cE0StESgiSVgD3vU1K360RtmP+kFBwHaZBQHf9MVD+cIppIXs/vcR+nonfVGiSYZBYsPoucykTTfZcdooeCQ+S+lp+wGTO+bjzB/9EGZ/QRAVKpVXdOQ/GLnBdMlHFjh4BD86ML/SvzJmEgE4hjCL9iBC798sICIQOBSOSqiLjVN+Kg1kGvf/1izchnQkOdInFbRlhj5iHFg2e5w7nYaeFiVIGjjLI/jU46qSPb0STwDi6AsjxoldjRgRSNE3O0DqBDhIP1ahxbsn1YnleF8gUblN1K8KxoCMJXgc3JYb3B1Ko6mLla2XC6H093Xd8z10dR0IBojl46g35uBUXEHnO1nnLfcv5RBiwXxavKCNUQ6oIa70cVL5a9lmLHZlseXR72vlz2ajmcCr4NUV9AZMaL5Y+bC9TyZ9FRU0glwJxQ+KbUra4g="
   branches:
     - develop
     - master
@@ -15,7 +15,7 @@ jdk:
 
 script:
   # JaCoCo is used to have code coverage, the agent has to be activated
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar -Dsonar.host.url=https://sonarqube.com -Dsonar.login=$SONAR_TOKEN
 
 cache:
   directories:
