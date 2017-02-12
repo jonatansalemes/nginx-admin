@@ -3,12 +3,12 @@ sudo: false
 install: true
 
 addons:
-  sonarqube:
-    branches:
-     	- develop
-     	- master
-    token:
-      secure: "LsefO1i40ZPw/Zn67VDGANAonTzWzVUY7DKe1YgYp8P9T/mHTCKZeEcIN9rO9LObQTGBfYUEVEvVxNO5EggYZ4BR1vh6gCfQiJICi8oi3vp8qorbDH+STNnPazmyr3TQrZREO2wYjUx4Ve2Up0bKutZvf3K0fnJwz9FOhP61qCGHbdYOqKFdQpt9rPDIdOMv1AR79zygPnqTA2od2P3RttsajP3LgyEdAwAZolRzqv1mWPn+Mo6jRmz1cE0StESgiSVgD3vU1K360RtmP+kFBwHaZBQHf9MVD+cIppIXs/vcR+nonfVGiSYZBYsPoucykTTfZcdooeCQ+S+lp+wGTO+bjzB/9EGZ/QRAVKpVXdOQ/GLnBdMlHFjh4BD86ML/SvzJmEgE4hjCL9iBC798sICIQOBSOSqiLjVN+Kg1kGvf/1izchnQkOdInFbRlhj5iHFg2e5w7nYaeFiVIGjjLI/jU46qSPb0STwDi6AsjxoldjRgRSNE3O0DqBDhIP1ahxbsn1YnleF8gUblN1K8KxoCMJXgc3JYb3B1Ko6mLla2XC6H093Xd8z10dR0IBojl46g35uBUXEHnO1nnLfcv5RBiwXxavKCNUQ6oIa70cVL5a9lmLHZlseXR72vlz2ajmcCr4NUV9AZMaL5Y+bC9TyZ9FRU0glwJxQ+KbUra4g="
+    sonarqube:
+       branches:
+        - develop
+        - master
+       token:
+         secure: "LsefO1i40ZPw/Zn67VDGANAonTzWzVUY7DKe1YgYp8P9T/mHTCKZeEcIN9rO9LObQTGBfYUEVEvVxNO5EggYZ4BR1vh6gCfQiJICi8oi3vp8qorbDH+STNnPazmyr3TQrZREO2wYjUx4Ve2Up0bKutZvf3K0fnJwz9FOhP61qCGHbdYOqKFdQpt9rPDIdOMv1AR79zygPnqTA2od2P3RttsajP3LgyEdAwAZolRzqv1mWPn+Mo6jRmz1cE0StESgiSVgD3vU1K360RtmP+kFBwHaZBQHf9MVD+cIppIXs/vcR+nonfVGiSYZBYsPoucykTTfZcdooeCQ+S+lp+wGTO+bjzB/9EGZ/QRAVKpVXdOQ/GLnBdMlHFjh4BD86ML/SvzJmEgE4hjCL9iBC798sICIQOBSOSqiLjVN+Kg1kGvf/1izchnQkOdInFbRlhj5iHFg2e5w7nYaeFiVIGjjLI/jU46qSPb0STwDi6AsjxoldjRgRSNE3O0DqBDhIP1ahxbsn1YnleF8gUblN1K8KxoCMJXgc3JYb3B1Ko6mLla2XC6H093Xd8z10dR0IBojl46g35uBUXEHnO1nnLfcv5RBiwXxavKCNUQ6oIa70cVL5a9lmLHZlseXR72vlz2ajmcCr4NUV9AZMaL5Y+bC9TyZ9FRU0glwJxQ+KbUra4g="
 
 jdk:
   - oraclejdk8
