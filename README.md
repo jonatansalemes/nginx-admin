@@ -1,5 +1,6 @@
 [![][travis img]][travis]
 [![][license img]][license]
+[![][sonar img]][sonar]
 
 [travis]:https://travis-ci.org/jslsolucoes/nginx-admin
 [travis img]:https://travis-ci.org/jslsolucoes/nginx-admin.svg?branch=master
@@ -7,10 +8,14 @@
 [license]:LICENSE
 [license img]:https://img.shields.io/badge/License-Apache%202-blue.svg
 
+[sonar]:https://sonarqube.com/dashboard/index/com.jslsolucoes:nginx-admin:develop
+[sonar img]:https://sonarqube.com/api/badges/gate?key=com.jslsolucoes:nginx-admin:develop
+
+
+https://sonarqube.com/api/badges/measure?key=com.jslsolucoes:nginx-admin:develop&metric=ncloc
 
 # nginx-admin
 Nginx admin is an open source multiplatform manager for nginx software to easy administration 
-
 
 Screenshots : 
 
