@@ -36,13 +36,19 @@ public class TemplateProcessor {
 	private Map<String, Object> data = new HashMap<>();
 	private String template;
 	private File location;
+	private String templateFolder;
 
 	private TemplateProcessor() {
-
+		this.templateFolder = "/template/dynamic/nginx";
 	}
 
 	public static TemplateProcessor build() {
 		return new TemplateProcessor();
+	}
+	
+	public TemplateProcessor withTemplateFolder(String templateFolder) {
+		this.templateFolder = templateFolder;
+		return this;
 	}
 
 	public TemplateProcessor withTemplate(String template) {
@@ -62,7 +68,7 @@ public class TemplateProcessor {
 
 	public void process() throws NginxAdminException {
 		Configuration configuration = new Configuration(Configuration.VERSION_2_3_23);
-		configuration.setTemplateLoader(new ClassTemplateLoader(TemplateProcessor.class, "/template/dynamic/nginx"));
+		configuration.setTemplateLoader(new ClassTemplateLoader(TemplateProcessor.class, templateFolder));
 		configuration.setDefaultEncoding("UTF-8");
 		configuration.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
 		configuration.setLogTemplateExceptions(false);
