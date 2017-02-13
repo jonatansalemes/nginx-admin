@@ -29,7 +29,7 @@ import com.jslsolucoes.nginx.admin.repository.ConfigurationRepository;
 public class ConfigurationRepositoryImpl extends RepositoryImpl<Configuration> implements ConfigurationRepository {
 
 	public ConfigurationRepositoryImpl() {
-		//Default constructor
+		// Default constructor
 	}
 
 	@Inject

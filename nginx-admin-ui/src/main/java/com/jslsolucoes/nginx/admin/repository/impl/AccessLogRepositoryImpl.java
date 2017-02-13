@@ -27,7 +27,7 @@ import com.jslsolucoes.nginx.admin.repository.AccessLogRepository;
 public class AccessLogRepositoryImpl extends RepositoryImpl<AccessLog> implements AccessLogRepository {
 
 	public AccessLogRepositoryImpl() {
-		//Default constructor
+		// Default constructor
 	}
 
 	@Inject

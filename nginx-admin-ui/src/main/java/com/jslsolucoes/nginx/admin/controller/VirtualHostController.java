@@ -22,6 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.inject.Inject;
 
 import com.google.common.collect.Lists;
+import com.jslsolucoes.nginx.admin.error.NginxAdminException;
 import com.jslsolucoes.nginx.admin.html.HtmlUtil;
 import com.jslsolucoes.nginx.admin.model.ResourceIdentifier;
 import com.jslsolucoes.nginx.admin.model.SslCertificate;
@@ -39,7 +40,6 @@ import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
-import freemarker.template.TemplateException;
 
 @Controller
 @Path("virtualHost")
@@ -100,7 +100,7 @@ public class VirtualHostController {
 
 	@Post
 	public void saveOrUpdate(Long id, Integer https, Long idResourceIdentifier, Long idSslCertificate,
-			List<String> aliases, List<String> locations, List<Long> upstreams) throws IOException, TemplateException {
+			List<String> aliases, List<String> locations, List<Long> upstreams) throws NginxAdminException {
 		OperationResult operationResult = virtualHostRepository
 				.saveOrUpdate(
 						new VirtualHost(id, https, new SslCertificate(idSslCertificate),

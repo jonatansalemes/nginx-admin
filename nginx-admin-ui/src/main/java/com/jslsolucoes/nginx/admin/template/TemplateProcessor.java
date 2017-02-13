@@ -24,6 +24,8 @@ import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 
+import com.jslsolucoes.nginx.admin.error.NginxAdminException;
+
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
@@ -58,7 +60,7 @@ public class TemplateProcessor {
 		return this;
 	}
 
-	public void process() throws IOException, TemplateException {
+	public void process() throws NginxAdminException {
 		Configuration configuration = new Configuration(Configuration.VERSION_2_3_23);
 		configuration.setTemplateLoader(new ClassTemplateLoader(TemplateProcessor.class, "/template/dynamic/nginx"));
 		configuration.setDefaultEncoding("UTF-8");
@@ -68,6 +70,8 @@ public class TemplateProcessor {
 		try (Writer writer = new StringWriter()) {
 			configuration.getTemplate(template).process(data, writer);
 			FileUtils.writeStringToFile(location, writer.toString(), "UTF-8");
+		} catch (IOException | TemplateException e) {
+			throw new NginxAdminException(e);
 		}
 	}
 

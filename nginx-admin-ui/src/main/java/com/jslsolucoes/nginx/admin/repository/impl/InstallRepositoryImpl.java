@@ -15,13 +15,13 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.repository.impl;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
+import com.jslsolucoes.nginx.admin.error.NginxAdminException;
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.model.Smtp;
 import com.jslsolucoes.nginx.admin.repository.ConfigurationRepository;
@@ -29,8 +29,6 @@ import com.jslsolucoes.nginx.admin.repository.InstallRepository;
 import com.jslsolucoes.nginx.admin.repository.NginxRepository;
 import com.jslsolucoes.nginx.admin.repository.SmtpRepository;
 import com.jslsolucoes.nginx.admin.repository.UserRepository;
-
-import freemarker.template.TemplateException;
 
 @RequestScoped
 public class InstallRepositoryImpl implements InstallRepository {
@@ -41,7 +39,7 @@ public class InstallRepositoryImpl implements InstallRepository {
 	private ConfigurationRepository configurationRepository;
 
 	public InstallRepositoryImpl() {
-		//Default constructor
+		// Default constructor
 	}
 
 	@Inject
@@ -70,7 +68,7 @@ public class InstallRepositoryImpl implements InstallRepository {
 	public void install(String login, String loginConfirm, String adminPassword, String adminPasswordConfirm,
 			String nginxBin, String nginxSettings, String smtpHost, Integer smtpPort, Integer smtpAuthenticate,
 			Integer smtpTls, String smtpFromAddress, String smtpUsername, String smtpPassword, String urlBase)
-			throws IOException, TemplateException {
+			throws NginxAdminException {
 		userRepository.createAdministrator(login, adminPassword);
 		nginxRepository.saveOrUpdateAndConfigure(new Nginx(nginxBin, nginxSettings));
 		smtpRepository.saveOrUpdate(

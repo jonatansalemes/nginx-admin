@@ -36,12 +36,11 @@ import org.jboss.vfs.VirtualFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.jslsolucoes.nginx.admin.error.NginxAdminException;
 import com.jslsolucoes.nginx.admin.i18n.Messages;
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.repository.NginxRepository;
 import com.jslsolucoes.nginx.admin.template.TemplateProcessor;
-
-import freemarker.template.TemplateException;
 
 @RequestScoped
 public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxRepository {
@@ -49,7 +48,7 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 	private static Logger logger = LoggerFactory.getLogger(LogRepositoryImpl.class);
 
 	public NginxRepositoryImpl() {
-		//Default constructor
+		// Default constructor
 	}
 
 	@Inject
@@ -99,7 +98,7 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 	}
 
 	@Override
-	public OperationResult saveOrUpdateAndConfigure(Nginx nginx) throws IOException, TemplateException {
+	public OperationResult saveOrUpdateAndConfigure(Nginx nginx) throws NginxAdminException {
 		nginx.setSettings(normalize(nginx.getSettings()));
 		nginx.setBin(normalize(nginx.getBin()));
 		configure(nginx);
@@ -110,18 +109,22 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 		return path.replaceAll("\\\\", "/");
 	}
 
-	private void configure(Nginx nginx) throws IOException, TemplateException {
-		copy(nginx);
-		conf(nginx);
-		root(nginx);
+	private void configure(Nginx nginx) throws NginxAdminException {
+		try {
+			copy(nginx);
+			conf(nginx);
+			root(nginx);
+		} catch (IOException | NginxAdminException e) {
+			throw new NginxAdminException(e);
+		}
 	}
 
-	private void root(Nginx nginx) throws IOException, TemplateException {
+	private void root(Nginx nginx) throws NginxAdminException {
 		TemplateProcessor.build().withTemplate("root.tpl").withData("nginx", nginx)
 				.toLocation(new File(nginx.virtualHost(), "root.conf")).process();
 	}
 
-	private void conf(Nginx nginx) throws IOException, TemplateException {
+	private void conf(Nginx nginx) throws NginxAdminException {
 		TemplateProcessor.build().withTemplate("nginx.tpl").withData("nginx", nginx)
 				.toLocation(new File(nginx.setting(), "nginx.conf")).process();
 	}

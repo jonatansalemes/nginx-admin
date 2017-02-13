@@ -42,7 +42,7 @@ public class SslCertificateRepositoryImpl extends RepositoryImpl<SslCertificate>
 	private ResourceIdentifierRepository resourceIdentifierRepository;
 
 	public SslCertificateRepositoryImpl() {
-		//Default constructor
+		// Default constructor
 	}
 
 	@Inject

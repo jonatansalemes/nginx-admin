@@ -18,13 +18,12 @@ package com.jslsolucoes.nginx.admin.repository;
 import java.io.IOException;
 import java.util.List;
 
+import com.jslsolucoes.nginx.admin.error.NginxAdminException;
 import com.jslsolucoes.nginx.admin.model.VirtualHost;
 import com.jslsolucoes.nginx.admin.model.VirtualHostAlias;
 import com.jslsolucoes.nginx.admin.model.VirtualHostLocation;
 import com.jslsolucoes.nginx.admin.repository.impl.OperationResult;
 import com.jslsolucoes.nginx.admin.repository.impl.OperationType;
-
-import freemarker.template.TemplateException;
 
 public interface VirtualHostRepository {
 
@@ -35,7 +34,7 @@ public interface VirtualHostRepository {
 	public VirtualHost load(VirtualHost virtualHost);
 
 	public OperationResult saveOrUpdate(VirtualHost virtualHost, List<VirtualHostAlias> aliases,
-			List<VirtualHostLocation> locations) throws IOException, TemplateException;
+			List<VirtualHostLocation> locations) throws NginxAdminException;
 
 	public List<String> validateBeforeSaveOrUpdate(VirtualHost virtualHost, List<VirtualHostAlias> aliases,
 			List<VirtualHostLocation> locations);

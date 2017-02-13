@@ -39,7 +39,7 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 	private MailRepository mailRepository;
 
 	public UserRepositoryImpl() {
-		//Default constructor
+		// Default constructor
 	}
 
 	@Inject

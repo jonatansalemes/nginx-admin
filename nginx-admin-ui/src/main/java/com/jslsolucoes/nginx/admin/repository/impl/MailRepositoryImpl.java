@@ -42,7 +42,7 @@ public class MailRepositoryImpl implements MailRepository {
 	private static Logger logger = LoggerFactory.getLogger(MailRepositoryImpl.class);
 
 	public MailRepositoryImpl() {
-		//Default constructor
+		// Default constructor
 	}
 
 	@Inject

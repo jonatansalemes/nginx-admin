@@ -29,6 +29,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
+import com.jslsolucoes.nginx.admin.error.NginxAdminException;
 import com.jslsolucoes.nginx.admin.i18n.Messages;
 import com.jslsolucoes.nginx.admin.model.Upstream;
 import com.jslsolucoes.nginx.admin.model.UpstreamServer;
@@ -38,8 +39,6 @@ import com.jslsolucoes.nginx.admin.repository.UpstreamRepository;
 import com.jslsolucoes.nginx.admin.repository.UpstreamServerRepository;
 import com.jslsolucoes.nginx.admin.template.TemplateProcessor;
 
-import freemarker.template.TemplateException;
-
 @RequestScoped
 public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements UpstreamRepository {
 
@@ -48,7 +47,7 @@ public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements 
 	private ResourceIdentifierRepository resourceIdentifierRepository;
 
 	public UpstreamRepositoryImpl() {
-		//Default constructor
+		// Default constructor
 	}
 
 	@Inject
@@ -62,7 +61,7 @@ public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements 
 
 	@Override
 	public OperationResult saveOrUpdate(Upstream upstream, List<UpstreamServer> upstreamServers)
-			throws IOException, TemplateException {
+			throws NginxAdminException {
 
 		if (upstream.getId() == null) {
 			upstream.setResourceIdentifier(resourceIdentifierRepository.create());
@@ -74,7 +73,7 @@ public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements 
 		return operationResult;
 	}
 
-	private void configure(Upstream upstream) throws IOException, TemplateException {
+	private void configure(Upstream upstream) throws NginxAdminException {
 		Upstream upstreamToConfigure = load(upstream);
 		TemplateProcessor.build().withTemplate("upstream.tpl").withData("upstream", upstreamToConfigure)
 				.toLocation(new File(nginxRepository.configuration().upstream(),

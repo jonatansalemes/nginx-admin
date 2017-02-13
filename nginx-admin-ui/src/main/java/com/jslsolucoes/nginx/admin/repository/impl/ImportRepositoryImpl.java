@@ -30,6 +30,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.google.common.collect.Lists;
+import com.jslsolucoes.nginx.admin.error.NginxAdminException;
 import com.jslsolucoes.nginx.admin.i18n.Messages;
 import com.jslsolucoes.nginx.admin.model.Server;
 import com.jslsolucoes.nginx.admin.model.SslCertificate;
@@ -50,8 +51,6 @@ import com.jslsolucoes.nginx.admin.repository.StrategyRepository;
 import com.jslsolucoes.nginx.admin.repository.UpstreamRepository;
 import com.jslsolucoes.nginx.admin.repository.VirtualHostRepository;
 
-import freemarker.template.TemplateException;
-
 @RequestScoped
 public class ImportRepositoryImpl implements ImportRepository {
 
@@ -62,7 +61,7 @@ public class ImportRepositoryImpl implements ImportRepository {
 	private SslCertificateRepository sslCertificateRepository;
 
 	public ImportRepositoryImpl() {
-		//Default constructor
+		// Default constructor
 	}
 
 	@Inject
@@ -77,11 +76,15 @@ public class ImportRepositoryImpl implements ImportRepository {
 	}
 
 	@Override
-	public void importFrom(String nginxConf) throws IOException, TemplateException {
-		List<Directive> directives = new NginxConfParser(nginxConf).parse();
-		servers(directives);
-		upstreams(directives);
-		virtualHosts(directives);
+	public void importFrom(String nginxConf) throws NginxAdminException {
+		try {
+			List<Directive> directives = new NginxConfParser(nginxConf).parse();
+			servers(directives);
+			upstreams(directives);
+			virtualHosts(directives);
+		} catch (IOException | NginxAdminException e) {
+			throw new NginxAdminException(e);
+		}
 	}
 
 	private List<Directive> filter(List<Directive> directives, DirectiveType directiveType) {
@@ -89,36 +92,45 @@ public class ImportRepositoryImpl implements ImportRepository {
 				.collect(Collectors.toList());
 	}
 
-	private void virtualHosts(List<Directive> directives) throws IOException, TemplateException {
-		for (Directive directive : filter(directives, DirectiveType.SERVER)) {
-			ServerDirective serverDirective = (ServerDirective) directive;
+	private void virtualHosts(List<Directive> directives) throws NginxAdminException {
+		try {
+			for (Directive directive : filter(directives, DirectiveType.SERVER)) {
+				ServerDirective serverDirective = (ServerDirective) directive;
 
-			List<VirtualHostAlias> aliases = serverDirective.getAliases().stream()
-					.map(alias -> new VirtualHostAlias(alias)).collect(Collectors.toList());
+				List<VirtualHostAlias> aliases = serverDirective.getAliases().stream()
+						.map(alias -> new VirtualHostAlias(alias)).collect(Collectors.toList());
 
-			List<VirtualHostLocation> locations = serverDirective.getLocations().stream()
-					.filter(location -> !StringUtils.isEmpty(location.getUpstream()))
-					.map(location -> new VirtualHostLocation(location.getPath(),
-							upstreamRepository.findByName(location.getUpstream())))
-					.collect(Collectors.toList());
+				List<VirtualHostLocation> locations = serverDirective.getLocations().stream()
+						.filter(location -> !StringUtils.isEmpty(location.getUpstream()))
+						.map(location -> new VirtualHostLocation(location.getPath(),
+								upstreamRepository.findByName(location.getUpstream())))
+						.collect(Collectors.toList());
 
-			if (!CollectionUtils.isEmpty(aliases) && !CollectionUtils.isEmpty(locations)
-					&& virtualHostRepository.hasEquals(new VirtualHost(), aliases) == null) {
-				SslCertificate sslCertificate = null;
-				if (!StringUtils.isEmpty(serverDirective.getSslCertificate())) {
-					OperationResult operationResult = sslCertificateRepository.saveOrUpdate(
-							new SslCertificate(UUID.randomUUID().toString()),
-							new FileInputStream(new File(serverDirective.getSslCertificate())),
-							new FileInputStream(new File(serverDirective.getSslCertificateKey())));
-					sslCertificate = new SslCertificate(operationResult.getId());
+				if (!CollectionUtils.isEmpty(aliases) && !CollectionUtils.isEmpty(locations)
+						&& virtualHostRepository.hasEquals(new VirtualHost(), aliases) == null) {
+					SslCertificate sslCertificate = null;
+					if (!StringUtils.isEmpty(serverDirective.getSslCertificate())) {
+						try(FileInputStream sslCertificateFileInputStream = new FileInputStream(new File(serverDirective.getSslCertificate()));
+								FileInputStream sslCertificateKeyFileInputStream = new FileInputStream(new File(serverDirective.getSslCertificateKey()))){
+							OperationResult operationResult = sslCertificateRepository.saveOrUpdate(
+									new SslCertificate(UUID.randomUUID().toString()),
+									sslCertificateFileInputStream,
+									sslCertificateKeyFileInputStream);
+							sslCertificate = new SslCertificate(operationResult.getId());
+						}
+						
+					}
+					virtualHostRepository.saveOrUpdate(
+							new VirtualHost(serverDirective.getPort() == 80 ? 0 : 1, sslCertificate), aliases,
+							locations);
 				}
-				virtualHostRepository.saveOrUpdate(
-						new VirtualHost(serverDirective.getPort() == 80 ? 0 : 1, sslCertificate), aliases, locations);
 			}
+		} catch (IOException | NginxAdminException e) {
+			throw new NginxAdminException(e);
 		}
 	}
 
-	private void upstreams(List<Directive> directives) throws IOException, TemplateException {
+	private void upstreams(List<Directive> directives) throws NginxAdminException {
 		for (Directive directive : filter(directives, DirectiveType.UPSTREAM)) {
 			UpstreamDirective upstreamDirective = (UpstreamDirective) directive;
 			if (upstreamRepository.hasEquals(new Upstream(upstreamDirective.getName())) == null) {

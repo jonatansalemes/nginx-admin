@@ -31,6 +31,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
 
+import com.jslsolucoes.nginx.admin.error.NginxAdminException;
 import com.jslsolucoes.nginx.admin.i18n.Messages;
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.model.VirtualHost;
@@ -43,8 +44,6 @@ import com.jslsolucoes.nginx.admin.repository.VirtualHostLocationRepository;
 import com.jslsolucoes.nginx.admin.repository.VirtualHostRepository;
 import com.jslsolucoes.nginx.admin.template.TemplateProcessor;
 
-import freemarker.template.TemplateException;
-
 @RequestScoped
 public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> implements VirtualHostRepository {
 
@@ -54,7 +53,7 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 	private VirtualHostLocationRepository virtualHostLocationRepository;
 
 	public VirtualHostRepositoryImpl() {
-		//Default constructor
+		// Default constructor
 	}
 
 	@Inject
@@ -70,7 +69,7 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 
 	@Override
 	public OperationResult saveOrUpdate(VirtualHost virtualHost, List<VirtualHostAlias> aliases,
-			List<VirtualHostLocation> locations) throws IOException, TemplateException {
+			List<VirtualHostLocation> locations) throws NginxAdminException {
 		if (virtualHost.getId() == null) {
 			virtualHost.setResourceIdentifier(resourceIdentifierRepository.create());
 		}
@@ -98,7 +97,7 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 		return OperationType.DELETE;
 	}
 
-	private void configure(VirtualHost virtualHost) throws IOException, TemplateException {
+	private void configure(VirtualHost virtualHost) throws NginxAdminException {
 		VirtualHost virtualHostToConfigure = load(virtualHost);
 		Nginx nginx = nginxRepository.configuration();
 		TemplateProcessor.build().withTemplate("virtual-host.tpl").withData("virtualHost", virtualHostToConfigure)

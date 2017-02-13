@@ -28,7 +28,7 @@ import com.jslsolucoes.nginx.admin.repository.SmtpRepository;
 public class SmtpRepositoryImpl extends RepositoryImpl<Smtp> implements SmtpRepository {
 
 	public SmtpRepositoryImpl() {
-		//Default constructor
+		// Default constructor
 	}
 
 	@Inject

@@ -22,6 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.inject.Inject;
 
 import com.google.common.collect.Lists;
+import com.jslsolucoes.nginx.admin.error.NginxAdminException;
 import com.jslsolucoes.nginx.admin.html.HtmlUtil;
 import com.jslsolucoes.nginx.admin.model.ResourceIdentifier;
 import com.jslsolucoes.nginx.admin.model.Server;
@@ -38,7 +39,6 @@ import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
-import freemarker.template.TemplateException;
 
 @Controller
 @Path("upstream")
@@ -94,7 +94,7 @@ public class UpstreamController {
 
 	@Post
 	public void saveOrUpdate(Long id, String name, Long idStrategy, List<Long> servers, List<Integer> ports,
-			Long idResourceIdentifier) throws IOException, TemplateException {
+			Long idResourceIdentifier) throws NginxAdminException {
 		OperationResult operationResult = upstreamRepository.saveOrUpdate(
 				new Upstream(id, name, new Strategy(idStrategy), new ResourceIdentifier(idResourceIdentifier)),
 				convert(servers, ports));

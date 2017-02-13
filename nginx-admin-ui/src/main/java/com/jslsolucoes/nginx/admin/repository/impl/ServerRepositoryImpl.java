@@ -33,7 +33,7 @@ import com.jslsolucoes.nginx.admin.repository.ServerRepository;
 public class ServerRepositoryImpl extends RepositoryImpl<Server> implements ServerRepository {
 
 	public ServerRepositoryImpl() {
-		//Default constructor
+		// Default constructor
 	}
 
 	@Inject

@@ -18,12 +18,11 @@ package com.jslsolucoes.nginx.admin.repository;
 import java.io.IOException;
 import java.util.List;
 
+import com.jslsolucoes.nginx.admin.error.NginxAdminException;
 import com.jslsolucoes.nginx.admin.model.Upstream;
 import com.jslsolucoes.nginx.admin.model.UpstreamServer;
 import com.jslsolucoes.nginx.admin.repository.impl.OperationResult;
 import com.jslsolucoes.nginx.admin.repository.impl.OperationType;
-
-import freemarker.template.TemplateException;
 
 public interface UpstreamRepository {
 
@@ -34,7 +33,7 @@ public interface UpstreamRepository {
 	public Upstream load(Upstream upstream);
 
 	public OperationResult saveOrUpdate(Upstream upstream, List<UpstreamServer> upstreamServers)
-			throws IOException, TemplateException;
+			throws NginxAdminException;
 
 	public List<String> validateBeforeSaveOrUpdate(Upstream upstream, List<UpstreamServer> upstreamServers);
 

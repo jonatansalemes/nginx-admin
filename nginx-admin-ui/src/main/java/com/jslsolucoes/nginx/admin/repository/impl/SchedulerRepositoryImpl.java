@@ -39,7 +39,7 @@ public class SchedulerRepositoryImpl implements SchedulerRepository {
 	private ConfigurationRepository configurationRepository;
 
 	public SchedulerRepositoryImpl() {
-		//Default constructor
+		// Default constructor
 	}
 
 	@Inject

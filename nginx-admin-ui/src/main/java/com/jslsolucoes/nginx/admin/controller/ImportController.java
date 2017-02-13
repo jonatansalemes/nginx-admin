@@ -15,10 +15,9 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.controller;
 
-import java.io.IOException;
-
 import javax.inject.Inject;
 
+import com.jslsolucoes.nginx.admin.error.NginxAdminException;
 import com.jslsolucoes.nginx.admin.html.HtmlUtil;
 import com.jslsolucoes.nginx.admin.repository.ImportRepository;
 
@@ -27,7 +26,6 @@ import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
-import freemarker.template.TemplateException;
 
 @Controller
 @Path("import")
@@ -57,7 +55,7 @@ public class ImportController {
 	}
 
 	@Post
-	public void execute(String nginxConf) throws IOException, TemplateException {
+	public void execute(String nginxConf) throws NginxAdminException {
 		importRepository.importFrom(nginxConf);
 		this.result.include("imported", true);
 		this.result.redirectTo(this).form();

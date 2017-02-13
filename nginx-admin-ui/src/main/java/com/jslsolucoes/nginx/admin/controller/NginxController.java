@@ -15,10 +15,9 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.controller;
 
-import java.io.IOException;
-
 import javax.inject.Inject;
 
+import com.jslsolucoes.nginx.admin.error.NginxAdminException;
 import com.jslsolucoes.nginx.admin.html.HtmlUtil;
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.nginx.status.NginxStatus;
@@ -29,7 +28,6 @@ import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
-import freemarker.template.TemplateException;
 
 @Controller
 @Path("nginx")
@@ -64,7 +62,7 @@ public class NginxController {
 
 	@Post
 	public void update(Long id, String bin, String settings, Integer gzip, Integer maxPostSize)
-			throws IOException, TemplateException {
+			throws NginxAdminException {
 		this.nginxRepository.saveOrUpdateAndConfigure(new Nginx(id, bin, settings, gzip, maxPostSize));
 		this.result.include("updated", true);
 		this.result.redirectTo(this).edit();

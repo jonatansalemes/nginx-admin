@@ -33,7 +33,7 @@ import com.jslsolucoes.nginx.admin.repository.UpstreamServerRepository;
 public class UpstreamServerRepositoryImpl extends RepositoryImpl<UpstreamServer> implements UpstreamServerRepository {
 
 	public UpstreamServerRepositoryImpl() {
-		//Default constructor
+		// Default constructor
 	}
 
 	@Inject

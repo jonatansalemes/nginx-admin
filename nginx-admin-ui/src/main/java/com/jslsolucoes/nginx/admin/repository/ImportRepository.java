@@ -15,14 +15,13 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.repository;
 
-import java.io.IOException;
 import java.util.List;
 
-import freemarker.template.TemplateException;
+import com.jslsolucoes.nginx.admin.error.NginxAdminException;
 
 public interface ImportRepository {
 
 	public List<String> validateBeforeImport(String nginxConf);
 
-	public void importFrom(String nginxConf) throws IOException, TemplateException;
+	public void importFrom(String nginxConf) throws NginxAdminException;
 }

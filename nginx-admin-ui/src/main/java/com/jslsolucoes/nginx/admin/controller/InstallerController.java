@@ -15,7 +15,6 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.controller;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
@@ -25,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.jslsolucoes.nginx.admin.annotation.Application;
 import com.jslsolucoes.nginx.admin.annotation.Public;
+import com.jslsolucoes.nginx.admin.error.NginxAdminException;
 import com.jslsolucoes.nginx.admin.html.HtmlUtil;
 import com.jslsolucoes.nginx.admin.repository.InstallRepository;
 
@@ -33,7 +33,6 @@ import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
-import freemarker.template.TemplateException;
 
 @Controller
 @Path("installer")
@@ -86,7 +85,7 @@ public class InstallerController {
 	public void install(String login, String loginConfirm, String adminPassword, String adminPasswordConfirm,
 			String nginxBin, String nginxSettings, String smtpHost, Integer smtpPort, Integer smtpAuthenticate,
 			Integer smtpTls, String smtpFromAddress, String smtpUsername, String smtpPassword, String urlBase)
-			throws IOException, TemplateException {
+			throws NginxAdminException {
 		installRepository.install(login, loginConfirm, adminPassword, adminPasswordConfirm, nginxBin, nginxSettings,
 				smtpHost, smtpPort, smtpAuthenticate, smtpTls, smtpFromAddress, smtpUsername, smtpPassword, urlBase);
 		this.result.redirectTo(UserController.class).login();

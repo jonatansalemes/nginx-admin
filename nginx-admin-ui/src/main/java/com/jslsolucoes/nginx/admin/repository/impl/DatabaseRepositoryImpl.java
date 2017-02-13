@@ -46,7 +46,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 	private static Logger logger = LoggerFactory.getLogger(LogRepositoryImpl.class);
 
 	public DatabaseRepositoryImpl() {
-		//Default constructor
+		// Default constructor
 	}
 
 	@Inject
