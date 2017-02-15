@@ -1,4 +1,4 @@
-package com.jslsolucoes.nginx.admin.repository;
+package unit.com.jslsolucoes.nginx.admin.repository;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -13,9 +13,12 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import com.jslsolucoes.nginx.admin.hibernate.Hibernate;
 import com.jslsolucoes.nginx.admin.model.User;
+import com.jslsolucoes.nginx.admin.repository.MailRepository;
+import com.jslsolucoes.nginx.admin.repository.UserRepository;
 import com.jslsolucoes.nginx.admin.repository.impl.UserRepositoryImpl;
+
+import unit.com.jslsolucoes.nginx.admin.hibernate.Hibernate;
 
 public class UserRepositoryTest {
 

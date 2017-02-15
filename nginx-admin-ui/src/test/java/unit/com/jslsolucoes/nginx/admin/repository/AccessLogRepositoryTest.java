@@ -1,4 +1,4 @@
-package com.jslsolucoes.nginx.admin.repository;
+package unit.com.jslsolucoes.nginx.admin.repository;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -10,9 +10,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
 
-import com.jslsolucoes.nginx.admin.hibernate.Hibernate;
 import com.jslsolucoes.nginx.admin.model.AccessLog;
+import com.jslsolucoes.nginx.admin.repository.AccessLogRepository;
 import com.jslsolucoes.nginx.admin.repository.impl.AccessLogRepositoryImpl;
+
+import unit.com.jslsolucoes.nginx.admin.hibernate.Hibernate;
 
 
 public class AccessLogRepositoryTest {

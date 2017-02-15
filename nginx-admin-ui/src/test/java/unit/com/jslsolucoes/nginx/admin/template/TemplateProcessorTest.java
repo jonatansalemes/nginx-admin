@@ -1,4 +1,4 @@
-package com.jslsolucoes.nginx.admin.template;
+package unit.com.jslsolucoes.nginx.admin.template;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.jslsolucoes.nginx.admin.error.NginxAdminException;
+import com.jslsolucoes.nginx.admin.template.TemplateProcessor;
 
 public class TemplateProcessorTest {
 

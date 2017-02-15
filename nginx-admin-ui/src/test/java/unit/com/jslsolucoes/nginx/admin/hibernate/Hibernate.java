@@ -1,4 +1,4 @@
-package com.jslsolucoes.nginx.admin.hibernate;
+package unit.com.jslsolucoes.nginx.admin.hibernate;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;

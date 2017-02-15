@@ -1,4 +1,4 @@
-package com.jslsolucoes.nginx.admin.controller;
+package unit.com.jslsolucoes.nginx.admin.controller;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import com.jslsolucoes.nginx.admin.controller.UserController;
 import com.jslsolucoes.nginx.admin.model.User;
 import com.jslsolucoes.nginx.admin.repository.UserRepository;
 import com.jslsolucoes.nginx.admin.session.UserSession;

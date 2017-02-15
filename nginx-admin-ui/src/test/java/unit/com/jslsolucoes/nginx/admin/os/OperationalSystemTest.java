@@ -1,10 +1,13 @@
-package com.jslsolucoes.nginx.admin.os;
+package unit.com.jslsolucoes.nginx.admin.os;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import com.jslsolucoes.nginx.admin.os.OperationalSystem;
+import com.jslsolucoes.nginx.admin.os.OperationalSystemInfo;
 
 public class OperationalSystemTest {
 

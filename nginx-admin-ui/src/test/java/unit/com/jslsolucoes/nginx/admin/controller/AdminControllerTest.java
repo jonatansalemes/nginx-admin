@@ -1,4 +1,4 @@
-package com.jslsolucoes.nginx.admin.controller;
+package unit.com.jslsolucoes.nginx.admin.controller;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import com.jslsolucoes.nginx.admin.controller.AdminController;
 import com.jslsolucoes.nginx.admin.nginx.detail.NginxDetail;
 import com.jslsolucoes.nginx.admin.nginx.runner.Runner;
 import com.jslsolucoes.nginx.admin.runtime.RuntimeResult;
@@ -82,10 +83,5 @@ public class AdminControllerTest {
 		controller.testConfig();
 		Assert.assertEquals(runtimeResult,result.included().get("runtimeResult"));
 	}
-	
-	
-	
-	
-
 		
 }
