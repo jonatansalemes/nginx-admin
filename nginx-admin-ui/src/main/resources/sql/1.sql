@@ -1,3 +1,5 @@
+DROP SCHEMA IF EXISTS admin;
+
 CREATE SCHEMA admin;
 create table admin.user (
 	id bigint(10) auto_increment not null, 

@@ -6,10 +6,9 @@
 	<session-factory>
 	    
 		<property name="hibernate.dialect">org.hibernate.dialect.H2Dialect</property>
-		<property name="hibernate.connection.url">jdbc:h2:mem:test;INIT=create schema if not exists ADMIN\;</property>
+		<property name="hibernate.connection.url">jdbc:h2:mem:test;INIT=RUNSCRIPT FROM 'classpath:sql/1.sql'\;RUNSCRIPT FROM 'classpath:sql/2.sql'\;RUNSCRIPT FROM 'classpath:sql/3.sql'\;RUNSCRIPT FROM 'classpath:sql/4.sql'\;RUNSCRIPT FROM 'classpath:sql/5.sql'\;</property>
 		<property name="hibernate.connection.username">sa</property>
 		<property name="hibernate.connection.password"></property>
-		<property name="hibernate.hbm2ddl.auto">update</property>
 		<property name="hibernate.show_sql">true</property>
 		<property name="hibernate.format_sql">true</property>
 		
