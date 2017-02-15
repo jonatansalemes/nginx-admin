@@ -103,7 +103,7 @@ public class ServerParser implements Parser {
 				}
 			} else if (line.contains("}")) {
 				atomicInteger.getAndDecrement();
-				if (atomicInteger.get() == 0) {
+				if (atomicInteger.get() == 0 && lines.get(indexStart).matches("server(\\s{1,})\\{")) {
 					blocks.add(StringUtils.join(lines.subList(indexStart, currentLine.get()), "\n"));
 				}
 			}
