@@ -37,6 +37,13 @@ public class TemplateProcessorTest {
 		Assert.assertTrue(random.exists());
 	}
 	
+	@Test(expected=NginxAdminException.class)
+	public void shouldFailOnMisConfig() throws NginxAdminException {
+		templateProcessor
+		.toLocation(random)
+		.withTemplate("notexists.tpl")
+		.process();
+	}
 	
 	@Test
 	public void testFillContent() throws NginxAdminException, IOException {
@@ -55,6 +62,8 @@ public class TemplateProcessorTest {
 	
 	@After
 	public void tearDown() throws IOException {
-		FileUtils.forceDelete(random);
+		if(random.exists()){
+			FileUtils.forceDelete(random);
+		}
 	}
 }

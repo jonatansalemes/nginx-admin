@@ -1,10 +1,13 @@
 package com.jslsolucoes.nginx.admin.controller;
 
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
 
 import java.util.Properties;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -20,14 +23,15 @@ public class UserControllerTest {
 
 	private UserController controller;
 	private MockResult result;
+	private UserSession userSession;
 	
 	@Mock private UserRepository userRepository;
-	@Mock private UserSession userSession;
 	@Mock private Properties properties;
 	
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
+		userSession = new UserSession();
 		result = new MockResult();
 		controller = new UserController(properties, userSession, result, userRepository);
 	}
@@ -53,13 +57,16 @@ public class UserControllerTest {
 		when(userRepository.authenticate(any())).thenReturn(user);
 		when(userRepository.loadForSession(any())).thenReturn(user);
 		controller.authenticate("aa", "xx");
-		verify(userSession).setUser(user);
+		Assert.assertEquals(userSession.getUser(),user);
 	}
 	
 	@Test
 	public void logout() {
+		User user = new User();
+		userSession.setUser(user);
+		Assert.assertEquals(userSession.getUser(),user);
 		controller.logout();
-		verify(userSession).logout();
+		Assert.assertNull(userSession.getUser());
 	}
 	
 	
