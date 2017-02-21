@@ -5,6 +5,8 @@ import org.junit.experimental.categories.Category;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import integration.com.jslsolucoes.nginx.admin.page.LoginPage;
+
 @Category(IntegrationTest.class)
 public class LoginTestIT {
 

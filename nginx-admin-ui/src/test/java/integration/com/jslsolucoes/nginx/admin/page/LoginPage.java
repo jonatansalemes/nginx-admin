@@ -1,4 +1,4 @@
-package integration.com.jslsolucoes.nginx.admin;
+package integration.com.jslsolucoes.nginx.admin.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
