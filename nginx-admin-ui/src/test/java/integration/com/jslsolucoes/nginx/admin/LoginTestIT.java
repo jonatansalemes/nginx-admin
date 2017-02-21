@@ -1,10 +1,12 @@
 package integration.com.jslsolucoes.nginx.admin;
 
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-public class IntegrationTestCase {
+@Category(IntegrationTest.class)
+public class LoginTestIT {
 
 	@Test
 	public void testBasic() throws InterruptedException {
