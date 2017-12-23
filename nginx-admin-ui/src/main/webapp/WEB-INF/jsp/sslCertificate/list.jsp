@@ -13,10 +13,14 @@
 				${ sslCertificate.commonName }
 			</html:gridColumn>
 			<html:gridColumn label="{ssl.certificate}">
-				<html:link target="_blank" url="/sslCertificate/download/${ sslCertificate.certificate }" label="{ssl.certificate.download}"></html:link>
+				<html:link target="_blank"
+						url="/sslCertificate/download/${ sslCertificate.resourceIdentifierCertificate.hash }"
+						label="{ssl.certificate.download}"></html:link>
 			</html:gridColumn>
 			<html:gridColumn label="{ssl.certificate.key}">
-				<html:link target="_blank" url="/sslCertificate/download/${ sslCertificate.certificatePrivateKey }" label="{ssl.certificate.key.download}"></html:link>
+				<html:link target="_blank"
+						url="/sslCertificate/download/${ sslCertificate.resourceIdentifierCertificatePrivateKey.hash }"
+						label="{ssl.certificate.key.download}"></html:link>
 			</html:gridColumn>
 			<html:gridColumn>
 				<html:buttonGroup spaced="true">
