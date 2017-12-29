@@ -47,13 +47,6 @@ Screenshots :
 ![alt tag](https://github.com/jslsolucoes/nginx-admin/blob/master/nginx-admin-ui-screenshot/screenshot5.png)
 
  
-Supported operational system :
-<ul>
-	<li>Windows</li>
-	<li>Linux</li>
-	<li>Mac OSX</li>
-</ul>
-
 Some features :
 <ul>
 	<li>Test configuration,Stop,Start,Status,Reload and Restart</li>
