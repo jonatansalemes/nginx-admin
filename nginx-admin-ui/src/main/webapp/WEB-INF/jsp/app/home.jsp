@@ -24,6 +24,8 @@
 				<html:menuItem target="content" url="/server/list" icon="list" label="{servers}"></html:menuItem>
 				<html:menuItem target="content" url="/upstream/list" icon="indent-left" label="{upstreams}"></html:menuItem>
 				<html:menuItem target="content" url="/virtualHost/list" icon="globe" label="{virtual.hosts}"></html:menuItem>
+				<html:menuItem target="content" url="/accessLog/list" icon="stats" label="{access.logs}"></html:menuItem>
+				<html:menuItem target="content" url="/errorLog/list" icon="fire" label="{error.logs}"></html:menuItem>
 			</html:menuButton>
 		</html:container>
 	</html:nav>

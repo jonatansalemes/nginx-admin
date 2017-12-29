@@ -13,17 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package com.jslsolucoes.nginx.admin.repository;
+package com.jslsolucoes.nginx.admin.controller;
 
-import java.util.List;
+import javax.inject.Inject;
 
-import com.jslsolucoes.nginx.admin.model.AccessLog;
+import com.jslsolucoes.nginx.admin.repository.ErrorLogRepository;
 
-public interface AccessLogRepository {
+import br.com.caelum.vraptor.Controller;
+import br.com.caelum.vraptor.Path;
+import br.com.caelum.vraptor.Result;
 
-	public void log(AccessLog accessLog);
-	
-	public List<AccessLog> listAll(Integer firstResult,Integer maxResults);
+@Controller
+@Path("errorLog")
+public class ErrorLogController {
 
-	public Integer count();
+	private Result result;
+	private ErrorLogRepository errorLogRepository;
+
+	public ErrorLogController() {
+		this(null, null);
+	}
+
+	@Inject
+	public ErrorLogController(Result result, ErrorLogRepository errorLogRepository) {
+		this.result = result;
+		this.errorLogRepository = errorLogRepository;
+	}
+
+	public void list() {
+		this.result.include("errorLogContent",errorLogRepository.content());
+	}
+
 }

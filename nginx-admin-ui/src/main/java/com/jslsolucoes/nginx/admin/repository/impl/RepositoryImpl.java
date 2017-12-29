@@ -106,7 +106,7 @@ public abstract class RepositoryImpl<T> {
 
 	public Integer count() {
 		Criteria criteria = session.createCriteria(clazz);
-		criteria.setProjection(Property.forName("id"));
+		criteria.setProjection(Property.forName("id").count());
 		return ((Long) criteria.uniqueResult()).intValue();
 	}
 

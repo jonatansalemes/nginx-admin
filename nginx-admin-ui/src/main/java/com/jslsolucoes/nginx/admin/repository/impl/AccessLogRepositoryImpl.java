@@ -15,10 +15,14 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.repository.impl;
 
+import java.util.List;
+
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 
 import com.jslsolucoes.nginx.admin.model.AccessLog;
 import com.jslsolucoes.nginx.admin.repository.AccessLogRepository;
@@ -38,5 +42,16 @@ public class AccessLogRepositoryImpl extends RepositoryImpl<AccessLog> implement
 	@Override
 	public void log(AccessLog accessLog) {
 		super.insert(accessLog);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<AccessLog> listAll(Integer firstResult, Integer maxResults) {
+		Criteria criteria = session.createCriteria(AccessLog.class);
+		if (firstResult != null && maxResults != null) {
+			criteria.setFirstResult(firstResult).setMaxResults(maxResults);
+		}
+		criteria.addOrder(Order.desc("timestamp"));
+		return criteria.list();
 	}
 }

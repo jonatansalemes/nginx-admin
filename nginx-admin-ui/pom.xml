@@ -19,7 +19,7 @@
 		<dependency>
 			<groupId>com.jslsolucoes</groupId>
 			<artifactId>tagria-lib</artifactId>
-			<version>1.0.10</version>
+			<version>1.0.13</version>
 		</dependency>
 		<dependency>
 			<groupId>br.com.caelum</groupId>
