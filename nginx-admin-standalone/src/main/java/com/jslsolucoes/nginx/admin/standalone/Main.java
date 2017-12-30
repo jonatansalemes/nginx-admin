@@ -17,7 +17,9 @@
 package com.jslsolucoes.nginx.admin.standalone;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.Properties;
 import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
@@ -28,9 +30,8 @@ import org.wildfly.swarm.datasources.DatasourcesFraction;
 import org.wildfly.swarm.logging.LoggingFraction;
 import org.wildfly.swarm.undertow.WARArchive;
 
-import com.jslsolucoes.nginx.admin.standalone.launcher.Launcher;
-import com.jslsolucoes.nginx.admin.standalone.launcher.mode.ArgumentMode;
-import com.jslsolucoes.nginx.admin.standalone.launcher.mode.LauncherMode;
+import com.jslsolucoes.nginx.admin.standalone.mode.Argument;
+import com.jslsolucoes.nginx.admin.standalone.mode.ArgumentMode;
 
 public class Main {
 	
@@ -40,16 +41,19 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 
-		LauncherMode launchMode = new ArgumentMode(args);
-		Launcher launcher = launchMode.launcher();
+		ArgumentMode argumentMode = new ArgumentMode(args);
+		Argument argument = argumentMode.parse();
 
-		if (!launcher.getQuit()) {
+		if (!argument.getQuit()) {
+			
+			Properties properties = new Properties();
+		    properties.load(new FileInputStream(new File(argument.getConf())));
 
-			Swarm swarm = new Swarm(new String[] { "-Dswarm.http.port=" + launcher.getPort(),
+			Swarm swarm = new Swarm(new String[] { "-Dswarm.http.port=" + properties.getProperty("NGINX_ADMIN_PORT"),
 					"-Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel" });
 			swarm.fraction(new DatasourcesFraction().dataSource("NginxAdminDataSource", ds -> {
 				ds.driverName("h2");
-				ds.connectionUrl("jdbc:h2:" + launcher.getHome()
+				ds.connectionUrl("jdbc:h2:" + properties.getProperty("NGINX_ADMIN_HOME")
 						+ "/database/nginx-admin;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
 				ds.userName("root");
 				ds.jndiName("java:jboss/datasources/nginx-admin");
@@ -60,7 +64,7 @@ public class Main {
 			}).rootLogger(Level.ERROR, "CONSOLE"));
 			swarm.start();
 
-			InputStream war = Main.class.getResourceAsStream("/nginx-admin-ui-1.0.7.war");
+			InputStream war = Main.class.getResourceAsStream("/nginx-admin-ui-"+properties.getProperty("NGINX_ADMIN_VERSION")+".war");
 			File file = File.createTempFile(UUID.randomUUID().toString(), ".war");
 			FileUtils.copyInputStreamToFile(war, file);
 			file.deleteOnExit();

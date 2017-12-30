@@ -16,24 +16,21 @@
 #*******************************************************************************
 
 #
-### BEGIN INIT INFO
-# Provides:             nginx-admin
-# Required-Start:       $remote_fs $network
-# Required-Stop:        $remote_fs $network
-# Should-Start:         $named
-# Should-Stop:          $named
-# Default-Start:        2 3 4 5
-# Default-Stop:         0 1 6
-# Short-Description:    Nginx Admin
-# Description:          Provide Nginx Admin startup/shutdown script
-### END INIT INFO
+# Nginx Admin control script
+#
+# chkconfig: - 80 20
+# description: Nginx Admin startup script
+# processname: nginx-admin
+# pidfile: /var/run/nginx-admin/nginx-admin.pid
+# configfile: /opt/nginx-admin/conf/nginx-admin.conf 
 
-. /lib/lsb/init-functions
+. /etc/init.d/functions
 . /opt/nginx-admin/conf/nginx-admin.conf
 
 NGINX_ADMIN_NAME=nginx-admin
 NGINX_ADMIN_PIDFILE=/var/run/$NGINX_ADMIN_NAME/nginx-admin.pid
 NGINX_ADMIN_CONSOLE_LOG=$NGINX_ADMIN_LOG/console.log
+NGINX_ADMIN_LOCKFILE=/var/lock/subsys/$NGINX_ADMIN_NAME
 STARTUP_WAIT=30
 SHUTDOWN_WAIT=30
 
@@ -51,7 +48,7 @@ pid() {
 }
 
 is_running() {
-    pidofproc -p "$NGINX_ADMIN_PIDFILE" "java" >/dev/null 2>&1
+    checkpid $(pid)
 }
 
 is_dead() {
@@ -64,7 +61,7 @@ is_launched() {
 	until [ $count -gt $STARTUP_WAIT ]
 	do
 		sleep 1
-		count=$((count+1))
+		let count=$count+1;
 		if is_running ; then
 			return 0
 		fi	
@@ -72,14 +69,13 @@ is_launched() {
 	return 1
 }
 
-
 try_launch() {
 	rm -f $NGINX_ADMIN_CONSOLE_LOG
 	cat /dev/null > $NGINX_ADMIN_CONSOLE_LOG
 	mkdir -p $(dirname $NGINX_ADMIN_PIDFILE)
 	chown $NGINX_ADMIN_USER $(dirname $NGINX_ADMIN_PIDFILE) || true
 
-	start-stop-daemon --start --make-pidfile --pidfile $NGINX_ADMIN_PIDFILE --chuid $NGINX_ADMIN_USER --user $NGINX_ADMIN_USER --chdir $NGINX_ADMIN_HOME --exec /usr/bin/java --background -- -jar $NGINX_ADMIN_BIN/nginx-admin-standalone-$NGINX_ADMIN_VERSION-swarm.jar -p $NGINX_ADMIN_PORT -h $NGINX_ADMIN_HOME
+	runuser -s /bin/bash -l $NGINX_ADMIN_USER -c "$JDK_HOME/bin/java -server -Djava.net.preferIPv4Stack=true -Xms256m -Xmx1g -jar $NGINX_ADMIN_BIN/nginx-admin-standalone-$NGINX_ADMIN_VERSION-swarm.jar -c $NGINX_ADMIN_CONF/nginx-admin.conf" >> $NGINX_ADMIN_CONSOLE_LOG 2>&1 & echo $! > $NGINX_ADMIN_PIDFILE
 	
 	if ! is_launched ; then
 		rm -f $NGINX_ADMIN_PIDFILE
@@ -98,22 +94,27 @@ start() {
 }
 
 exit_with_success(){
-	log_success_msg $1
+	echo -n $1
+	success
+	echo
 	return 0
 }
 
 exit_with_failure(){
-	log_failure_msg $1
+	echo -n $1
+	failure
+	echo
 	return 1
 }
 
 killpid() {
-	start-stop-daemon --stop --quiet --pidfile $NGINX_ADMIN_PIDFILE --user $NGINX_ADMIN_USER --retry=TERM/$SHUTDOWN_WAIT/KILL/5 >/dev/null 2>&1
+	killproc -p $NGINX_ADMIN_PIDFILE -d $SHUTDOWN_WAIT
 	children_pids=$(pgrep -P $(pid))
 	for child in $children_pids; do
 		/bin/kill -9 $child >/dev/null 2>&1
 	done
 	rm -f $NGINX_ADMIN_PIDFILE
+	rm -f $NGINX_ADMIN_LOCKFILE
 }
 
 stop() {
@@ -151,7 +152,7 @@ case "$1" in
 		;;
 	*)
 		
-	log_action_msg "Usage: $0 {start|stop|status|restart}"
+	echo "Usage: $0 {start|stop|status|restart}"
 	exit 1
 	;;
 esac

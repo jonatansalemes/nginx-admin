@@ -47,12 +47,12 @@
 						<phase>generate-resources</phase>
 						<configuration>
 							<tasks>
+								<replaceregexp
+									file="${project.basedir}/node-server/conf/nginx-admin.conf"
+									match="NGINX_ADMIN_VERSION=(.*)" replace="NGINX_ADMIN_VERSION=${project.version}" />
 								<copy
 									file="${project.parent.basedir}/${project.parent.modules[0]}/target/${project.parent.modules[0]}-${project.version}.war"
 									tofile="${project.build.resources[0].directory}/${project.parent.modules[0]}-${project.version}.war" />
-								<replaceregexp
-									file="${project.build.sourceDirectory}/com/jslsolucoes/nginx/admin/standalone/Main.java"
-									match="/nginx-admin-ui-(.*?).war" replace="/nginx-admin-ui-${project.version}.war" />
 							</tasks>
 						</configuration>
 						<goals>
@@ -87,6 +87,24 @@
 								<swarm.http.port>3000</swarm.http.port>
 							</properties>
 							<mainClass>com.jslsolucoes.nginx.admin.standalone.Main</mainClass>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>attached</goal>
+						</goals>
+						<configuration>
+							<finalName>nginx-admin</finalName>
+							<descriptors>
+								<descriptor>assembly/full.xml</descriptor>
+							</descriptors>
 						</configuration>
 					</execution>
 				</executions>
