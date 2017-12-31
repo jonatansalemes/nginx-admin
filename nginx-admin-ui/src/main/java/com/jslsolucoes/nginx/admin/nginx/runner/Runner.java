@@ -16,7 +16,7 @@
 package com.jslsolucoes.nginx.admin.nginx.runner;
 
 import com.jslsolucoes.nginx.admin.model.Nginx;
-import com.jslsolucoes.nginx.admin.runtime.RuntimeResult;
+import com.jslsolucoes.runtime.RuntimeResult;
 
 public interface Runner {
 	public Runner configure(Nginx nginx);

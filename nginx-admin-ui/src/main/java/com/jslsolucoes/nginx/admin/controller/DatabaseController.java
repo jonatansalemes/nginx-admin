@@ -19,8 +19,8 @@ import java.io.IOException;
 
 import javax.inject.Inject;
 
-import com.jslsolucoes.nginx.admin.annotation.Public;
 import com.jslsolucoes.nginx.admin.repository.DatabaseRepository;
+import com.jslsolucoes.vraptor4.auth.annotation.Public;
 
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Path;

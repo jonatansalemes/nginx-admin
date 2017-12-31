@@ -15,29 +15,48 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.scheduler.task;
 
-import javax.enterprise.inject.Vetoed;
+import javax.inject.Inject;
 
-import org.apache.http.HttpStatus;
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.quartz.SimpleScheduleBuilder;
+import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
 
-import com.jslsolucoes.nginx.admin.http.HttpClientBuilder;
+import com.jslsolucoes.nginx.admin.repository.LogRepository;
+import com.jslsolucoes.vraptor4.auth.annotation.Public;
+import com.jslsolucoes.vraptor4.scheduler.SchedulerTask;
 
-@Vetoed
-public class CollectLogTask implements Job {
+import br.com.caelum.vraptor.Controller;
+import br.com.caelum.vraptor.Result;
+import br.com.caelum.vraptor.view.Results;
 
-	private static final Logger logger = LoggerFactory.getLogger(CollectLogTask.class);
+@Controller
+@Public
+public class CollectLogTask implements SchedulerTask {
+
+	private LogRepository logRepository;
+	private Result result;
+
+	public CollectLogTask() {
+		
+	}
+
+	@Inject
+	public CollectLogTask(Result result, LogRepository logRepository) {
+		this.result = result;
+		this.logRepository = logRepository;
+
+	}
 
 	@Override
-	public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-		HttpClientBuilder.build().onError(exception -> logger.error("Error on calling task ", exception)).client()
-				.get(jobExecutionContext.getMergedJobDataMap().getString("urlBase") + "/task/collect/log")
-				.onNotStatus(HttpStatus.SC_OK,
-						closeableHttpResponse -> logger.error("Job cannot be executed : status code => "
-								+ closeableHttpResponse.getStatusLine().getStatusCode()))
-				.close();
+	public void execute() {
+		logRepository.collect();
+		this.result.use(Results.status()).ok();
+
+	}
+
+	@Override
+	public Trigger frequency() {
+		return TriggerBuilder.newTrigger().startNow()
+				.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(35).repeatForever()).build();
 	}
 }

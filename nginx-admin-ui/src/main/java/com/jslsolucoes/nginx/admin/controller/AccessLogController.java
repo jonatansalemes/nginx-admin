@@ -17,8 +17,8 @@ package com.jslsolucoes.nginx.admin.controller;
 
 import javax.inject.Inject;
 
-import com.jslsolucoes.nginx.admin.factory.Paginator;
 import com.jslsolucoes.nginx.admin.repository.AccessLogRepository;
+import com.jslsolucoes.vaptor4.misc.pagination.Paginator;
 
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Path;

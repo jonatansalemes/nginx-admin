@@ -37,10 +37,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.jslsolucoes.nginx.admin.error.NginxAdminException;
-import com.jslsolucoes.nginx.admin.i18n.Messages;
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.repository.NginxRepository;
-import com.jslsolucoes.nginx.admin.template.TemplateProcessor;
+import com.jslsolucoes.template.TemplateProcessor;
+import com.jslsolucoes.vaptor4.misc.i18n.Messages;
+
+import freemarker.template.TemplateException;
 
 @RequestScoped
 public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxRepository {
@@ -114,18 +116,19 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 			copy(nginx);
 			conf(nginx);
 			root(nginx);
-		} catch (IOException | NginxAdminException e) {
+		} catch (IOException | NginxAdminException | TemplateException  e) {
 			throw new NginxAdminException(e);
 		}
 	}
 
-	private void root(Nginx nginx) throws NginxAdminException {
-		TemplateProcessor.build().withTemplate("root.tpl").withData("nginx", nginx)
-				.toLocation(new File(nginx.virtualHost(), "root.conf")).process();
+	private void root(Nginx nginx) throws NginxAdminException, IOException, TemplateException {
+			TemplateProcessor.build().withTemplate("/template/dynamic/nginx","root.tpl")
+				.withData("nginx", nginx)
+					.toLocation(new File(nginx.virtualHost(), "root.conf")).process();
 	}
 
-	private void conf(Nginx nginx) throws NginxAdminException {
-		TemplateProcessor.build().withTemplate("nginx.tpl").withData("nginx", nginx)
+	private void conf(Nginx nginx) throws NginxAdminException, IOException, TemplateException {
+		TemplateProcessor.build().withTemplate("/template/dynamic/nginx","nginx.tpl").withData("nginx", nginx)
 				.toLocation(new File(nginx.setting(), "nginx.conf")).process();
 	}
 

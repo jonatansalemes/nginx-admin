@@ -15,27 +15,50 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.scheduler.task;
 
-import org.apache.http.HttpStatus;
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.inject.Inject;
 
-import com.jslsolucoes.nginx.admin.http.HttpClientBuilder;
+import org.quartz.SimpleScheduleBuilder;
+import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
 
-public class RotateLogTask implements Job {
+import com.jslsolucoes.nginx.admin.repository.LogRepository;
+import com.jslsolucoes.vraptor4.auth.annotation.Public;
+import com.jslsolucoes.vraptor4.scheduler.SchedulerTask;
 
-	private static final Logger logger = LoggerFactory.getLogger(RotateLogTask.class);
+import br.com.caelum.vraptor.Controller;
+import br.com.caelum.vraptor.Result;
+import br.com.caelum.vraptor.view.Results;
+
+@Controller
+@Public
+public class RotateLogTask implements SchedulerTask {
+	
+	private LogRepository logRepository;
+	private Result result;
+
+	public RotateLogTask() {
+		
+	}
+
+	@Inject
+	public RotateLogTask(Result result, LogRepository logRepository) {
+		this.result = result;
+		this.logRepository = logRepository;
+
+	}
 
 	@Override
-	public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-		HttpClientBuilder.build().onError(exception -> logger.error("Error on calling task ", exception)).client()
-				.get(jobExecutionContext.getMergedJobDataMap().getString("urlBase") + "/task/rotate/log")
-				.onNotStatus(HttpStatus.SC_OK,
-						closeableHttpResponse -> logger.error("Job cannot be executed : status code => "
-								+ closeableHttpResponse.getStatusLine().getStatusCode()))
-				.close();
+	public void execute() {
+		logRepository.rotate();
+		this.result.use(Results.status()).ok();
 	}
+
+	@Override
+	public Trigger frequency() {
+		return TriggerBuilder.newTrigger().startNow()
+				.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(30).repeatForever()).build();
+	} 
+
+	
 
 }

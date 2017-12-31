@@ -26,10 +26,10 @@ import org.apache.commons.io.IOUtils;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
-import com.jslsolucoes.nginx.admin.html.HtmlUtil;
 import com.jslsolucoes.nginx.admin.model.VirtualHostAlias;
 import com.jslsolucoes.nginx.admin.repository.ReportRepository;
 import com.jslsolucoes.nginx.admin.repository.VirtualHostAliasRepository;
+import com.jslsolucoes.tagria.lib.form.FormValidation;
 
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Path;
@@ -61,7 +61,7 @@ public class ReportController {
 
 	public void validate(List<Long> aliases, LocalDate from, LocalTime fromTime, LocalDate to, LocalTime toTime) {
 		this.result.use(Results.json())
-				.from(HtmlUtil.convertToUnodernedList(
+				.from(FormValidation.newBuilder().toUnordenedList(
 						reportRepository.validateBeforeSearch(convert(aliases), from, fromTime, to, toTime)), "errors")
 				.serialize();
 	}

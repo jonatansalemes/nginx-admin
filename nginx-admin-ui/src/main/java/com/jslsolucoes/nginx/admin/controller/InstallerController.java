@@ -22,11 +22,11 @@ import java.util.Properties;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
-import com.jslsolucoes.nginx.admin.annotation.Application;
-import com.jslsolucoes.nginx.admin.annotation.Public;
 import com.jslsolucoes.nginx.admin.error.NginxAdminException;
-import com.jslsolucoes.nginx.admin.html.HtmlUtil;
 import com.jslsolucoes.nginx.admin.repository.InstallRepository;
+import com.jslsolucoes.tagria.lib.form.FormValidation;
+import com.jslsolucoes.vaptor4.misc.annotation.ApplicationProperties;
+import com.jslsolucoes.vraptor4.auth.annotation.Public;
 
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Path;
@@ -49,7 +49,7 @@ public class InstallerController {
 	}
 
 	@Inject
-	public InstallerController(@Application Properties properties, Result result, InstallRepository installRepository,
+	public InstallerController(@ApplicationProperties Properties properties, Result result, InstallRepository installRepository,
 			HttpServletRequest httpServletRequest) {
 		this.result = result;
 		this.properties = properties;
@@ -75,7 +75,7 @@ public class InstallerController {
 			Integer smtpAuthenticate, Integer smtpTls, String smtpFromAddress, String smtpUsername, String smtpPassword,
 			String urlBase) {
 		this.result.use(Results.json())
-				.from(HtmlUtil.convertToUnodernedList(installRepository.validateBeforeInstall(login, loginConfirm,
+				.from(FormValidation.newBuilder().toUnordenedList(installRepository.validateBeforeInstall(login, loginConfirm,
 						adminPassword, adminPasswordConfirm, nginxBin, nginxSettings, smtpHost, smtpPort,
 						smtpAuthenticate, smtpTls, smtpFromAddress, smtpUsername, smtpPassword, urlBase)), "errors")
 				.serialize();

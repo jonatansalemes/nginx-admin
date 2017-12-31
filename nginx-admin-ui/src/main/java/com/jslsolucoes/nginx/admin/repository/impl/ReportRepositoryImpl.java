@@ -42,10 +42,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
 import com.google.common.collect.Lists;
-import com.jslsolucoes.nginx.admin.i18n.Messages;
 import com.jslsolucoes.nginx.admin.model.VirtualHostAlias;
 import com.jslsolucoes.nginx.admin.repository.ReportRepository;
 import com.jslsolucoes.nginx.admin.repository.VirtualHostAliasRepository;
+import com.jslsolucoes.vaptor4.misc.i18n.Messages;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;

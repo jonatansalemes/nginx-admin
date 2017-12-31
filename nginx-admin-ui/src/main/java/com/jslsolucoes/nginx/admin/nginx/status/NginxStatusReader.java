@@ -16,6 +16,7 @@
 package com.jslsolucoes.nginx.admin.nginx.status;
 
 import java.io.IOException;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,7 +25,8 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.jslsolucoes.nginx.admin.http.HttpClientBuilder;
+import com.jslsolucoes.http.client.HttpClientBuilder;
+
 
 public class NginxStatusReader {
 

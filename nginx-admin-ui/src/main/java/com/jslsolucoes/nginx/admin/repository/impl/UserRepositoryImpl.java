@@ -28,10 +28,10 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-import com.jslsolucoes.nginx.admin.i18n.Messages;
 import com.jslsolucoes.nginx.admin.model.User;
 import com.jslsolucoes.nginx.admin.repository.MailRepository;
 import com.jslsolucoes.nginx.admin.repository.UserRepository;
+import com.jslsolucoes.vaptor4.misc.i18n.Messages;
 
 @RequestScoped
 public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepository {

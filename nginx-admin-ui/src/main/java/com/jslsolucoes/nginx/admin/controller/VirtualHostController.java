@@ -23,7 +23,6 @@ import javax.inject.Inject;
 
 import com.google.common.collect.Lists;
 import com.jslsolucoes.nginx.admin.error.NginxAdminException;
-import com.jslsolucoes.nginx.admin.html.HtmlUtil;
 import com.jslsolucoes.nginx.admin.model.ResourceIdentifier;
 import com.jslsolucoes.nginx.admin.model.SslCertificate;
 import com.jslsolucoes.nginx.admin.model.Upstream;
@@ -34,6 +33,7 @@ import com.jslsolucoes.nginx.admin.repository.SslCertificateRepository;
 import com.jslsolucoes.nginx.admin.repository.UpstreamRepository;
 import com.jslsolucoes.nginx.admin.repository.VirtualHostRepository;
 import com.jslsolucoes.nginx.admin.repository.impl.OperationResult;
+import com.jslsolucoes.tagria.lib.form.FormValidation;
 
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Path;
@@ -79,7 +79,7 @@ public class VirtualHostController {
 	public void validate(Long id, Integer https, String idResourceIdentifier, Long idSslCertificate,
 			List<String> aliases, List<String> locations, List<Long> upstreams) {
 		this.result.use(Results.json())
-				.from(HtmlUtil.convertToUnodernedList(virtualHostRepository.validateBeforeSaveOrUpdate(
+				.from(FormValidation.newBuilder().toUnordenedList(virtualHostRepository.validateBeforeSaveOrUpdate(
 						new VirtualHost(id, https, new SslCertificate(idSslCertificate),
 								new ResourceIdentifier(idResourceIdentifier)),
 						convert(aliases), convert(locations, upstreams))), "errors")

@@ -37,9 +37,9 @@ import org.joda.time.Seconds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.jslsolucoes.nginx.admin.i18n.Messages;
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.nginx.runner.Runner;
+import com.jslsolucoes.vaptor4.misc.i18n.Messages;
 
 public class NginxDetailReader {
 

@@ -16,5 +16,5 @@
 package com.jslsolucoes.nginx.admin.os;
 
 public enum OperationalSystemType {
-	WINDOWS, LINUX, MAC, NOT_IMPLEMENTED;
+	WINDOWS, LINUX, MAC, UNKNOW;
 }

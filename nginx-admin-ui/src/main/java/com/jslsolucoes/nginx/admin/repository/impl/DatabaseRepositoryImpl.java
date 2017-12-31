@@ -33,9 +33,9 @@ import org.hibernate.jdbc.Work;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.jslsolucoes.nginx.admin.annotation.Application;
 import com.jslsolucoes.nginx.admin.repository.ConfigurationRepository;
 import com.jslsolucoes.nginx.admin.repository.DatabaseRepository;
+import com.jslsolucoes.vaptor4.misc.annotation.ApplicationProperties;
 
 @RequestScoped
 public class DatabaseRepositoryImpl implements DatabaseRepository {
@@ -50,7 +50,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 	}
 
 	@Inject
-	public DatabaseRepositoryImpl(@Application Properties properties, Session session,
+	public DatabaseRepositoryImpl(@ApplicationProperties Properties properties, Session session,
 			ConfigurationRepository configurationRepository) {
 		this.properties = properties;
 		this.session = session;

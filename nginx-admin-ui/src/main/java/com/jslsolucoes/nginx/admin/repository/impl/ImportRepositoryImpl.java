@@ -31,7 +31,6 @@ import org.apache.commons.lang.StringUtils;
 
 import com.google.common.collect.Lists;
 import com.jslsolucoes.nginx.admin.error.NginxAdminException;
-import com.jslsolucoes.nginx.admin.i18n.Messages;
 import com.jslsolucoes.nginx.admin.model.Server;
 import com.jslsolucoes.nginx.admin.model.SslCertificate;
 import com.jslsolucoes.nginx.admin.model.Upstream;
@@ -50,6 +49,7 @@ import com.jslsolucoes.nginx.admin.repository.SslCertificateRepository;
 import com.jslsolucoes.nginx.admin.repository.StrategyRepository;
 import com.jslsolucoes.nginx.admin.repository.UpstreamRepository;
 import com.jslsolucoes.nginx.admin.repository.VirtualHostRepository;
+import com.jslsolucoes.vaptor4.misc.i18n.Messages;
 
 @RequestScoped
 public class ImportRepositoryImpl implements ImportRepository {

@@ -18,10 +18,10 @@ package com.jslsolucoes.nginx.admin.controller;
 import javax.inject.Inject;
 
 import com.jslsolucoes.nginx.admin.error.NginxAdminException;
-import com.jslsolucoes.nginx.admin.html.HtmlUtil;
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.nginx.status.NginxStatus;
 import com.jslsolucoes.nginx.admin.repository.NginxRepository;
+import com.jslsolucoes.tagria.lib.form.FormValidation;
 
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Path;
@@ -50,7 +50,7 @@ public class NginxController {
 
 	public void validate(Long id, String bin, String settings, Integer gzip, Integer maxPostSize) {
 		this.result.use(Results.json())
-				.from(HtmlUtil.convertToUnodernedList(
+				.from(FormValidation.newBuilder().toUnordenedList(
 						nginxRepository.validateBeforeSaveOrUpdate(new Nginx(id, bin, settings, gzip, maxPostSize))),
 						"errors")
 				.serialize();

@@ -25,9 +25,9 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-import com.jslsolucoes.nginx.admin.i18n.Messages;
 import com.jslsolucoes.nginx.admin.model.Server;
 import com.jslsolucoes.nginx.admin.repository.ServerRepository;
+import com.jslsolucoes.vaptor4.misc.i18n.Messages;
 
 @RequestScoped
 public class ServerRepositoryImpl extends RepositoryImpl<Server> implements ServerRepository {

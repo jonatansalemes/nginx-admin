@@ -24,10 +24,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.jslsolucoes.vraptor4.auth.model.AuthUser;
+
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "user", schema = "admin")
-public class User implements Serializable {
+public class User implements Serializable,AuthUser {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

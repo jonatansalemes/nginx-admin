@@ -19,13 +19,13 @@ import java.util.Properties;
 
 import javax.inject.Inject;
 
-import com.jslsolucoes.nginx.admin.annotation.Application;
 import com.jslsolucoes.nginx.admin.annotation.CheckForPreDependency;
-import com.jslsolucoes.nginx.admin.annotation.Public;
-import com.jslsolucoes.nginx.admin.html.HtmlUtil;
 import com.jslsolucoes.nginx.admin.model.User;
 import com.jslsolucoes.nginx.admin.repository.UserRepository;
 import com.jslsolucoes.nginx.admin.session.UserSession;
+import com.jslsolucoes.tagria.lib.form.FormValidation;
+import com.jslsolucoes.vaptor4.misc.annotation.ApplicationProperties;
+import com.jslsolucoes.vraptor4.auth.annotation.Public;
 
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Post;
@@ -45,7 +45,7 @@ public class UserController {
 	}
 
 	@Inject
-	public UserController(@Application Properties properties, UserSession userSession, Result result,
+	public UserController(@ApplicationProperties Properties properties, UserSession userSession, Result result,
 			UserRepository userRepository) {
 		this.userSession = userSession;
 		this.properties = properties;
@@ -59,8 +59,10 @@ public class UserController {
 	}
 
 	public void validateBeforeChangePassword(String passwordOld, String password, String passwordConfirm) {
-		this.result.use(Results.json()).from(HtmlUtil.convertToUnodernedList(userRepository
-				.validateBeforeChangePassword(userSession.getUser(), passwordOld, password, passwordConfirm)), "errors")
+		this.result.use(Results.json())
+				.from(FormValidation.newBuilder().toUnordenedList(userRepository
+						.validateBeforeChangePassword(userSession.getUser(), passwordOld, password, passwordConfirm)),
+						"errors")
 				.serialize();
 	}
 
@@ -82,8 +84,8 @@ public class UserController {
 	@Public
 	public void validateBeforeResetPassword(String login) {
 		this.result.use(Results.json())
-				.from(HtmlUtil.convertToUnodernedList(userRepository.validateBeforeResetPassword(new User(login))),
-						"errors")
+				.from(FormValidation.newBuilder()
+						.toUnordenedList(userRepository.validateBeforeResetPassword(new User(login))), "errors")
 				.serialize();
 	}
 

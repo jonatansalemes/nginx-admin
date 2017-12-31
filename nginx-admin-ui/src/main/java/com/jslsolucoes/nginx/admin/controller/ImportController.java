@@ -18,8 +18,8 @@ package com.jslsolucoes.nginx.admin.controller;
 import javax.inject.Inject;
 
 import com.jslsolucoes.nginx.admin.error.NginxAdminException;
-import com.jslsolucoes.nginx.admin.html.HtmlUtil;
 import com.jslsolucoes.nginx.admin.repository.ImportRepository;
+import com.jslsolucoes.tagria.lib.form.FormValidation;
 
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Path;
@@ -46,7 +46,7 @@ public class ImportController {
 
 	public void validate(String nginxConf) {
 		this.result.use(Results.json())
-				.from(HtmlUtil.convertToUnodernedList(importRepository.validateBeforeImport(nginxConf)), "errors")
+				.from(FormValidation.newBuilder().toUnordenedList(importRepository.validateBeforeImport(nginxConf)), "errors")
 				.serialize();
 	}
 

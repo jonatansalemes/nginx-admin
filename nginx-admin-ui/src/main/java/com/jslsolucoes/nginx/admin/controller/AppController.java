@@ -19,9 +19,9 @@ import java.util.Properties;
 
 import javax.inject.Inject;
 
-import com.jslsolucoes.nginx.admin.annotation.Application;
 import com.jslsolucoes.nginx.admin.repository.ConfigurationRepository;
 import com.jslsolucoes.nginx.admin.repository.impl.ConfigurationType;
+import com.jslsolucoes.vaptor4.misc.annotation.ApplicationProperties;
 
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Path;
@@ -40,7 +40,7 @@ public class AppController {
 	}
 
 	@Inject
-	public AppController(@Application Properties properties, Result result,
+	public AppController(@ApplicationProperties Properties properties, Result result,
 			ConfigurationRepository configurationRepository) {
 		this.properties = properties;
 		this.result = result;

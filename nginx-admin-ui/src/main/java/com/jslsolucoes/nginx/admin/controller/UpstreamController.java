@@ -23,7 +23,6 @@ import javax.inject.Inject;
 
 import com.google.common.collect.Lists;
 import com.jslsolucoes.nginx.admin.error.NginxAdminException;
-import com.jslsolucoes.nginx.admin.html.HtmlUtil;
 import com.jslsolucoes.nginx.admin.model.ResourceIdentifier;
 import com.jslsolucoes.nginx.admin.model.Server;
 import com.jslsolucoes.nginx.admin.model.Strategy;
@@ -33,6 +32,7 @@ import com.jslsolucoes.nginx.admin.repository.ServerRepository;
 import com.jslsolucoes.nginx.admin.repository.StrategyRepository;
 import com.jslsolucoes.nginx.admin.repository.UpstreamRepository;
 import com.jslsolucoes.nginx.admin.repository.impl.OperationResult;
+import com.jslsolucoes.tagria.lib.form.FormValidation;
 
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Path;
@@ -74,7 +74,7 @@ public class UpstreamController {
 	public void validate(Long id, String name, Long idStrategy, List<Long> servers, List<Integer> ports,
 			Long idResourceIdentifier) {
 		this.result.use(Results.json())
-				.from(HtmlUtil.convertToUnodernedList(upstreamRepository.validateBeforeSaveOrUpdate(
+				.from(FormValidation.newBuilder().toUnordenedList(upstreamRepository.validateBeforeSaveOrUpdate(
 						new Upstream(id, name, new Strategy(idStrategy), new ResourceIdentifier(idResourceIdentifier)),
 						convert(servers, ports))), "errors")
 				.serialize();

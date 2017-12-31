@@ -17,10 +17,10 @@ package com.jslsolucoes.nginx.admin.controller;
 
 import javax.inject.Inject;
 
-import com.jslsolucoes.nginx.admin.html.HtmlUtil;
 import com.jslsolucoes.nginx.admin.model.Server;
 import com.jslsolucoes.nginx.admin.repository.ServerRepository;
 import com.jslsolucoes.nginx.admin.repository.impl.OperationResult;
+import com.jslsolucoes.tagria.lib.form.FormValidation;
 
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Path;
@@ -55,7 +55,7 @@ public class ServerController {
 
 	public void validate(Long id, String ip) {
 		this.result.use(Results.json())
-				.from(HtmlUtil.convertToUnodernedList(serverRepository.validateBeforeSaveOrUpdate(new Server(id, ip))),
+				.from(FormValidation.newBuilder().toUnordenedList(serverRepository.validateBeforeSaveOrUpdate(new Server(id, ip))),
 						"errors")
 				.serialize();
 	}

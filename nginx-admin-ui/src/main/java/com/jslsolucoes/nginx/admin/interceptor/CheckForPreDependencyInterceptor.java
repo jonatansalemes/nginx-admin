@@ -21,13 +21,11 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 
 import com.jslsolucoes.nginx.admin.annotation.CheckForPreDependency;
 import com.jslsolucoes.nginx.admin.controller.DatabaseController;
 import com.jslsolucoes.nginx.admin.controller.InstallerController;
-import com.jslsolucoes.nginx.admin.controller.SchedulerController;
 import com.jslsolucoes.nginx.admin.repository.DatabaseRepository;
 import com.jslsolucoes.nginx.admin.repository.UserRepository;
 
@@ -51,9 +49,6 @@ public class CheckForPreDependencyInterceptor {
 	@Inject
 	private UserRepository userRepository;
 
-	@Inject
-	private Scheduler scheduler;
-
 	@AroundCall
 	public void intercept(SimpleInterceptorStack stack) throws IOException, SchedulerException {
 
@@ -61,8 +56,6 @@ public class CheckForPreDependencyInterceptor {
 			this.result.redirectTo(DatabaseController.class).installOrUpgrade();
 		} else if (CollectionUtils.isEmpty(userRepository.listAll())) {
 			this.result.redirectTo(InstallerController.class).form();
-		} else if (!scheduler.isStarted()) {
-			this.result.redirectTo(SchedulerController.class).scheduleJobs();
 		} else {
 			stack.next();
 		}

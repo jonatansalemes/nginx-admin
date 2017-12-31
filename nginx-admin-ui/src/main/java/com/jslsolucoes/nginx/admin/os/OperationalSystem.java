@@ -52,7 +52,7 @@ public class OperationalSystem {
 		} else if (operationalSystem.contains("mac") || operationalSystem.contains("darwin")) {
 			operationalSystemInfo.setOperationalSystemType(OperationalSystemType.MAC);
 		} else {
-			operationalSystemInfo.setOperationalSystemType(OperationalSystemType.NOT_IMPLEMENTED);
+			operationalSystemInfo.setOperationalSystemType(OperationalSystemType.UNKNOW);
 		}
 		return operationalSystemInfo;
 	}
