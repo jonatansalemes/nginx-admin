@@ -17,12 +17,14 @@ package com.jslsolucoes.nginx.admin.repository.impl;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import com.jslsolucoes.nginx.admin.model.Configuration;
+import com.jslsolucoes.nginx.admin.model.Configuration_;
 import com.jslsolucoes.nginx.admin.repository.ConfigurationRepository;
 
 @RequestScoped
@@ -33,8 +35,8 @@ public class ConfigurationRepositoryImpl extends RepositoryImpl<Configuration> i
 	}
 
 	@Inject
-	public ConfigurationRepositoryImpl(Session session) {
-		super(session);
+	public ConfigurationRepositoryImpl(EntityManager entityManager) {
+		super(entityManager);
 	}
 
 	@Override
@@ -43,9 +45,17 @@ public class ConfigurationRepositoryImpl extends RepositoryImpl<Configuration> i
 	}
 
 	private Configuration load(ConfigurationType configurationType) {
-		Criteria criteria = session.createCriteria(Configuration.class);
-		criteria.add(Restrictions.eq("variable", configurationType.getVariable()));
-		return (Configuration) criteria.uniqueResult();
+		try {
+			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+			CriteriaQuery<Configuration> criteriaQuery = criteriaBuilder.createQuery(Configuration.class);
+			Root<Configuration> root = criteriaQuery.from(Configuration.class);	
+			criteriaQuery.where(
+					criteriaBuilder.equal(root.get(Configuration_.variable), configurationType.getVariable())
+			);
+			return entityManager.createQuery(criteriaQuery).getSingleResult();
+		} catch (NoResultException noResultException) {
+			return null;
+		}
 	}
 
 	@Override

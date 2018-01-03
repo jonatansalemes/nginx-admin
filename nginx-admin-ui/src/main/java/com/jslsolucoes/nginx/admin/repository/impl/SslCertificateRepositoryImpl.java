@@ -24,10 +24,10 @@ import java.io.InputStream;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.hibernate.Session;
 
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.model.SslCertificate;
@@ -46,9 +46,9 @@ public class SslCertificateRepositoryImpl extends RepositoryImpl<SslCertificate>
 	}
 
 	@Inject
-	public SslCertificateRepositoryImpl(Session session, NginxRepository nginxRepository,
+	public SslCertificateRepositoryImpl(EntityManager entityManager, NginxRepository nginxRepository,
 			ResourceIdentifierRepository resourceIdentifierRepository) {
-		super(session);
+		super(entityManager);
 		this.nginxRepository = nginxRepository;
 		this.resourceIdentifierRepository = resourceIdentifierRepository;
 	}

@@ -21,6 +21,7 @@ import java.util.List;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
+import com.jslsolucoes.nginx.admin.error.NginxAdminException;
 import com.jslsolucoes.nginx.admin.model.VirtualHostAlias;
 
 public interface ReportRepository {
@@ -29,6 +30,6 @@ public interface ReportRepository {
 			LocalDate to, LocalTime toTime);
 
 	public InputStream statistics(List<VirtualHostAlias> aliases, LocalDate from, LocalTime fromTime, LocalDate to,
-			LocalTime toTime);
+			LocalTime toTime) throws NginxAdminException;
 
 }

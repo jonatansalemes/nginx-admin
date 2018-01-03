@@ -26,6 +26,7 @@ import org.apache.commons.io.IOUtils;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
+import com.jslsolucoes.nginx.admin.error.NginxAdminException;
 import com.jslsolucoes.nginx.admin.model.VirtualHostAlias;
 import com.jslsolucoes.nginx.admin.repository.ReportRepository;
 import com.jslsolucoes.nginx.admin.repository.VirtualHostAliasRepository;
@@ -73,7 +74,7 @@ public class ReportController {
 	@Post
 	@Path("export.pdf")
 	public void export(List<Long> aliases, LocalDate from, LocalTime fromTime, LocalDate to, LocalTime toTime)
-			throws IOException {
+			throws NginxAdminException, IOException {
 		httpServletResponse.setContentType("application/pdf");
 		IOUtils.copy(reportRepository.statistics(convert(aliases), from, fromTime, to, toTime),
 				httpServletResponse.getOutputStream());

@@ -19,7 +19,6 @@ import java.util.Properties;
 
 import javax.inject.Inject;
 
-import com.jslsolucoes.nginx.admin.annotation.CheckForPreDependency;
 import com.jslsolucoes.nginx.admin.model.User;
 import com.jslsolucoes.nginx.admin.repository.UserRepository;
 import com.jslsolucoes.nginx.admin.session.UserSession;
@@ -103,7 +102,6 @@ public class UserController {
 	}
 
 	@Public
-	@CheckForPreDependency
 	public void login() {
 		this.result.include("version", properties.get("app.version"));
 	}

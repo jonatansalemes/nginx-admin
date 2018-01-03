@@ -27,11 +27,13 @@ import java.util.jar.JarEntry;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
 import org.jboss.vfs.VirtualFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,14 +56,20 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 	}
 
 	@Inject
-	public NginxRepositoryImpl(Session session) {
-		super(session);
+	public NginxRepositoryImpl(EntityManager entityManager) {
+		super(entityManager);
 	}
 
 	@Override
 	public Nginx configuration() {
-		Criteria criteria = session.createCriteria(Nginx.class);
-		return (Nginx) criteria.uniqueResult();
+		try {
+			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+			CriteriaQuery<Nginx> criteriaQuery = criteriaBuilder.createQuery(Nginx.class);
+			criteriaQuery.select(criteriaQuery.from(Nginx.class));
+			return entityManager.createQuery(criteriaQuery).getSingleResult();
+		} catch (NoResultException noResultException) {
+			return null;
+		}
 	}
 
 	@Override
@@ -116,19 +124,18 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 			copy(nginx);
 			conf(nginx);
 			root(nginx);
-		} catch (IOException | NginxAdminException | TemplateException  e) {
+		} catch (IOException | NginxAdminException | TemplateException e) {
 			throw new NginxAdminException(e);
 		}
 	}
 
 	private void root(Nginx nginx) throws NginxAdminException, IOException, TemplateException {
-			TemplateProcessor.build().withTemplate("/template/dynamic/nginx","root.tpl")
-				.withData("nginx", nginx)
-					.toLocation(new File(nginx.virtualHost(), "root.conf")).process();
+		TemplateProcessor.build().withTemplate("/template/dynamic/nginx", "root.tpl").withData("nginx", nginx)
+				.toLocation(new File(nginx.virtualHost(), "root.conf")).process();
 	}
 
 	private void conf(Nginx nginx) throws NginxAdminException, IOException, TemplateException {
-		TemplateProcessor.build().withTemplate("/template/dynamic/nginx","nginx.tpl").withData("nginx", nginx)
+		TemplateProcessor.build().withTemplate("/template/dynamic/nginx", "nginx.tpl").withData("nginx", nginx)
 				.toLocation(new File(nginx.setting(), "nginx.conf")).process();
 	}
 

@@ -20,12 +20,15 @@ import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import com.jslsolucoes.nginx.admin.model.Server;
+import com.jslsolucoes.nginx.admin.model.Server_;
 import com.jslsolucoes.nginx.admin.repository.ServerRepository;
 import com.jslsolucoes.vaptor4.misc.i18n.Messages;
 
@@ -37,8 +40,8 @@ public class ServerRepositoryImpl extends RepositoryImpl<Server> implements Serv
 	}
 
 	@Inject
-	public ServerRepositoryImpl(Session session) {
-		super(session);
+	public ServerRepositoryImpl(EntityManager entityManager) {
+		super(entityManager);
 	}
 
 	@Override
@@ -54,18 +57,34 @@ public class ServerRepositoryImpl extends RepositoryImpl<Server> implements Serv
 
 	@Override
 	public Server hasEquals(Server server) {
-		Criteria criteria = session.createCriteria(Server.class);
-		criteria.add(Restrictions.eq("ip", server.getIp()));
-		if (server.getId() != null) {
-			criteria.add(Restrictions.ne("id", server.getId()));
+		try {
+			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+			CriteriaQuery<Server> criteriaQuery = criteriaBuilder.createQuery(Server.class);
+			Root<Server> root = criteriaQuery.from(Server.class);
+			List<Predicate> predicates = new ArrayList<>();
+			predicates.add(criteriaBuilder.equal(root.get(Server_.ip), server.getIp()));
+			if (server.getId() != null) {
+				predicates.add(criteriaBuilder.notEqual(root.get(Server_.id), server.getId()));
+			}
+			criteriaQuery.where(predicates.toArray(new Predicate[] {}));
+			return entityManager.createQuery(criteriaQuery).getSingleResult();
+		} catch (NoResultException noResultException) {
+			return null;
 		}
-		return (Server) criteria.uniqueResult();
 	}
 
 	@Override
 	public Server findByIp(String ip) {
-		Criteria criteria = session.createCriteria(Server.class);
-		criteria.add(Restrictions.eq("ip", ip));
-		return (Server) criteria.uniqueResult();
+		try {
+			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+			CriteriaQuery<Server> criteriaQuery = criteriaBuilder.createQuery(Server.class);
+			Root<Server> root = criteriaQuery.from(Server.class);	
+			criteriaQuery.where(
+					criteriaBuilder.equal(root.get(Server_.ip), ip)
+			);
+			return entityManager.createQuery(criteriaQuery).getSingleResult();
+		} catch (NoResultException noResultException) {
+			return null;
+		}
 	}
 }

@@ -19,12 +19,14 @@ import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Order;
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import com.jslsolucoes.nginx.admin.model.AccessLog;
+import com.jslsolucoes.nginx.admin.model.AccessLog_;
 import com.jslsolucoes.nginx.admin.repository.AccessLogRepository;
 
 @RequestScoped
@@ -35,23 +37,26 @@ public class AccessLogRepositoryImpl extends RepositoryImpl<AccessLog> implement
 	}
 
 	@Inject
-	public AccessLogRepositoryImpl(Session session) {
-		super(session);
+	public AccessLogRepositoryImpl(EntityManager entityManager) {
+		super(entityManager);
 	}
+
 
 	@Override
 	public void log(AccessLog accessLog) {
 		super.insert(accessLog);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<AccessLog> listAll(Integer firstResult, Integer maxResults) {
-		Criteria criteria = session.createCriteria(AccessLog.class);
+	public List<AccessLog> listAll(Integer firstResult, Integer maxResults) {	
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<AccessLog> criteriaQuery = criteriaBuilder.createQuery(AccessLog.class);
+		Root<AccessLog> root = criteriaQuery.from(AccessLog.class);
+		criteriaQuery.orderBy(criteriaBuilder.desc(root.get(AccessLog_.timestamp)));
+		TypedQuery<AccessLog> query = entityManager.createQuery(criteriaQuery);
 		if (firstResult != null && maxResults != null) {
-			criteria.setFirstResult(firstResult).setMaxResults(maxResults);
+			query.setFirstResult(firstResult).setMaxResults(maxResults);
 		}
-		criteria.addOrder(Order.desc("timestamp"));
-		return criteria.list();
+		return entityManager.createQuery(criteriaQuery).getResultList();
 	}
 }

@@ -25,5 +25,5 @@ public interface AccessLogRepository {
 	
 	public List<AccessLog> listAll(Integer firstResult,Integer maxResults);
 
-	public Integer count();
+	public Long count();
 }

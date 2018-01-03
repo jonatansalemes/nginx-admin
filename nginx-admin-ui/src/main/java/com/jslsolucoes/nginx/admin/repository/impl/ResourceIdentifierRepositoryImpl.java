@@ -19,12 +19,14 @@ import java.util.UUID;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import com.jslsolucoes.nginx.admin.model.ResourceIdentifier;
+import com.jslsolucoes.nginx.admin.model.ResourceIdentifier_;
 import com.jslsolucoes.nginx.admin.repository.ResourceIdentifierRepository;
 
 @RequestScoped
@@ -36,8 +38,8 @@ public class ResourceIdentifierRepositoryImpl extends RepositoryImpl<ResourceIde
 	}
 
 	@Inject
-	public ResourceIdentifierRepositoryImpl(Session session) {
-		super(session);
+	public ResourceIdentifierRepositoryImpl(EntityManager entityManager) {
+		super(entityManager);
 	}
 
 	@Override
@@ -53,9 +55,15 @@ public class ResourceIdentifierRepositoryImpl extends RepositoryImpl<ResourceIde
 	}
 
 	private ResourceIdentifier findByHash(String hash) {
-		Criteria criteria = session.createCriteria(ResourceIdentifier.class);
-		criteria.add(Restrictions.eq("hash", hash));
-		return (ResourceIdentifier) criteria.uniqueResult();
+		try {
+			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+			CriteriaQuery<ResourceIdentifier> criteriaQuery = criteriaBuilder.createQuery(ResourceIdentifier.class);
+			Root<ResourceIdentifier> root = criteriaQuery.from(ResourceIdentifier.class);
+			criteriaQuery.where(criteriaBuilder.equal(root.get(ResourceIdentifier_.hash), hash));
+			return entityManager.createQuery(criteriaQuery).getSingleResult();
+		} catch (NoResultException noResultException) {
+			return null;
+		}
 	}
 
 }

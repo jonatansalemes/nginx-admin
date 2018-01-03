@@ -20,15 +20,18 @@ import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 
 import com.jslsolucoes.nginx.admin.model.User;
+import com.jslsolucoes.nginx.admin.model.User_;
 import com.jslsolucoes.nginx.admin.repository.MailRepository;
 import com.jslsolucoes.nginx.admin.repository.UserRepository;
 import com.jslsolucoes.vaptor4.misc.i18n.Messages;
@@ -43,17 +46,27 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 	}
 
 	@Inject
-	public UserRepositoryImpl(Session session, MailRepository mailRepository) {
-		super(session);
+	public UserRepositoryImpl(EntityManager entityManager, MailRepository mailRepository) {
+		super(entityManager);
 		this.mailRepository = mailRepository;
 	}
 
 	@Override
 	public User authenticate(User user) {
-		Criteria criteria = session.createCriteria(User.class);
-		criteria.add(Restrictions.eq("login", user.getLogin()));
-		criteria.add(Restrictions.eq("password", DigestUtils.sha256Hex(user.getPassword())));
-		return (User) criteria.uniqueResult();
+		try {
+		    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		    CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+		    Root<User> root = criteriaQuery.from(User.class);
+		    criteriaQuery.where(
+		    		criteriaBuilder.and(
+		    				criteriaBuilder.equal(root.get(User_.login), user.getLogin()),
+		    				criteriaBuilder.equal(root.get(User_.password), DigestUtils.sha256Hex(user.getPassword()))
+		    		)
+		    );
+		    return entityManager.createQuery(criteriaQuery).getSingleResult();
+		} catch (NoResultException noResultException) {
+		    return null;
+		}
 	}
 
 	@Override
@@ -66,9 +79,15 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 	}
 
 	private User getByLogin(User user) {
-		Criteria criteria = session.createCriteria(User.class);
-		criteria.add(Restrictions.eq("login", user.getLogin()));
-		return (User) criteria.uniqueResult();
+		try {
+			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		    CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+		    Root<User> root = criteriaQuery.from(User.class);
+		    criteriaQuery.where(criteriaBuilder.equal(root.get(User_.login), user.getLogin()));
+		    return entityManager.createQuery(criteriaQuery).getSingleResult();
+		} catch (NoResultException noResultException) {
+		    return null;
+		}
 	}
 
 	@Override
@@ -120,16 +139,15 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 
 	@Override
 	public User loadForSession(User user) {
-		Criteria criteria = session.createCriteria(User.class);
-		criteria.add(Restrictions.eq("id", user.getId()));
-		return (User) criteria.uniqueResult();
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<User> listAll() {
-		Criteria criteria = session.createCriteria(User.class);
-		return criteria.list();
+		try {
+			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		    CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+		    Root<User> root = criteriaQuery.from(User.class);
+		    criteriaQuery.where(criteriaBuilder.equal(root.get(User_.id), user.getId()));
+		    return entityManager.createQuery(criteriaQuery).getSingleResult();
+		} catch (NoResultException noResultException) {
+		    return null;
+		}
 	}
 
 	@Override

@@ -23,19 +23,24 @@ import java.util.stream.Collectors;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.SetJoin;
 
 import org.apache.commons.io.FileUtils;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.sql.JoinType;
 
 import com.jslsolucoes.nginx.admin.error.NginxAdminException;
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.model.VirtualHost;
 import com.jslsolucoes.nginx.admin.model.VirtualHostAlias;
+import com.jslsolucoes.nginx.admin.model.VirtualHostAlias_;
 import com.jslsolucoes.nginx.admin.model.VirtualHostLocation;
+import com.jslsolucoes.nginx.admin.model.VirtualHost_;
 import com.jslsolucoes.nginx.admin.repository.NginxRepository;
 import com.jslsolucoes.nginx.admin.repository.ResourceIdentifierRepository;
 import com.jslsolucoes.nginx.admin.repository.VirtualHostAliasRepository;
@@ -57,10 +62,10 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 	}
 
 	@Inject
-	public VirtualHostRepositoryImpl(Session session, ResourceIdentifierRepository resourceIdentifierRepository,
+	public VirtualHostRepositoryImpl(EntityManager entityManager, ResourceIdentifierRepository resourceIdentifierRepository,
 			NginxRepository nginxRepository, VirtualHostAliasRepository virtualHostAliasRepository,
 			VirtualHostLocationRepository virtualHostLocationRepository) {
-		super(session);
+		super(entityManager);
 		this.resourceIdentifierRepository = resourceIdentifierRepository;
 		this.nginxRepository = nginxRepository;
 		this.virtualHostAliasRepository = virtualHostAliasRepository;
@@ -133,23 +138,31 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 
 	@Override
 	public VirtualHost hasEquals(VirtualHost virtualHost, List<VirtualHostAlias> aliases) {
-		Criteria criteria = session.createCriteria(VirtualHost.class);
-		criteria.createCriteria("aliases", "virtualHostAlias", JoinType.INNER_JOIN);
-		criteria.add(Restrictions.in("virtualHostAlias.alias",
-				aliases.stream().map(VirtualHostAlias::getAlias).collect(Collectors.toList())));
-		if (virtualHost.getId() != null) {
-			criteria.add(Restrictions.ne("id", virtualHost.getId()));
+		try {
+			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+			CriteriaQuery<VirtualHost> criteriaQuery = criteriaBuilder.createQuery(VirtualHost.class);
+			Root<VirtualHost> root = criteriaQuery.from(VirtualHost.class);
+			SetJoin<VirtualHost, VirtualHostAlias> join = root.join(VirtualHost_.aliases, JoinType.INNER);
+			List<Predicate> predicates = new ArrayList<>();
+			predicates.add(join.get(VirtualHostAlias_.alias)
+					.in(aliases.stream().map(VirtualHostAlias::getAlias).collect(Collectors.toList())));
+			if (virtualHost.getId() != null) {
+				predicates.add(criteriaBuilder.notEqual(root.get(VirtualHost_.id), virtualHost.getId()));
+			}
+			criteriaQuery.distinct(true).where(predicates.toArray(new Predicate[] {}));
+			return entityManager.createQuery(criteriaQuery).getSingleResult();
+		} catch (NoResultException noResultException) {
+			return null;
 		}
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		return (VirtualHost) criteria.uniqueResult();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<VirtualHost> search(String term) {
-		Criteria criteria = session.createCriteria(VirtualHost.class);
-		criteria.createCriteria("aliases", "virtualHostAlias", JoinType.INNER_JOIN);
-		criteria.add(Restrictions.ilike("virtualHostAlias.alias", term, MatchMode.ANYWHERE));
-		return criteria.list();
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<VirtualHost> criteriaQuery = criteriaBuilder.createQuery(VirtualHost.class);
+		Root<VirtualHost> root = criteriaQuery.from(VirtualHost.class);
+		SetJoin<VirtualHost, VirtualHostAlias> join = root.join(VirtualHost_.aliases, JoinType.INNER);
+		criteriaQuery.where(criteriaBuilder.like(criteriaBuilder.lower(join.get(VirtualHostAlias_.alias)), term));
+		return entityManager.createQuery(criteriaQuery).getResultList();
 	}
 }

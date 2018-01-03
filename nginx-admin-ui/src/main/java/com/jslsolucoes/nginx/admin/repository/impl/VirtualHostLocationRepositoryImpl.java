@@ -19,14 +19,17 @@ import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.sql.JoinType;
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Root;
 
 import com.jslsolucoes.nginx.admin.model.VirtualHost;
 import com.jslsolucoes.nginx.admin.model.VirtualHostLocation;
+import com.jslsolucoes.nginx.admin.model.VirtualHostLocation_;
+import com.jslsolucoes.nginx.admin.model.VirtualHost_;
 import com.jslsolucoes.nginx.admin.repository.VirtualHostLocationRepository;
 
 @RequestScoped
@@ -38,16 +41,17 @@ public class VirtualHostLocationRepositoryImpl extends RepositoryImpl<VirtualHos
 	}
 
 	@Inject
-	public VirtualHostLocationRepositoryImpl(Session session) {
-		super(session);
+	public VirtualHostLocationRepositoryImpl(EntityManager entityManager) {
+		super(entityManager);
 	}
 
-	@SuppressWarnings("unchecked")
 	private List<VirtualHostLocation> listAll(VirtualHost virtualHost) {
-		Criteria criteria = session.createCriteria(VirtualHostLocation.class);
-		criteria.createCriteria("virtualHost", "virtualHost", JoinType.INNER_JOIN);
-		criteria.add(Restrictions.eq("virtualHost.id", virtualHost.getId()));
-		return criteria.list();
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<VirtualHostLocation> criteriaQuery = criteriaBuilder.createQuery(VirtualHostLocation.class);
+		Root<VirtualHostLocation> root = criteriaQuery.from(VirtualHostLocation.class);
+		Join<VirtualHostLocation, VirtualHost> join = root.join(VirtualHostLocation_.virtualHost, JoinType.INNER);
+		criteriaQuery.where(criteriaBuilder.equal(join.get(VirtualHost_.id), virtualHost.getId()));
+		return entityManager.createQuery(criteriaQuery).getResultList();
 	}
 
 	@Override

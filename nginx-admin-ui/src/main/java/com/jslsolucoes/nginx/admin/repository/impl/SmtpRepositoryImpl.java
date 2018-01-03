@@ -17,9 +17,10 @@ package com.jslsolucoes.nginx.admin.repository.impl;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-
-import org.hibernate.Criteria;
-import org.hibernate.Session;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 
 import com.jslsolucoes.nginx.admin.model.Smtp;
 import com.jslsolucoes.nginx.admin.repository.SmtpRepository;
@@ -32,13 +33,19 @@ public class SmtpRepositoryImpl extends RepositoryImpl<Smtp> implements SmtpRepo
 	}
 
 	@Inject
-	public SmtpRepositoryImpl(Session session) {
-		super(session);
+	public SmtpRepositoryImpl(EntityManager entityManager) {
+		super(entityManager);
 	}
 
 	@Override
 	public Smtp configuration() {
-		Criteria criteria = session.createCriteria(Smtp.class);
-		return (Smtp) criteria.uniqueResult();
+		try {
+			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+			CriteriaQuery<Smtp> criteriaQuery = criteriaBuilder.createQuery(Smtp.class);
+			criteriaQuery.select(criteriaQuery.from(Smtp.class));
+			return entityManager.createQuery(criteriaQuery).getSingleResult();
+		} catch (NoResultException noResultException) {
+			return null;
+		}
 	}
 }
