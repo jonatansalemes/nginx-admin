@@ -15,15 +15,12 @@
  *******************************************************************************/
 package com.jslsolucoes.nginx.admin.controller;
 
-import java.util.Properties;
-
 import javax.inject.Inject;
 
 import com.jslsolucoes.nginx.admin.model.User;
 import com.jslsolucoes.nginx.admin.repository.UserRepository;
 import com.jslsolucoes.nginx.admin.session.UserSession;
 import com.jslsolucoes.tagria.lib.form.FormValidation;
-import com.jslsolucoes.vaptor4.misc.annotation.ApplicationProperties;
 import com.jslsolucoes.vraptor4.auth.annotation.Public;
 
 import br.com.caelum.vraptor.Controller;
@@ -34,20 +31,18 @@ import br.com.caelum.vraptor.view.Results;
 @Controller
 public class UserController {
 
-	private Properties properties;
 	private UserSession userSession;
 	private Result result;
 	private UserRepository userRepository;
 
 	public UserController() {
-		this(null, null, null, null);
+		this(null, null, null);
 	}
 
 	@Inject
-	public UserController(@ApplicationProperties Properties properties, UserSession userSession, Result result,
+	public UserController(UserSession userSession, Result result,
 			UserRepository userRepository) {
 		this.userSession = userSession;
-		this.properties = properties;
 		this.result = result;
 		this.userRepository = userRepository;
 	}
@@ -90,7 +85,7 @@ public class UserController {
 
 	@Public
 	public void resetPassword() {
-		this.result.include("version", properties.get("app.version"));
+		
 	}
 
 	@Public
@@ -103,7 +98,7 @@ public class UserController {
 
 	@Public
 	public void login() {
-		this.result.include("version", properties.get("app.version"));
+		
 	}
 
 	@Post

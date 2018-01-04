@@ -10,7 +10,7 @@
 			<html:div cssClass="text-center">
 				<html:h1>
 					<html:small>
-						<fmt:message key="title"></fmt:message> - ${ version }
+						<fmt:message key="title"></fmt:message> - <html:span name="version"></html:span>
 					</html:small>
 				</html:h1>
 			</html:div>
@@ -53,5 +53,11 @@
 		</html:block>
 
 	</html:container>
+	
+	<ajax:function url="/version" name="version" executeOnDocumentLoad="true">
+		<ajax:onSuccess>
+			<ajax:target type="html" data="version" target="version"></ajax:target>
+		</ajax:onSuccess>
+	</ajax:function>
 
 </html:view>

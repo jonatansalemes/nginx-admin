@@ -22,11 +22,13 @@ import javax.inject.Inject;
 import com.jslsolucoes.nginx.admin.repository.ConfigurationRepository;
 import com.jslsolucoes.nginx.admin.repository.impl.ConfigurationType;
 import com.jslsolucoes.vaptor4.misc.annotation.ApplicationProperties;
+import com.jslsolucoes.vraptor4.auth.annotation.Public;
 
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Result;
+import br.com.caelum.vraptor.view.Results;
 
 @Controller
 public class AppController {
@@ -47,9 +49,15 @@ public class AppController {
 		this.configurationRepository = configurationRepository;
 	}
 
+	@Public
+	@Path("/version")
+	public void version() {
+		this.result.use(Results.json()).from(properties.get("NGINX_ADMIN_VERSION"), "version").serialize();
+	}
+
 	@Path(value = { "/", "/home" })
 	public void home() {
-		this.result.include("version", properties.get("app.version"));
+
 	}
 
 	@Path("/app/edit")

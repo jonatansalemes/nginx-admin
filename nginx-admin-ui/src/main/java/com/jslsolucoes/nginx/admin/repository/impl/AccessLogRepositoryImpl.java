@@ -57,6 +57,6 @@ public class AccessLogRepositoryImpl extends RepositoryImpl<AccessLog> implement
 		if (firstResult != null && maxResults != null) {
 			query.setFirstResult(firstResult).setMaxResults(maxResults);
 		}
-		return entityManager.createQuery(criteriaQuery).getResultList();
+		return query.getResultList();
 	}
 }

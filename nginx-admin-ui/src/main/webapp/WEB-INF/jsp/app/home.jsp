@@ -4,9 +4,7 @@
 	<html:nav>
 		<html:container>
 			<html:brand url="/">
-				<fmt:message key="brand">
-					<fmt:param value="${version}"></fmt:param>
-				</fmt:message>
+				<fmt:message key="brand"/> - <html:span name="version"></html:span>
 			</html:brand>
 			<html:menuButton icon="option-vertical" align="right">
 				<html:menuItem url="#" label="${ userSession.user.login }" icon="user"></html:menuItem>
@@ -35,5 +33,11 @@
 			<html:iframe url="/admin/dashboard" name="content"></html:iframe>
 		</html:block>
 	</html:container>
+	
+	<ajax:function url="/version" name="version" executeOnDocumentLoad="true">
+		<ajax:onSuccess>
+			<ajax:target type="html" data="version" target="version"></ajax:target>
+		</ajax:onSuccess>
+	</ajax:function>
 	
 </html:view>
