@@ -30,25 +30,25 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 
+import com.jslsolucoes.mail.service.MailService;
 import com.jslsolucoes.nginx.admin.model.User;
 import com.jslsolucoes.nginx.admin.model.User_;
-import com.jslsolucoes.nginx.admin.repository.MailRepository;
 import com.jslsolucoes.nginx.admin.repository.UserRepository;
 import com.jslsolucoes.vaptor4.misc.i18n.Messages;
 
 @RequestScoped
 public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepository {
 
-	private MailRepository mailRepository;
+	private MailService mailService;
 
 	public UserRepositoryImpl() {
 		// Default constructor
 	}
 
 	@Inject
-	public UserRepositoryImpl(EntityManager entityManager, MailRepository mailRepository) {
+	public UserRepositoryImpl(EntityManager entityManager, MailService mailService) {
 		super(entityManager);
-		this.mailRepository = mailRepository;
+		this.mailService = mailService;
 	}
 
 	@Override
@@ -96,7 +96,7 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 		User userToReset = getByLogin(user);
 		userToReset.setPassword(DigestUtils.sha256Hex(password));
 		userToReset.setPasswordForceChange(1);
-		mailRepository.send(Messages.getString("reset.mail.subject"), userToReset.getLogin(),
+		mailService.async(Messages.getString("reset.mail.subject"), userToReset.getLogin(),
 				Messages.getString("reset.mail.body", userToReset.getLogin(), password));
 	}
 

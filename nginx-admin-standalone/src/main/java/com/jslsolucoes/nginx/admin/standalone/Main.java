@@ -53,17 +53,17 @@ public class Main {
 					"\"-Dapplication.properties=" + argument.getConf()+ "\"",
 					 "-Dversion=" + standaloneConfiguration.getApplication().getVersion(),
 					    "-Durl.base=" + standaloneConfiguration.getApplication().getUrlBase(), 
-					    "-Derror.mail.server=" + standaloneConfiguration.getSmtp().getHost(),
-					    "-Derror.mail.port=" + standaloneConfiguration.getSmtp().getPort(), 
-					    "-Derror.mail.tls=" + standaloneConfiguration.getSmtp().getTls(),
-					    "\"-Derror.mail.from.name=" + standaloneConfiguration.getSmtp().getFromName() + "\"",
-					    "-Derror.mail.from.address=" + standaloneConfiguration.getSmtp().getFromAddress(),
-					    "-Derror.mail.authenticate=" + standaloneConfiguration.getSmtp().getAuthenticate(),
-					    "-Derror.mail.username=" + standaloneConfiguration.getSmtp().getUserName(),
-					    "-Derror.mail.password=" + standaloneConfiguration.getSmtp().getPassword(),
+					    "-Dmail.server=" + standaloneConfiguration.getSmtp().getHost(),
+					    "-Dmail.port=" + standaloneConfiguration.getSmtp().getPort(), 
+					    "-Dmail.tls=" + standaloneConfiguration.getSmtp().getTls(),
+					    "\"-Dmail.from.name=" + standaloneConfiguration.getSmtp().getFromName() + "\"",
+					    "-Dmail.from.address=" + standaloneConfiguration.getSmtp().getFromAddress(),
+					    "-Dmail.authenticate=" + standaloneConfiguration.getSmtp().getAuthenticate(),
+					    "-Dmail.username=" + standaloneConfiguration.getSmtp().getUserName(),
+					    "-Dmail.password=" + standaloneConfiguration.getSmtp().getPassword(),
 					    "-Derror.mail.mailing.list=" + standaloneConfiguration.getSmtp().getMailList().stream().collect(Collectors.joining(",")),
 					    "\"-Derror.mail.subject=" + standaloneConfiguration.getSmtp().getSubject() + "\"",
-					    "-Derror.mail.charset=" + standaloneConfiguration.getSmtp().getSubject() });
+					    "-Dmail.charset=" + standaloneConfiguration.getSmtp().getSubject() });
 			swarm.fraction(new DatasourcesFraction()
 			.jdbcDriver("com.oracle", (d) -> {
 						d.driverClassName("oracle.jdbc.driver.OracleDriver");
