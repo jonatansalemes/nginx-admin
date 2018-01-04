@@ -19,6 +19,7 @@ package com.jslsolucoes.nginx.admin.standalone;
 import java.io.File;
 import java.io.InputStream;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -46,11 +47,23 @@ public class Main {
 
 		if (!argument.getQuit()) {
 			
-			
 			StandaloneConfiguration standaloneConfiguration = StandaloneConfigurationParser.parse(argument.getConf());
-			
 			Swarm swarm = new Swarm(new String[] { "-Dswarm.http.port=" + standaloneConfiguration.getServer().getPort(),
-					"-Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel" });
+					"-Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel",
+					"\"-Dapplication.properties=" + argument.getConf()+ "\"",
+					 "-Dversion=" + standaloneConfiguration.getApplication().getVersion(),
+					    "-Durl.base=" + standaloneConfiguration.getApplication().getUrlBase(), 
+					    "-Derror.mail.server=" + standaloneConfiguration.getSmtp().getHost(),
+					    "-Derror.mail.port=" + standaloneConfiguration.getSmtp().getPort(), 
+					    "-Derror.mail.tls=" + standaloneConfiguration.getSmtp().getTls(),
+					    "\"-Derror.mail.from.name=" + standaloneConfiguration.getSmtp().getFromName() + "\"",
+					    "-Derror.mail.from.address=" + standaloneConfiguration.getSmtp().getFromAddress(),
+					    "-Derror.mail.authenticate=" + standaloneConfiguration.getSmtp().getAuthenticate(),
+					    "-Derror.mail.username=" + standaloneConfiguration.getSmtp().getUserName(),
+					    "-Derror.mail.password=" + standaloneConfiguration.getSmtp().getPassword(),
+					    "-Derror.mail.mailing.list=" + standaloneConfiguration.getSmtp().getMailList().stream().collect(Collectors.joining(",")),
+					    "\"-Derror.mail.subject=" + standaloneConfiguration.getSmtp().getSubject() + "\"",
+					    "-Derror.mail.charset=" + standaloneConfiguration.getSmtp().getSubject() });
 			swarm.fraction(new DatasourcesFraction()
 			.jdbcDriver("com.oracle", (d) -> {
 						d.driverClassName("oracle.jdbc.driver.OracleDriver");

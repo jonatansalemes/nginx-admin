@@ -5,6 +5,7 @@ public class StandaloneConfiguration {
 	private Server server;
 	private Database database;
 	private Application application;
+	private Smtp smtp;
 
 	public Server getServer() {
 		return server;
@@ -28,5 +29,13 @@ public class StandaloneConfiguration {
 
 	public void setApplication(Application application) {
 		this.application = application;
+	}
+
+	public Smtp getSmtp() {
+		return smtp;
+	}
+
+	public void setSmtp(Smtp smtp) {
+		this.smtp = smtp;
 	}
 }

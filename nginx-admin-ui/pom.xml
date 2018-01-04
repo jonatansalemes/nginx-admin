@@ -53,6 +53,11 @@
 		</dependency>
 		<dependency>
 			<groupId>com.jslsolucoes</groupId>
+			<artifactId>error-mail</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.jslsolucoes</groupId>
 			<artifactId>vraptor4-scheduler</artifactId>
 			<version>1.0.1</version>
 		</dependency>

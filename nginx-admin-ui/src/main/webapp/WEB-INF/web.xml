@@ -10,6 +10,18 @@
 	</context-param>
 	
 	<filter>
+		<filter-name>error-mail</filter-name>
+		<filter-class>com.jslsolucoes.error.mail.filter.ErrorMailFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>error-mail</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+	
+	<filter>
 		<filter-name>vraptor</filter-name>
 		<filter-class>br.com.caelum.vraptor.VRaptor</filter-class>
 	</filter>
@@ -32,6 +44,7 @@
 		<servlet-name>tagria</servlet-name>
 		<url-pattern>/tagria/*</url-pattern>
 	</servlet-mapping>
+	
 	<error-page>
 		<error-code>500</error-code>
 		<location>/WEB-INF/jsp/app/error.jsp</location>
