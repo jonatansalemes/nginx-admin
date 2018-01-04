@@ -17,9 +17,7 @@
 package com.jslsolucoes.nginx.admin.standalone;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.Properties;
 import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
@@ -30,6 +28,8 @@ import org.wildfly.swarm.datasources.DatasourcesFraction;
 import org.wildfly.swarm.logging.LoggingFraction;
 import org.wildfly.swarm.undertow.WARArchive;
 
+import com.jslsolucoes.nginx.admin.standalone.config.StandaloneConfiguration;
+import com.jslsolucoes.nginx.admin.standalone.config.StandaloneConfigurationParser;
 import com.jslsolucoes.nginx.admin.standalone.mode.Argument;
 import com.jslsolucoes.nginx.admin.standalone.mode.ArgumentMode;
 
@@ -46,17 +46,25 @@ public class Main {
 
 		if (!argument.getQuit()) {
 			
-			Properties properties = new Properties();
-		    properties.load(new FileInputStream(new File(argument.getConf())));
-
-			Swarm swarm = new Swarm(new String[] { "-Dswarm.http.port=" + properties.getProperty("NGINX_ADMIN_PORT"),
+			
+			StandaloneConfiguration standaloneConfiguration = StandaloneConfigurationParser.parse(argument.getConf());
+			
+			Swarm swarm = new Swarm(new String[] { "-Dswarm.http.port=" + standaloneConfiguration.getServer().getPort(),
 					"-Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel" });
-			swarm.fraction(new DatasourcesFraction().dataSource("NginxAdminDataSource", ds -> {
-				ds.driverName("h2");
-				ds.connectionUrl("jdbc:h2:" + properties.getProperty("NGINX_ADMIN_HOME")
-						+ "/database/nginx-admin;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
-				ds.userName("root");
+			swarm.fraction(new DatasourcesFraction()
+			.jdbcDriver("com.oracle", (d) -> {
+						d.driverClassName("oracle.jdbc.driver.OracleDriver");
+						d.xaDatasourceClass("oracle.jdbc.xa.OracleXADataSource");
+						d.driverModuleName("oracle");
+			})		
+			.dataSource("NginxAdminDataSource", ds -> {
 				ds.jndiName("java:jboss/datasources/nginx-admin");
+				ds.driverName(standaloneConfiguration.getDatabase().getDatabaseDriver().getDriverName());
+				ds.connectionUrl(standaloneConfiguration.getDatabase().getConnectionUrl());
+				ds.password(standaloneConfiguration.getDatabase().getPassword());
+				ds.maxPoolSize(standaloneConfiguration.getDatabase().getDatabasePool().getMaxConnection());
+				ds.minPoolSize(standaloneConfiguration.getDatabase().getDatabasePool().getMinConnection());
+				ds.initialPoolSize(standaloneConfiguration.getDatabase().getDatabasePool().getInitialConnection());
 			}));
 			swarm.fraction(new LoggingFraction().consoleHandler("CONSOLE", f -> {
 				f.level(Level.INFO);
@@ -64,7 +72,7 @@ public class Main {
 			}).rootLogger(Level.ERROR, "CONSOLE"));
 			swarm.start();
 
-			InputStream war = Main.class.getResourceAsStream("/nginx-admin-ui-"+properties.getProperty("NGINX_ADMIN_VERSION")+".war");
+			InputStream war = Main.class.getResourceAsStream("/nginx-admin-ui-"+standaloneConfiguration.getApplication().getVersion()+".war");
 			File file = File.createTempFile(UUID.randomUUID().toString(), ".war");
 			FileUtils.copyInputStreamToFile(war, file);
 			file.deleteOnExit();

@@ -67,9 +67,9 @@
 			<version>4.0.0.Final</version>
 		</dependency>
 		<dependency>
-			<groupId>br.com.caelum.vraptor</groupId>
-			<artifactId>vraptor-jpa</artifactId>
-			<version>4.0.5</version>
+			<groupId>com.jslsolucoes</groupId>
+			<artifactId>vraptor4-jpa</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>br.com.caelum.vraptor</groupId>
