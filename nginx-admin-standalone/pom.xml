@@ -9,6 +9,8 @@
 	<artifactId>nginx-admin-standalone</artifactId>
 
 	<properties>
+		<base.dir>${project.basedir}/../nginx-admin</base.dir>
+  		<resource.dir>${project.basedir}/src/main/resources</resource.dir>
 		<version.wildfly.swarm>2016.10.0</version.wildfly.swarm>
 	</properties>
 
@@ -32,7 +34,7 @@
 				<configuration>
 					<filesets>
 						<fileset>
-							<directory>${project.build.resources[0].directory}</directory>
+							<directory>${resource.dir}</directory>
 							<includes>
 								<include>*.war</include>
 							</includes>
@@ -51,8 +53,8 @@
 									file="${project.basedir}/node-server/conf/nginx-admin.conf"
 									match="NGINX_ADMIN_VERSION=(.*)" replace="NGINX_ADMIN_VERSION=${project.version}" />
 								<copy
-									file="${project.parent.basedir}/${project.parent.modules[0]}/target/${project.parent.modules[0]}-${project.version}.war"
-									tofile="${project.build.resources[0].directory}/${project.parent.modules[0]}-${project.version}.war" />
+									file="${base.dir}/${project.parent.modules[0]}/target/${project.parent.modules[0]}-${project.version}.war"
+									tofile="${resource.dir}/${project.parent.modules[0]}-${project.version}.war" />
 							</tasks>
 						</configuration>
 						<goals>

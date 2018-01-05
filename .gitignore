@@ -6,3 +6,4 @@
 target
 *.war
 *.jar
+*.zip

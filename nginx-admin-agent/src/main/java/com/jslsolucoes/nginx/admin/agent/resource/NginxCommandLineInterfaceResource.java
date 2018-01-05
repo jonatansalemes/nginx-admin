@@ -1,5 +1,6 @@
 package com.jslsolucoes.nginx.admin.agent.resource;
 
+import javax.inject.Inject;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -16,15 +17,16 @@ import com.jslsolucoes.runtime.RuntimeResult;
 import com.jslsolucoes.runtime.RuntimeResultType;
 
 
-@Path("manager")
+@Path("cli")
 @Produces(MediaType.APPLICATION_JSON)
-public class NginxManagerResource {
+public class NginxCommandLineInterfaceResource {
 
+	@Inject
 	private NginxCommandLineIteration nginxCommandLineIteration;
 	
 	@POST
 	@Path("start")
-	public void conversation(NginxStartRequest nginxStartRequest,
+	public void start(NginxStartRequest nginxStartRequest,
 			@Suspended AsyncResponse asyncResponse) {
 		
 		RuntimeResult runtimeResult = nginxCommandLineIteration.start(nginxStartRequest.getBin(), nginxStartRequest.getConf());
