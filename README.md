@@ -34,6 +34,8 @@
 [code_smells]:https://sonarqube.com/dashboard/index/com.jslsolucoes:nginx-admin:develop
 [code_smells img]:https://sonarqube.com/api/badges/measure?key=com.jslsolucoes:nginx-admin:develop&metric=code_smells
 
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](jonatan@jslsolucoes.com)
+
 
 # nginx-admin
 Nginx admin is an open source multiplatform manager for nginx software to easy administration 
