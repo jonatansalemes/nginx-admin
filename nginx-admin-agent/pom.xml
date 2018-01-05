@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.jslsolucoes</groupId>
+		<artifactId>nginx-admin</artifactId>
+		<version>1.0.7</version>
+	</parent>
+	<artifactId>nginx-admin-agent</artifactId>
+	<packaging>war</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<version>7.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.25</version>
+		</dependency>
+		<dependency>
+			<groupId>com.jslsolucoes</groupId>
+			<artifactId>runtime</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.6</version>
+		</dependency>
+		<dependency>
+			<groupId>com.jslsolucoes</groupId>
+			<artifactId>nginx-admin-agent-model</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+
+</project>

@@ -20,9 +20,13 @@
 	</properties>
 
 	<modules>
+		<module>nginx-admin-parser</module>
+		<module>nginx-admin-agent-model</module>
+		<module>nginx-admin-agent-client</module>
+		<module>nginx-admin-agent</module>
 		<module>nginx-admin-ui</module>
 		<module>nginx-admin-standalone</module>
-		<module>nginx-admin-parser</module>
+		
 	</modules>	
 
 	<build>
