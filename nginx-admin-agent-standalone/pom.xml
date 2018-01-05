@@ -1,16 +1,17 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
 		<groupId>com.jslsolucoes</groupId>
 		<artifactId>nginx-admin</artifactId>
 		<version>1.0.7</version>
-  </parent>
-  <artifactId>nginx-admin-agent-standalone</artifactId>
-  
-  <properties>
-  		<base.dir>${project.basedir}/../nginx-admin</base.dir>
-  		<resource.dir>${project.basedir}/src/main/resources</resource.dir>
-		<version.wildfly.swarm>2016.10.0</version.wildfly.swarm>
+	</parent>
+	<artifactId>nginx-admin-agent-standalone</artifactId>
+
+	<properties>
+		<base.dir>${project.basedir}/..</base.dir>
+		<resource.dir>${project.basedir}/src/main/resources</resource.dir>
+		<version.wildfly.swarm>2017.11.0</version.wildfly.swarm>
 	</properties>
 
 	<dependencyManagement>
@@ -86,6 +87,7 @@
 						<configuration>
 							<properties>
 								<swarm.http.port>3000</swarm.http.port>
+								<java.net.preferIPv4Stack>true</java.net.preferIPv4Stack>
 							</properties>
 							<mainClass>com.jslsolucoes.nginx.admin.standalone.Main</mainClass>
 						</configuration>
@@ -127,11 +129,15 @@
 		</dependency>
 		<dependency>
 			<groupId>org.wildfly.swarm</groupId>
-			<artifactId>undertow</artifactId>
+			<artifactId>cdi</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.wildfly.swarm</groupId>
-			<artifactId>cdi</artifactId>
+			<artifactId>jaxrs</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.wildfly.swarm</groupId>
+			<artifactId>jaxrs-multipart</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>
@@ -144,5 +150,5 @@
 			<version>1.7.22</version>
 		</dependency>
 	</dependencies>
-	
+
 </project>

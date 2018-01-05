@@ -9,9 +9,9 @@
 	<artifactId>nginx-admin-standalone</artifactId>
 
 	<properties>
-		<base.dir>${project.basedir}/../nginx-admin</base.dir>
+		<base.dir>${project.basedir}/..</base.dir>
   		<resource.dir>${project.basedir}/src/main/resources</resource.dir>
-		<version.wildfly.swarm>2016.10.0</version.wildfly.swarm>
+		<version.wildfly.swarm>2017.11.0</version.wildfly.swarm>
 	</properties>
 
 	<dependencyManagement>
@@ -136,7 +136,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.wildfly.swarm</groupId>
-			<artifactId>h2</artifactId>
+			<artifactId>datasources</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.jslsolucoes</groupId>
