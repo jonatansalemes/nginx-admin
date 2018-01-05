@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response.Status;
 
 import com.jslsolucoes.nginx.admin.agent.model.request.NginxStartRequest;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxStartResponse;
+import com.jslsolucoes.nginx.admin.agent.runner.exec.NginxCommandLineIteration;
 import com.jslsolucoes.runtime.RuntimeResult;
 import com.jslsolucoes.runtime.RuntimeResultType;
 
@@ -19,13 +20,14 @@ import com.jslsolucoes.runtime.RuntimeResultType;
 @Produces(MediaType.APPLICATION_JSON)
 public class NginxManagerResource {
 
+	private NginxCommandLineIteration nginxCommandLineIteration;
 	
 	@POST
 	@Path("start")
 	public void conversation(NginxStartRequest nginxStartRequest,
 			@Suspended AsyncResponse asyncResponse) {
 		
-		RuntimeResult runtimeResult = new RuntimeResult(RuntimeResultType.ERROR, "error");
+		RuntimeResult runtimeResult = nginxCommandLineIteration.start(nginxStartRequest.getBin(), nginxStartRequest.getConf());
 		if(runtimeResult.getRuntimeResultType().equals(RuntimeResultType.SUCCESS)){
 			asyncResponse.resume(
 					Response.ok(new NginxStartResponse(runtimeResult.getOutput())).build());
