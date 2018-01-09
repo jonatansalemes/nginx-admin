@@ -3,6 +3,7 @@
 .project
 .settings
 .DS_Store
+.factorypath
 target
 *.war
 *.jar
