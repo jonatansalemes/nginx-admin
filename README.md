@@ -1,11 +1,15 @@
 [![][travis img]][travis]
 [![][license img]][license]
+[![][paypal img]][paypal]
 
 [travis]:https://travis-ci.org/jslsolucoes/nginx-admin
 [travis img]:https://travis-ci.org/jslsolucoes/nginx-admin.svg?branch=master
 
 [license]:LICENSE
 [license img]:https://img.shields.io/badge/License-Apache%202-blue.svg
+
+[paypal]:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PE25DPU3CNFH4
+[paypal img]:https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif
 
 
 # nginx-admin
