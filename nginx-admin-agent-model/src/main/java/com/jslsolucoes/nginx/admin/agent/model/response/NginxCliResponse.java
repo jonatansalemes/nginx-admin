@@ -1,14 +1,14 @@
 package com.jslsolucoes.nginx.admin.agent.model.response;
 
-public class NginxStartResponse {
+public class NginxCliResponse implements NginxResponse {
 
 	private String message;
 	
-	public NginxStartResponse() {
+	public NginxCliResponse() {
 		
 	}
 	
-	public NginxStartResponse(String message) {
+	public NginxCliResponse(String message) {
 		this.message = message;
 	}
 

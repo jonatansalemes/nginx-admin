@@ -9,8 +9,8 @@ import javax.ws.rs.core.MediaType;
 
 import com.jslsolucoes.nginx.admin.agent.client.RestClient;
 import com.jslsolucoes.nginx.admin.agent.client.api.NginxAgentClientApi;
-import com.jslsolucoes.nginx.admin.agent.model.request.NginxStartRequest;
-import com.jslsolucoes.nginx.admin.agent.model.response.NginxStartResponse;
+import com.jslsolucoes.nginx.admin.agent.model.request.NginxCliRequest;
+import com.jslsolucoes.nginx.admin.agent.model.response.NginxCliResponse;
 
 public class NginxManager implements NginxAgentClientApi {
 	
@@ -24,13 +24,13 @@ public class NginxManager implements NginxAgentClientApi {
 		this.bin = bin;
 	}
 	
-	public CompletableFuture<NginxStartResponse> start() {
+	public CompletableFuture<NginxCliResponse> start() {
 		return CompletableFuture.supplyAsync(() -> {
 			try (RestClient restClient = RestClient.build()) {
-				NginxStartRequest nginxStartRequest = new NginxStartRequest(bin);
-				Entity<NginxStartRequest> entity = Entity.entity(nginxStartRequest, MediaType.APPLICATION_JSON);
+				NginxCliRequest nginxStartRequest = new NginxCliRequest(bin);
+				Entity<NginxCliRequest> entity = Entity.entity(nginxStartRequest, MediaType.APPLICATION_JSON);
 				WebTarget webTarget = restClient.target(endpoint);
-				return webTarget.path("/manager/start").request().post(entity, NginxStartResponse.class);
+				return webTarget.path("/cli/start").request().post(entity, NginxCliResponse.class);
 			}
 		}, scheduledExecutorService);
 	}

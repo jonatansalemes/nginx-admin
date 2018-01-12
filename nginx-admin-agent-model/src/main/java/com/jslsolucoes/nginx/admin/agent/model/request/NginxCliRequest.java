@@ -1,15 +1,15 @@
 package com.jslsolucoes.nginx.admin.agent.model.request;
 
-public class NginxStartRequest {
+public class NginxCliRequest {
 
 	private String bin;
 	private String conf;
 	
-	public NginxStartRequest() {
+	public NginxCliRequest() {
 		
 	}
 	
-	public NginxStartRequest(String bin) {
+	public NginxCliRequest(String bin) {
 		this.bin = bin;
 	}
 

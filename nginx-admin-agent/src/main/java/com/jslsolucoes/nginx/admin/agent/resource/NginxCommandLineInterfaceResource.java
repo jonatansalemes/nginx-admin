@@ -10,9 +10,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import com.jslsolucoes.nginx.admin.agent.model.request.NginxStartRequest;
-import com.jslsolucoes.nginx.admin.agent.model.response.NginxStartResponse;
-import com.jslsolucoes.nginx.admin.agent.runner.exec.NginxCommandLineIteration;
+import com.jslsolucoes.nginx.admin.agent.model.request.NginxCliRequest;
+import com.jslsolucoes.nginx.admin.agent.model.response.NginxCliResponse;
+import com.jslsolucoes.nginx.admin.agent.runner.exec.NginxCommandLineInterface;
 import com.jslsolucoes.runtime.RuntimeResult;
 import com.jslsolucoes.runtime.RuntimeResultType;
 
@@ -22,20 +22,64 @@ import com.jslsolucoes.runtime.RuntimeResultType;
 public class NginxCommandLineInterfaceResource {
 
 	@Inject
-	private NginxCommandLineIteration nginxCommandLineIteration;
+	private NginxCommandLineInterface nginxCommandLineInterface;
 	
 	@POST
 	@Path("start")
-	public void start(NginxStartRequest nginxStartRequest,
+	public void start(NginxCliRequest nginxCliRequest,
 			@Suspended AsyncResponse asyncResponse) {
-		
-		RuntimeResult runtimeResult = nginxCommandLineIteration.start(nginxStartRequest.getBin(), nginxStartRequest.getConf());
+		RuntimeResult runtimeResult = nginxCommandLineInterface.start(nginxCliRequest.getBin(), nginxCliRequest.getConf());
 		if(runtimeResult.getRuntimeResultType().equals(RuntimeResultType.SUCCESS)){
 			asyncResponse.resume(
-					Response.ok(new NginxStartResponse(runtimeResult.getOutput())).build());
+					Response.ok(new NginxCliResponse(runtimeResult.getOutput())).build());
 		} else {
 			asyncResponse.resume(Response.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(new NginxStartResponse(runtimeResult.getOutput()))
+					.entity(new NginxCliResponse(runtimeResult.getOutput()))
+					.build());
+		}
+	}
+	
+	@POST
+	@Path("kill")
+	public void kill(NginxCliRequest nginxCliRequest,
+			@Suspended AsyncResponse asyncResponse) {
+		RuntimeResult runtimeResult = nginxCommandLineInterface.kill();
+		if(runtimeResult.getRuntimeResultType().equals(RuntimeResultType.SUCCESS)){
+			asyncResponse.resume(
+					Response.ok(new NginxCliResponse(runtimeResult.getOutput())).build());
+		} else {
+			asyncResponse.resume(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new NginxCliResponse(runtimeResult.getOutput()))
+					.build());
+		}
+	}
+	
+	@POST
+	@Path("stop")
+	public void stop(NginxCliRequest nginxCliRequest,
+			@Suspended AsyncResponse asyncResponse) {
+		RuntimeResult runtimeResult = nginxCommandLineInterface.stop(nginxCliRequest.getBin(), nginxCliRequest.getConf());
+		if(runtimeResult.getRuntimeResultType().equals(RuntimeResultType.SUCCESS)){
+			asyncResponse.resume(
+					Response.ok(new NginxCliResponse(runtimeResult.getOutput())).build());
+		} else {
+			asyncResponse.resume(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new NginxCliResponse(runtimeResult.getOutput()))
+					.build());
+		}
+	}
+	
+	@POST
+	@Path("status")
+	public void status(NginxCliRequest nginxCliRequest,
+			@Suspended AsyncResponse asyncResponse) {
+		RuntimeResult runtimeResult = nginxCommandLineInterface.status();
+		if(runtimeResult.getRuntimeResultType().equals(RuntimeResultType.SUCCESS)){
+			asyncResponse.resume(
+					Response.ok(new NginxCliResponse(runtimeResult.getOutput())).build());
+		} else {
+			asyncResponse.resume(Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(new NginxCliResponse(runtimeResult.getOutput()))
 					.build());
 		}
 	}
