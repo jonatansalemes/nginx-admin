@@ -2,21 +2,31 @@ package com.jslsolucoes.nginx.admin.agent.model.response;
 
 public class NginxCliResponse implements NginxResponse {
 
-	private String message;
+	private String output;
+	private Boolean success;
 	
 	public NginxCliResponse() {
 		
 	}
 	
-	public NginxCliResponse(String message) {
-		this.message = message;
+	public NginxCliResponse(String output,Boolean success) {
+		this.output = output;
+		this.success = success;
 	}
 
-	public String getMessage() {
-		return message;
+	public String getOutput() {
+		return output;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
+	public void setOutput(String output) {
+		this.output = output;
+	}
+
+	public Boolean getSuccess() {
+		return success;
+	}
+
+	public void setSuccess(Boolean success) {
+		this.success = success;
 	}
 }

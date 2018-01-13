@@ -1,7 +1,5 @@
 package com.jslsolucoes.nginx.admin.agent.model.response;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
-
 public class NginxExceptionResponse implements NginxResponse {
 
 	private String stackTrace;
@@ -10,8 +8,8 @@ public class NginxExceptionResponse implements NginxResponse {
 		
 	}
 	
-	public NginxExceptionResponse(Throwable throwable) {
-		this.stackTrace = ExceptionUtils.getStackTrace(throwable);
+	public NginxExceptionResponse(String stackTrace) {
+		this.stackTrace = stackTrace;
 	}
 
 	public String getStackTrace() {

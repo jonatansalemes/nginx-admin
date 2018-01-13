@@ -8,80 +8,54 @@ import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 
+import com.jslsolucoes.nginx.admin.agent.error.ErrorHandler;
 import com.jslsolucoes.nginx.admin.agent.model.request.NginxCliRequest;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxCliResponse;
 import com.jslsolucoes.nginx.admin.agent.runner.exec.NginxCommandLineInterface;
 import com.jslsolucoes.runtime.RuntimeResult;
 import com.jslsolucoes.runtime.RuntimeResultType;
 
-
 @Path("cli")
+@ErrorHandler
 @Produces(MediaType.APPLICATION_JSON)
 public class NginxCommandLineInterfaceResource {
 
 	@Inject
 	private NginxCommandLineInterface nginxCommandLineInterface;
-	
+
 	@POST
 	@Path("start")
-	public void start(NginxCliRequest nginxCliRequest,
-			@Suspended AsyncResponse asyncResponse) {
-		RuntimeResult runtimeResult = nginxCommandLineInterface.start(nginxCliRequest.getBin(), nginxCliRequest.getConf());
-		if(runtimeResult.getRuntimeResultType().equals(RuntimeResultType.SUCCESS)){
-			asyncResponse.resume(
-					Response.ok(new NginxCliResponse(runtimeResult.getOutput())).build());
-		} else {
-			asyncResponse.resume(Response.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(new NginxCliResponse(runtimeResult.getOutput()))
-					.build());
-		}
+	public void start(NginxCliRequest nginxCliRequest, @Suspended AsyncResponse asyncResponse) {
+		RuntimeResult runtimeResult = nginxCommandLineInterface.start(nginxCliRequest.getBin(),
+				nginxCliRequest.getConf());
+		asyncResponse.resume(Response.ok(new NginxCliResponse(runtimeResult.getOutput(),
+				runtimeResult.getRuntimeResultType().equals(RuntimeResultType.SUCCESS))).build());
 	}
-	
+
 	@POST
 	@Path("kill")
-	public void kill(NginxCliRequest nginxCliRequest,
-			@Suspended AsyncResponse asyncResponse) {
+	public void kill(NginxCliRequest nginxCliRequest, @Suspended AsyncResponse asyncResponse) {
 		RuntimeResult runtimeResult = nginxCommandLineInterface.kill();
-		if(runtimeResult.getRuntimeResultType().equals(RuntimeResultType.SUCCESS)){
-			asyncResponse.resume(
-					Response.ok(new NginxCliResponse(runtimeResult.getOutput())).build());
-		} else {
-			asyncResponse.resume(Response.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(new NginxCliResponse(runtimeResult.getOutput()))
-					.build());
-		}
+		asyncResponse.resume(
+				Response.ok(new NginxCliResponse(runtimeResult.getOutput(), runtimeResult.isSuccess())).build());
 	}
-	
+
 	@POST
 	@Path("stop")
-	public void stop(NginxCliRequest nginxCliRequest,
-			@Suspended AsyncResponse asyncResponse) {
-		RuntimeResult runtimeResult = nginxCommandLineInterface.stop(nginxCliRequest.getBin(), nginxCliRequest.getConf());
-		if(runtimeResult.getRuntimeResultType().equals(RuntimeResultType.SUCCESS)){
-			asyncResponse.resume(
-					Response.ok(new NginxCliResponse(runtimeResult.getOutput())).build());
-		} else {
-			asyncResponse.resume(Response.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(new NginxCliResponse(runtimeResult.getOutput()))
-					.build());
-		}
+	public void stop(NginxCliRequest nginxCliRequest, @Suspended AsyncResponse asyncResponse) {
+		RuntimeResult runtimeResult = nginxCommandLineInterface.stop(nginxCliRequest.getBin(),
+				nginxCliRequest.getConf());
+		asyncResponse.resume(
+				Response.ok(new NginxCliResponse(runtimeResult.getOutput(), runtimeResult.isSuccess())).build());
 	}
-	
+
 	@POST
 	@Path("status")
-	public void status(NginxCliRequest nginxCliRequest,
-			@Suspended AsyncResponse asyncResponse) {
+	public void status(NginxCliRequest nginxCliRequest, @Suspended AsyncResponse asyncResponse) {
 		RuntimeResult runtimeResult = nginxCommandLineInterface.status();
-		if(runtimeResult.getRuntimeResultType().equals(RuntimeResultType.SUCCESS)){
-			asyncResponse.resume(
-					Response.ok(new NginxCliResponse(runtimeResult.getOutput())).build());
-		} else {
-			asyncResponse.resume(Response.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(new NginxCliResponse(runtimeResult.getOutput()))
-					.build());
-		}
+		asyncResponse.resume(
+				Response.ok(new NginxCliResponse(runtimeResult.getOutput(), runtimeResult.isSuccess())).build());
 	}
 
 }

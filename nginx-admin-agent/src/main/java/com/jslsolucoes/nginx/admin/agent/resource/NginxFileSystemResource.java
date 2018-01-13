@@ -8,14 +8,16 @@ import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 
+import com.jslsolucoes.nginx.admin.agent.error.ErrorHandler;
 import com.jslsolucoes.nginx.admin.agent.model.request.NginxConfigureRequest;
+import com.jslsolucoes.nginx.admin.agent.model.request.NginxFileSystemPermissionRequest;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxConfigureResponse;
-import com.jslsolucoes.nginx.admin.agent.model.response.NginxExceptionResponse;
+import com.jslsolucoes.nginx.admin.agent.model.response.NginxFileSystemPermissionResponse;
 import com.jslsolucoes.nginx.admin.agent.runner.exec.NginxFileSystem;
 
 @Path("fs")
+@ErrorHandler
 @Produces(MediaType.APPLICATION_JSON)
 public class NginxFileSystemResource {
 
@@ -25,14 +27,20 @@ public class NginxFileSystemResource {
 	@POST
 	@Path("configure")
 	public void configure(NginxConfigureRequest nginxConfigureRequest, @Suspended AsyncResponse asyncResponse) {
-		try {
-			nginxFileSystem.configure(nginxConfigureRequest.getHome(), nginxConfigureRequest.getMaxPostSize(),
-					nginxConfigureRequest.getGzip());
-			asyncResponse.resume(Response.ok(new NginxConfigureResponse(nginxConfigureRequest.getHome(),
-					nginxConfigureRequest.getMaxPostSize(), nginxConfigureRequest.getGzip())).build());
-		} catch (Exception e) {
-			asyncResponse.resume(
-					Response.status(Status.INTERNAL_SERVER_ERROR).entity(new NginxExceptionResponse(e)).build());
-		}
+		nginxFileSystem.configure(nginxConfigureRequest.getHome(), nginxConfigureRequest.getMaxPostSize(),
+				nginxConfigureRequest.getGzip());
+		asyncResponse.resume(Response.ok(new NginxConfigureResponse(nginxConfigureRequest.getHome(),
+				nginxConfigureRequest.getMaxPostSize(), nginxConfigureRequest.getGzip())).build());
+	}
+
+	@POST
+	@Path("permission")
+	public void permission(NginxFileSystemPermissionRequest nginxFileSystemPermissionRequest,
+			@Suspended AsyncResponse asyncResponse) {
+		asyncResponse
+				.resume(Response
+						.ok(new NginxFileSystemPermissionResponse(
+								nginxFileSystem.hasPermissionToWrite(nginxFileSystemPermissionRequest.getPath())))
+						.build());
 	}
 }
