@@ -9,6 +9,7 @@ import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.jslsolucoes.nginx.admin.agent.auth.AuthHandler;
 import com.jslsolucoes.nginx.admin.agent.error.ErrorHandler;
 import com.jslsolucoes.nginx.admin.agent.model.request.NginxCliRequest;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxCliResponse;
@@ -18,6 +19,7 @@ import com.jslsolucoes.runtime.RuntimeResultType;
 
 @Path("cli")
 @ErrorHandler
+@AuthHandler
 @Produces(MediaType.APPLICATION_JSON)
 public class NginxCommandLineInterfaceResource {
 

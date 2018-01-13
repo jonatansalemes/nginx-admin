@@ -9,6 +9,7 @@ import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.jslsolucoes.nginx.admin.agent.auth.AuthHandler;
 import com.jslsolucoes.nginx.admin.agent.error.ErrorHandler;
 import com.jslsolucoes.nginx.admin.agent.model.request.NginxConfigureRequest;
 import com.jslsolucoes.nginx.admin.agent.model.request.NginxFileSystemPermissionRequest;
@@ -18,6 +19,7 @@ import com.jslsolucoes.nginx.admin.agent.runner.exec.NginxFileSystem;
 
 @Path("fs")
 @ErrorHandler
+@AuthHandler
 @Produces(MediaType.APPLICATION_JSON)
 public class NginxFileSystemResource {
 
