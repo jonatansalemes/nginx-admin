@@ -1,6 +1,7 @@
 package com.jslsolucoes.nginx.admin.repository.impl;
 
 import java.io.File;
+import com.jslsolucoes.i18n.Messages;
 import java.io.IOException;
 
 import javax.enterprise.context.RequestScoped;
@@ -11,7 +12,6 @@ import org.apache.commons.io.FileUtils;
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.repository.ErrorLogRepository;
 import com.jslsolucoes.nginx.admin.repository.NginxRepository;
-import com.jslsolucoes.vaptor4.misc.i18n.Messages;
 
 @RequestScoped
 public class ErrorLogRepositoryImpl implements ErrorLogRepository {

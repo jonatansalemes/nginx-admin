@@ -4,9 +4,9 @@ import java.util.Properties;
 
 import javax.inject.Inject;
 
+import com.jslsolucoes.cdi.misc.annotation.ApplicationProperties;
 import com.jslsolucoes.nginx.admin.repository.ConfigurationRepository;
 import com.jslsolucoes.nginx.admin.repository.impl.ConfigurationType;
-import com.jslsolucoes.vaptor4.misc.annotation.ApplicationProperties;
 import com.jslsolucoes.vraptor4.auth.annotation.Public;
 
 import br.com.caelum.vraptor.Controller;

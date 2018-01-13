@@ -1,7 +1,6 @@
 package com.jslsolucoes.nginx.admin.nginx.status;
 
 import java.io.IOException;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

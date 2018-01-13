@@ -1,6 +1,7 @@
 package com.jslsolucoes.nginx.admin.repository.impl;
 
 import java.io.File;
+import com.jslsolucoes.i18n.Messages;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,6 @@ import com.jslsolucoes.nginx.admin.repository.VirtualHostAliasRepository;
 import com.jslsolucoes.nginx.admin.repository.VirtualHostLocationRepository;
 import com.jslsolucoes.nginx.admin.repository.VirtualHostRepository;
 import com.jslsolucoes.template.TemplateProcessor;
-import com.jslsolucoes.vaptor4.misc.i18n.Messages;
 
 @RequestScoped
 public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> implements VirtualHostRepository {
@@ -91,8 +91,8 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 		try {
 			VirtualHost virtualHostToConfigure = load(virtualHost);
 			Nginx nginx = nginxRepository.configuration();
-			TemplateProcessor.build().withTemplate("/template/dynamic/nginx","virtual-host.tpl").withData("virtualHost", virtualHostToConfigure)
-					.withData("nginx", nginx).toLocation(new File(nginx.virtualHost(),
+			TemplateProcessor.newBuilder().withTemplate("/template/dynamic/nginx","virtual-host.tpl").withData("virtualHost", virtualHostToConfigure)
+					.withData("nginx", nginx).withOutputLocation(new File(nginx.virtualHost(),
 							virtualHostToConfigure.getResourceIdentifier().getHash() + ".conf"))
 					.process();
 		} catch (Exception e) {

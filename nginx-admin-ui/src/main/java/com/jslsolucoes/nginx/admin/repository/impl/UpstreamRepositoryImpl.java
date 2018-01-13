@@ -1,6 +1,7 @@
 package com.jslsolucoes.nginx.admin.repository.impl;
 
 import java.io.File;
+import com.jslsolucoes.i18n.Messages;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,6 @@ import com.jslsolucoes.nginx.admin.repository.ResourceIdentifierRepository;
 import com.jslsolucoes.nginx.admin.repository.UpstreamRepository;
 import com.jslsolucoes.nginx.admin.repository.UpstreamServerRepository;
 import com.jslsolucoes.template.TemplateProcessor;
-import com.jslsolucoes.vaptor4.misc.i18n.Messages;
 
 @RequestScoped
 public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements UpstreamRepository {
@@ -65,8 +65,8 @@ public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements 
 	private void configure(Upstream upstream) throws NginxAdminException {
 		try {
 			Upstream upstreamToConfigure = load(upstream);
-			TemplateProcessor.build().withTemplate("/template/dynamic/nginx","upstream.tpl").withData("upstream", upstreamToConfigure)
-					.toLocation(new File(nginxRepository.configuration().upstream(),
+			TemplateProcessor.newBuilder().withTemplate("/template/dynamic/nginx","upstream.tpl").withData("upstream", upstreamToConfigure)
+					.withOutputLocation(new File(nginxRepository.configuration().upstream(),
 							upstreamToConfigure.getResourceIdentifier().getHash() + ".conf"))
 					.process();
 		} catch (Exception e) {

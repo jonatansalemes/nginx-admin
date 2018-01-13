@@ -1,6 +1,7 @@
 package com.jslsolucoes.nginx.admin.repository.impl;
 
 import java.util.ArrayList;
+import com.jslsolucoes.i18n.Messages;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
@@ -19,7 +20,6 @@ import com.jslsolucoes.mail.service.MailService;
 import com.jslsolucoes.nginx.admin.model.User;
 import com.jslsolucoes.nginx.admin.model.User_;
 import com.jslsolucoes.nginx.admin.repository.UserRepository;
-import com.jslsolucoes.vaptor4.misc.i18n.Messages;
 
 @RequestScoped
 public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepository {

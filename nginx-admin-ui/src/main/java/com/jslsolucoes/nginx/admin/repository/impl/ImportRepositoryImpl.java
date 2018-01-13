@@ -1,6 +1,7 @@
 package com.jslsolucoes.nginx.admin.repository.impl;
 
 import java.io.File;
+import com.jslsolucoes.i18n.Messages;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,7 +35,6 @@ import com.jslsolucoes.nginx.admin.repository.SslCertificateRepository;
 import com.jslsolucoes.nginx.admin.repository.StrategyRepository;
 import com.jslsolucoes.nginx.admin.repository.UpstreamRepository;
 import com.jslsolucoes.nginx.admin.repository.VirtualHostRepository;
-import com.jslsolucoes.vaptor4.misc.i18n.Messages;
 
 @RequestScoped
 public class ImportRepositoryImpl implements ImportRepository {

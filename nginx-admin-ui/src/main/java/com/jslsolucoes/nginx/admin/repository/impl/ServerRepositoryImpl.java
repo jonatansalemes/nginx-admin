@@ -1,6 +1,7 @@
 package com.jslsolucoes.nginx.admin.repository.impl;
 
 import java.util.ArrayList;
+import com.jslsolucoes.i18n.Messages;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
@@ -15,7 +16,6 @@ import javax.persistence.criteria.Root;
 import com.jslsolucoes.nginx.admin.model.Server;
 import com.jslsolucoes.nginx.admin.model.Server_;
 import com.jslsolucoes.nginx.admin.repository.ServerRepository;
-import com.jslsolucoes.vaptor4.misc.i18n.Messages;
 
 @RequestScoped
 public class ServerRepositoryImpl extends RepositoryImpl<Server> implements ServerRepository {

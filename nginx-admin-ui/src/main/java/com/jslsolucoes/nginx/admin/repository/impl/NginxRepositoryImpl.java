@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.jar.JarEntry;
-
+import com.jslsolucoes.i18n.Messages;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -27,7 +27,6 @@ import com.jslsolucoes.nginx.admin.error.NginxAdminException;
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.repository.NginxRepository;
 import com.jslsolucoes.template.TemplateProcessor;
-import com.jslsolucoes.vaptor4.misc.i18n.Messages;
 
 import freemarker.template.TemplateException;
 
@@ -115,13 +114,13 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 	}
 
 	private void root(Nginx nginx) throws NginxAdminException, IOException, TemplateException {
-		TemplateProcessor.build().withTemplate("/template/dynamic/nginx", "root.tpl").withData("nginx", nginx)
-				.toLocation(new File(nginx.virtualHost(), "root.conf")).process();
+		TemplateProcessor.newBuilder().withTemplate("/template/dynamic/nginx", "root.tpl").withData("nginx", nginx)
+				.withOutputLocation(new File(nginx.virtualHost(), "root.conf")).process();
 	}
 
 	private void conf(Nginx nginx) throws NginxAdminException, IOException, TemplateException {
-		TemplateProcessor.build().withTemplate("/template/dynamic/nginx", "nginx.tpl").withData("nginx", nginx)
-				.toLocation(new File(nginx.setting(), "nginx.conf")).process();
+		TemplateProcessor.newBuilder().withTemplate("/template/dynamic/nginx", "nginx.tpl").withData("nginx", nginx)
+				.withOutputLocation(new File(nginx.setting(), "nginx.conf")).process();
 	}
 
 	private void copy(Nginx nginx) throws IOException {

@@ -1,12 +1,12 @@
 package com.jslsolucoes.nginx.admin.nginx.runner.impl;
 
 import com.jslsolucoes.nginx.admin.model.Nginx;
+import com.jslsolucoes.i18n.Messages;
 import com.jslsolucoes.nginx.admin.nginx.runner.Runner;
 import com.jslsolucoes.nginx.admin.nginx.runner.RunnerType;
 import com.jslsolucoes.nginx.admin.os.OperationalSystemType;
 import com.jslsolucoes.runtime.RuntimeResult;
 import com.jslsolucoes.runtime.RuntimeResultType;
-import com.jslsolucoes.vaptor4.misc.i18n.Messages;
 
 @RunnerType(OperationalSystemType.UNKNOW)
 public class UnknowRunner implements Runner {

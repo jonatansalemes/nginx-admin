@@ -8,7 +8,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Specializes;
 import javax.inject.Inject;
 
-import com.jslsolucoes.vaptor4.misc.annotation.ApplicationProperties;
+import com.jslsolucoes.cdi.misc.annotation.ApplicationProperties;
 
 import br.com.caelum.vraptor.jpa.DefaultEntityManagerConfiguration;
 
