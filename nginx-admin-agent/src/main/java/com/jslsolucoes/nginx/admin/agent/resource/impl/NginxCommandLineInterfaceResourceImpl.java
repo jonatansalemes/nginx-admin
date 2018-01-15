@@ -1,4 +1,4 @@
-package com.jslsolucoes.nginx.admin.agent.runner.exec;
+package com.jslsolucoes.nginx.admin.agent.resource.impl;
 
 import javax.enterprise.context.ApplicationScoped;
 
@@ -6,9 +6,9 @@ import com.jslsolucoes.runtime.RuntimeBuilder;
 import com.jslsolucoes.runtime.RuntimeResult;
 
 @ApplicationScoped
-public class NginxCommandLineInterface {
+public class NginxCommandLineInterfaceResourceImpl {
 
-	public NginxCommandLineInterface() {
+	public NginxCommandLineInterfaceResourceImpl() {
 		
 	}
 	

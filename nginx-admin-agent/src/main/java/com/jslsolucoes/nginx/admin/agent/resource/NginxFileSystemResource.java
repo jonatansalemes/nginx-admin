@@ -13,9 +13,13 @@ import com.jslsolucoes.nginx.admin.agent.auth.AuthHandler;
 import com.jslsolucoes.nginx.admin.agent.error.ErrorHandler;
 import com.jslsolucoes.nginx.admin.agent.model.request.NginxConfigureRequest;
 import com.jslsolucoes.nginx.admin.agent.model.request.NginxFileSystemPermissionRequest;
+import com.jslsolucoes.nginx.admin.agent.model.request.NginxLogCollectRequest;
+import com.jslsolucoes.nginx.admin.agent.model.request.NginxLogRotateRequest;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxConfigureResponse;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxFileSystemPermissionResponse;
-import com.jslsolucoes.nginx.admin.agent.runner.exec.NginxFileSystem;
+import com.jslsolucoes.nginx.admin.agent.model.response.NginxLogCollectResponse;
+import com.jslsolucoes.nginx.admin.agent.model.response.NginxLogRotateResponse;
+import com.jslsolucoes.nginx.admin.agent.resource.impl.NginxFileSystemResourceImpl;
 
 @Path("fs")
 @ErrorHandler
@@ -24,15 +28,37 @@ import com.jslsolucoes.nginx.admin.agent.runner.exec.NginxFileSystem;
 public class NginxFileSystemResource {
 
 	@Inject
-	private NginxFileSystem nginxFileSystem;
+	private NginxFileSystemResourceImpl nginxFileSystemResourceImpl;
 
 	@POST
 	@Path("configure")
 	public void configure(NginxConfigureRequest nginxConfigureRequest, @Suspended AsyncResponse asyncResponse) {
-		nginxFileSystem.configure(nginxConfigureRequest.getHome(), nginxConfigureRequest.getMaxPostSize(),
+		nginxFileSystemResourceImpl.configure(nginxConfigureRequest.getHome(), nginxConfigureRequest.getMaxPostSize(),
 				nginxConfigureRequest.getGzip());
 		asyncResponse.resume(Response.ok(new NginxConfigureResponse(nginxConfigureRequest.getHome(),
 				nginxConfigureRequest.getMaxPostSize(), nginxConfigureRequest.getGzip())).build());
+	}
+	
+	@POST
+	@Path("log/collect")
+	public void logRotate(NginxLogCollectRequest nginxLogCollectRequest,
+			@Suspended AsyncResponse asyncResponse) {
+		asyncResponse
+				.resume(Response
+						.ok(new NginxLogCollectResponse(
+								nginxFileSystemResourceImpl.collect(nginxLogCollectRequest.getHome())))
+						.build());
+	}
+	
+	@POST
+	@Path("log/rotate")
+	public void logRotate(NginxLogRotateRequest nginxLogRotateRequest,
+			@Suspended AsyncResponse asyncResponse) {
+		asyncResponse
+				.resume(Response
+						.ok(new NginxLogRotateResponse(
+								nginxFileSystemResourceImpl.rotate(nginxLogRotateRequest.getHome())))
+						.build());
 	}
 
 	@POST
@@ -42,7 +68,7 @@ public class NginxFileSystemResource {
 		asyncResponse
 				.resume(Response
 						.ok(new NginxFileSystemPermissionResponse(
-								nginxFileSystem.hasPermissionToWrite(nginxFileSystemPermissionRequest.getPath())))
+								nginxFileSystemResourceImpl.hasPermissionToWrite(nginxFileSystemPermissionRequest.getPath())))
 						.build());
 	}
 }

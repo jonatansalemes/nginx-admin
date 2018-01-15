@@ -1,31 +1,29 @@
-package com.jslsolucoes.nginx.admin.agent.runner.exec;
+package com.jslsolucoes.nginx.admin.agent.resource.impl;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.enterprise.context.ApplicationScoped;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.jslsolucoes.file.system.FileSystemBuilder;
-import com.jslsolucoes.nginx.admin.agent.model.response.model.AccessLog;
+import com.jslsolucoes.nginx.admin.agent.model.response.model.FileObject;
 import com.jslsolucoes.template.TemplateProcessor;
 
 @ApplicationScoped
-public class NginxFileSystem {
+public class NginxFileSystemResourceImpl {
 	
-	private Logger logger = LoggerFactory.getLogger(NginxFileSystem.class);
+	private Logger logger = LoggerFactory.getLogger(NginxFileSystemResourceImpl.class);
 
-	public NginxFileSystem() {
+	public NginxFileSystemResourceImpl() {
 
 	}
 
@@ -34,62 +32,73 @@ public class NginxFileSystem {
 		createTemplate(nginxHome,maxPostSize,gzip);
 	}
 	
-	public List<AccessLog> collect(String nginxHome) {
-		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
-		List<AccessLog> accessLogs = new ArrayList<>();
+	public List<FileObject> collect(String nginxHome) {
 		File logFolder = log(nginxHome);
-		FileUtils.iterateFiles(logFolder, new String[] { "rotate" }, true).forEachRemaining(file -> {			
-				try {
-					FileUtils.readLines(file, "UTF-8").stream()
-							.filter(line -> isJson(line))
-							.forEach(line-> {
-								try {
-									accessLogs.add(gson.fromJson(line, AccessLog.class));
-								} catch (Exception exception) {
-									logger.error(line + " could'n be stored ", exception);
-								}
-							});
-					FileSystemBuilder
-					.newBuilder()
-					.delete()
-						.withDestination(file)
-						.execute()
-					.end();
-				} catch (IOException e) {
-					logger.error(" could'n read files ", e);
-				}
-		});
-		return accessLogs;
-	}
-	
-	private Boolean isJson(String json) {
-		return json.trim().startsWith("{") && json.trim().endsWith("}");
-	}
-
-	public void rotate(String nginxHome) {
-		File logFolder = log(nginxHome);
-		FileUtils.iterateFiles(logFolder, new String[] { "log" }, true).forEachRemaining(file -> {
-			if (file.length() > sizeLimit()) {
-				try {
-					File toRotate = new File(logFolder, FilenameUtils.getBaseName(file.getName())
-							+ new SimpleDateFormat("_yyyy_MM_dd_HH_mm_ss").format(new Date()) + ".log.rotate");
-					FileSystemBuilder
-						.newBuilder()
-						.copy()
-							.withSource(file)
-							.withDestination(toRotate)
-							.execute()
+		List<FileObject> files = new ArrayList<>();
+		FileSystemBuilder
+		.newBuilder()
+		.iterate()
+			.withDestination(logFolder)
+			.withFileFilter(new SuffixFileFilter("rotate"))
+			.execute(file -> {
+						FileSystemBuilder
+								.newBuilder()
+								.read()
+									.withDestination(file)
+									.withCharset("UTF-8")
+									.execute(content -> {
+											FileObject fileObject = new FileObject();
+											fileObject.setLastModified(new Date(file.lastModified()));
+											fileObject.setFileName(file.getName());
+											fileObject.setSize(file.length());
+											fileObject.encode(content,"UTF-8");
+											files.add(fileObject);
+									})
 						.end()
-						.write()
+						.delete()
 							.withDestination(file)
-							.withContent("")
-							.withCharset("UTF-8")
-						.end();
-				} catch (Exception iOException) {
-					logger.error("Could not rotate file", iOException);
+							.execute()
+						.end();		
+			})
+		.end();	
+		return files;
+	}	
+
+	public Integer rotate(String nginxHome) {
+		AtomicInteger atomicInteger = new AtomicInteger(0);
+		File logFolder = log(nginxHome);
+		
+		FileSystemBuilder
+		.newBuilder()
+		.iterate()
+			.withDestination(logFolder)
+			.withFileFilter(new SuffixFileFilter("log"))
+			.execute(file -> {
+				if (file.length() > sizeLimit()) {
+					try {
+						atomicInteger.getAndIncrement();
+						File toRotate = new File(logFolder, FilenameUtils.getBaseName(file.getName())
+								+ new SimpleDateFormat("_yyyy_MM_dd_HH_mm_ss").format(new Date()) + ".log.rotate");
+						FileSystemBuilder
+							.newBuilder()
+							.copy()
+								.withSource(file)
+								.withDestination(toRotate)
+								.execute()
+							.end()
+							.write()
+								.withDestination(file)
+								.withContent("")
+								.withCharset("UTF-8")
+								.execute()
+							.end();
+					} catch (Exception exception) {
+						logger.error("Could not rotate file", exception);
+					}
 				}
-			}
-		});
+			})
+		.end();
+		return atomicInteger.get();
 	}
 	
 	private long sizeLimit() {

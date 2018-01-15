@@ -13,7 +13,7 @@ import com.jslsolucoes.nginx.admin.agent.auth.AuthHandler;
 import com.jslsolucoes.nginx.admin.agent.error.ErrorHandler;
 import com.jslsolucoes.nginx.admin.agent.model.request.NginxCliRequest;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxCliResponse;
-import com.jslsolucoes.nginx.admin.agent.runner.exec.NginxCommandLineInterface;
+import com.jslsolucoes.nginx.admin.agent.resource.impl.NginxCommandLineInterfaceResourceImpl;
 import com.jslsolucoes.runtime.RuntimeResult;
 import com.jslsolucoes.runtime.RuntimeResultType;
 
@@ -24,12 +24,12 @@ import com.jslsolucoes.runtime.RuntimeResultType;
 public class NginxCommandLineInterfaceResource {
 
 	@Inject
-	private NginxCommandLineInterface nginxCommandLineInterface;
+	private NginxCommandLineInterfaceResourceImpl nginxCommandLineInterfaceResourceImpl;
 
 	@POST
 	@Path("start")
 	public void start(NginxCliRequest nginxCliRequest, @Suspended AsyncResponse asyncResponse) {
-		RuntimeResult runtimeResult = nginxCommandLineInterface.start(nginxCliRequest.getBin(),
+		RuntimeResult runtimeResult = nginxCommandLineInterfaceResourceImpl.start(nginxCliRequest.getBin(),
 				nginxCliRequest.getConf());
 		asyncResponse.resume(Response.ok(new NginxCliResponse(runtimeResult.getOutput(),
 				runtimeResult.getRuntimeResultType().equals(RuntimeResultType.SUCCESS))).build());
@@ -38,7 +38,7 @@ public class NginxCommandLineInterfaceResource {
 	@POST
 	@Path("kill")
 	public void kill(NginxCliRequest nginxCliRequest, @Suspended AsyncResponse asyncResponse) {
-		RuntimeResult runtimeResult = nginxCommandLineInterface.kill();
+		RuntimeResult runtimeResult = nginxCommandLineInterfaceResourceImpl.kill();
 		asyncResponse.resume(
 				Response.ok(new NginxCliResponse(runtimeResult.getOutput(), runtimeResult.isSuccess())).build());
 	}
@@ -46,7 +46,7 @@ public class NginxCommandLineInterfaceResource {
 	@POST
 	@Path("stop")
 	public void stop(NginxCliRequest nginxCliRequest, @Suspended AsyncResponse asyncResponse) {
-		RuntimeResult runtimeResult = nginxCommandLineInterface.stop(nginxCliRequest.getBin(),
+		RuntimeResult runtimeResult = nginxCommandLineInterfaceResourceImpl.stop(nginxCliRequest.getBin(),
 				nginxCliRequest.getConf());
 		asyncResponse.resume(
 				Response.ok(new NginxCliResponse(runtimeResult.getOutput(), runtimeResult.isSuccess())).build());
@@ -55,7 +55,7 @@ public class NginxCommandLineInterfaceResource {
 	@POST
 	@Path("status")
 	public void status(NginxCliRequest nginxCliRequest, @Suspended AsyncResponse asyncResponse) {
-		RuntimeResult runtimeResult = nginxCommandLineInterface.status();
+		RuntimeResult runtimeResult = nginxCommandLineInterfaceResourceImpl.status();
 		asyncResponse.resume(
 				Response.ok(new NginxCliResponse(runtimeResult.getOutput(), runtimeResult.isSuccess())).build());
 	}

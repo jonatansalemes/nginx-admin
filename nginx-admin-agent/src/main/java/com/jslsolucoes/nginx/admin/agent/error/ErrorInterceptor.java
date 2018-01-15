@@ -4,6 +4,7 @@ import javax.annotation.Priority;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
+import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
@@ -21,9 +22,22 @@ public class ErrorInterceptor {
 		try {
 			return invocationContext.proceed();
 		} catch (Exception exception) {
-			exception.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR)
+			Response response = Response.status(Status.INTERNAL_SERVER_ERROR)
 					.entity(new NginxExceptionResponse(ExceptionUtils.getFullStackTrace(exception))).build();
+			AsyncResponse asyncResponse = asyncResponse(invocationContext);
+			if(asyncResponse != null){
+				asyncResponse.resume(response);
+			}
+			return response;
 		}
+	}
+	
+	private AsyncResponse asyncResponse(InvocationContext invocationContext) {
+		for (Object object : invocationContext.getParameters()) {
+			if (AsyncResponse.class.isInstance(object)) {
+				return (AsyncResponse) object;
+			}
+		}
+		return null;
 	}
 }
