@@ -1,6 +1,8 @@
 package com.jslsolucoes.nginx.admin.agent.resource.impl;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.util.Base64;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
@@ -13,10 +15,10 @@ import com.jslsolucoes.nginx.admin.agent.model.Location;
 import com.jslsolucoes.template.TemplateProcessor;
 
 @RequestScoped
-public class NginxFileSystemResourceImpl {
+public class NginxAdminResourceImpl {
 	
 	
-	public NginxFileSystemResourceImpl() {
+	public NginxAdminResourceImpl() {
 
 	}
 
@@ -52,6 +54,10 @@ public class NginxFileSystemResourceImpl {
 	
 	private File upstream(String nginxHome) {
 		return new File(nginxHome,"upstream");
+	}
+	
+	private File ssl(String nginxHome) {
+		return new File(nginxHome,"ssl");
 	}
 
 	private void createFileSystem(String nginxHome) {
@@ -102,5 +108,36 @@ public class NginxFileSystemResourceImpl {
 		} catch (Exception e) {
 			return new NginxOperationResult(NginxOperationResultType.ERROR,ExceptionUtils.getFullStackTrace(e));
 		}
+	}
+	
+	public NginxOperationResult ssl(String nginxHome,
+			String certificate,String certificateUuid,String certificatePrivateKey,
+			String certificatePrivateKeyUuid) {
+		try {
+			File sslFolder = ssl(nginxHome);
+			
+			FileSystemBuilder
+				.newBuilder()
+				.write()
+					.withDestination(new File(sslFolder,certificateUuid))
+					.withCharset("UTF-8")
+					.withContent(decode(certificate, "UTF-8"))
+					.execute()
+				.end()
+				.write()
+					.withDestination(new File(sslFolder,certificatePrivateKeyUuid))
+					.withCharset("UTF-8")
+					.withContent(decode(certificatePrivateKey, "UTF-8"))
+					.execute()
+				.end();
+			
+			return new NginxOperationResult(NginxOperationResultType.SUCCESS);
+		} catch (Exception e) {
+			return new NginxOperationResult(NginxOperationResultType.ERROR,ExceptionUtils.getFullStackTrace(e));
+		}
+	}
+	
+	private String decode(String value,String charset) throws UnsupportedEncodingException {
+		return new String(Base64.getDecoder().decode(value.getBytes(charset)));
 	}
 }

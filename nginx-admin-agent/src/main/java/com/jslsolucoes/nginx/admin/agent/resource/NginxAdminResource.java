@@ -12,22 +12,24 @@ import javax.ws.rs.core.Response;
 import com.jslsolucoes.nginx.admin.agent.auth.AuthHandler;
 import com.jslsolucoes.nginx.admin.agent.error.ErrorHandler;
 import com.jslsolucoes.nginx.admin.agent.model.request.NginxConfigureRequest;
+import com.jslsolucoes.nginx.admin.agent.model.request.NginxSslRequest;
 import com.jslsolucoes.nginx.admin.agent.model.request.NginxUpstreamRequest;
 import com.jslsolucoes.nginx.admin.agent.model.request.NginxVirtualHostRequest;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxConfigureResponse;
+import com.jslsolucoes.nginx.admin.agent.model.response.NginxSslResponse;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxUpstreamResponse;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxVirtualHostResponse;
-import com.jslsolucoes.nginx.admin.agent.resource.impl.NginxFileSystemResourceImpl;
+import com.jslsolucoes.nginx.admin.agent.resource.impl.NginxAdminResourceImpl;
 import com.jslsolucoes.nginx.admin.agent.resource.impl.NginxOperationResult;
 
-@Path("fs")
+@Path("admin")
 @ErrorHandler
 @AuthHandler
 @Produces(MediaType.APPLICATION_JSON)
-public class NginxFileSystemResource {
+public class NginxAdminResource {
 
 	@Inject
-	private NginxFileSystemResourceImpl nginxFileSystemResourceImpl;
+	private NginxAdminResourceImpl nginxFileSystemResourceImpl;
 
 	@POST
 	@Path("configure")
@@ -57,6 +59,15 @@ public class NginxFileSystemResource {
 		NginxOperationResult nginxOperationResult = nginxFileSystemResourceImpl.virtualHost(nginxVirtualHostRequest.getHome(), nginxVirtualHostRequest.getUuid(), nginxVirtualHostRequest.getHttps(), nginxVirtualHostRequest.getCertificate(), nginxVirtualHostRequest.getCertificatePrivateKey(), nginxVirtualHostRequest.getAliases(), nginxVirtualHostRequest.getLocations());
 		asyncResponse.resume(Response
 				.ok(new NginxVirtualHostResponse(nginxOperationResult.getOutput(), nginxOperationResult.isSuccess()))
+				.build());
+	}
+	
+	@POST
+	@Path("ssl")
+	public void ssl(NginxSslRequest nginxSslRequest, @Suspended AsyncResponse asyncResponse) {
+		NginxOperationResult nginxOperationResult = nginxFileSystemResourceImpl.ssl(nginxSslRequest.getHome(), nginxSslRequest.getCertificate(),nginxSslRequest.getCertificateUuid(), nginxSslRequest.getCertificatePrivateKey(),nginxSslRequest.getCertificatePrivateKeyUuid());
+		asyncResponse.resume(Response
+				.ok(new NginxSslResponse(nginxOperationResult.getOutput(), nginxOperationResult.isSuccess()))
 				.build());
 	}
 
