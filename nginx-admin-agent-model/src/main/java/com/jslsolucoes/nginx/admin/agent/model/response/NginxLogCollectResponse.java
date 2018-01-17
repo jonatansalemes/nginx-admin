@@ -2,7 +2,7 @@ package com.jslsolucoes.nginx.admin.agent.model.response;
 
 import java.util.List;
 
-import com.jslsolucoes.nginx.admin.agent.model.response.model.FileObject;
+import com.jslsolucoes.nginx.admin.agent.model.FileObject;
 
 public class NginxLogCollectResponse {
 

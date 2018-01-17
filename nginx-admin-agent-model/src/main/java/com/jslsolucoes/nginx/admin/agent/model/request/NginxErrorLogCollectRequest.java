@@ -1,14 +1,14 @@
 package com.jslsolucoes.nginx.admin.agent.model.request;
 
-public class NginxLogCollectRequest {
+public class NginxErrorLogCollectRequest {
 
 	private String home;
 	
-	public NginxLogCollectRequest() {
+	public NginxErrorLogCollectRequest() {
 		
 	}
 	
-	public NginxLogCollectRequest(String home) {
+	public NginxErrorLogCollectRequest(String home) {
 		this.home = home;
 	}
 

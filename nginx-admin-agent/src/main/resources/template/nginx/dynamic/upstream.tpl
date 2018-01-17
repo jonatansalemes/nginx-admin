@@ -1,6 +1,6 @@
-upstream ${ upstream.name } {
-	${ upstream.strategy.name };
-	<#list upstream.servers as upstreamServer>
-	server ${ upstreamServer.server.ip }:${ upstreamServer.port?c };
+upstream ${ name } {
+	${ strategy };
+	<#list endpoints as endpoint>
+	server ${ endpoint.ip }:${ endpoint.port?c };
 	</#list>
 }

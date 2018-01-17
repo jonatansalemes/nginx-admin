@@ -1,14 +1,14 @@
 package com.jslsolucoes.nginx.admin.agent.model.request;
 
-public class NginxLogRotateRequest {
+public class NginxAccessLogCollectRequest {
 
 	private String home;
 	
-	public NginxLogRotateRequest() {
+	public NginxAccessLogCollectRequest() {
 		
 	}
 	
-	public NginxLogRotateRequest(String home) {
+	public NginxAccessLogCollectRequest(String home) {
 		this.home = home;
 	}
 

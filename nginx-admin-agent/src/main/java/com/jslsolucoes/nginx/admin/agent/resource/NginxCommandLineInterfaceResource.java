@@ -15,7 +15,6 @@ import com.jslsolucoes.nginx.admin.agent.model.request.NginxCliRequest;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxCliResponse;
 import com.jslsolucoes.nginx.admin.agent.resource.impl.NginxCommandLineInterfaceResourceImpl;
 import com.jslsolucoes.runtime.RuntimeResult;
-import com.jslsolucoes.runtime.RuntimeResultType;
 
 @Path("cli")
 @ErrorHandler
@@ -32,13 +31,13 @@ public class NginxCommandLineInterfaceResource {
 		RuntimeResult runtimeResult = nginxCommandLineInterfaceResourceImpl.start(nginxCliRequest.getBin(),
 				nginxCliRequest.getConf());
 		asyncResponse.resume(Response.ok(new NginxCliResponse(runtimeResult.getOutput(),
-				runtimeResult.getRuntimeResultType().equals(RuntimeResultType.SUCCESS))).build());
+				runtimeResult.isSuccess())).build());
 	}
 
 	@POST
-	@Path("kill")
-	public void kill(NginxCliRequest nginxCliRequest, @Suspended AsyncResponse asyncResponse) {
-		RuntimeResult runtimeResult = nginxCommandLineInterfaceResourceImpl.kill();
+	@Path("killAll")
+	public void killAll(NginxCliRequest nginxCliRequest, @Suspended AsyncResponse asyncResponse) {
+		RuntimeResult runtimeResult = nginxCommandLineInterfaceResourceImpl.killAll();
 		asyncResponse.resume(
 				Response.ok(new NginxCliResponse(runtimeResult.getOutput(), runtimeResult.isSuccess())).build());
 	}

@@ -1,18 +1,18 @@
 package com.jslsolucoes.nginx.admin.agent.resource.impl;
 
-import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
 
 import com.jslsolucoes.runtime.RuntimeBuilder;
 import com.jslsolucoes.runtime.RuntimeResult;
 
-@ApplicationScoped
+@RequestScoped
 public class NginxCommandLineInterfaceResourceImpl {
 
 	public NginxCommandLineInterfaceResourceImpl() {
 		
 	}
 	
-	public RuntimeResult kill() {
+	public RuntimeResult killAll() {
 		return RuntimeBuilder.newBuilder().withCommand("sudo killall nginx").execute();
 	}
 	

@@ -1,4 +1,4 @@
-package com.jslsolucoes.nginx.admin.agent.model.response.model;
+package com.jslsolucoes.nginx.admin.agent.model;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Base64;

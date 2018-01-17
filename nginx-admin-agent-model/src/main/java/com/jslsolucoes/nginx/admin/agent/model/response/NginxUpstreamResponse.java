@@ -1,15 +1,15 @@
 package com.jslsolucoes.nginx.admin.agent.model.response;
 
-public class NginxConfigureResponse implements NginxResponse {
+public class NginxUpstreamResponse implements NginxResponse {
 
 	private String stackTrace;
 	private Boolean success;
 	
-	public NginxConfigureResponse() {
+	public NginxUpstreamResponse() {
 		
 	}
 	
-	public NginxConfigureResponse(String stackTrace,Boolean success) {
+	public NginxUpstreamResponse(String stackTrace,Boolean success) {
 		this.stackTrace = stackTrace;
 		this.success = success;
 		
