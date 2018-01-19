@@ -12,13 +12,7 @@ import javax.ws.rs.core.Response;
 import com.jslsolucoes.nginx.admin.agent.auth.AuthHandler;
 import com.jslsolucoes.nginx.admin.agent.error.ErrorHandler;
 import com.jslsolucoes.nginx.admin.agent.model.request.NginxConfigureRequest;
-import com.jslsolucoes.nginx.admin.agent.model.request.NginxSslRequest;
-import com.jslsolucoes.nginx.admin.agent.model.request.NginxUpstreamRequest;
-import com.jslsolucoes.nginx.admin.agent.model.request.NginxVirtualHostRequest;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxConfigureResponse;
-import com.jslsolucoes.nginx.admin.agent.model.response.NginxSslResponse;
-import com.jslsolucoes.nginx.admin.agent.model.response.NginxUpstreamResponse;
-import com.jslsolucoes.nginx.admin.agent.model.response.NginxVirtualHostResponse;
 import com.jslsolucoes.nginx.admin.agent.resource.impl.NginxAdminResourceImpl;
 import com.jslsolucoes.nginx.admin.agent.resource.impl.NginxOperationResult;
 
@@ -41,34 +35,4 @@ public class NginxAdminResource {
 				.ok(new NginxConfigureResponse(nginxOperationResult.getOutput(), nginxOperationResult.isSuccess()))
 				.build());
 	}
-
-	@POST
-	@Path("upstream")
-	public void upstream(NginxUpstreamRequest nginxUpstreamRequest, @Suspended AsyncResponse asyncResponse) {
-		NginxOperationResult nginxOperationResult = nginxFileSystemResourceImpl.upstream(nginxUpstreamRequest.getHome(),
-				nginxUpstreamRequest.getName(), nginxUpstreamRequest.getUuid(), nginxUpstreamRequest.getStrategy(),
-				nginxUpstreamRequest.getEndpoints());
-		asyncResponse.resume(Response
-				.ok(new NginxUpstreamResponse(nginxOperationResult.getOutput(), nginxOperationResult.isSuccess()))
-				.build());
-	}
-	
-	@POST
-	@Path("virtualHost")
-	public void virtualHost(NginxVirtualHostRequest nginxVirtualHostRequest, @Suspended AsyncResponse asyncResponse) {
-		NginxOperationResult nginxOperationResult = nginxFileSystemResourceImpl.virtualHost(nginxVirtualHostRequest.getHome(), nginxVirtualHostRequest.getUuid(), nginxVirtualHostRequest.getHttps(), nginxVirtualHostRequest.getCertificate(), nginxVirtualHostRequest.getCertificatePrivateKey(), nginxVirtualHostRequest.getAliases(), nginxVirtualHostRequest.getLocations());
-		asyncResponse.resume(Response
-				.ok(new NginxVirtualHostResponse(nginxOperationResult.getOutput(), nginxOperationResult.isSuccess()))
-				.build());
-	}
-	
-	@POST
-	@Path("ssl")
-	public void ssl(NginxSslRequest nginxSslRequest, @Suspended AsyncResponse asyncResponse) {
-		NginxOperationResult nginxOperationResult = nginxFileSystemResourceImpl.ssl(nginxSslRequest.getHome(), nginxSslRequest.getCertificate(),nginxSslRequest.getCertificateUuid(), nginxSslRequest.getCertificatePrivateKey(),nginxSslRequest.getCertificatePrivateKeyUuid());
-		asyncResponse.resume(Response
-				.ok(new NginxSslResponse(nginxOperationResult.getOutput(), nginxOperationResult.isSuccess()))
-				.build());
-	}
-
 }

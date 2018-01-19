@@ -1,6 +1,6 @@
 package com.jslsolucoes.nginx.admin.agent.model.request;
 
-public class NginxSslRequest {
+public class NginxSslCreateRequest {
 
 	private String home;
 	private String certificate;

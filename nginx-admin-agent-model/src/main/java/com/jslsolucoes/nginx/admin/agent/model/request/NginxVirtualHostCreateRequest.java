@@ -4,13 +4,13 @@ import java.util.List;
 
 import com.jslsolucoes.nginx.admin.agent.model.Location;
 
-public class NginxVirtualHostRequest {
+public class NginxVirtualHostCreateRequest {
 
 	private String home;
 	private String uuid;
 	private Boolean https;
-	private String certificate;
-	private String certificatePrivateKey;
+	private String certificateUuid;
+	private String certificatePrivateKeyUuid;
 	private List<String> aliases;
 	private List<Location> locations;
 
@@ -28,22 +28,6 @@ public class NginxVirtualHostRequest {
 
 	public void setHttps(Boolean https) {
 		this.https = https;
-	}
-
-	public String getCertificate() {
-		return certificate;
-	}
-
-	public void setCertificate(String certificate) {
-		this.certificate = certificate;
-	}
-
-	public String getCertificatePrivateKey() {
-		return certificatePrivateKey;
-	}
-
-	public void setCertificatePrivateKey(String certificatePrivateKey) {
-		this.certificatePrivateKey = certificatePrivateKey;
 	}
 
 	public List<String> getAliases() {
@@ -68,6 +52,22 @@ public class NginxVirtualHostRequest {
 
 	public void setHome(String home) {
 		this.home = home;
+	}
+
+	public String getCertificateUuid() {
+		return certificateUuid;
+	}
+
+	public void setCertificateUuid(String certificateUuid) {
+		this.certificateUuid = certificateUuid;
+	}
+
+	public String getCertificatePrivateKeyUuid() {
+		return certificatePrivateKeyUuid;
+	}
+
+	public void setCertificatePrivateKeyUuid(String certificatePrivateKeyUuid) {
+		this.certificatePrivateKeyUuid = certificatePrivateKeyUuid;
 	}
 
 }

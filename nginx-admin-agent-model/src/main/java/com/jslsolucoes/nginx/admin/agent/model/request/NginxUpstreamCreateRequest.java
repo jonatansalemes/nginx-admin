@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.jslsolucoes.nginx.admin.agent.model.Endpoint;
 
-public class NginxUpstreamRequest {
+public class NginxUpstreamCreateRequest {
 
 	private String home;
 	private String name;

@@ -1,15 +1,15 @@
 package com.jslsolucoes.nginx.admin.agent.model.response;
 
-public class NginxSslResponse implements NginxResponse {
+public class NginxVirtualHostCreateResponse implements NginxResponse {
 
 	private String stackTrace;
 	private Boolean success;
 	
-	public NginxSslResponse() {
+	public NginxVirtualHostCreateResponse() {
 		
 	}
 	
-	public NginxSslResponse(String stackTrace,Boolean success) {
+	public NginxVirtualHostCreateResponse(String stackTrace,Boolean success) {
 		this.stackTrace = stackTrace;
 		this.success = success;
 		
