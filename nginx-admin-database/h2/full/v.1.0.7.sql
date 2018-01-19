@@ -87,9 +87,8 @@ create table admin.virtual_host (
 	id_resource_identifier bigint(10) not null,
 	primary key (id)
 );
-alter table admin.virtual_domain add constraint virtual_domain_uk1 unique(domain);
-alter table admin.virtual_domain add constraint virtual_domain_fk1 foreign key(id_ssl_certificate) references admin.ssl_certificate(id);
-alter table admin.virtual_domain add constraint virtual_domain_fk2 foreign key(id_resource_identifier) references admin.resource_identifier(id);
+alter table admin.virtual_host add constraint virtual_host_fk1 foreign key(id_ssl_certificate) references admin.ssl_certificate(id);
+alter table admin.virtual_host add constraint virtual_host_fk2 foreign key(id_resource_identifier) references admin.resource_identifier(id);
 
 
 create table admin.virtual_host_location (
