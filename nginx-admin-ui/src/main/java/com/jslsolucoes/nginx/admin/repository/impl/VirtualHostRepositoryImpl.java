@@ -1,7 +1,6 @@
 package com.jslsolucoes.nginx.admin.repository.impl;
 
 import java.io.File;
-import com.jslsolucoes.i18n.Messages;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +19,8 @@ import javax.persistence.criteria.SetJoin;
 
 import org.apache.commons.io.FileUtils;
 
+import com.jslsolucoes.i18n.Messages;
 import com.jslsolucoes.nginx.admin.error.NginxAdminException;
-import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.model.VirtualHost;
 import com.jslsolucoes.nginx.admin.model.VirtualHostAlias;
 import com.jslsolucoes.nginx.admin.model.VirtualHostAlias_;
@@ -32,7 +31,6 @@ import com.jslsolucoes.nginx.admin.repository.ResourceIdentifierRepository;
 import com.jslsolucoes.nginx.admin.repository.VirtualHostAliasRepository;
 import com.jslsolucoes.nginx.admin.repository.VirtualHostLocationRepository;
 import com.jslsolucoes.nginx.admin.repository.VirtualHostRepository;
-import com.jslsolucoes.template.TemplateProcessor;
 
 @RequestScoped
 public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> implements VirtualHostRepository {
@@ -89,12 +87,7 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 
 	private void configure(VirtualHost virtualHost) throws NginxAdminException {
 		try {
-			VirtualHost virtualHostToConfigure = load(virtualHost);
-			Nginx nginx = nginxRepository.configuration();
-			TemplateProcessor.newBuilder().withTemplate("/template/dynamic/nginx","virtual-host.tpl").withData("virtualHost", virtualHostToConfigure)
-					.withData("nginx", nginx).withOutputLocation(new File(nginx.virtualHost(),
-							virtualHostToConfigure.getResourceIdentifier().getHash() + ".conf"))
-					.process();
+			
 		} catch (Exception e) {
 			throw new NginxAdminException(e);
 		}

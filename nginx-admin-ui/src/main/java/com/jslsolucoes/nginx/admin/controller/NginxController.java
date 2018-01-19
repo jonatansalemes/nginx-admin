@@ -4,7 +4,6 @@ import javax.inject.Inject;
 
 import com.jslsolucoes.nginx.admin.error.NginxAdminException;
 import com.jslsolucoes.nginx.admin.model.Nginx;
-import com.jslsolucoes.nginx.admin.nginx.status.NginxStatus;
 import com.jslsolucoes.nginx.admin.repository.NginxRepository;
 import com.jslsolucoes.tagria.lib.form.FormValidation;
 
@@ -20,17 +19,15 @@ public class NginxController {
 
 	private Result result;
 	private NginxRepository nginxRepository;
-	private NginxStatus nginxStatus;
-
+	
 	public NginxController() {
-		this(null, null, null);
+		
 	}
 
 	@Inject
-	public NginxController(Result result, NginxRepository nginxRepository, NginxStatus nginxStatus) {
+	public NginxController(Result result, NginxRepository nginxRepository) {
 		this.result = result;
 		this.nginxRepository = nginxRepository;
-		this.nginxStatus = nginxStatus;
 	}
 
 	public void validate(Long id, String bin, String settings, Integer gzip, Integer maxPostSize) {
@@ -54,7 +51,7 @@ public class NginxController {
 	}
 
 	public void status() {
-		this.result.use(Results.json()).from(nginxStatus).serialize();
+		
 	}
 
 }

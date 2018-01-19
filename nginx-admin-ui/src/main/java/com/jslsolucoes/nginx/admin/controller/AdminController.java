@@ -2,10 +2,6 @@ package com.jslsolucoes.nginx.admin.controller;
 
 import javax.inject.Inject;
 
-import com.jslsolucoes.nginx.admin.nginx.detail.NginxDetail;
-import com.jslsolucoes.nginx.admin.nginx.runner.Runner;
-import com.jslsolucoes.nginx.admin.os.OperationalSystem;
-
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Result;
@@ -15,24 +11,20 @@ import br.com.caelum.vraptor.Result;
 public class AdminController {
 
 	private Result result;
-	private Runner runner;
-	private NginxDetail nginxDetail;
 
 	public AdminController() {
-		this(null, null, null);
+		
 	}
 
 	@Inject
-	public AdminController(Result result, Runner runner, NginxDetail nginxDetail) {
+	public AdminController(Result result) {
 		this.result = result;
-		this.runner = runner;
-		this.nginxDetail = nginxDetail;
-
+		
 	}
 
 	public void dashboard() {
-		this.result.include("so", OperationalSystem.info());
-		this.result.include("nginxDetail", nginxDetail);
+		this.result.include("so", null);
+		this.result.include("nginxDetail", null);
 	}
 
 	public void configure() {
@@ -40,32 +32,32 @@ public class AdminController {
 	}
 
 	public void stop() {
-		this.result.include("runtimeResult", runner.stop());
+		this.result.include("runtimeResult", null);
 		this.result.redirectTo(this).dashboard();
 	}
 
 	public void reload() {
-		this.result.include("runtimeResult", runner.reload());
+		this.result.include("runtimeResult", null);
 		this.result.redirectTo(this).dashboard();
 	}
 
 	public void start() {
-		this.result.include("runtimeResult", runner.start());
+		this.result.include("runtimeResult", null);
 		this.result.redirectTo(this).dashboard();
 	}
 
 	public void status() {
-		this.result.include("runtimeResult", runner.status());
+		this.result.include("runtimeResult", null);
 		this.result.redirectTo(this).dashboard();
 	}
 
 	public void restart() {
-		this.result.include("runtimeResult", runner.restart());
+		this.result.include("runtimeResult", null);
 		this.result.redirectTo(this).dashboard();
 	}
 
 	public void testConfig() {
-		this.result.include("runtimeResult", runner.testConfig());
+		this.result.include("runtimeResult", null);
 		this.result.redirectTo(this).dashboard();
 	}
 
