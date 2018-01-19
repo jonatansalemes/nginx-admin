@@ -13,6 +13,7 @@ import java.util.Set;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,10 +50,17 @@ public class OperationalSystem {
 		locations.add("/etc/issue");
 		locations.add("/etc/lsb-release");
 		locations.addAll(releases());
-		return find(locations);
+		return clear(searchFor(locations));
 	}
 
-	private static String find(Set<String> locations) {
+	private static String clear(String distribution) {
+		if(!StringUtils.isEmpty(distribution)){
+			return distribution.replaceAll("\n\t\r", "").trim();
+		}
+		return distribution;
+	}
+
+	private static String searchFor(Set<String> locations) {
 		for (String location : locations) {
 			File file = new File(location);
 			if (file.exists()) {

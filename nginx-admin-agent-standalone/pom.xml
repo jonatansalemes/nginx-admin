@@ -140,6 +140,10 @@
 			<artifactId>jaxrs-multipart</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.wildfly.swarm</groupId>
+			<artifactId>logging</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>2.5</version>
