@@ -31,6 +31,28 @@ public class NginxCommandLineInterfaceTest {
 	}
 	
 	@Test
+	public void status() {
+		
+		nginxCommandLineInterface
+		.killAll()
+		.thenCompose(nginxResponse -> nginxCommandLineInterface.stop())
+		.thenCompose(nginxResponse -> nginxCommandLineInterface.start())
+		.thenCompose(nginxResponse -> nginxCommandLineInterface.status())
+		.thenAccept(nginxResponse->{
+			if(nginxResponse.error()) {
+				NginxExceptionResponse nginxExceptionResponse = (NginxExceptionResponse) nginxResponse;
+				Assert.fail(nginxExceptionResponse.getStackTrace());
+			} else if(nginxResponse.forbidden()) {
+				NginxAuthenticationFailResponse nginxAuthenticationFailResponse = (NginxAuthenticationFailResponse) nginxResponse;
+				Assert.fail(nginxAuthenticationFailResponse.getMessage());
+			} else {
+				NginxCommandLineInterfaceResponse nginxCommandLineInterfaceResponse = (NginxCommandLineInterfaceResponse) nginxResponse;
+				Assert.assertTrue(nginxCommandLineInterfaceResponse.getSuccess());
+			}
+		}).join();
+	}
+	
+	@Test
 	public void killAll() {
 		
 		nginxCommandLineInterface

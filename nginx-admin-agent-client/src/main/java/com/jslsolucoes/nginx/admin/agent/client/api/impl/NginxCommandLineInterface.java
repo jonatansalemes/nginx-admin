@@ -40,6 +40,26 @@ public class NginxCommandLineInterface implements NginxAgentClientApi {
 	public CompletableFuture<NginxResponse> killAll() {
 		return request("/commandLineInterface/killAll");
 	}
+	
+	public CompletableFuture<NginxResponse> status() {
+		return request("/commandLineInterface/status");
+	}
+	
+	public CompletableFuture<NginxResponse> stop() {
+		return request("/commandLineInterface/stop");
+	}
+	
+	public CompletableFuture<NginxResponse> reload() {
+		return request("/commandLineInterface/reload");
+	}
+	
+	public CompletableFuture<NginxResponse> version() {
+		return request("/commandLineInterface/version");
+	}
+	
+	public CompletableFuture<NginxResponse> testConfiguration() {
+		return request("/commandLineInterface/testConfiguration");
+	}
 
 	public CompletableFuture<NginxResponse> request(String path) {
 		return CompletableFuture.supplyAsync(() -> {
@@ -63,9 +83,7 @@ public class NginxCommandLineInterface implements NginxAgentClientApi {
 		}, scheduledExecutorService);
 	}
 
-	public CompletableFuture<NginxResponse> stop() {
-		return request("/commandLineInterface/stop");
-	}
+	
 
 	
 

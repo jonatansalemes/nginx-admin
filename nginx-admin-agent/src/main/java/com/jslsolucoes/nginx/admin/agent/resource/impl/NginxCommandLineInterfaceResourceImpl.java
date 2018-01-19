@@ -34,7 +34,7 @@ public class NginxCommandLineInterfaceResourceImpl {
 		return RuntimeBuilder.newBuilder().withCommand("sudo " + nginxBin + " -c " + conf(nginxHome) + " -s reload").execute();
 	}
 	
-	public RuntimeResult testConfig(String nginxBin, String nginxHome) {
+	public RuntimeResult testConfiguration(String nginxBin, String nginxHome) {
 		return RuntimeBuilder.newBuilder().withCommand("sudo " + nginxBin + " -c " + conf(nginxHome) + " -t").execute();
 	}
 	

@@ -58,5 +58,32 @@ public class NginxCommandLineInterfaceResource {
 		asyncResponse.resume(
 				Response.ok(new NginxCommandLineInterfaceResponse(runtimeResult.getOutput(), runtimeResult.isSuccess())).build());
 	}
+	
+	@POST
+	@Path("testConfiguration")
+	public void testConfiguration(NginxCommandLineInterfaceRequest nginxCommandLineInterfaceRequest, @Suspended AsyncResponse asyncResponse) {
+		RuntimeResult runtimeResult = nginxCommandLineInterfaceResourceImpl.testConfiguration(nginxCommandLineInterfaceRequest.getBin(),
+				nginxCommandLineInterfaceRequest.getHome());
+		asyncResponse.resume(
+				Response.ok(new NginxCommandLineInterfaceResponse(runtimeResult.getOutput(), runtimeResult.isSuccess())).build());
+	}
+	
+	@POST
+	@Path("version")
+	public void version(NginxCommandLineInterfaceRequest nginxCommandLineInterfaceRequest, @Suspended AsyncResponse asyncResponse) {
+		RuntimeResult runtimeResult = nginxCommandLineInterfaceResourceImpl.version(nginxCommandLineInterfaceRequest.getBin(),
+				nginxCommandLineInterfaceRequest.getHome());
+		asyncResponse.resume(
+				Response.ok(new NginxCommandLineInterfaceResponse(runtimeResult.getOutput(), runtimeResult.isSuccess())).build());
+	}
+	
+	@POST
+	@Path("reload")
+	public void reload(NginxCommandLineInterfaceRequest nginxCommandLineInterfaceRequest, @Suspended AsyncResponse asyncResponse) {
+		RuntimeResult runtimeResult = nginxCommandLineInterfaceResourceImpl.reload(nginxCommandLineInterfaceRequest.getBin(),
+				nginxCommandLineInterfaceRequest.getHome());
+		asyncResponse.resume(
+				Response.ok(new NginxCommandLineInterfaceResponse(runtimeResult.getOutput(), runtimeResult.isSuccess())).build());
+	}
 
 }
