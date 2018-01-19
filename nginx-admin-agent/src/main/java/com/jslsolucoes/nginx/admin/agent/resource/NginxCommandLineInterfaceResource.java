@@ -29,7 +29,7 @@ public class NginxCommandLineInterfaceResource {
 	@Path("start")
 	public void start(NginxCliRequest nginxCliRequest, @Suspended AsyncResponse asyncResponse) {
 		RuntimeResult runtimeResult = nginxCommandLineInterfaceResourceImpl.start(nginxCliRequest.getBin(),
-				nginxCliRequest.getConf());
+				nginxCliRequest.getHome());
 		asyncResponse.resume(Response.ok(new NginxCliResponse(runtimeResult.getOutput(),
 				runtimeResult.isSuccess())).build());
 	}
@@ -46,7 +46,7 @@ public class NginxCommandLineInterfaceResource {
 	@Path("stop")
 	public void stop(NginxCliRequest nginxCliRequest, @Suspended AsyncResponse asyncResponse) {
 		RuntimeResult runtimeResult = nginxCommandLineInterfaceResourceImpl.stop(nginxCliRequest.getBin(),
-				nginxCliRequest.getConf());
+				nginxCliRequest.getHome());
 		asyncResponse.resume(
 				Response.ok(new NginxCliResponse(runtimeResult.getOutput(), runtimeResult.isSuccess())).build());
 	}

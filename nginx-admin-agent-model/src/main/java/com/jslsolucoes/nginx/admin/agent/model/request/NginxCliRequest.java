@@ -3,7 +3,7 @@ package com.jslsolucoes.nginx.admin.agent.model.request;
 public class NginxCliRequest {
 
 	private String bin;
-	private String conf;
+	private String home;
 	
 	public NginxCliRequest() {
 		
@@ -21,14 +21,12 @@ public class NginxCliRequest {
 		this.bin = bin;
 	}
 
-	public String getConf() {
-		return conf;
+	public String getHome() {
+		return home;
 	}
 
-	public void setConf(String conf) {
-		this.conf = conf;
+	public void setHome(String home) {
+		this.home = home;
 	}
-	
-	
 	
 }

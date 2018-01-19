@@ -12,10 +12,6 @@ import com.jslsolucoes.template.TemplateProcessor;
 @RequestScoped
 public class NginxAdminResourceImpl {
 	
-	
-	public NginxAdminResourceImpl() {
-
-	}
 
 	public NginxOperationResult configure(String nginxHome, Integer maxPostSize,Boolean gzip) {
 		try {
@@ -59,8 +55,5 @@ public class NginxAdminResourceImpl {
 			.execute()
 		.end();
 	}
-
-	
-	
-	
+		
 }

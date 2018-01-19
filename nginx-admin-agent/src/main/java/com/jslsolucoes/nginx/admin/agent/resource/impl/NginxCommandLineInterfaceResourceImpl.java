@@ -1,5 +1,7 @@
 package com.jslsolucoes.nginx.admin.agent.resource.impl;
 
+import java.io.File;
+
 import javax.enterprise.context.RequestScoped;
 
 import com.jslsolucoes.runtime.RuntimeBuilder;
@@ -16,28 +18,33 @@ public class NginxCommandLineInterfaceResourceImpl {
 		return RuntimeBuilder.newBuilder().withCommand("sudo killall nginx").execute();
 	}
 	
-	public RuntimeResult start(String bin, String conf) {
-		return RuntimeBuilder.newBuilder().withCommand("sudo " + bin + " -c " + conf).execute();
+	public RuntimeResult start(String nginxBin, String nginxHome) {
+		return RuntimeBuilder.newBuilder().withCommand("sudo " + nginxBin + " -c " + conf(nginxHome)).execute();
 	}
 	
-	public RuntimeResult stop(String bin, String conf) {
-		return RuntimeBuilder.newBuilder().withCommand("sudo " + bin + " -c " + conf + " -s quit").execute();
+	public RuntimeResult stop(String nginxBin, String nginxHome) {
+		return RuntimeBuilder.newBuilder().withCommand("sudo " + nginxBin + " -c " + conf(nginxHome) + " -s quit").execute();
 	}
 	
-	public RuntimeResult version(String bin, String conf) {
-		return RuntimeBuilder.newBuilder().withCommand("sudo " + bin + " -c " + conf + " -v").execute();
+	public RuntimeResult version(String nginxBin, String nginxHome) {
+		return RuntimeBuilder.newBuilder().withCommand("sudo " + nginxBin + " -c " + conf(nginxHome) + " -v").execute();
 	}
 	
-	public RuntimeResult reload(String bin, String conf) {
-		return RuntimeBuilder.newBuilder().withCommand("sudo " + bin + " -c " + conf + " -s reload").execute();
+	public RuntimeResult reload(String nginxBin, String nginxHome) {
+		return RuntimeBuilder.newBuilder().withCommand("sudo " + nginxBin + " -c " + conf(nginxHome) + " -s reload").execute();
 	}
 	
-	public RuntimeResult testConfig(String bin, String conf) {
-		return RuntimeBuilder.newBuilder().withCommand("sudo " + bin + " -c " + conf + " -t").execute();
+	public RuntimeResult testConfig(String nginxBin, String nginxHome) {
+		return RuntimeBuilder.newBuilder().withCommand("sudo " + nginxBin + " -c " + conf(nginxHome) + " -t").execute();
 	}
 	
 	public RuntimeResult status() {
 		return RuntimeBuilder.newBuilder().withCommand("sudo pgrep nginx").execute();
+	}
+	
+	private String conf(String nginxHome) {
+		File file = new File(nginxHome,"nginx.conf");
+		return file.getAbsolutePath();
 	}
 
 }
