@@ -6,8 +6,6 @@ import java.util.Base64;
 
 import javax.enterprise.context.RequestScoped;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
-
 import com.jslsolucoes.file.system.FileSystemBuilder;
 
 @RequestScoped
@@ -40,7 +38,7 @@ public class NginxSslResourceImpl {
 			
 			return new NginxOperationResult(NginxOperationResultType.SUCCESS);
 		} catch (Exception e) {
-			return new NginxOperationResult(NginxOperationResultType.ERROR,ExceptionUtils.getFullStackTrace(e));
+			return new NginxOperationResult(NginxOperationResultType.ERROR,e);
 		}
 	}
 	
@@ -67,7 +65,7 @@ public class NginxSslResourceImpl {
 			
 			return new NginxOperationResult(NginxOperationResultType.SUCCESS);
 		} catch (Exception e) {
-			return new NginxOperationResult(NginxOperationResultType.ERROR,ExceptionUtils.getFullStackTrace(e));
+			return new NginxOperationResult(NginxOperationResultType.ERROR,e);
 		}
 	}
 	

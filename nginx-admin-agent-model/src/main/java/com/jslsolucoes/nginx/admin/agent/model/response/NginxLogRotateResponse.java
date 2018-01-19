@@ -1,6 +1,6 @@
 package com.jslsolucoes.nginx.admin.agent.model.response;
 
-public class NginxLogRotateResponse {
+public class NginxLogRotateResponse implements NginxResponse {
 
 	private Integer count;
 	

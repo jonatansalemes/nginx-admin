@@ -11,6 +11,19 @@ public class NginxUpstreamCreateRequest {
 	private String uuid;
 	private String strategy;
 	private List<Endpoint> endpoints;
+	
+	public NginxUpstreamCreateRequest() {
+		
+	}
+	
+	public NginxUpstreamCreateRequest(String home,String name,String uuid,String strategy,List<Endpoint> endpoints) {
+		this.home = home;
+		this.name = name;
+		this.uuid = uuid;
+		this.strategy = strategy;
+		this.endpoints = endpoints;
+	}
+	
 	public String getHome() {
 		return home;
 	}

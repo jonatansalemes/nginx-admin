@@ -4,6 +4,16 @@ public class NginxVirtualHostDeleteRequest {
 
 	private String home;
 	private String uuid;
+	
+	public NginxVirtualHostDeleteRequest() {
+		
+	}
+	
+	public NginxVirtualHostDeleteRequest(String home,String uuid) {
+		this.home = home;
+		this.uuid = uuid;
+	}
+	
 	public String getHome() {
 		return home;
 	}

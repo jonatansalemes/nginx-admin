@@ -15,6 +15,11 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
+			<groupId>com.jslsolucoes</groupId>
+			<artifactId>nginx-admin-agent-model</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
@@ -32,11 +37,7 @@
 			<version>3.1.4.Final</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>com.jslsolucoes</groupId>
-			<artifactId>nginx-admin-agent-model</artifactId>
-			<version>${project.version}</version>
-		</dependency>
+		
 	</dependencies>
   
 </project>

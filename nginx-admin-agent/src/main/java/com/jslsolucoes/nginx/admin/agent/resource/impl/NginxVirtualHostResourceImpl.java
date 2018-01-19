@@ -5,8 +5,6 @@ import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
-
 import com.jslsolucoes.file.system.FileSystemBuilder;
 import com.jslsolucoes.nginx.admin.agent.model.Location;
 import com.jslsolucoes.template.TemplateProcessor;
@@ -40,7 +38,7 @@ public class NginxVirtualHostResourceImpl {
 					.process();
 			return new NginxOperationResult(NginxOperationResultType.SUCCESS);
 		} catch (Exception e) {
-			return new NginxOperationResult(NginxOperationResultType.ERROR,ExceptionUtils.getFullStackTrace(e));
+			return new NginxOperationResult(NginxOperationResultType.ERROR,e);
 		}
 	}
 	
@@ -57,7 +55,7 @@ public class NginxVirtualHostResourceImpl {
 			
 			return new NginxOperationResult(NginxOperationResultType.SUCCESS);
 		} catch (Exception e) {
-			return new NginxOperationResult(NginxOperationResultType.ERROR,ExceptionUtils.getFullStackTrace(e));
+			return new NginxOperationResult(NginxOperationResultType.ERROR,e);
 		}
 	}
 	

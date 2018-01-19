@@ -1,16 +1,17 @@
 package com.jslsolucoes.nginx.admin.agent.model.request;
 
-public class NginxCliRequest {
+public class NginxCommandLineInterfaceRequest {
 
 	private String bin;
 	private String home;
 	
-	public NginxCliRequest() {
+	public NginxCommandLineInterfaceRequest() {
 		
 	}
 	
-	public NginxCliRequest(String bin) {
+	public NginxCommandLineInterfaceRequest(String bin,String home) {
 		this.bin = bin;
+		this.home = home;
 	}
 
 	public String getBin() {

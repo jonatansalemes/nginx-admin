@@ -4,6 +4,16 @@ public class NginxUpstreamDeleteRequest {
 
 	private String home;
 	private String uuid;
+	
+	public NginxUpstreamDeleteRequest() {
+		
+	}
+	
+	public NginxUpstreamDeleteRequest(String home,String uuid) {
+		this.home = home;
+		this.uuid = uuid;
+	}
+	
 	public String getHome() {
 		return home;
 	}

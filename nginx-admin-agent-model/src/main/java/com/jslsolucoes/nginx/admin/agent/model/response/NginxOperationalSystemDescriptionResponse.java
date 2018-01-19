@@ -1,6 +1,6 @@
 package com.jslsolucoes.nginx.admin.agent.model.response;
 
-public class NginxOperationalSystemDescriptionResponse {
+public class NginxOperationalSystemDescriptionResponse implements NginxResponse {
 
 	private String architecture;
 	private String distribution;

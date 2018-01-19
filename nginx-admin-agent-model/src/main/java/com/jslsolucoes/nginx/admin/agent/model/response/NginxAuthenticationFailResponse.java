@@ -1,14 +1,14 @@
 package com.jslsolucoes.nginx.admin.agent.model.response;
 
-public class IndexResponse implements NginxResponse {
+public class NginxAuthenticationFailResponse implements NginxResponse {
 
 	private String message;
 	
-	public IndexResponse() {
+	public NginxAuthenticationFailResponse() {
 		
 	}
-
-	public IndexResponse(String message) {
+	
+	public NginxAuthenticationFailResponse(String message) {
 		this.message = message;
 	}
 
@@ -19,4 +19,12 @@ public class IndexResponse implements NginxResponse {
 	public void setMessage(String message) {
 		this.message = message;
 	}
+
+	@Override
+	public boolean forbidden() {
+		return true;
+	}
+	
+	
+	
 }

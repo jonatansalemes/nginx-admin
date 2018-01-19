@@ -11,12 +11,12 @@ import javax.ws.rs.core.Response;
 
 import com.jslsolucoes.nginx.admin.agent.auth.AuthHandler;
 import com.jslsolucoes.nginx.admin.agent.error.ErrorHandler;
-import com.jslsolucoes.nginx.admin.agent.model.request.NginxCliRequest;
-import com.jslsolucoes.nginx.admin.agent.model.response.NginxCliResponse;
+import com.jslsolucoes.nginx.admin.agent.model.request.NginxCommandLineInterfaceRequest;
+import com.jslsolucoes.nginx.admin.agent.model.response.NginxCommandLineInterfaceResponse;
 import com.jslsolucoes.nginx.admin.agent.resource.impl.NginxCommandLineInterfaceResourceImpl;
 import com.jslsolucoes.runtime.RuntimeResult;
 
-@Path("cli")
+@Path("commandLineInterface")
 @ErrorHandler
 @AuthHandler
 @Produces(MediaType.APPLICATION_JSON)
@@ -27,36 +27,36 @@ public class NginxCommandLineInterfaceResource {
 
 	@POST
 	@Path("start")
-	public void start(NginxCliRequest nginxCliRequest, @Suspended AsyncResponse asyncResponse) {
-		RuntimeResult runtimeResult = nginxCommandLineInterfaceResourceImpl.start(nginxCliRequest.getBin(),
-				nginxCliRequest.getHome());
-		asyncResponse.resume(Response.ok(new NginxCliResponse(runtimeResult.getOutput(),
+	public void start(NginxCommandLineInterfaceRequest nginxCommandLineInterfaceRequest, @Suspended AsyncResponse asyncResponse) {
+		RuntimeResult runtimeResult = nginxCommandLineInterfaceResourceImpl.start(nginxCommandLineInterfaceRequest.getBin(),
+				nginxCommandLineInterfaceRequest.getHome());
+		asyncResponse.resume(Response.ok(new NginxCommandLineInterfaceResponse(runtimeResult.getOutput(),
 				runtimeResult.isSuccess())).build());
 	}
 
 	@POST
 	@Path("killAll")
-	public void killAll(NginxCliRequest nginxCliRequest, @Suspended AsyncResponse asyncResponse) {
+	public void killAll(NginxCommandLineInterfaceRequest nginxCommandLineInterfaceRequest, @Suspended AsyncResponse asyncResponse) {
 		RuntimeResult runtimeResult = nginxCommandLineInterfaceResourceImpl.killAll();
 		asyncResponse.resume(
-				Response.ok(new NginxCliResponse(runtimeResult.getOutput(), runtimeResult.isSuccess())).build());
+				Response.ok(new NginxCommandLineInterfaceResponse(runtimeResult.getOutput(), runtimeResult.isSuccess())).build());
 	}
 
 	@POST
 	@Path("stop")
-	public void stop(NginxCliRequest nginxCliRequest, @Suspended AsyncResponse asyncResponse) {
-		RuntimeResult runtimeResult = nginxCommandLineInterfaceResourceImpl.stop(nginxCliRequest.getBin(),
-				nginxCliRequest.getHome());
+	public void stop(NginxCommandLineInterfaceRequest nginxCommandLineInterfaceRequest, @Suspended AsyncResponse asyncResponse) {
+		RuntimeResult runtimeResult = nginxCommandLineInterfaceResourceImpl.stop(nginxCommandLineInterfaceRequest.getBin(),
+				nginxCommandLineInterfaceRequest.getHome());
 		asyncResponse.resume(
-				Response.ok(new NginxCliResponse(runtimeResult.getOutput(), runtimeResult.isSuccess())).build());
+				Response.ok(new NginxCommandLineInterfaceResponse(runtimeResult.getOutput(), runtimeResult.isSuccess())).build());
 	}
 
 	@POST
 	@Path("status")
-	public void status(NginxCliRequest nginxCliRequest, @Suspended AsyncResponse asyncResponse) {
+	public void status(NginxCommandLineInterfaceRequest nginxCommandLineInterfaceRequest, @Suspended AsyncResponse asyncResponse) {
 		RuntimeResult runtimeResult = nginxCommandLineInterfaceResourceImpl.status();
 		asyncResponse.resume(
-				Response.ok(new NginxCliResponse(runtimeResult.getOutput(), runtimeResult.isSuccess())).build());
+				Response.ok(new NginxCommandLineInterfaceResponse(runtimeResult.getOutput(), runtimeResult.isSuccess())).build());
 	}
 
 }

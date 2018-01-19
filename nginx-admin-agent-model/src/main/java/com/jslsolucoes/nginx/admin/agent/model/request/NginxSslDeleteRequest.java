@@ -5,6 +5,17 @@ public class NginxSslDeleteRequest {
 	private String home;
 	private String certificateUuid;
 	private String certificatePrivateKeyUuid;
+	
+	public NginxSslDeleteRequest() {
+		
+	}
+	
+	public NginxSslDeleteRequest(String home,String certificateUuid,String certificatePrivateKeyUuid) {
+		this.home = home;
+		this.certificateUuid = certificateUuid;
+		this.certificatePrivateKeyUuid = certificatePrivateKeyUuid;
+	}
+	
 	public String getHome() {
 		return home;
 	}

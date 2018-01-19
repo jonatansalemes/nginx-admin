@@ -1,6 +1,6 @@
 package com.jslsolucoes.nginx.admin.agent.model.response;
 
-public class NginxStatusResponse {
+public class NginxStatusResponse implements NginxResponse {
 
 	private Integer activeConnection;
 	private Integer accepts;

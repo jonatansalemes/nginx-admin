@@ -1,17 +1,19 @@
 package com.jslsolucoes.nginx.admin.agent.resource.impl;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
+
 public class NginxOperationResult {
 
 	private NginxOperationResultType nginxOperationResultType;
 	private String output;
 
-	public NginxOperationResult(NginxOperationResultType nginxOperationResultType, String output) {
+	public NginxOperationResult(NginxOperationResultType nginxOperationResultType, Throwable throwable) {
 		this.nginxOperationResultType = nginxOperationResultType;
-		this.output = output;
+		this.output = ExceptionUtils.getStackTrace(throwable);
 	}
 	
-	public NginxOperationResult(NginxOperationResultType runtimeResultType) {
-		this(runtimeResultType,null);
+	public NginxOperationResult(NginxOperationResultType nginxOperationResultType) {
+		this.nginxOperationResultType = nginxOperationResultType;
 	}
 
 	public String getOutput() {

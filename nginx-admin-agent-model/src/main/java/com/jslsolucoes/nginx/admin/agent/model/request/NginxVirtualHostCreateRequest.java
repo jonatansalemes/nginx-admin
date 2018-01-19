@@ -14,6 +14,21 @@ public class NginxVirtualHostCreateRequest {
 	private List<String> aliases;
 	private List<Location> locations;
 
+	public NginxVirtualHostCreateRequest() {
+
+	}
+
+	public NginxVirtualHostCreateRequest(String home, String uuid, Boolean https, String certificateUuid,
+			String certificatePrivateKeyUuid, List<String> aliases, List<Location> locations) {
+		this.home = home;
+		this.uuid = uuid;
+		this.https = https;
+		this.certificateUuid = certificateUuid;
+		this.certificatePrivateKeyUuid = certificatePrivateKeyUuid;
+		this.aliases = aliases;
+		this.locations = locations;
+	}
+
 	public String getUuid() {
 		return uuid;
 	}

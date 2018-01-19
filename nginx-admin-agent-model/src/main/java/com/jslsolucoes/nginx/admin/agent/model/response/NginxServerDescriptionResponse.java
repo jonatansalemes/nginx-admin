@@ -2,7 +2,7 @@ package com.jslsolucoes.nginx.admin.agent.model.response;
 
 import java.math.BigDecimal;
 
-public class NginxServerDescriptionResponse {
+public class NginxServerDescriptionResponse implements NginxResponse {
 
 	private String version;
 	private String address;

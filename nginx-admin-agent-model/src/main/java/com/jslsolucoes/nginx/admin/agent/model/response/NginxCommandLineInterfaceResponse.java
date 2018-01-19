@@ -1,15 +1,15 @@
 package com.jslsolucoes.nginx.admin.agent.model.response;
 
-public class NginxCliResponse implements NginxResponse {
+public class NginxCommandLineInterfaceResponse implements NginxResponse {
 
 	private String output;
 	private Boolean success;
 	
-	public NginxCliResponse() {
+	public NginxCommandLineInterfaceResponse() {
 		
 	}
 	
-	public NginxCliResponse(String output,Boolean success) {
+	public NginxCommandLineInterfaceResponse(String output,Boolean success) {
 		this.output = output;
 		this.success = success;
 	}

@@ -5,8 +5,6 @@ import java.io.File;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
-
 import com.jslsolucoes.file.system.FileSystemBuilder;
 import com.jslsolucoes.nginx.admin.agent.resource.impl.nginx.NginxInfo;
 import com.jslsolucoes.nginx.admin.agent.resource.impl.nginx.NginxInfoDiscover;
@@ -30,8 +28,8 @@ public class NginxAdminResourceImpl {
 			createFileSystem(nginxHome);
 			createTemplate(nginxHome,maxPostSize,gzip);
 			return new NginxOperationResult(NginxOperationResultType.SUCCESS);
-		} catch (Exception e) {
-			return new NginxOperationResult(NginxOperationResultType.ERROR,ExceptionUtils.getFullStackTrace(e));
+		} catch (Exception exception) {
+			return new NginxOperationResult(NginxOperationResultType.ERROR,exception);
 		}
 	}
 

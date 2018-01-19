@@ -8,8 +8,6 @@ import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
-
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxExceptionResponse;
 
 @Interceptor
@@ -23,7 +21,7 @@ public class ErrorInterceptor {
 			return invocationContext.proceed();
 		} catch (Exception exception) {
 			Response response = Response.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(new NginxExceptionResponse(ExceptionUtils.getFullStackTrace(exception))).build();
+					.entity(new NginxExceptionResponse(exception)).build();
 			AsyncResponse asyncResponse = asyncResponse(invocationContext);
 			if(asyncResponse != null){
 				asyncResponse.resume(response);

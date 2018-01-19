@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.jslsolucoes.nginx.admin.agent.model.FileObject;
 
-public class NginxLogCollectResponse {
+public class NginxLogCollectResponse implements NginxResponse {
 
 	private List<FileObject> files;
 	

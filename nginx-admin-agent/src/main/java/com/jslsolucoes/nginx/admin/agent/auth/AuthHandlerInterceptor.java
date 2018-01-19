@@ -12,9 +12,10 @@ import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.jslsolucoes.cdi.misc.annotation.ApplicationProperties;
+import com.jslsolucoes.nginx.admin.agent.model.response.NginxAuthenticationFailResponse;
 
 @Interceptor
 @AuthHandler
@@ -35,7 +36,8 @@ public class AuthHandlerInterceptor {
 		if (!StringUtils.isEmpty(authorizationHeader) && authorizationHeader.equals(authorizationKey())) {
 			return invocationContext.proceed();
 		} else {
-			Response response = Response.status(Status.FORBIDDEN).entity("Resource forbidden").build();
+			Response response = Response.status(Status.FORBIDDEN)
+					.entity(new NginxAuthenticationFailResponse("Resource forbidden")).build();
 			AsyncResponse asyncResponse = asyncResponse(invocationContext);
 			if(asyncResponse != null){
 				asyncResponse.resume(response);
