@@ -12,10 +12,6 @@ import javax.ws.rs.core.Response;
 
 import com.jslsolucoes.nginx.admin.agent.auth.AuthHandler;
 import com.jslsolucoes.nginx.admin.agent.error.ErrorHandler;
-import com.jslsolucoes.nginx.admin.agent.info.nginx.NginxInfo;
-import com.jslsolucoes.nginx.admin.agent.info.nginx.NginxInfoDiscover;
-import com.jslsolucoes.nginx.admin.agent.info.os.OperationalSystem;
-import com.jslsolucoes.nginx.admin.agent.info.os.OperationalSystemInfo;
 import com.jslsolucoes.nginx.admin.agent.model.request.NginxConfigureRequest;
 import com.jslsolucoes.nginx.admin.agent.model.request.NginxServerDescriptionRequest;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxConfigureResponse;
@@ -23,6 +19,8 @@ import com.jslsolucoes.nginx.admin.agent.model.response.NginxOperationalSystemDe
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxServerDescriptionResponse;
 import com.jslsolucoes.nginx.admin.agent.resource.impl.NginxAdminResourceImpl;
 import com.jslsolucoes.nginx.admin.agent.resource.impl.NginxOperationResult;
+import com.jslsolucoes.nginx.admin.agent.resource.impl.nginx.NginxInfo;
+import com.jslsolucoes.nginx.admin.agent.resource.impl.os.OperationalSystemInfo;
 
 @Path("admin")
 @ErrorHandler
@@ -32,9 +30,6 @@ public class NginxAdminResource {
 
 	@Inject
 	private NginxAdminResourceImpl nginxAdminResourceImpl;
-	
-	@Inject
-	private NginxInfoDiscover nginxInfoDiscover;
 
 	@POST
 	@Path("configure")
@@ -49,7 +44,7 @@ public class NginxAdminResource {
 	@GET
 	@Path("operationalSystemInfo")
 	public void operationSystemInfo(@Suspended AsyncResponse asyncResponse) {
-		OperationalSystemInfo operationalSystemInfo = OperationalSystem.info();
+		OperationalSystemInfo operationalSystemInfo = nginxAdminResourceImpl.operationSystemInfo();
 		asyncResponse.resume(Response.ok(new NginxOperationalSystemDescriptionResponse(operationalSystemInfo.getArch(),
 				operationalSystemInfo.getDistribution(), operationalSystemInfo.getName(),
 				operationalSystemInfo.getVersion())).build());
@@ -58,7 +53,7 @@ public class NginxAdminResource {
 	@POST
 	@Path("nginxInfo")
 	public void nginxInfo(NginxServerDescriptionRequest nginxServerDescriptionRequest,@Suspended AsyncResponse asyncResponse) {
-		NginxInfo nginxInfo = nginxInfoDiscover.details(nginxServerDescriptionRequest.getBin(),nginxServerDescriptionRequest.getHome());
+		NginxInfo nginxInfo = nginxAdminResourceImpl.nginxInfo(nginxServerDescriptionRequest.getBin(),nginxServerDescriptionRequest.getHome());
 		asyncResponse.resume(Response
 				.ok(new NginxServerDescriptionResponse(nginxInfo.getVersion(), nginxInfo.getAddress(), nginxInfo.getPid(), nginxInfo.getUptime()))
 				.build());

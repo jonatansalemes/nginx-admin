@@ -3,15 +3,22 @@ package com.jslsolucoes.nginx.admin.agent.resource.impl;
 import java.io.File;
 
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 
 import com.jslsolucoes.file.system.FileSystemBuilder;
+import com.jslsolucoes.nginx.admin.agent.resource.impl.nginx.NginxInfo;
+import com.jslsolucoes.nginx.admin.agent.resource.impl.nginx.NginxInfoDiscover;
+import com.jslsolucoes.nginx.admin.agent.resource.impl.os.OperationalSystem;
+import com.jslsolucoes.nginx.admin.agent.resource.impl.os.OperationalSystemInfo;
 import com.jslsolucoes.template.TemplateProcessor;
 
 @RequestScoped
 public class NginxAdminResourceImpl {
 	
+	@Inject
+	private NginxInfoDiscover nginxInfoDiscover;
 
 	public NginxOperationResult configure(String nginxHome, Integer maxPostSize,Boolean gzip) {
 		try {
@@ -54,6 +61,14 @@ public class NginxAdminResourceImpl {
 			.withDestination(nginxHome)
 			.execute()
 		.end();
+	}
+
+	public OperationalSystemInfo operationSystemInfo() {
+		return OperationalSystem.info();
+	}
+
+	public NginxInfo nginxInfo(String nginxBin, String nginxHome) {
+		return nginxInfoDiscover.info(nginxBin, nginxHome);
 	}
 		
 }

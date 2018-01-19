@@ -1,4 +1,4 @@
-package com.jslsolucoes.nginx.admin.agent.info.os;
+package com.jslsolucoes.nginx.admin.agent.resource.impl.os;
 
 public class OperationalSystemInfo {
 	private String name;

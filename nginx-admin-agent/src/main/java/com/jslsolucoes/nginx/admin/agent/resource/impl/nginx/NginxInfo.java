@@ -1,4 +1,4 @@
-package com.jslsolucoes.nginx.admin.agent.info.nginx;
+package com.jslsolucoes.nginx.admin.agent.resource.impl.nginx;
 
 import java.math.BigDecimal;
 

@@ -1,4 +1,4 @@
-package com.jslsolucoes.nginx.admin.agent.info.nginx;
+package com.jslsolucoes.nginx.admin.agent.resource.impl.nginx;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -39,7 +39,7 @@ public class NginxInfoDiscover {
 		this.commandLineInterfaceResourceImpl = commandLineInterfaceResourceImpl;
 	}
 
-	public NginxInfo details(String nginxBin,String nginxHome) {
+	public NginxInfo info(String nginxBin,String nginxHome) {
 		NginxInfo nginxDetail = new NginxInfo();
 		nginxDetail.setAddress(address());
 		nginxDetail.setVersion(version(nginxBin,nginxHome));
