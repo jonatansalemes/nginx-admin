@@ -22,8 +22,8 @@
 				<html:panel>
 					<html:panelHead>
 						<fmt:message key="nginx.operations">
-							<fmt:param value="${ usuarioSession.nginx.name }"></fmt:param>
-							<fmt:param value="${ usuarioSession.nginx.ip }"></fmt:param>
+							<fmt:param value="${ nginx.name }"></fmt:param>
+							<fmt:param value="${ nginx.ip }"></fmt:param>
 						</fmt:message>
 					</html:panelHead>
 					<html:panelBody>

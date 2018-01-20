@@ -50,8 +50,8 @@
 						<configuration>
 							<tasks>
 								<copy
-									file="${base.dir}/${project.parent.modules[0]}/target/${project.parent.modules[0]}-${project.version}.war"
-									tofile="${resource.dir}/${project.parent.modules[0]}-${project.version}.war" />
+									file="${base.dir}/nginx-admin-ui/target/nginx-admin-ui-${project.version}.war"
+									tofile="${resource.dir}/nginx-admin-ui-${project.version}.war" />
 							</tasks>
 						</configuration>
 						<goals>

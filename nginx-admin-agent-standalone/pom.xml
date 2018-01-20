@@ -49,9 +49,6 @@
 						<phase>generate-resources</phase>
 						<configuration>
 							<tasks>
-								<replaceregexp
-									file="${project.basedir}/nginx-agent/conf/nginx-agent.conf"
-									match="NGINX_AGENT_VERSION=(.*)" replace="NGINX_AGENT_VERSION=${project.version}" />
 								<copy
 									file="${base.dir}/nginx-admin-agent/target/nginx-admin-agent-${project.version}.war"
 									tofile="${resource.dir}/nginx-admin-agent-${project.version}.war" />

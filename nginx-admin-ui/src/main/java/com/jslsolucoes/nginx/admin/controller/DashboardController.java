@@ -33,43 +33,44 @@ public class DashboardController {
 
 	@Path("index/{id}")
 	public void index(Long id) {
-		this.result.include("so", null);
-		this.result.include("nginxDetail", null);
+		this.result.include("nginxOperationalSystemDescriptionResponse", null);
+		this.result.include("nginxServerDescriptionResponse", null);
+		this.result.include("nginx",nginxRepository.load(new Nginx(id)));
 	}
 
 	@Path("stop/{id}")
 	public void stop(Long id) {
-		this.result.include("nginxResponse",nginxCommandLineInterface(id).stop().join());
+		this.result.include("nginxCommandLineInterfaceResponse",nginxCommandLineInterface(id).stop().join());
 		this.result.redirectTo(this).index(id);
 	}
 
 	@Path("reload/{id}")
 	public void reload(Long id) {
-		this.result.include("nginxResponse",nginxCommandLineInterface(id).reload().join());
+		this.result.include("nginxCommandLineInterfaceResponse",nginxCommandLineInterface(id).reload().join());
 		this.result.redirectTo(this).index(id);
 	}
 
 	@Path("start/{id}")
 	public void start(Long id) {
-		this.result.include("nginxResponse",nginxCommandLineInterface(id).start().join());
+		this.result.include("nginxCommandLineInterfaceResponse",nginxCommandLineInterface(id).start().join());
 		this.result.redirectTo(this).index(id);
 	}
 
 	@Path("status/{id}")
 	public void status(Long id) {
-		this.result.include("nginxResponse",nginxCommandLineInterface(id).status().join());
+		this.result.include("nginxCommandLineInterfaceResponse",nginxCommandLineInterface(id).status().join());
 		this.result.redirectTo(this).index(id);
 	}
 
 	@Path("restart/{id}")
 	public void restart(Long id) {
-		this.result.include("nginxResponse",nginxCommandLineInterface(id).restart().join());
+		this.result.include("nginxCommandLineInterfaceResponse",nginxCommandLineInterface(id).restart().join());
 		this.result.redirectTo(this).index(id);
 	}
 
 	@Path("testConfiguration/{id}")
 	public void testConfiguration(Long id) {
-		this.result.include("nginxResponse",nginxCommandLineInterface(id).testConfiguration().join());
+		this.result.include("nginxCommandLineInterfaceResponse",nginxCommandLineInterface(id).testConfiguration().join());
 		this.result.redirectTo(this).index(id);
 	}
 	
