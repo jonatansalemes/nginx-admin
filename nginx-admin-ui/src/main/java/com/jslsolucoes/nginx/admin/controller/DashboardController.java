@@ -5,6 +5,7 @@ import javax.inject.Inject;
 import com.jslsolucoes.nginx.admin.agent.client.NginxAgentClient;
 import com.jslsolucoes.nginx.admin.agent.client.api.NginxAgentClientApis;
 import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxCommandLineInterface;
+import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxOperationalSystemInfo;
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.repository.NginxRepository;
 
@@ -33,7 +34,7 @@ public class DashboardController {
 
 	@Path("index/{id}")
 	public void index(Long id) {
-		this.result.include("nginxOperationalSystemDescriptionResponse", null);
+		this.result.include("nginxOperationalSystemDescriptionResponse", nginxOperationalSystemInfo(id).operationalSystemInfo().join());
 		this.result.include("nginxServerDescriptionResponse", null);
 		this.result.include("nginx",nginxRepository.load(new Nginx(id)));
 	}
@@ -74,14 +75,30 @@ public class DashboardController {
 		this.result.redirectTo(this).index(id);
 	}
 	
-	private NginxCommandLineInterface nginxCommandLineInterface(Long id) {
-		Nginx nginx = nginxRepository.load(new Nginx(id));
-		return nginxAgentClient.api(NginxAgentClientApis.commandLineInterface())
-				.withAuthorization(nginx.getAuthorizationKey())
-				.withBin(nginx.getBin())
-				.withHome(nginx.getHome())
-				.withEndpoint("http://" + nginx.getIp() + ":" + nginx.getPort())
+	private NginxOperationalSystemInfo nginxOperationalSystemInfo(Long id) {
+		Nginx nginx = nginx(id);
+		return nginxAgentClient.api(NginxAgentClientApis.operationalSystemInfo())
+					.withAuthorization(nginx.getAuthorizationKey())
+					.withEndpoint(endpoint(nginx))
 				.build();
+	}
+	
+	private NginxCommandLineInterface nginxCommandLineInterface(Long id) {
+		Nginx nginx = nginx(id);
+		return nginxAgentClient.api(NginxAgentClientApis.commandLineInterface())
+					.withAuthorization(nginx.getAuthorizationKey())
+					.withBin(nginx.getBin())
+					.withHome(nginx.getHome())
+					.withEndpoint(endpoint(nginx))
+				.build();
+	}
+	
+	private String endpoint(Nginx nginx) {
+		return "http://" + nginx.getIp() + ":" + nginx.getPort();
+	}
+	
+	private Nginx nginx(Long id) {
+		return nginxRepository.load(new Nginx(id));
 	}
 
 }

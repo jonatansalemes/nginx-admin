@@ -11,21 +11,22 @@ public class NginxCommandLineInterfaceBuilder implements NginxAgentClientApiBuil
 	private String home;
 	private String endpoint;
 	private String authorization;
-	
+
 	private NginxCommandLineInterfaceBuilder() {
-		
+
 	}
 
 	@Override
 	public NginxCommandLineInterface build() {
-		return new NginxCommandLineInterface(scheduledExecutorService,endpoint,bin,home,authorization);
+		return new NginxCommandLineInterface(scheduledExecutorService, endpoint, bin, home, authorization);
 	}
 
 	public static NginxCommandLineInterfaceBuilder newBuilder() {
 		return new NginxCommandLineInterfaceBuilder();
 	}
 
-	public NginxCommandLineInterfaceBuilder withScheduledExecutorService(ScheduledExecutorService scheduledExecutorService) {
+	public NginxCommandLineInterfaceBuilder withScheduledExecutorService(
+			ScheduledExecutorService scheduledExecutorService) {
 		this.scheduledExecutorService = scheduledExecutorService;
 		return this;
 	}
@@ -34,7 +35,7 @@ public class NginxCommandLineInterfaceBuilder implements NginxAgentClientApiBuil
 		this.bin = bin;
 		return this;
 	}
-	
+
 	public NginxCommandLineInterfaceBuilder withHome(String home) {
 		this.home = home;
 		return this;

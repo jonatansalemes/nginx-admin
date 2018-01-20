@@ -1,7 +1,7 @@
 <%@include file="../app/taglibs.jsp"%>
 <html:view title="{title}">
 
-	<html:block rendered="${!empty(nginxResponse)}">
+	<html:block rendered="${!empty(nginxCommandLineInterfaceResponse)}">
 		<html:alert
 			state="${ runtimeResult.runtimeResultType == 'ERROR' ? 'danger' : 'success'}"
 			dismissible="true">
@@ -70,13 +70,13 @@
 							<html:panelBody>
 								<html:listGroup>
 									<html:listGroupItem>
-										<fmt:message key="so.arch" /> : ${ so.arch }</html:listGroupItem>
+										<fmt:message key="so.arch" /> : ${ nginxOperationalSystemDescriptionResponse.architecture }</html:listGroupItem>
 									<html:listGroupItem>
-										<fmt:message key="so.name" /> : ${ so.name }</html:listGroupItem>
+										<fmt:message key="so.name" /> : ${ nginxOperationalSystemDescriptionResponse.name }</html:listGroupItem>
 									<html:listGroupItem>
-										<fmt:message key="so.version" /> : ${ so.version }</html:listGroupItem>
-									<html:listGroupItem rendered="${ !empty(so.distribution) }">
-										<fmt:message key="so.distribution" /> : ${ so.distribution }</html:listGroupItem>
+										<fmt:message key="so.version" /> : ${ nginxOperationalSystemDescriptionResponse.version }</html:listGroupItem>
+									<html:listGroupItem rendered="${ !empty(nginxOperationalSystemDescriptionResponse.distribution) }">
+										<fmt:message key="so.distribution" /> : ${ nginxOperationalSystemDescriptionResponse.distribution }</html:listGroupItem>
 								</html:listGroup>
 							</html:panelBody>
 						</html:panel>
