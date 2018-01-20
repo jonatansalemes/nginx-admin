@@ -8,18 +8,16 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 
 import com.jslsolucoes.nginx.admin.agent.client.RestClient;
 import com.jslsolucoes.nginx.admin.agent.client.api.NginxAgentClientApi;
 import com.jslsolucoes.nginx.admin.agent.model.request.NginxCommandLineInterfaceRequest;
-import com.jslsolucoes.nginx.admin.agent.model.response.NginxAuthenticationFailResponse;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxCommandLineInterfaceResponse;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxExceptionResponse;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxResponse;
 
 @Vetoed
-public class NginxCommandLineInterface implements NginxAgentClientApi {
+public class NginxCommandLineInterface extends DefaultNginxAgentClientApi implements NginxAgentClientApi {
 
 	private final ScheduledExecutorService scheduledExecutorService;
 	private final String endpoint;
@@ -78,14 +76,7 @@ public class NginxCommandLineInterface implements NginxAgentClientApi {
 				WebTarget webTarget = restClient.target(endpoint);
 				Response response = webTarget.path(path).request().header(HttpHeader.AUTHORIZATION, authorization)
 						.post(entity);
-				if (response.getStatusInfo().equals(Status.OK)) {
-					return response.readEntity(NginxCommandLineInterfaceResponse.class);
-				}
-				if (response.getStatusInfo().equals(Status.FORBIDDEN)) {
-					return response.readEntity(NginxAuthenticationFailResponse.class);
-				} else {
-					return response.readEntity(NginxExceptionResponse.class);
-				}
+				return responseFor(response, NginxCommandLineInterfaceResponse.class);
 			} catch (Exception e) {
 				return new NginxExceptionResponse(e);
 			}
