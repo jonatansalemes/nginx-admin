@@ -6,7 +6,7 @@
 		<artifactId>nginx-admin</artifactId>
 		<version>1.0.7</version>
 	</parent>
-	<artifactId>nginx-admin-standalone</artifactId>
+	<artifactId>nginx-admin-ui-standalone</artifactId>
 
 	<properties>
 		<base.dir>${project.basedir}/..</base.dir>
@@ -49,9 +49,6 @@
 						<phase>generate-resources</phase>
 						<configuration>
 							<tasks>
-								<replaceregexp
-									file="${project.basedir}/node-server/conf/nginx-admin.conf"
-									match="NGINX_ADMIN_VERSION=(.*)" replace="NGINX_ADMIN_VERSION=${project.version}" />
 								<copy
 									file="${base.dir}/${project.parent.modules[0]}/target/${project.parent.modules[0]}-${project.version}.war"
 									tofile="${resource.dir}/${project.parent.modules[0]}-${project.version}.war" />
@@ -88,7 +85,7 @@
 							<properties>
 								<swarm.http.port>3000</swarm.http.port>
 							</properties>
-							<mainClass>com.jslsolucoes.nginx.admin.standalone.Main</mainClass>
+							<mainClass>com.jslsolucoes.nginx.admin.ui.standalone.Main</mainClass>
 						</configuration>
 					</execution>
 				</executions>

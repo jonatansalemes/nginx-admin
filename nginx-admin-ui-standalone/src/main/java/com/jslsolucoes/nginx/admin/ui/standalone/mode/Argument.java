@@ -1,4 +1,4 @@
-package com.jslsolucoes.nginx.admin.standalone.mode;
+package com.jslsolucoes.nginx.admin.ui.standalone.mode;
 
 public class Argument {
 

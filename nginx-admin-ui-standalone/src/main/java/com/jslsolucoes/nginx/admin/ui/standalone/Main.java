@@ -1,4 +1,4 @@
-package com.jslsolucoes.nginx.admin.standalone;
+package com.jslsolucoes.nginx.admin.ui.standalone;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,10 +15,10 @@ import org.wildfly.swarm.datasources.DatasourcesFraction;
 import org.wildfly.swarm.logging.LoggingFraction;
 import org.wildfly.swarm.undertow.WARArchive;
 
-import com.jslsolucoes.nginx.admin.standalone.mode.Argument;
-import com.jslsolucoes.nginx.admin.standalone.mode.ArgumentMode;
 import com.jslsolucoes.nginx.admin.ui.config.Configuration;
 import com.jslsolucoes.nginx.admin.ui.config.ConfigurationLoader;
+import com.jslsolucoes.nginx.admin.ui.standalone.mode.Argument;
+import com.jslsolucoes.nginx.admin.ui.standalone.mode.ArgumentMode;
 
 public class Main {
 	
