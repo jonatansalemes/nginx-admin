@@ -27,6 +27,7 @@
 		<module>nginx-admin-ui</module>
 		<module>nginx-admin-standalone</module>
 		<module>nginx-admin-agent-standalone</module>
+		<module>nginx-admin-ui-configuration</module>
 	</modules>	
 
 	<build>

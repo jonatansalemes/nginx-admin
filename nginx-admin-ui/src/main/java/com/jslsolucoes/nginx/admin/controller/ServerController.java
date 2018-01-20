@@ -2,6 +2,7 @@ package com.jslsolucoes.nginx.admin.controller;
 
 import javax.inject.Inject;
 
+import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.model.Server;
 import com.jslsolucoes.nginx.admin.repository.ServerRepository;
 import com.jslsolucoes.nginx.admin.repository.impl.OperationResult;
@@ -21,7 +22,7 @@ public class ServerController {
 	private ServerRepository serverRepository;
 
 	public ServerController() {
-		this(null, null);
+		
 	}
 
 	@Inject
@@ -30,37 +31,39 @@ public class ServerController {
 		this.serverRepository = serverRepository;
 	}
 
-	public void list() {
-		this.result.include("serverList", serverRepository.listAll());
+	@Path("list/{id}")
+	public void list(Long id) {
+		this.result.include("serverList", serverRepository.listAll(new Nginx(id)));
 	}
 
-	public void form() {
-		// form logic
+	@Path("form/{id}")
+	public void form(Long id) {
+		this.result.include("nginx",new Nginx(id));
 	}
 
-	public void validate(Long id, String ip) {
+	public void validate(Long id, String ip,Long idNginx) {
 		this.result.use(Results.json())
-				.from(FormValidation.newBuilder().toUnordenedList(serverRepository.validateBeforeSaveOrUpdate(new Server(id, ip))),
+				.from(FormValidation.newBuilder().toUnordenedList(serverRepository.validateBeforeSaveOrUpdate(new Server(id, ip,new Nginx(idNginx)))),
 						"errors")
 				.serialize();
 	}
 
-	@Path("edit/{id}")
-	public void edit(Long id) {
-		this.result.include("server", serverRepository.load(new Server(id)));
-		this.result.forwardTo(this).form();
+	@Path("edit/{idNginx}/{id}")
+	public void edit(Long idNginx,Long id) {
+		this.result.include("server",serverRepository.load(new Server(id)));
+		this.result.forwardTo(this).form(idNginx);
 	}
 
-	@Path("delete/{id}")
-	public void delete(Long id) {
+	@Path("delete/{idNginx}/{id}")
+	public void delete(Long idNginx,Long id) {
 		this.result.include("operation", serverRepository.delete(new Server(id)));
-		this.result.redirectTo(this).list();
+		this.result.redirectTo(this).list(idNginx);
 	}
 
 	@Post
-	public void saveOrUpdate(Long id, String ip) {
-		OperationResult operationResult = serverRepository.saveOrUpdate(new Server(id, ip));
+	public void saveOrUpdate(Long id, String ip,Long idNginx) {
+		OperationResult operationResult = serverRepository.saveOrUpdate(new Server(id, ip,new Nginx(idNginx)));
 		this.result.include("operation", operationResult.getOperationType());
-		this.result.redirectTo(this).edit(operationResult.getId());
+		this.result.redirectTo(this).edit(idNginx,operationResult.getId());
 	}
 }

@@ -1,29 +1,25 @@
-package com.jslsolucoes.nginx.admin.standalone.config;
+package com.jslsolucoes.nginx.admin.ui.config;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
-public class StandaloneConfigurationParser {
+public class ConfigurationLoader {
 
-	private Properties properties = new Properties();
+	private Properties properties;
 
-	private StandaloneConfigurationParser(String path) throws FileNotFoundException, IOException {
-		properties.load(new FileInputStream(new File(path)));
+	private ConfigurationLoader(Properties properties) {
+		this.properties = properties;
 	}
 
-	public static StandaloneConfiguration parse(String path) throws FileNotFoundException, IOException {
-		StandaloneConfigurationParser standaloneConfigurationParser = new StandaloneConfigurationParser(path);
+	public static Configuration buildFrom(Properties properties) {
+		ConfigurationLoader standaloneConfigurationParser = new ConfigurationLoader(properties);
 		return standaloneConfigurationParser.build();
 	}
 
-	private StandaloneConfiguration build() {
-		StandaloneConfiguration standaloneConfiguration = new StandaloneConfiguration();
+	private Configuration build() {
+		Configuration standaloneConfiguration = new Configuration();
 		standaloneConfiguration.setServer(server());
 		standaloneConfiguration.setApplication(application());
 		standaloneConfiguration.setDatabase(database());
@@ -42,8 +38,8 @@ public class StandaloneConfigurationParser {
 		smtp.setUserName(properties.getProperty("NGINX_ADMIN_MAIL_USERNAME"));
 		smtp.setPassword(properties.getProperty("NGINX_ADMIN_MAIL_PASSWORD"));
 		smtp.setMailList(mailList(properties.getProperty("NGINX_ADMIN_MAIL_MAILING_LIST")));
-		smtp.setSubject(properties.getProperty("NGINX_ADMIN_SUBJECT"));
-		smtp.setCharset(properties.getProperty("NGINX_ADMIN_CHARSET"));
+		smtp.setSubject(properties.getProperty("NGINX_ADMIN_MAIL_SUBJECT"));
+		smtp.setCharset(properties.getProperty("NGINX_ADMIN_MAIL_CHARSET"));
 		return smtp;
 	}
 
@@ -53,8 +49,8 @@ public class StandaloneConfigurationParser {
 
 	private Application application() {
 		Application application = new Application();
-		application.setVersion(properties.getProperty("NGINX_ADMIN_VERSION"));
-		application.setUrlBase(properties.getProperty("NGINX_ADMIN_URL_BASE"));
+		application.setVersion(properties.getProperty("NGINX_ADMIN_APP_VERSION"));
+		application.setUrlBase(properties.getProperty("NGINX_ADMIN_APP_URL_BASE"));
 		return application;
 	}
 

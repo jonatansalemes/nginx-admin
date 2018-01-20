@@ -17,7 +17,6 @@
 		<class>com.jslsolucoes.nginx.admin.model.VirtualHostAlias</class>
 		<class>com.jslsolucoes.nginx.admin.model.VirtualHostLocation</class>
 		<class>com.jslsolucoes.nginx.admin.model.ResourceIdentifier</class>
-		<class>com.jslsolucoes.nginx.admin.model.Configuration</class>
 		<class>com.jslsolucoes.nginx.admin.model.AccessLog</class>
 
 		<properties>

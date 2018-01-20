@@ -1,6 +1,5 @@
 package com.jslsolucoes.nginx.admin.model;
 
-import java.io.File;
 import java.io.Serializable;
 
 import javax.persistence.Column;
@@ -19,32 +18,49 @@ public class Nginx implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(name = "name")
+	private String name;
+	
 	@Column(name = "bin")
 	private String bin;
 
-	@Column(name = "settings")
-	private String settings;
+	@Column(name = "home")
+	private String home;
+	
+	@Column(name = "ip")
+	private String ip;
+	
+	@Column(name = "port")
+	private Integer port;
 
 	@Column(name = "gzip")
 	private Integer gzip;
 
 	@Column(name = "max_post_size")
 	private Integer maxPostSize;
+	
+	@Column(name = "authorization_key")
+	private String authorizationKey;
 
 	public Nginx() {
-		// default constructor
+	
 	}
 
-	public Nginx(String bin, String home) {
-		this(null, bin, home, 1, 100);
-	}
-
-	public Nginx(Long id, String bin, String settings, Integer gzip, Integer maxPostSize) {
+	public Nginx(Long id,String name, String bin, String home,String ip,Integer port, Integer gzip, Integer maxPostSize,
+			String authorizationKey) {
 		this.id = id;
 		this.bin = bin;
-		this.settings = settings;
+		this.name = name;
+		this.home = home;
+		this.ip = ip;
+		this.port = port;
+		this.authorizationKey = authorizationKey;
 		this.gzip = gzip == null ? 0 : gzip;
 		this.maxPostSize = maxPostSize;
+	}
+
+	public Nginx(Long id) {
+		this.id = id;
 	}
 
 	public Long getId() {
@@ -63,48 +79,28 @@ public class Nginx implements Serializable {
 		this.bin = bin;
 	}
 
-	public String getSettings() {
-		return settings;
+	public String getHome() {
+		return home;
 	}
 
-	public void setSettings(String settings) {
-		this.settings = settings;
+	public void setHome(String home) {
+		this.home = home;
 	}
 
-	public File setting() {
-		return new File(settings);
+	public String getIp() {
+		return ip;
 	}
 
-	public File binFolder() {
-		return bin().getParentFile();
+	public void setIp(String ip) {
+		this.ip = ip;
 	}
 
-	public File bin() {
-		return new File(bin);
+	public Integer getPort() {
+		return port;
 	}
 
-	public File conf() {
-		return new File(setting(), "nginx.conf");
-	}
-
-	public File ssl() {
-		return new File(setting(), "ssl");
-	}
-
-	public File upstream() {
-		return new File(setting(), "upstream");
-	}
-
-	public File virtualHost() {
-		return new File(setting(), "virtual-host");
-	}
-
-	public File pid() {
-		return new File(setting(), "nginx.pid");
-	}
-
-	public File log() {
-		return new File(setting(), "log");
+	public void setPort(Integer port) {
+		this.port = port;
 	}
 
 	public Integer getGzip() {
@@ -123,4 +119,20 @@ public class Nginx implements Serializable {
 		this.maxPostSize = maxPostSize;
 	}
 
+	public String getAuthorizationKey() {
+		return authorizationKey;
+	}
+
+	public void setAuthorizationKey(String authorizationKey) {
+		this.authorizationKey = authorizationKey;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 }

@@ -1,4 +1,4 @@
-package com.jslsolucoes.nginx.admin.standalone.config;
+package com.jslsolucoes.nginx.admin.ui.config;
 
 import java.util.List;
 

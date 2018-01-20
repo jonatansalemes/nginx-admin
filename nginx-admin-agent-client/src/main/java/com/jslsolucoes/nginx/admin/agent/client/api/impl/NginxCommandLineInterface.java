@@ -3,6 +3,7 @@ package com.jslsolucoes.nginx.admin.agent.client.api.impl;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ScheduledExecutorService;
 
+import javax.enterprise.inject.Vetoed;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
@@ -17,6 +18,7 @@ import com.jslsolucoes.nginx.admin.agent.model.response.NginxCommandLineInterfac
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxExceptionResponse;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxResponse;
 
+@Vetoed
 public class NginxCommandLineInterface implements NginxAgentClientApi {
 	
 	private final ScheduledExecutorService scheduledExecutorService;
@@ -47,6 +49,10 @@ public class NginxCommandLineInterface implements NginxAgentClientApi {
 	
 	public CompletableFuture<NginxResponse> stop() {
 		return request("/commandLineInterface/stop");
+	}
+	
+	public CompletableFuture<NginxResponse> restart() {
+		return request("/commandLineInterface/restart");
 	}
 	
 	public CompletableFuture<NginxResponse> reload() {

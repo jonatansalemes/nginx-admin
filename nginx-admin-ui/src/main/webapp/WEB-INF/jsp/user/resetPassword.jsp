@@ -21,9 +21,9 @@
 		
 			<html:form action="/user/reset" label="{password.recovery}"
 				validation="/user/validateBeforeResetPassword">
-				<html:formGroup label="{login}" required="true">
-					<html:input name="login" type="email" required="true"
-						placeholder="{login.placeholder}"></html:input>
+				<html:formGroup label="{identification}" required="true">
+					<html:input name="identification" required="true"
+						placeholder="{identification.placeholder}"></html:input>
 				</html:formGroup>
 				<html:toolbar>
 					<html:button type="submit" label="{reset}" state="primary"></html:button>

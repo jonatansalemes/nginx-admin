@@ -1,7 +1,6 @@
 package com.jslsolucoes.nginx.admin.repository.impl;
 
 import java.util.ArrayList;
-import com.jslsolucoes.i18n.Messages;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
@@ -16,6 +15,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 
+import com.jslsolucoes.i18n.Messages;
 import com.jslsolucoes.mail.service.MailService;
 import com.jslsolucoes.nginx.admin.model.User;
 import com.jslsolucoes.nginx.admin.model.User_;
@@ -37,15 +37,18 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 	}
 
 	@Override
-	public User authenticate(User user) {
+	public User authenticate(String identification,String password) {
 		try {
 		    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		    CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
 		    Root<User> root = criteriaQuery.from(User.class);
 		    criteriaQuery.where(
 		    		criteriaBuilder.and(
-		    				criteriaBuilder.equal(root.get(User_.login), user.getLogin()),
-		    				criteriaBuilder.equal(root.get(User_.password), DigestUtils.sha256Hex(user.getPassword()))
+		    				criteriaBuilder.or(
+		    							criteriaBuilder.equal(root.get(User_.login), identification),
+		    							criteriaBuilder.equal(root.get(User_.email), identification)
+		    				),
+		    				criteriaBuilder.equal(root.get(User_.password), DigestUtils.sha256Hex(password))
 		    		)
 		    );
 		    return entityManager.createQuery(criteriaQuery).getSingleResult();
@@ -55,20 +58,25 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 	}
 
 	@Override
-	public List<String> validateBeforeResetPassword(User user) {
+	public List<String> validateBeforeResetPasswordFor(String identification) {
 		List<String> errors = new ArrayList<>();
-		if (getByLogin(user) == null) {
+		if (findFor(identification) == null) {
 			errors.add(Messages.getString("invalid.login"));
 		}
 		return errors;
 	}
 
-	private User getByLogin(User user) {
+	private User findFor(String identification) {
 		try {
 			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		    CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
 		    Root<User> root = criteriaQuery.from(User.class);
-		    criteriaQuery.where(criteriaBuilder.equal(root.get(User_.login), user.getLogin()));
+		    criteriaQuery.where(
+		    	criteriaBuilder.or(
+					criteriaBuilder.equal(root.get(User_.login), identification),
+					criteriaBuilder.equal(root.get(User_.email), identification)
+				)
+		    );
 		    return entityManager.createQuery(criteriaQuery).getSingleResult();
 		} catch (NoResultException noResultException) {
 		    return null;
@@ -76,13 +84,14 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 	}
 
 	@Override
-	public void resetPassword(User user) {
+	public String resetPasswordFor(String identification) {
 		String password = RandomStringUtils.randomAlphanumeric(8);
-		User userToReset = getByLogin(user);
-		userToReset.setPassword(DigestUtils.sha256Hex(password));
-		userToReset.setPasswordForceChange(1);
-		mailService.async(Messages.getString("reset.mail.subject"), userToReset.getLogin(),
-				Messages.getString("reset.mail.body", userToReset.getLogin(), password));
+		User user = findFor(identification);
+		user.setPassword(DigestUtils.sha256Hex(password));
+		user.setPasswordForceChange(1);
+		mailService.async(Messages.getString("reset.mail.subject"), user.getEmail(),
+				Messages.getString("reset.mail.body", user.getLogin(), password));
+		return user.getEmail();
 	}
 
 	@Override
@@ -136,7 +145,7 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 	}
 
 	@Override
-	public List<String> validateBeforeCreateAdministrator(String login, String loginConfirm, String password,
+	public List<String> validateBeforeCreateUser(String login,String loginConfirm,String email, String password,
 			String passwordConfirm) {
 
 		List<String> errors = new ArrayList<>();
@@ -150,12 +159,12 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 	}
 
 	@Override
-	public void createAdministrator(String login, String password) {
+	public void create(String login,String email, String password) {
 		User user = new User();
 		user.setPassword(DigestUtils.sha256Hex(password));
 		user.setLogin(login);
 		user.setPasswordForceChange(0);
-		user.setAdmin(1);
+		user.setEmail(email);
 		super.insert(user);
 	}
 }

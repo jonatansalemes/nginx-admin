@@ -8,12 +8,17 @@ import com.jslsolucoes.nginx.admin.repository.impl.OperationResult;
 import com.jslsolucoes.nginx.admin.repository.impl.OperationType;
 
 public interface NginxRepository {
-	public Nginx configuration();
-
+	
 	public OperationType insert(Nginx nginx);
 
 	public List<String> validateBeforeSaveOrUpdate(Nginx nginx);
 
-	public OperationResult saveOrUpdateAndConfigure(Nginx nginx) throws NginxAdminException;
+	public OperationResult saveOrUpdate(Nginx nginx) throws NginxAdminException;
+
+	public List<Nginx> listAll();
+
+	public Nginx load(Nginx nginx);
+
+	public OperationType delete(Nginx nginx);
 
 }

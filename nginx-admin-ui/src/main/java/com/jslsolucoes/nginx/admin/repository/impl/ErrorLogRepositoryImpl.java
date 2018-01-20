@@ -29,6 +29,7 @@ public class ErrorLogRepositoryImpl implements ErrorLogRepository {
 
 	@Override
 	public String content() {
+		/*
 		Nginx nginx = nginxRepository.configuration();
 		File file = new File(nginx.log(),"error.log");
 		if(file.exists()){
@@ -40,6 +41,8 @@ public class ErrorLogRepositoryImpl implements ErrorLogRepository {
 		} else {
 			return Messages.getString("error.log.not.found",file.getAbsolutePath());
 		}
+		*/
+		return "";
 	}
 
 }

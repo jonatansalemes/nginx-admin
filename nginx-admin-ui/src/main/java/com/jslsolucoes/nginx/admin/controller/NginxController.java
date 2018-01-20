@@ -5,6 +5,7 @@ import javax.inject.Inject;
 import com.jslsolucoes.nginx.admin.error.NginxAdminException;
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.repository.NginxRepository;
+import com.jslsolucoes.nginx.admin.repository.impl.OperationResult;
 import com.jslsolucoes.tagria.lib.form.FormValidation;
 
 import br.com.caelum.vraptor.Controller;
@@ -29,29 +30,43 @@ public class NginxController {
 		this.result = result;
 		this.nginxRepository = nginxRepository;
 	}
+	
+	public void list() {
+		this.result.include("nginxList", nginxRepository.listAll());
+	}
 
-	public void validate(Long id, String bin, String settings, Integer gzip, Integer maxPostSize) {
+	public void form() {
+		
+	}
+	
+	public void validate(Long id,String name, String bin, String home,String ip,Integer port, Integer gzip, Integer maxPostSize,
+			String authorizationKey) {
 		this.result.use(Results.json())
 				.from(FormValidation.newBuilder().toUnordenedList(
-						nginxRepository.validateBeforeSaveOrUpdate(new Nginx(id, bin, settings, gzip, maxPostSize))),
+						nginxRepository.validateBeforeSaveOrUpdate(new Nginx(id,name, bin, home,ip,port, gzip, maxPostSize,authorizationKey))),
 						"errors")
 				.serialize();
 	}
 
-	public void edit() {
-		this.result.include("nginx", this.nginxRepository.configuration());
+	@Path("edit/{id}")
+	public void edit(Long id) {
+		this.result.include("nginx", nginxRepository.load(new Nginx(id)));
+		this.result.forwardTo(this).form();
+	}
+	
+	@Path("delete/{id}")
+	public void delete(Long id) {
+		this.result.include("operation", nginxRepository.delete(new Nginx(id)));
+		this.result.redirectTo(this).list();
 	}
 
 	@Post
-	public void update(Long id, String bin, String settings, Integer gzip, Integer maxPostSize)
+	public void saveOrUpdate(Long id,String name, String bin, String home,String ip,Integer port, Integer gzip, Integer maxPostSize,
+			String authorizationKey)
 			throws NginxAdminException {
-		this.nginxRepository.saveOrUpdateAndConfigure(new Nginx(id, bin, settings, gzip, maxPostSize));
-		this.result.include("updated", true);
-		this.result.redirectTo(this).edit();
-	}
-
-	public void status() {
-		
+		OperationResult operationResult = nginxRepository.saveOrUpdate(new Nginx(id,name, bin, home,ip,port, gzip, maxPostSize,authorizationKey));
+		this.result.include("operation", operationResult.getOperationType());
+		this.result.redirectTo(this).edit(operationResult.getId());
 	}
 
 }

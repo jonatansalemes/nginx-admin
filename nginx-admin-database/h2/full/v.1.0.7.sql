@@ -4,11 +4,15 @@ CREATE SCHEMA admin;
 create table admin.user (
 	id bigint(10) auto_increment not null, 
 	login varchar(100) not null,
+	email varchar(100) not null,
 	password varchar(100) not null,
 	password_force_change int(1) not null,
 	primary key (id)
 );
 alter table admin.user add constraint user_uk1 unique(login);
+alter table admin.user add constraint user_uk2 unique(email);
+
+insert into admin.user (login,email,password,password_force_change) values ('admin','admin@localhost.com','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918',1);
 
 create table admin.resource_identifier (
 	id bigint(10) auto_increment not null, 
@@ -19,9 +23,10 @@ alter table admin.resource_identifier add constraint resource_identifier_uk1 uni
 
 create table admin.nginx (
 	id bigint(10) auto_increment not null, 
+	name varchar(255) not null,
 	bin varchar(255) not null,
 	home varchar(255) not null,
-	ip varchar(255) not null,
+	ip varchar(15) not null,
 	port int(5) not null,
 	gzip int(1) not null,
 	max_post_size int(4) not null,
@@ -32,13 +37,15 @@ create table admin.nginx (
 create table admin.ssl_certificate (
 	id bigint(10) auto_increment not null, 
 	common_name varchar(100) not null,
+	id_nginx bigint(10) not null,
 	id_resource_identifier_certificate bigint(10),
 	id_resource_identifier_certificate_private_key bigint(10),
 	primary key (id)
 );
-alter table admin.ssl_certificate add constraint ssl_certificate_uk1 unique(common_name);
+alter table admin.ssl_certificate add constraint ssl_certificate_uk1 unique(common_name,id_nginx);
 alter table admin.ssl_certificate add constraint ssl_certificate_fk1 foreign key(id_resource_identifier_certificate) references admin.resource_identifier(id);
 alter table admin.ssl_certificate add constraint ssl_certificate_fk2 foreign key(id_resource_identifier_certificate_private_key) references admin.resource_identifier(id);
+alter table admin.ssl_certificate add constraint ssl_certificate_fk3 foreign key(id_nginx) references admin.nginx(id);
 
 
 create table admin.strategy (
@@ -53,21 +60,27 @@ insert into admin.strategy (name) values ('least-connected');
 
 create table admin.server (
 	id bigint(10) auto_increment not null, 
-	ip varchar(100) not null,
+	ip varchar(15) not null,
+	id_nginx bigint(10) not null,
 	primary key (id)
 );
-alter table admin.server add constraint server_uk1 unique(ip);
+alter table admin.server add constraint server_uk1 unique(ip,id_nginx);
+alter table admin.server add constraint server_fk1 foreign key(id_nginx) references admin.nginx(id);
+
 
 create table admin.upstream (
 	id bigint(10) auto_increment not null, 
 	name varchar(100) not null,
-	id_strategy bigint(10) not null, 
+	id_strategy bigint(10) not null,
+	id_nginx bigint(10) not null,
 	id_resource_identifier bigint(10) not null, 
 	primary key (id)
 );
-alter table admin.upstream add constraint upstream_uk1 unique(name);
+alter table admin.upstream add constraint upstream_uk1 unique(name,id_nginx);
 alter table admin.upstream add constraint upstream_fk1 foreign key(id_strategy) references admin.strategy(id);
 alter table admin.upstream add constraint upstream_fk2 foreign key(id_resource_identifier) references admin.resource_identifier(id);
+alter table admin.upstream add constraint upstream_fk3 foreign key(id_nginx) references admin.nginx(id);
+
 
 create table admin.upstream_server (
 	id bigint(10) auto_increment not null, 
@@ -83,12 +96,14 @@ alter table admin.upstream_server add constraint upstream_server_fk2 foreign key
 create table admin.virtual_host (
 	id bigint(10) auto_increment not null, 
 	https int(1) not null,
+	id_nginx bigint(10) not null,
 	id_ssl_certificate bigint(10),
 	id_resource_identifier bigint(10) not null,
 	primary key (id)
 );
 alter table admin.virtual_host add constraint virtual_host_fk1 foreign key(id_ssl_certificate) references admin.ssl_certificate(id);
 alter table admin.virtual_host add constraint virtual_host_fk2 foreign key(id_resource_identifier) references admin.resource_identifier(id);
+alter table admin.virtual_host add constraint virtual_host_fk3 foreign key(id_nginx) references admin.nginx(id);
 
 
 create table admin.virtual_host_location (
@@ -114,6 +129,7 @@ alter table admin.virtual_host_alias add constraint virtual_host_alias_fk1 forei
 
 create table admin.access_log (
 	id bigint(10) auto_increment not null,
+	id_nginx bigint(10) not null,
 	date_time datetime not null,
 	remote_addr varchar(15) not null,
 	body_bytes_sent bigint(10) not null,
@@ -136,5 +152,19 @@ create table admin.access_log (
 	http_x_forwarded_for varchar(100) not null,
 	primary key (id)
 );
+alter table admin.access_log add constraint access_log_fk1 foreign key(id_nginx) references admin.nginx(id);
+
+create table admin.error_log (
+	id bigint(10) auto_increment not null,
+	id_nginx bigint(10) not null,
+	date_time datetime not null,
+	level varchar(15) not null,
+	pid bigint(10) not null,
+	tid bigint(10) not null,
+	cid bigint(10),
+	message varchar(2084) not null,
+	primary key (id)
+);
+alter table admin.error_log add constraint error_log_fk1 foreign key(id_nginx) references admin.nginx(id);
 
 commit;

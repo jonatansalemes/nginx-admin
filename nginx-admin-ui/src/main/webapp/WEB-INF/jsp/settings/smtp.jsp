@@ -2,8 +2,7 @@
 <html:view title="{title}">
 
 	<html:block>
-		<html:alert state="success" label="{smtp.update.success}" rendered="${ !empty(updated) && updated }"></html:alert>
-		<html:alert state="${ mailStatus == 'SENDED' ? 'success' : 'danger' }" rendered="${ !empty(sended) && sended }">
+		<html:alert state="${ mailStatus == 'SENDED' ? 'success' : 'danger' }" rendered="${ sended }">
 			<fmt:message key="${ mailStatus == 'SENDED' ? 'smtp.test.sended.success' : 'smtp.test.sended.error' }">
 				<fmt:param value="${to}"></fmt:param>
 				<fmt:param value="${subject}"></fmt:param>
@@ -66,7 +65,7 @@
 	</html:block>
 	
 	<html:modal label="{smtp.test.settings}" attachTo="test">
-		<html:form action="/smtp/test">
+		<html:form action="/settings/smtp/test">
 			<html:formGroup required="true" label="{smtp.test.to}">
 				<html:input type="email" name="to" required="true" placeholder="{smtp.test.to.placeholder}"></html:input>
 			</html:formGroup>

@@ -1,7 +1,6 @@
 package com.jslsolucoes.nginx.admin.repository.impl;
 
 import java.util.ArrayList;
-import com.jslsolucoes.i18n.Messages;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
@@ -10,9 +9,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import com.jslsolucoes.i18n.Messages;
+import com.jslsolucoes.nginx.admin.model.Nginx;
+import com.jslsolucoes.nginx.admin.model.Nginx_;
 import com.jslsolucoes.nginx.admin.model.Server;
 import com.jslsolucoes.nginx.admin.model.Server_;
 import com.jslsolucoes.nginx.admin.repository.ServerRepository;
@@ -63,13 +66,22 @@ public class ServerRepositoryImpl extends RepositoryImpl<Server> implements Serv
 		try {
 			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 			CriteriaQuery<Server> criteriaQuery = criteriaBuilder.createQuery(Server.class);
-			Root<Server> root = criteriaQuery.from(Server.class);	
-			criteriaQuery.where(
-					criteriaBuilder.equal(root.get(Server_.ip), ip)
-			);
+			Root<Server> root = criteriaQuery.from(Server.class);
+			criteriaQuery.where(criteriaBuilder.equal(root.get(Server_.ip), ip));
 			return entityManager.createQuery(criteriaQuery).getSingleResult();
 		} catch (NoResultException noResultException) {
 			return null;
 		}
+	}
+
+	@Override
+	public List<Server> listAll(Nginx nginx) {
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Server> criteriaQuery = criteriaBuilder.createQuery(Server.class);
+		Root<Server> root = criteriaQuery.from(Server.class);
+		criteriaQuery
+				.where(criteriaBuilder.equal(root.join(Server_.nginx, JoinType.INNER).get(Nginx_.id), nginx.getId()));
+		criteriaQuery.orderBy(criteriaBuilder.asc(root.get(Server_.ip)));
+		return entityManager.createQuery(criteriaQuery).getResultList();
 	}
 }

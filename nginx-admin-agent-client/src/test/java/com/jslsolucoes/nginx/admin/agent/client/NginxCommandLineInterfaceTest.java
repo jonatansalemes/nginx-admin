@@ -21,12 +21,12 @@ public class NginxCommandLineInterfaceTest {
 	@Before
 	public void setUp() {
 		nginxAgentClient = NginxAgentClientBuilder.newBuilder()
-					.withAuthorization("fdoinsafodsoianoifd")
-					.withEndpoint("http://192.168.99.100:3000")
-					.withHome("/opt/nginx-agent/settings")
-					.withBin("/usr/sbin/nginx")
 				.build();
 		nginxCommandLineInterface = nginxAgentClient.api(NginxAgentClientApis.commandLineInterface())
+				.withAuthorization("fdoinsafodsoianoifd")
+				.withEndpoint("http://192.168.99.100:3000")
+				.withHome("/opt/nginx-agent/settings")
+				.withBin("/usr/sbin/nginx")
 				.build();
 	}
 	

@@ -1,6 +1,6 @@
-package com.jslsolucoes.nginx.admin.standalone.config;
+package com.jslsolucoes.nginx.admin.ui.config;
 
-public class StandaloneConfiguration {
+public class Configuration {
 
 	private Server server;
 	private Database database;

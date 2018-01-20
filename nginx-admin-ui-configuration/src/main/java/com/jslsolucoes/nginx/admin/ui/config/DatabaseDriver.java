@@ -1,4 +1,4 @@
-package com.jslsolucoes.nginx.admin.standalone.config;
+package com.jslsolucoes.nginx.admin.ui.config;
 
 public enum DatabaseDriver {
 	ORACLE("oracle"),H2("h2");

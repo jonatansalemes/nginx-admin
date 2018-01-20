@@ -91,7 +91,7 @@ public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements 
 		upstreamServerRepository.deleteAllFor(upstream);
 		Upstream upstreamToDelete = load(upstream);
 		String hash = upstreamToDelete.getResourceIdentifier().getHash();
-		FileUtils.forceDelete(new File(nginxRepository.configuration().upstream(), hash + ".conf"));
+		//FileUtils.forceDelete(new File(nginxRepository.configuration().upstream(), hash + ".conf"));
 		super.delete(upstreamToDelete);
 		resourceIdentifierRepository.delete(hash);
 		return OperationType.DELETE;

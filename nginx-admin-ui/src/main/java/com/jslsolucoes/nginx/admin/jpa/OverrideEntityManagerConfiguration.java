@@ -23,7 +23,17 @@ public class OverrideEntityManagerConfiguration extends DefaultEntityManagerConf
 	@Override
 	public Map<String, Object> properties() {
 		Map<String, Object> properties = new HashMap<>();
-		properties.put("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
+		properties.put("hibernate.dialect", dialect());
 		return properties;
+	}
+	
+	public String dialect() {
+		String driver = (String) properties.get("NGINX_ADMIN_DB_DRIVER");
+		if(driver.equals("h2")) {
+			return "org.hibernate.dialect.H2Dialect";
+		} else if(driver.equals("mysql")) {
+			return "org.hibernate.dialect.MySQL5Dialect";
+		}
+		throw new RuntimeException("Could not find dialect for driver " + driver);
 	}
 }

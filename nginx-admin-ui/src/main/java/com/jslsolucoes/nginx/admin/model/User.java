@@ -22,15 +22,15 @@ public class User implements Serializable,AuthUser {
 
 	@Column(name = "login")
 	private String login;
+	
+	@Column(name = "email")
+	private String email;
 
 	@Column(name = "password")
 	private String password;
 
 	@Column(name = "password_force_change")
 	private Integer passwordForceChange;
-
-	@Column(name = "admin")
-	private Integer admin;
 
 	public User() {
 		// default constructor
@@ -77,12 +77,11 @@ public class User implements Serializable,AuthUser {
 		this.passwordForceChange = passwordForceChange;
 	}
 
-	public Integer getAdmin() {
-		return admin;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setAdmin(Integer admin) {
-		this.admin = admin;
+	public void setEmail(String email) {
+		this.email = email;
 	}
-
 }

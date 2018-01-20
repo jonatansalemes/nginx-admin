@@ -79,7 +79,7 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 
 		VirtualHost virtualHostToDelete = load(virtualHost);
 		String hash = virtualHostToDelete.getResourceIdentifier().getHash();
-		FileUtils.forceDelete(new File(nginxRepository.configuration().virtualHost(), hash + ".conf"));
+		//FileUtils.forceDelete(new File(nginxRepository.configuration().virtualHost(), hash + ".conf"));
 		super.delete(virtualHostToDelete);
 		resourceIdentifierRepository.delete(hash);
 		return OperationType.DELETE;

@@ -52,7 +52,7 @@ public class UpstreamController {
 	}
 
 	public void form() {
-		this.result.include("serverList", serverRepository.listAll());
+		this.result.include("serverList", serverRepository.listAll(null));
 		this.result.include("strategyList", strategyRepository.listAll());
 	}
 

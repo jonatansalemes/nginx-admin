@@ -6,6 +6,7 @@ import javax.enterprise.context.RequestScoped;
 
 import com.jslsolucoes.runtime.RuntimeBuilder;
 import com.jslsolucoes.runtime.RuntimeResult;
+import com.jslsolucoes.runtime.RuntimeResultType;
 
 @RequestScoped
 public class NginxCommandLineInterfaceResourceImpl {
@@ -45,6 +46,12 @@ public class NginxCommandLineInterfaceResourceImpl {
 	private String conf(String nginxHome) {
 		File file = new File(nginxHome,"nginx.conf");
 		return file.getAbsolutePath();
+	}
+
+	public RuntimeResult restart(String nginxBin, String nginxHome) {
+		RuntimeResult runtimeResultForStop = stop(nginxBin, nginxHome);
+		RuntimeResult runtimeResultForStart = start(nginxBin, nginxHome);
+		return new RuntimeResult(runtimeResultForStop.isSuccess() && runtimeResultForStart.isSuccess() ? RuntimeResultType.SUCCESS : RuntimeResultType.ERROR, runtimeResultForStop.getOutput().concat("\n").concat(runtimeResultForStart.getOutput()));
 	}
 
 }

@@ -1,7 +1,7 @@
 <%@include file="../app/taglibs.jsp"%>
 <html:view title="{title}">
 
-	<html:block rendered="${!empty(runtimeResult)}">
+	<html:block rendered="${!empty(nginxResponse)}">
 		<html:alert
 			state="${ runtimeResult.runtimeResultType == 'ERROR' ? 'danger' : 'success'}"
 			dismissible="true">
@@ -20,7 +20,12 @@
 		<html:card>
 			<html:cardBody>
 				<html:panel>
-					<html:panelHead label="{nginx.operations}"></html:panelHead>
+					<html:panelHead>
+						<fmt:message key="nginx.operations">
+							<fmt:param value="${ usuarioSession.nginx.name }"></fmt:param>
+							<fmt:param value="${ usuarioSession.nginx.ip }"></fmt:param>
+						</fmt:message>
+					</html:panelHead>
 					<html:panelBody>
 						<html:buttonGroup spaced="true">
 

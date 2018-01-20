@@ -40,6 +40,7 @@ public class LogRepositoryImpl implements LogRepository {
 
 	@Override
 	public void collect() {
+		/*
 		Nginx nginx = nginxRepository.configuration();
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
 		FileUtils.iterateFiles(nginx.log(), new String[] { "rotate" }, true).forEachRemaining(file -> {
@@ -57,25 +58,12 @@ public class LogRepositoryImpl implements LogRepository {
 				logger.error("Could not collect file log", iOException);
 			}
 		});
+		*/
 	}
 
 	@Override
 	public void rotate() {
-		Nginx nginx = nginxRepository.configuration();
-		FileUtils.iterateFiles(nginx.log(), new String[] { "log" }, true).forEachRemaining(file -> {
-			if (file.length() > sizeLimit()) {
-				try {
-					FileUtils.copyFile(file, new File(nginx.log(), FilenameUtils.getBaseName(file.getName())
-							+ new SimpleDateFormat("_yyyy_MM_dd_HH_mm_ss").format(new Date()) + ".log.rotate"));
-					FileUtils.write(file, "", "UTF-8");
-				} catch (IOException iOException) {
-					logger.error("Could not rotate file", iOException);
-				}
-			}
-		});
+		
 	}
 
-	private long sizeLimit() {
-		return 1L * 1024L * 1024L;
-	}
 }

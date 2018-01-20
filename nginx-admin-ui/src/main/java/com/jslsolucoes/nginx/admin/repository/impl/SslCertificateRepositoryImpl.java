@@ -40,6 +40,7 @@ public class SslCertificateRepositoryImpl extends RepositoryImpl<SslCertificate>
 
 	@Override
 	public OperationType deleteWithResource(SslCertificate sslCertificate) throws IOException {
+		/*
 		File ssl = nginxRepository.configuration().ssl();
 		SslCertificate sslCertificateToDelete = load(sslCertificate);
 		String sslCertificateHash = sslCertificateToDelete.getResourceIdentifierCertificate().getHash();
@@ -50,12 +51,14 @@ public class SslCertificateRepositoryImpl extends RepositoryImpl<SslCertificate>
 		super.delete(sslCertificateToDelete);
 		resourceIdentifierRepository.delete(sslCertificateHash);
 		resourceIdentifierRepository.delete(sslCertificatePrivateKeyHash);
+		*/
 		return OperationType.DELETE;
 	}
 
 	@Override
 	public OperationResult saveOrUpdate(SslCertificate sslCertificate, InputStream certificateFile,
 			InputStream certificatePrivateKeyFile) throws IOException {
+		/*
 		Nginx nginx = nginxRepository.configuration();
 		if (certificateFile != null) {
 			if (sslCertificate.getResourceIdentifierCertificate().getId() == null) {
@@ -71,12 +74,14 @@ public class SslCertificateRepositoryImpl extends RepositoryImpl<SslCertificate>
 			IOUtils.copy(certificatePrivateKeyFile, new FileOutputStream(
 					new File(nginx.ssl(), sslCertificate.getResourceIdentifierCertificatePrivateKey().getHash())));
 		}
+		*/
 		return super.saveOrUpdate(sslCertificate);
 	}
 
 	@Override
 	public InputStream download(String hash) throws FileNotFoundException {
-		Nginx nginx = nginxRepository.configuration();
-		return new FileInputStream(new File(nginx.ssl(), hash));
+		//Nginx nginx = nginxRepository.configuration();
+		//return new FileInputStream(new File(nginx.ssl(), hash));
+		return null;
 	}
 }

@@ -85,5 +85,14 @@ public class NginxCommandLineInterfaceResource {
 		asyncResponse.resume(
 				Response.ok(new NginxCommandLineInterfaceResponse(runtimeResult.getOutput(), runtimeResult.isSuccess())).build());
 	}
+	
+	@POST
+	@Path("restart")
+	public void restart(NginxCommandLineInterfaceRequest nginxCommandLineInterfaceRequest, @Suspended AsyncResponse asyncResponse) {
+		RuntimeResult runtimeResult = nginxCommandLineInterfaceResourceImpl.restart(nginxCommandLineInterfaceRequest.getBin(),
+				nginxCommandLineInterfaceRequest.getHome());
+		asyncResponse.resume(
+				Response.ok(new NginxCommandLineInterfaceResponse(runtimeResult.getOutput(), runtimeResult.isSuccess())).build());
+	}
 
 }

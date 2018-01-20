@@ -11,6 +11,10 @@ public class NginxCommandLineInterfaceBuilder implements NginxAgentClientApiBuil
 	private String home;
 	private String endpoint;
 	private String authorization;
+	
+	private NginxCommandLineInterfaceBuilder() {
+		
+	}
 
 	@Override
 	public NginxCommandLineInterface build() {

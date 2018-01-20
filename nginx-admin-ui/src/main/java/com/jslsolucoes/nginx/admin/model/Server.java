@@ -9,6 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -23,6 +25,10 @@ public class Server implements Serializable {
 
 	@Column(name = "ip")
 	private String ip;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_nginx")
+	private Nginx nginx;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "server")
 	private Set<UpstreamServer> upstreamServers;
@@ -35,9 +41,10 @@ public class Server implements Serializable {
 		this.id = id;
 	}
 
-	public Server(Long id, String ip) {
+	public Server(Long id, String ip,Nginx nginx) {
 		this.id = id;
 		this.ip = ip;
+		this.nginx = nginx;
 	}
 
 	public Server(String ip) {
@@ -62,6 +69,14 @@ public class Server implements Serializable {
 
 	public Set<UpstreamServer> getUpstreamServers() {
 		return upstreamServers;
+	}
+
+	public Nginx getNginx() {
+		return nginx;
+	}
+
+	public void setNginx(Nginx nginx) {
+		this.nginx = nginx;
 	}
 
 }
