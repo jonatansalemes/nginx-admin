@@ -78,7 +78,8 @@ public class ConfigurationLoader {
 
 	private Server server() {
 		Server server = new Server();
-		server.setPort(Integer.valueOf(properties.getProperty("NGINX_ADMIN_PORT")));
+		server.setHttpPort(Integer.valueOf(properties.getProperty("NGINX_ADMIN_HTTP_PORT")));
+		server.setHttpsPort(Integer.valueOf(properties.getProperty("NGINX_ADMIN_HTTPS_PORT")));
 		return server;
 	}
 }

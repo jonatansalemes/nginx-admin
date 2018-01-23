@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.wildfly.swarm.Swarm;
 import org.wildfly.swarm.config.logging.Level;
@@ -85,7 +86,7 @@ public class Main {
 	private static File copyToTemp(String classpath) throws IOException {
 		InputStream war = Main.class.getResourceAsStream(
 				classpath);
-		File file = File.createTempFile(UUID.randomUUID().toString(), ".war");
+		File file = File.createTempFile(UUID.randomUUID().toString(), "." + FilenameUtils.getExtension(classpath));
 		FileUtils.copyInputStreamToFile(war, file);
 		file.deleteOnExit();
 		return file;
