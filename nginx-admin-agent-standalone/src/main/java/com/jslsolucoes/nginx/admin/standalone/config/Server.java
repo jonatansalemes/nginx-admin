@@ -2,13 +2,19 @@ package com.jslsolucoes.nginx.admin.standalone.config;
 
 public class Server {
 
-	private Integer port;
-
-	public Integer getPort() {
-		return port;
+	private Integer httpPort;
+	private Integer httpsPort;
+	public Integer getHttpPort() {
+		return httpPort;
 	}
-
-	public void setPort(Integer port) {
-		this.port = port;
+	public void setHttpPort(Integer httpPort) {
+		this.httpPort = httpPort;
 	}
+	public Integer getHttpsPort() {
+		return httpsPort;
+	}
+	public void setHttpsPort(Integer httpsPort) {
+		this.httpsPort = httpsPort;
+	}
+	
 }

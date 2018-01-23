@@ -34,7 +34,8 @@ public class StandaloneConfigurationParser {
 	
 	private Server server() {
 		Server server = new Server();
-		server.setPort(Integer.valueOf(properties.getProperty("NGINX_AGENT_PORT")));
+		server.setHttpPort(Integer.valueOf(properties.getProperty("NGINX_AGENT_HTTP_PORT")));
+		server.setHttpsPort(Integer.valueOf(properties.getProperty("NGINX_AGENT_HTTPS_PORT")));
 		return server;
 	}
 

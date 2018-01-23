@@ -84,6 +84,7 @@
 						<configuration>
 							<properties>
 								<swarm.http.port>3000</swarm.http.port>
+								<swarm.https.port>3443</swarm.https.port>
 								<java.net.preferIPv4Stack>true</java.net.preferIPv4Stack>
 							</properties>
 							<mainClass>com.jslsolucoes.nginx.admin.standalone.Main</mainClass>
@@ -135,6 +136,10 @@
 		<dependency>
 			<groupId>org.wildfly.swarm</groupId>
 			<artifactId>jaxrs-multipart</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.wildfly.swarm</groupId>
+			<artifactId>management</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.wildfly.swarm</groupId>
