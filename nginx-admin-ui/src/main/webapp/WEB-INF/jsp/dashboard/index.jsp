@@ -1,21 +1,6 @@
 <%@include file="../app/taglibs.jsp"%>
 <html:view title="{title}">
 
-	<html:block rendered="${!empty(nginxCommandLineInterfaceResponse)}">
-		<html:alert
-			state="${ runtimeResult.runtimeResultType == 'ERROR' ? 'danger' : 'success'}"
-			dismissible="true">
-			<html:listGroup>
-				<html:listGroupItem>
-					${ runtimeResult.runtimeResultType }
-				</html:listGroupItem>
-				<html:listGroupItem>
-					${ runtimeResult.output }
-				</html:listGroupItem>
-			</html:listGroup>
-		</html:alert>
-	</html:block>
-
 	<html:block>
 		<html:card>
 			<html:cardBody>
@@ -23,7 +8,7 @@
 					<html:panelHead>
 						<fmt:message key="nginx.operations">
 							<fmt:param value="${ nginx.name }"></fmt:param>
-							<fmt:param value="${ nginx.ip }"></fmt:param>
+							<fmt:param value="${ nginx.endpoint }"></fmt:param>
 						</fmt:message>
 					</html:panelHead>
 					<html:panelBody>
@@ -68,7 +53,7 @@
 						<html:panel>
 							<html:panelHead label="{so.details}"></html:panelHead>
 							<html:panelBody>
-								<html:listGroup>
+								<html:listGroup rendered="${ nginxOperationalSystemDescriptionResponse.success() }">
 									<html:listGroupItem>
 										<fmt:message key="so.arch" /> : ${ nginxOperationalSystemDescriptionResponse.architecture }</html:listGroupItem>
 									<html:listGroupItem>

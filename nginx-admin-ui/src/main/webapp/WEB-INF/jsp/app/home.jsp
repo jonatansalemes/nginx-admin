@@ -38,7 +38,7 @@
 		<html:alert state="info" rendered="${ nginx != null }">
 			<fmt:message key="nginx.agent.session">
 				<fmt:param>
-					${ nginx.name } (${ nginx.ip })
+					${ nginx.name } (${ nginx.endpoint })
 				</fmt:param>
 			</fmt:message>
 		</html:alert>

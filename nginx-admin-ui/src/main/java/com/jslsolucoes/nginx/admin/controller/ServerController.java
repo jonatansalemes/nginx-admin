@@ -31,14 +31,15 @@ public class ServerController {
 		this.serverRepository = serverRepository;
 	}
 
-	@Path("list/{id}")
-	public void list(Long id) {
-		this.result.include("serverList", serverRepository.listAll(new Nginx(id)));
+	@Path("list/{idNginx}")
+	public void list(Long idNginx) {
+		this.result.include("serverList", serverRepository.listAllFor(new Nginx(idNginx)));
+		this.result.include("nginx",new Nginx(idNginx));
 	}
 
-	@Path("form/{id}")
-	public void form(Long id) {
-		this.result.include("nginx",new Nginx(id));
+	@Path("form/{idNginx}")
+	public void form(Long idNginx) {
+		this.result.include("nginx",new Nginx(idNginx));
 	}
 
 	public void validate(Long id, String ip,Long idNginx) {

@@ -58,7 +58,7 @@ public class VirtualHostController {
 
 	public void form() {
 		this.result.include("upstreamList", upstreamRepository.listAll());
-		this.result.include("sslCertificateList", sslCertificateRepository.listAll());
+		this.result.include("sslCertificateList", sslCertificateRepository.listAllFor(null));
 	}
 
 	public void validate(Long id, Integer https, String idResourceIdentifier, Long idSslCertificate,

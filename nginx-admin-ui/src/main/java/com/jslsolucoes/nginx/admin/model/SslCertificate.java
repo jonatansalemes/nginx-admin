@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -25,6 +26,10 @@ public class SslCertificate implements Serializable {
 
 	@Column(name = "common_name")
 	private String commonName;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_nginx")
+	private Nginx nginx;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_resource_identifier_certificate")
@@ -91,6 +96,14 @@ public class SslCertificate implements Serializable {
 
 	public void setResourceIdentifierCertificatePrivateKey(ResourceIdentifier resourceIdentifierCertificatePrivateKey) {
 		this.resourceIdentifierCertificatePrivateKey = resourceIdentifierCertificatePrivateKey;
+	}
+
+	public Nginx getNginx() {
+		return nginx;
+	}
+
+	public void setNginx(Nginx nginx) {
+		this.nginx = nginx;
 	}
 
 }

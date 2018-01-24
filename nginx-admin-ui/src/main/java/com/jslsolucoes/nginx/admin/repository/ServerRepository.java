@@ -9,7 +9,7 @@ import com.jslsolucoes.nginx.admin.repository.impl.OperationType;
 
 public interface ServerRepository {
 
-	public List<Server> listAll(Nginx nginx);
+	public List<Server> listAllFor(Nginx nginx);
 
 	public OperationType delete(Server server);
 

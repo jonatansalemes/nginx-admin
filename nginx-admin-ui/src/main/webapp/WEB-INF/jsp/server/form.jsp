@@ -12,6 +12,7 @@
 		<html:form action="/server/saveOrUpdate" 
 		 label="{server.form}" validation="/server/validate">
 			<html:input name="id" type="hidden" value="${ server.id }"></html:input>
+			<html:input name="idNginx" type="hidden" value="${ nginx.id }"></html:input>
 			<html:formGroup label="{server.ip}" required="true">
 				<html:input name="ip" value="${ server.ip }"
 					placeholder="{server.ip.placeholder}" required="true"></html:input>
@@ -20,6 +21,6 @@
 	</html:block>
 
 	<html:block align="center">
-		<html:link url="/server/list" label="{back}"></html:link>
+		<html:link url="/server/list/${ nginx.id }" label="{back}"></html:link>
 	</html:block>
 </html:view>

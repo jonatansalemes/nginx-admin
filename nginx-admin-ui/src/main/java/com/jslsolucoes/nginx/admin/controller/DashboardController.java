@@ -7,6 +7,7 @@ import com.jslsolucoes.nginx.admin.agent.client.api.NginxAgentClientApis;
 import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxCommandLineInterface;
 import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxOperationalSystemInfo;
 import com.jslsolucoes.nginx.admin.model.Nginx;
+import com.jslsolucoes.nginx.admin.repository.ConfigurationRepository;
 import com.jslsolucoes.nginx.admin.repository.NginxRepository;
 
 import br.com.caelum.vraptor.Controller;
@@ -20,16 +21,19 @@ public class DashboardController {
 	private Result result;
 	private NginxAgentClient nginxAgentClient;
 	private NginxRepository nginxRepository;
+	private ConfigurationRepository configurationRepository;
 
 	public DashboardController() {
 		
 	}
 
 	@Inject
-	public DashboardController(Result result,NginxAgentClient nginxAgentClient,NginxRepository nginxRepository) {
+	public DashboardController(Result result,NginxAgentClient nginxAgentClient,NginxRepository nginxRepository,
+			ConfigurationRepository configurationRepository) {
 		this.result = result;
 		this.nginxAgentClient = nginxAgentClient;
 		this.nginxRepository = nginxRepository;
+		this.configurationRepository = configurationRepository;
 	}
 
 	@Path("index/{id}")
@@ -37,6 +41,7 @@ public class DashboardController {
 		this.result.include("nginxOperationalSystemDescriptionResponse", nginxOperationalSystemInfo(id).operationalSystemInfo().join());
 		this.result.include("nginxServerDescriptionResponse", null);
 		this.result.include("nginx",nginxRepository.load(new Nginx(id)));
+		this.result.include("configuration",configurationRepository.loadFor(new Nginx(id)));
 	}
 
 	@Path("stop/{id}")

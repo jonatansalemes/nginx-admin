@@ -5,6 +5,7 @@ import java.io.InputStream;
 
 import javax.inject.Inject;
 
+import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.model.ResourceIdentifier;
 import com.jslsolucoes.nginx.admin.model.SslCertificate;
 import com.jslsolucoes.nginx.admin.repository.SslCertificateRepository;
@@ -35,12 +36,14 @@ public class SslCertificateController {
 		this.sslCertificateRepository = sslCertificateRepository;
 	}
 
-	public void list() {
-		this.result.include("sslCertificateList", sslCertificateRepository.listAll());
+	@Path("list/{idNginx}")
+	public void list(Long idNginx) {
+		this.result.include("sslCertificateList", sslCertificateRepository.listAllFor(new Nginx(idNginx)));
 	}
 
-	public void form() {
-		// form logic
+	@Path("form/{idNginx}")
+	public void form(Long idNginx) {
+		this.result.include("nginx",new Nginx(idNginx));
 	}
 
 	@Path("download/{hash}")
@@ -49,28 +52,28 @@ public class SslCertificateController {
 		return new InputStreamDownload(inputStream, "application/octet-stream", hash, true, inputStream.available());
 	}
 
-	@Path("edit/{id}")
-	public void edit(Long id) {
+	@Path("edit/{idNginx}/{id}")
+	public void edit(Long idNginx,Long id) {
 		this.result.include("sslCertificate", sslCertificateRepository.load(new SslCertificate(id)));
-		this.result.forwardTo(this).form();
+		this.result.forwardTo(this).form(idNginx);
 	}
 
-	@Path("delete/{id}")
-	public void delete(Long id) throws IOException {
+	@Path("delete/{idNginx}/{id}")
+	public void delete(Long idNginx,Long id) throws IOException {
 		this.result.include("operation", sslCertificateRepository.deleteWithResource(new SslCertificate(id)));
-		this.result.redirectTo(this).list();
+		this.result.redirectTo(this).list(idNginx);
 	}
 
 	@Post
 	public void saveOrUpdate(Long id, String commonName, Long idResourceIdentifierCertificate,
 			Long idResourceIdentifierCertificatePrivateKey, UploadedFile certificateFile,
-			UploadedFile certificatePrivateKeyFile) throws IOException {
+			UploadedFile certificatePrivateKeyFile,Long idNginx) throws IOException {
 		OperationResult operationResult = sslCertificateRepository.saveOrUpdate(
 				new SslCertificate(id, commonName, new ResourceIdentifier(idResourceIdentifierCertificate),
 						new ResourceIdentifier(idResourceIdentifierCertificatePrivateKey)),
 				certificateFile != null ? certificateFile.getFile() : null,
 				certificatePrivateKeyFile != null ? certificatePrivateKeyFile.getFile() : null);
 		this.result.include("operation", operationResult.getOperationType());
-		this.result.redirectTo(this).edit(operationResult.getId());
+		this.result.redirectTo(this).edit(idNginx,operationResult.getId());
 	}
 }

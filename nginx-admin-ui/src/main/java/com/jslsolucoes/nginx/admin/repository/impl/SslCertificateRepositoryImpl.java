@@ -1,21 +1,23 @@
 package com.jslsolucoes.nginx.admin.repository.impl;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Root;
 
 import com.jslsolucoes.nginx.admin.model.Nginx;
+import com.jslsolucoes.nginx.admin.model.Nginx_;
+import com.jslsolucoes.nginx.admin.model.Server_;
 import com.jslsolucoes.nginx.admin.model.SslCertificate;
+import com.jslsolucoes.nginx.admin.model.SslCertificate_;
 import com.jslsolucoes.nginx.admin.repository.NginxRepository;
 import com.jslsolucoes.nginx.admin.repository.ResourceIdentifierRepository;
 import com.jslsolucoes.nginx.admin.repository.SslCertificateRepository;
@@ -83,5 +85,15 @@ public class SslCertificateRepositoryImpl extends RepositoryImpl<SslCertificate>
 		//Nginx nginx = nginxRepository.configuration();
 		//return new FileInputStream(new File(nginx.ssl(), hash));
 		return null;
+	}
+
+	@Override
+	public List<SslCertificate> listAllFor(Nginx nginx) {
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<SslCertificate> criteriaQuery = criteriaBuilder.createQuery(SslCertificate.class);
+		Root<SslCertificate> root = criteriaQuery.from(SslCertificate.class);
+		criteriaQuery.where(criteriaBuilder.equal(root.join(SslCertificate_.nginx, JoinType.INNER).get(Nginx_.id), nginx.getId()));
+		criteriaQuery.orderBy(criteriaBuilder.asc(root.get(SslCertificate_.commonName)));
+		return entityManager.createQuery(criteriaQuery).getResultList();
 	}
 }

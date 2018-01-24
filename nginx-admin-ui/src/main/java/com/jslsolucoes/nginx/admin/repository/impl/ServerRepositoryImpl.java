@@ -50,6 +50,8 @@ public class ServerRepositoryImpl extends RepositoryImpl<Server> implements Serv
 			CriteriaQuery<Server> criteriaQuery = criteriaBuilder.createQuery(Server.class);
 			Root<Server> root = criteriaQuery.from(Server.class);
 			List<Predicate> predicates = new ArrayList<>();
+			predicates.add(criteriaBuilder.equal(root.join(Server_.nginx, JoinType.INNER).get(Nginx_.id),
+					server.getNginx().getId()));
 			predicates.add(criteriaBuilder.equal(root.get(Server_.ip), server.getIp()));
 			if (server.getId() != null) {
 				predicates.add(criteriaBuilder.notEqual(root.get(Server_.id), server.getId()));
@@ -75,7 +77,7 @@ public class ServerRepositoryImpl extends RepositoryImpl<Server> implements Serv
 	}
 
 	@Override
-	public List<Server> listAll(Nginx nginx) {
+	public List<Server> listAllFor(Nginx nginx) {
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Server> criteriaQuery = criteriaBuilder.createQuery(Server.class);
 		Root<Server> root = criteriaQuery.from(Server.class);
