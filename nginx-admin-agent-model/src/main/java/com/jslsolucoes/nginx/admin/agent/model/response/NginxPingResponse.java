@@ -1,14 +1,14 @@
 package com.jslsolucoes.nginx.admin.agent.model.response;
 
-public class IndexResponse implements NginxResponse {
+public class NginxPingResponse implements NginxResponse {
 
 	private String message;
 	
-	public IndexResponse() {
+	public NginxPingResponse() {
 		
 	}
 
-	public IndexResponse(String message) {
+	public NginxPingResponse(String message) {
 		this.message = message;
 	}
 

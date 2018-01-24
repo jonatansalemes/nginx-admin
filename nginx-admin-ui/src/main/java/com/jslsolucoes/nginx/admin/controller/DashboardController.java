@@ -79,7 +79,7 @@ public class DashboardController {
 		Nginx nginx = nginx(id);
 		return nginxAgentClient.api(NginxAgentClientApis.operationalSystemInfo())
 					.withAuthorization(nginx.getAuthorizationKey())
-					.withEndpoint(endpoint(nginx))
+					.withEndpoint(nginx.getEndpoint())
 				.build();
 	}
 	
@@ -87,14 +87,8 @@ public class DashboardController {
 		Nginx nginx = nginx(id);
 		return nginxAgentClient.api(NginxAgentClientApis.commandLineInterface())
 					.withAuthorization(nginx.getAuthorizationKey())
-					.withBin(nginx.getBin())
-					.withHome(nginx.getHome())
-					.withEndpoint(endpoint(nginx))
+					.withEndpoint(nginx.getEndpoint())
 				.build();
-	}
-	
-	private String endpoint(Nginx nginx) {
-		return "http://" + nginx.getIp() + ":" + nginx.getPort();
 	}
 	
 	private Nginx nginx(Long id) {

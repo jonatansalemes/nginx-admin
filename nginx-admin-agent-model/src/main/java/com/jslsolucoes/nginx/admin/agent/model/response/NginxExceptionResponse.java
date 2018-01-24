@@ -26,4 +26,14 @@ public class NginxExceptionResponse implements NginxResponse {
 	public boolean error() {
 		return true;
 	}
+	
+	@Override
+	public boolean forbidden() {
+		return false;
+	}
+	
+	@Override
+	public boolean success() {
+		return false;
+	}
 }

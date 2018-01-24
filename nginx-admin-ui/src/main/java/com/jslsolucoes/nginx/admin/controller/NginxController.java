@@ -2,6 +2,9 @@ package com.jslsolucoes.nginx.admin.controller;
 
 import javax.inject.Inject;
 
+import com.jslsolucoes.nginx.admin.agent.client.NginxAgentClient;
+import com.jslsolucoes.nginx.admin.agent.client.api.NginxAgentClientApis;
+import com.jslsolucoes.nginx.admin.agent.model.response.NginxResponse;
 import com.jslsolucoes.nginx.admin.error.NginxAdminException;
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.repository.NginxRepository;
@@ -20,15 +23,17 @@ public class NginxController {
 
 	private Result result;
 	private NginxRepository nginxRepository;
+	private NginxAgentClient nginxAgentClient;
 	
 	public NginxController() {
 		
 	}
 
 	@Inject
-	public NginxController(Result result, NginxRepository nginxRepository) {
+	public NginxController(Result result, NginxRepository nginxRepository,NginxAgentClient nginxAgentClient) {
 		this.result = result;
 		this.nginxRepository = nginxRepository;
+		this.nginxAgentClient = nginxAgentClient;
 	}
 	
 	public void list() {
@@ -39,11 +44,20 @@ public class NginxController {
 		
 	}
 	
-	public void validate(Long id,String name, String bin, String home,String ip,Integer port, Integer gzip, Integer maxPostSize,
-			String authorizationKey) {
+	public void ping(String endpoint,String authorizationKey) { 
+		NginxResponse nginxResponse = nginxAgentClient
+			.api(NginxAgentClientApis.ping())
+				.withEndpoint(endpoint)
+				.withAuthorizationKey(authorizationKey)
+				.build()
+				.ping().join();
+		this.result.include("nginxResponse",nginxResponse);
+	}
+	
+	public void validate(Long id,String name, String endpoint,  String authorizationKey) {
 		this.result.use(Results.json())
 				.from(FormValidation.newBuilder().toUnordenedList(
-						nginxRepository.validateBeforeSaveOrUpdate(new Nginx(id,name, bin, home,ip,port, gzip, maxPostSize,authorizationKey))),
+						nginxRepository.validateBeforeSaveOrUpdate(new Nginx(id,name, endpoint,authorizationKey))),
 						"errors")
 				.serialize();
 	}
@@ -61,10 +75,9 @@ public class NginxController {
 	}
 
 	@Post
-	public void saveOrUpdate(Long id,String name, String bin, String home,String ip,Integer port, Integer gzip, Integer maxPostSize,
-			String authorizationKey)
+	public void saveOrUpdate(Long id,String name, String endpoint,  String authorizationKey)
 			throws NginxAdminException {
-		OperationResult operationResult = nginxRepository.saveOrUpdate(new Nginx(id,name, bin, home,ip,port, gzip, maxPostSize,authorizationKey));
+		OperationResult operationResult = nginxRepository.saveOrUpdate(new Nginx(id,name, endpoint,authorizationKey));
 		this.result.include("operation", operationResult.getOperationType());
 		this.result.redirectTo(this).edit(operationResult.getId());
 	}

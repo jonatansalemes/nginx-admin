@@ -2,41 +2,30 @@
 <html:view title="{title}">
 
 	<html:block>
-		<html:alert state="success" label="{nginx.delete.success}"
+		<html:alert state="success" label="{nginx.agent.delete}"
 			rendered="${ operation == 'DELETE' }"></html:alert>
 	</html:block>
 
 	<html:block>
 
-		<html:grid data="${ nginxList }" var="nginx" label="{nginx.list}" paginate="false">
+		<html:grid data="${ nginxList }" var="nginx" label="{nginx.agent.list}" paginate="false">
 			
-			<html:gridColumn label="{nginx.bin}" exportable="true">
-				${ nginx.bin }
+			<html:gridColumn label="{nginx.agent.name}" exportable="true">
+				${ nginx.name }
 			</html:gridColumn>
-			<html:gridColumn label="{nginx.home.folder}" exportable="true">
-				${ nginx.home }
+			<html:gridColumn label="{nginx.agent.endpoint}" exportable="true">
+				${ nginx.endpoint }
 			</html:gridColumn>
-			<html:gridColumn label="{nginx.enable.gzip}" exportable="true" booleanType="true">
-				${ nginx.gzip }
-			</html:gridColumn>
-			<html:gridColumn label="{nginx.max.post.size}" exportable="true">
-				${ nginx.maxPostSize }
-			</html:gridColumn>
-			<html:gridColumn label="{nginx.ip}" exportable="true">
-				${ nginx.ip }
-			</html:gridColumn>
-			<html:gridColumn label="{nginx.port}" exportable="true">
-				${ nginx.port }
-			</html:gridColumn>
-			<html:gridColumn label="{nginx.authorization.key}" exportable="true">
+			<html:gridColumn label="{nginx.agent.authorization.key}" exportable="true">
 				${ nginx.authorizationKey }
 			</html:gridColumn>
 			<html:gridColumn>
 				<html:buttonGroup spaced="true">
 					<html:button icon="pencil" url="/nginx/edit/${ nginx.id }"></html:button>
 					<html:confirm attachTo="${ nginx.id }" url="/nginx/delete/${ nginx.id }">
-						<fmt:message key="nginx.delete.confirm">
-							<fmt:param value="${ nginx.ip }"></fmt:param>
+						<fmt:message key="nginx.agent.delete.confirm">
+							<fmt:param value="${ nginx.name }"></fmt:param>
+							<fmt:param value="${ nginx.endpoint }"></fmt:param>
 						</fmt:message>
 					</html:confirm>
 				</html:buttonGroup>

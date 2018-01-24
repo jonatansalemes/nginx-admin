@@ -22,17 +22,26 @@ create table admin.resource_identifier (
 alter table admin.resource_identifier add constraint resource_identifier_uk1 unique(hash);
 
 create table admin.nginx (
-	id bigint(10) auto_increment not null, 
+	id bigint(10) auto_increment not null,
 	name varchar(255) not null,
-	bin varchar(255) not null,
-	home varchar(255) not null,
-	ip varchar(15) not null,
-	port int(5) not null,
-	gzip int(1) not null,
-	max_post_size int(4) not null,
+	endpoint varchar(255) not null,
 	authorization_key varchar(255) not null,
 	primary key (id)
 );
+alter table admin.nginx add constraint nginx_uk1 unique(endpoint);
+
+create table admin.configuration (
+	id bigint(10) auto_increment not null, 
+	id_nginx bigint(10) not null,
+	bin varchar(255) not null,
+	home varchar(255) not null,
+	gzip int(1) not null,
+	max_post_size int(4) not null,
+	primary key (id)
+);
+alter table admin.configuration add constraint configuration_uk1 unique(id_nginx);
+alter table admin.configuration add constraint configuration_fk1 foreign key(id_nginx) references admin.nginx(id);
+
 
 create table admin.ssl_certificate (
 	id bigint(10) auto_increment not null, 

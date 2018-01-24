@@ -8,18 +8,24 @@ import javax.ws.rs.core.Response;
 
 import com.jslsolucoes.nginx.admin.agent.auth.AuthHandler;
 import com.jslsolucoes.nginx.admin.agent.error.ErrorHandler;
-import com.jslsolucoes.nginx.admin.agent.model.response.IndexResponse;
-
+import com.jslsolucoes.nginx.admin.agent.model.response.NginxIndexResponse;
+import com.jslsolucoes.nginx.admin.agent.model.response.NginxPingResponse;
 
 @Path("/")
 @ErrorHandler
 @AuthHandler
 @Produces(MediaType.APPLICATION_JSON)
-public class IndexResource {
+public class NginxIndexResource {
 
 	@GET
 	public Response index() {
-		return Response.ok(new IndexResponse("running...")).build();
+		return Response.ok(new NginxIndexResponse("running...")).build();
+	}
+	
+	@GET
+	@Path("ping")
+	public Response ping() {
+		return Response.ok(new NginxPingResponse("pong")).build();
 	}
 
 }

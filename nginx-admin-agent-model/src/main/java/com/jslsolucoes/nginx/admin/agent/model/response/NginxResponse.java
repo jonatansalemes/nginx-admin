@@ -9,4 +9,8 @@ public interface NginxResponse {
 	default public boolean forbidden() {
 	      return false;
 	} 
+	
+	default public boolean success() {
+	      return true;
+	} 
 }

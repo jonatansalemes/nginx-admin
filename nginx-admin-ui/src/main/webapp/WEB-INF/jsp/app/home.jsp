@@ -9,9 +9,9 @@
 			<html:menuButton icon="option-vertical" align="right">
 				<html:menuItem url="#" label="${ userSession.user.login }" icon="user"></html:menuItem>
 				<html:menuSeparator></html:menuSeparator>
+				<html:menuItem target="content" url="/nginx/list" icon="equalizer" label="{nginxs}"></html:menuItem>
 				<html:menuItem url="/" icon="home" label="{home}"></html:menuItem>
 				<html:menuItem target="content" url="/settings/home" icon="cog" label="{settings}"></html:menuItem>
-				<html:menuItem target="content" url="/nginx/list" icon="equalizer" label="{nginxs}"></html:menuItem>
 				<html:menuItem url="/user/logout" icon="log-out" label="{logout}"></html:menuItem>
 			</html:menuButton>
 			<html:menuButton icon="briefcase" align="right" rendered="${ nginx != null }">
@@ -24,17 +24,19 @@
 				<html:menuItem target="content" url="/accessLog/list/${ nginx.id }" icon="stats" label="{access.logs}"></html:menuItem>
 				<html:menuItem target="content" url="/errorLog/list/${ nginx.id }" icon="fire" label="{error.logs}"></html:menuItem>
 			</html:menuButton>
-			<html:menuButton icon="equalizer" align="right" rendered="${ !empty(nginxList) }">
+			<html:menuButton icon="equalizer" align="right">
+				<html:menuItem url="/nginx/list" label="{nginx.agent.empty}" rendered="${ empty(nginxList) }"></html:menuItem>
+			
 				<c:forEach items="${ nginxList }" var="nginx">
-					<html:menuItem url="/applySessionFor/${ nginx.id }" icon="stop" label="Apply session for ${ nginx.name } (${ nginx.ip })"></html:menuItem>
+					<html:menuItem url="/applySessionFor/${ nginx.id }" icon="stop" label="Apply session for ${ nginx.name } (${ nginx.endpoint })"></html:menuItem>
 				</c:forEach>
 			</html:menuButton>
 		</html:container>
 	</html:nav>
 	<html:container>
-		<html:alert state="warning" rendered="${ nginx == null }" label="{nginx.node.empty}"/>
+		<html:alert state="warning" rendered="${ nginx == null }" label="{nginx.agent.no.session}"/>
 		<html:alert state="info" rendered="${ nginx != null }">
-			<fmt:message key="nginx.node.session">
+			<fmt:message key="nginx.agent.session">
 				<fmt:param>
 					${ nginx.name } (${ nginx.ip })
 				</fmt:param>

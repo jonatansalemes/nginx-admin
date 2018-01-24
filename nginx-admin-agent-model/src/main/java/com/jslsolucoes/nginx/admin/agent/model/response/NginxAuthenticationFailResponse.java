@@ -21,8 +21,18 @@ public class NginxAuthenticationFailResponse implements NginxResponse {
 	}
 
 	@Override
+	public boolean error() {
+		return false;
+	}
+	
+	@Override
 	public boolean forbidden() {
 		return true;
+	}
+	
+	@Override
+	public boolean success() {
+		return false;
 	}
 	
 	

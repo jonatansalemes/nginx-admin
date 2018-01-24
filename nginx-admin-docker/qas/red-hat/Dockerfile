@@ -17,3 +17,4 @@ RUN chown -R nginx-agent:nginx-agent /opt/nginx-agent
 CMD ["/usr/bin/supervisord"]
 EXPOSE 80
 EXPOSE 3000
+EXPOSE 3443

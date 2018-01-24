@@ -8,6 +8,7 @@
 
 		<class>com.jslsolucoes.nginx.admin.model.User</class>
 		<class>com.jslsolucoes.nginx.admin.model.Nginx</class>
+		<class>com.jslsolucoes.nginx.admin.model.Configuration</class>
 		<class>com.jslsolucoes.nginx.admin.model.SslCertificate</class>
 		<class>com.jslsolucoes.nginx.admin.model.Strategy</class>
 		<class>com.jslsolucoes.nginx.admin.model.Server</class>
