@@ -1,8 +1,5 @@
 package com.jslsolucoes.nginx.admin.repository.impl;
 
-import java.io.File;
-import com.jslsolucoes.i18n.Messages;
-import java.io.IOException;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
@@ -13,15 +10,11 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-import org.apache.commons.io.FileUtils;
-
-import com.jslsolucoes.nginx.admin.model.AccessLog;
 import com.jslsolucoes.nginx.admin.model.ErrorLog;
 import com.jslsolucoes.nginx.admin.model.ErrorLog_;
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.model.Nginx_;
 import com.jslsolucoes.nginx.admin.repository.ErrorLogRepository;
-import com.jslsolucoes.nginx.admin.repository.NginxRepository;
 
 @RequestScoped
 public class ErrorLogRepositoryImpl extends RepositoryImpl<ErrorLog>  implements ErrorLogRepository {
@@ -46,7 +39,7 @@ public class ErrorLogRepositoryImpl extends RepositoryImpl<ErrorLog>  implements
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
 		Root<ErrorLog> root = criteriaQuery.from(ErrorLog.class);
-		criteriaQuery.select(criteriaBuilder.count(criteriaQuery.from(ErrorLog.class).get(ErrorLog_.id)))
+		criteriaQuery.select(criteriaBuilder.count(root))
 			.where(criteriaBuilder.equal(root.join(ErrorLog_.nginx).get(Nginx_.id), nginx.getId()));
 		return entityManager.createQuery(criteriaQuery).getSingleResult();
 	}

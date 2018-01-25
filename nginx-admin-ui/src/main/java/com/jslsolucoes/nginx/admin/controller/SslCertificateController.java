@@ -28,8 +28,9 @@ public class SslCertificateController {
 	private Result result;
 	private SslCertificateRepository sslCertificateRepository;
 
+	@Deprecated
 	public SslCertificateController() {
-		this(null, null);
+		
 	}
 
 	@Inject

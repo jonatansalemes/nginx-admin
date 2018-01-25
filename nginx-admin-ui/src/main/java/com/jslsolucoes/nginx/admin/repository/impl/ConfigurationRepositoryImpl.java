@@ -18,8 +18,9 @@ import com.jslsolucoes.nginx.admin.repository.ConfigurationRepository;
 @RequestScoped
 public class ConfigurationRepositoryImpl extends RepositoryImpl<Configuration> implements ConfigurationRepository {
 
+	@Deprecated
 	public ConfigurationRepositoryImpl() {
-		// Default constructor
+		
 	}
 
 	@Inject

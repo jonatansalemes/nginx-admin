@@ -21,8 +21,9 @@ import com.jslsolucoes.nginx.admin.repository.VirtualHostLocationRepository;
 public class VirtualHostLocationRepositoryImpl extends RepositoryImpl<VirtualHostLocation>
 		implements VirtualHostLocationRepository {
 
+	@Deprecated
 	public VirtualHostLocationRepositoryImpl() {
-		// Default constructor
+		
 	}
 
 	@Inject

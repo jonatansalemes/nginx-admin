@@ -23,8 +23,9 @@ import com.jslsolucoes.nginx.admin.repository.ServerRepository;
 @RequestScoped
 public class ServerRepositoryImpl extends RepositoryImpl<Server> implements ServerRepository {
 
+	@Deprecated
 	public ServerRepositoryImpl() {
-		// Default constructor
+		
 	}
 
 	@Inject

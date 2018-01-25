@@ -1,8 +1,10 @@
 package com.jslsolucoes.nginx.admin.agent.client.api;
 
 import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxCommandLineInterfaceBuilder;
+import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxConfigureBuilder;
 import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxOperationalSystemInfoBuilder;
 import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxPingBuilder;
+import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxServerInfoBuilder;
 
 public class NginxAgentClientApis {
 
@@ -16,6 +18,14 @@ public class NginxAgentClientApis {
 	
 	public static Class<NginxPingBuilder> ping() {
 		return NginxPingBuilder.class;
+	}
+	
+	public static Class<NginxServerInfoBuilder> nginxServerInfo() {
+		return NginxServerInfoBuilder.class;
+	}
+	
+	public static Class<NginxConfigureBuilder> configure() {
+		return NginxConfigureBuilder.class;
 	}
 
 }

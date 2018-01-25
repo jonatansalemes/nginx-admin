@@ -20,8 +20,9 @@ public class UserController {
 	private Result result;
 	private UserRepository userRepository;
 
+	@Deprecated
 	public UserController() {
-		this(null, null, null);
+		
 	}
 
 	@Inject

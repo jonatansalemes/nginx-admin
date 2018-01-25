@@ -13,7 +13,7 @@ import com.jslsolucoes.nginx.admin.repository.NginxRepository;
 @RequestScoped
 public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxRepository {
 
-	
+	@Deprecated
 	public NginxRepositoryImpl() {
 	
 	}

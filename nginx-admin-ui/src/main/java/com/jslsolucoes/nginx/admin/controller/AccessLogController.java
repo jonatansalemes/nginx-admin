@@ -33,6 +33,7 @@ public class AccessLogController {
 	
 	@Path("list/{idNginx}")
 	public void list(Long idNginx) {
+		this.result.include("nginx",new Nginx(idNginx));
 		this.result.include("totalResults",accessLogRepository.countFor(new Nginx(idNginx)));
 		this.result.include("accessLogList", accessLogRepository.listAllFor(new Nginx(idNginx),paginator.start(), paginator.resultsPerPage()));
 	}

@@ -13,10 +13,10 @@ import javax.ws.rs.core.Response;
 import com.jslsolucoes.nginx.admin.agent.auth.AuthHandler;
 import com.jslsolucoes.nginx.admin.agent.error.ErrorHandler;
 import com.jslsolucoes.nginx.admin.agent.model.request.NginxConfigureRequest;
-import com.jslsolucoes.nginx.admin.agent.model.request.NginxServerDescriptionRequest;
+import com.jslsolucoes.nginx.admin.agent.model.request.NginxServerInfoRequest;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxConfigureResponse;
-import com.jslsolucoes.nginx.admin.agent.model.response.NginxOperationalSystemDescriptionResponse;
-import com.jslsolucoes.nginx.admin.agent.model.response.NginxServerDescriptionResponse;
+import com.jslsolucoes.nginx.admin.agent.model.response.NginxOperationalSystemInfoResponse;
+import com.jslsolucoes.nginx.admin.agent.model.response.NginxServerInfoResponse;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxStatusResponse;
 import com.jslsolucoes.nginx.admin.agent.resource.impl.NginxAdminResourceImpl;
 import com.jslsolucoes.nginx.admin.agent.resource.impl.NginxOperationResult;
@@ -47,18 +47,18 @@ public class NginxAdminResource {
 	@Path("operationalSystemInfo")
 	public void operationSystemInfo(@Suspended AsyncResponse asyncResponse) {
 		OperationalSystemInfo operationalSystemInfo = nginxAdminResourceImpl.operationSystemInfo();
-		asyncResponse.resume(Response.ok(new NginxOperationalSystemDescriptionResponse(operationalSystemInfo.getArch(),
+		asyncResponse.resume(Response.ok(new NginxOperationalSystemInfoResponse(operationalSystemInfo.getArch(),
 				operationalSystemInfo.getDistribution(), operationalSystemInfo.getName(),
 				operationalSystemInfo.getVersion())).build());
 	}
 
 	@POST
 	@Path("nginxInfo")
-	public void nginxInfo(NginxServerDescriptionRequest nginxServerDescriptionRequest,
+	public void nginxInfo(NginxServerInfoRequest nginxServerInfoRequest,
 			@Suspended AsyncResponse asyncResponse) {
-		NginxInfo nginxInfo = nginxAdminResourceImpl.nginxInfo(nginxServerDescriptionRequest.getBin(),
-				nginxServerDescriptionRequest.getHome());
-		asyncResponse.resume(Response.ok(new NginxServerDescriptionResponse(nginxInfo.getVersion(),
+		NginxInfo nginxInfo = nginxAdminResourceImpl.nginxInfo(nginxServerInfoRequest.getBin(),
+				nginxServerInfoRequest.getHome());
+		asyncResponse.resume(Response.ok(new NginxServerInfoResponse(nginxInfo.getVersion(),
 				nginxInfo.getAddress(), nginxInfo.getPid(), nginxInfo.getUptime())).build());
 	}
 

@@ -71,8 +71,7 @@ public class NginxCommandLineInterfaceResource {
 	@POST
 	@Path("version")
 	public void version(NginxCommandLineInterfaceRequest nginxCommandLineInterfaceRequest, @Suspended AsyncResponse asyncResponse) {
-		RuntimeResult runtimeResult = nginxCommandLineInterfaceResourceImpl.version(nginxCommandLineInterfaceRequest.getBin(),
-				nginxCommandLineInterfaceRequest.getHome());
+		RuntimeResult runtimeResult = nginxCommandLineInterfaceResourceImpl.version(nginxCommandLineInterfaceRequest.getBin());
 		asyncResponse.resume(
 				Response.ok(new NginxCommandLineInterfaceResponse(runtimeResult.getOutput(), runtimeResult.isSuccess())).build());
 	}

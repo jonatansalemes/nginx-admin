@@ -7,7 +7,7 @@ RUN easy_install supervisor
 RUN echo root:123456 | chpasswd
 RUN useradd nginx-agent -r
 RUN chmod 640 /etc/sudoers
-RUN printf 'nginx-agent ALL = NOPASSWD: /usr/sbin/nginx,/usr/bin/pgrep,/usr/bin/killall\n' >> /etc/sudoers
+RUN printf 'nginx-agent ALL=(ALL) NOPASSWD:/usr/sbin/nginx,/usr/bin/pgrep nginx,/usr/bin/killall nginx\n' >> /etc/sudoers
 RUN chmod 440 /etc/sudoers
 COPY build/supervisord.conf /etc/supervisord.conf
 COPY build/nginx-agent-bin.zip /usr/share/downloads/nginx-agent.zip

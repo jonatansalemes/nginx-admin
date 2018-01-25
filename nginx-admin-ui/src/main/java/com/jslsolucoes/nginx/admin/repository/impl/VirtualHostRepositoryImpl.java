@@ -40,8 +40,9 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 	private VirtualHostAliasRepository virtualHostAliasRepository;
 	private VirtualHostLocationRepository virtualHostLocationRepository;
 
+	@Deprecated
 	public VirtualHostRepositoryImpl() {
-		// Default constructor
+		
 	}
 
 	@Inject

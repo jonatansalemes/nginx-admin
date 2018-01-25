@@ -9,7 +9,7 @@ import javax.ws.rs.core.Response;
 import com.jslsolucoes.nginx.admin.agent.client.RestClient;
 import com.jslsolucoes.nginx.admin.agent.client.api.NginxAgentClientApi;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxExceptionResponse;
-import com.jslsolucoes.nginx.admin.agent.model.response.NginxOperationalSystemDescriptionResponse;
+import com.jslsolucoes.nginx.admin.agent.model.response.NginxOperationalSystemInfoResponse;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxResponse;
 
 public class NginxOperationalSystemInfo extends DefaultNginxAgentClientApi implements NginxAgentClientApi {
@@ -31,7 +31,7 @@ public class NginxOperationalSystemInfo extends DefaultNginxAgentClientApi imple
 				WebTarget webTarget = restClient.target(endpoint);
 				Response response = webTarget.path("/admin/operationalSystemInfo").request()
 						.header(HttpHeader.AUTHORIZATION, authorizationKey).get();
-				return responseFor(response, NginxOperationalSystemDescriptionResponse.class);
+				return responseFor(response, NginxOperationalSystemInfoResponse.class);
 			} catch (Exception e) {
 				return new NginxExceptionResponse(e);
 			}

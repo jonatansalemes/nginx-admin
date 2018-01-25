@@ -2,7 +2,7 @@
 <html:view title="{title}">
 
 	<html:grid data="${ accessLogList }" var="accessLog" label="{access.log.list}" 
-	 totalResults="${ totalResults }" url="/accessLog/list">
+	 totalResults="${ totalResults }" url="/accessLog/list/${ nginx.id }">
 		<html:gridColumn label="{access.log.timestamp}" exportable="true" format="timestamp">
 				${ accessLog.timestamp }
 		</html:gridColumn>

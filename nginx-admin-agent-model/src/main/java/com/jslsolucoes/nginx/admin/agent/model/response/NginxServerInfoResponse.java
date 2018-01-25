@@ -2,18 +2,18 @@ package com.jslsolucoes.nginx.admin.agent.model.response;
 
 import java.math.BigDecimal;
 
-public class NginxServerDescriptionResponse implements NginxResponse {
+public class NginxServerInfoResponse implements NginxResponse {
 
 	private String version;
 	private String address;
 	private Integer pid;
 	private BigDecimal uptime;
 	
-	public NginxServerDescriptionResponse() {
+	public NginxServerInfoResponse() {
 		
 	}
 	
-	public NginxServerDescriptionResponse(String version,String address,Integer pid,BigDecimal uptime) {
+	public NginxServerInfoResponse(String version,String address,Integer pid,BigDecimal uptime) {
 		this.version = version;
 		this.address = address;
 		this.pid = pid;

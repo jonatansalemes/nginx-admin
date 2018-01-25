@@ -23,8 +23,9 @@ import com.jslsolucoes.nginx.admin.repository.VirtualHostAliasRepository;
 public class VirtualHostAliasRepositoryImpl extends RepositoryImpl<VirtualHostAlias>
 		implements VirtualHostAliasRepository {
 
+	@Deprecated
 	public VirtualHostAliasRepositoryImpl() {
-		// Default constructor
+		
 	}
 
 

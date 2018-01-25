@@ -32,6 +32,7 @@ public class ErrorLogController {
 
 	@Path("list/{idNginx}")
 	public void list(Long idNginx) {
+		this.result.include("nginx",new Nginx(idNginx));
 		this.result.include("totalResults",errorLogRepository.countFor(new Nginx(idNginx)));
 		this.result.include("errorLogList", errorLogRepository.listAllFor(new Nginx(idNginx),paginator.start(), paginator.resultsPerPage()));
 	}

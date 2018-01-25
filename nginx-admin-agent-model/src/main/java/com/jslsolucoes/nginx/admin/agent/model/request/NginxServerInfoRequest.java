@@ -1,15 +1,15 @@
 package com.jslsolucoes.nginx.admin.agent.model.request;
 
-public class NginxServerDescriptionRequest {
+public class NginxServerInfoRequest {
 
 	private String home;
 	private String bin;
 	
-	public NginxServerDescriptionRequest() {
+	public NginxServerInfoRequest() {
 		
 	}
 	
-	public NginxServerDescriptionRequest(String home,String bin) {
+	public NginxServerInfoRequest(String home,String bin) {
 		this.home = home;
 		this.bin = bin;
 	}

@@ -45,8 +45,9 @@ public class ReportRepositoryImpl implements ReportRepository {
 	private DataSource dataSource;
 	private VirtualHostAliasRepository virtualHostAliasRepository;
 
+	@Deprecated
 	public ReportRepositoryImpl() {
-		// Default constructor
+		
 	}
 
 	@Inject

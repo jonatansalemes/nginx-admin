@@ -28,8 +28,9 @@ public class LogRepositoryImpl implements LogRepository {
 	private AccessLogRepository accessLogRepository;
 	private static Logger logger = LoggerFactory.getLogger(LogRepositoryImpl.class);
 
+	@Deprecated
 	public LogRepositoryImpl() {
-		// Default constructor
+		
 	}
 
 	@Inject

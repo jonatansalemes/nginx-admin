@@ -14,8 +14,9 @@ public class IndexController {
 
 	private Result result;
 
+	@Deprecated
 	public IndexController() {
-		this(null);
+		
 	}
 
 	@Inject

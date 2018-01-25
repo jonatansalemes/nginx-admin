@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 
 import com.jslsolucoes.nginx.admin.model.AccessLog;
@@ -19,8 +20,9 @@ import com.jslsolucoes.nginx.admin.repository.AccessLogRepository;
 @RequestScoped
 public class AccessLogRepositoryImpl extends RepositoryImpl<AccessLog> implements AccessLogRepository {
 
+	@Deprecated
 	public AccessLogRepositoryImpl() {
-		// Default constructor
+
 	}
 
 	@Inject
@@ -28,23 +30,22 @@ public class AccessLogRepositoryImpl extends RepositoryImpl<AccessLog> implement
 		super(entityManager);
 	}
 
-
 	@Override
 	public void log(AccessLog accessLog) {
 		super.insert(accessLog);
 	}
-	
+
 	public Long countFor(Nginx nginx) {
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
 		Root<AccessLog> root = criteriaQuery.from(AccessLog.class);
-		criteriaQuery.select(criteriaBuilder.count(criteriaQuery.from(AccessLog.class).get(AccessLog_.id)))
-			.where(criteriaBuilder.equal(root.join(AccessLog_.nginx).get(Nginx_.id), nginx.getId()));
+		criteriaQuery.select(criteriaBuilder.count(root)).where(
+				criteriaBuilder.equal(root.join(AccessLog_.nginx, JoinType.INNER).get(Nginx_.id), nginx.getId()));
 		return entityManager.createQuery(criteriaQuery).getSingleResult();
 	}
-	
+
 	@Override
-	public List<AccessLog> listAllFor(Nginx nginx,Integer firstResult, Integer maxResults) {	
+	public List<AccessLog> listAllFor(Nginx nginx, Integer firstResult, Integer maxResults) {
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<AccessLog> criteriaQuery = criteriaBuilder.createQuery(AccessLog.class);
 		Root<AccessLog> root = criteriaQuery.from(AccessLog.class);

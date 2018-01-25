@@ -35,8 +35,9 @@ public class UpstreamController {
 	private ServerRepository serverRepository;
 	private StrategyRepository strategyRepository;
 
+	@Deprecated
 	public UpstreamController() {
-		this(null, null, null, null);
+		
 	}
 
 	@Inject

@@ -21,6 +21,7 @@ public class ServerController {
 	private Result result;
 	private ServerRepository serverRepository;
 
+	@Deprecated
 	public ServerController() {
 		
 	}

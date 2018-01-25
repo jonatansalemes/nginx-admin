@@ -17,11 +17,19 @@ import com.jslsolucoes.template.TemplateProcessor;
 @RequestScoped
 public class NginxAdminResourceImpl {
 	
-	@Inject
 	private NginxInfoDiscover nginxInfoDiscover;
+	private NginxStatusDiscover nginxStatusDiscover;
+	
+	@Deprecated
+	public NginxAdminResourceImpl() {
+		
+	}
 	
 	@Inject
-	private NginxStatusDiscover nginxStatusDiscover;
+	public NginxAdminResourceImpl(NginxInfoDiscover nginxInfoDiscover,NginxStatusDiscover nginxStatusDiscover) {
+		this.nginxInfoDiscover = nginxInfoDiscover;
+		this.nginxStatusDiscover = nginxStatusDiscover;
+	}
 
 	public NginxOperationResult configure(String nginxHome, Integer maxPostSize,Boolean gzip) {
 		try {

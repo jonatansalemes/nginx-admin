@@ -35,8 +35,9 @@ public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements 
 	private NginxRepository nginxRepository;
 	private ResourceIdentifierRepository resourceIdentifierRepository;
 
+	@Deprecated
 	public UpstreamRepositoryImpl() {
-		// Default constructor
+		
 	}
 
 	@Inject

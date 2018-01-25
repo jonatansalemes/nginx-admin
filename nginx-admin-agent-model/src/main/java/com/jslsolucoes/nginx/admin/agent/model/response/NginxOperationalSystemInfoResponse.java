@@ -1,17 +1,17 @@
 package com.jslsolucoes.nginx.admin.agent.model.response;
 
-public class NginxOperationalSystemDescriptionResponse implements NginxResponse {
+public class NginxOperationalSystemInfoResponse implements NginxResponse {
 
 	private String architecture;
 	private String distribution;
 	private String name;
 	private String version;
 	
-	public NginxOperationalSystemDescriptionResponse() {
+	public NginxOperationalSystemInfoResponse() {
 		
 	}
 	
-	public NginxOperationalSystemDescriptionResponse(String architecture,String distribution,String name,String version) {
+	public NginxOperationalSystemInfoResponse(String architecture,String distribution,String name,String version) {
 		this.architecture = architecture;
 		this.distribution = distribution;
 		this.name = name;

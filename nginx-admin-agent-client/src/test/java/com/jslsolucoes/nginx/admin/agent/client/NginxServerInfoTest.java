@@ -8,9 +8,9 @@ import org.junit.Test;
 import com.jslsolucoes.nginx.admin.agent.client.api.NginxAgentClientApis;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxAuthenticationFailResponse;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxExceptionResponse;
-import com.jslsolucoes.nginx.admin.agent.model.response.NginxOperationalSystemInfoResponse;
+import com.jslsolucoes.nginx.admin.agent.model.response.NginxServerInfoResponse;
 
-public class NginxOperationSystemInfoTest {
+public class NginxServerInfoTest {
 
 	private NginxAgentClient nginxAgentClient;
 
@@ -21,21 +21,21 @@ public class NginxOperationSystemInfoTest {
 
 	@Test
 	public void info() {
-		nginxAgentClient.api(NginxAgentClientApis.operationalSystemInfo())
-				.withAuthorizationKey("fdoinsafodsoianoifd")
+
+		nginxAgentClient.api(NginxAgentClientApis.nginxServerInfo()).withAuthorizationKey("fdoinsafodsoianoifd")
 				.withEndpoint("http://192.168.99.100:3000")
-				.build()
-				.operationalSystemInfo()
-				.thenAccept(nginxResponse -> {
-					if(nginxResponse.error()) {
+				.withHome("/opt/nginx-agent/settings")
+				.withBin("/usr/sbin/nginx").build().info().thenAccept(nginxResponse -> {
+					if (nginxResponse.error()) {
 						NginxExceptionResponse nginxExceptionResponse = (NginxExceptionResponse) nginxResponse;
 						Assert.fail(nginxExceptionResponse.getStackTrace());
-					} else if(nginxResponse.forbidden()) {
+					} else if (nginxResponse.forbidden()) {
 						NginxAuthenticationFailResponse nginxAuthenticationFailResponse = (NginxAuthenticationFailResponse) nginxResponse;
 						Assert.fail(nginxAuthenticationFailResponse.getMessage());
 					} else {
-						NginxOperationalSystemInfoResponse nginxOperationalSystemInfoResponse = (NginxOperationalSystemInfoResponse) nginxResponse;
-						Assert.assertEquals("amd64",nginxOperationalSystemInfoResponse.getArchitecture());
+						NginxServerInfoResponse nginxServerInfoResponse = (NginxServerInfoResponse) nginxResponse;
+						Assert.assertEquals("172.17.0.2",nginxServerInfoResponse.getAddress());
+						Assert.assertEquals("1.12.2", nginxServerInfoResponse.getVersion());
 					}
 				}).join();
 	}

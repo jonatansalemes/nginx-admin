@@ -32,6 +32,7 @@ public class NginxInfoDiscover {
 	private static Logger logger = LoggerFactory.getLogger(NginxInfoDiscover.class);
 	private NginxCommandLineInterfaceResourceImpl commandLineInterfaceResourceImpl;
 
+	@Deprecated
 	public NginxInfoDiscover() {
 
 	}
@@ -44,7 +45,7 @@ public class NginxInfoDiscover {
 	public NginxInfo info(String nginxBin, String nginxHome) {
 		NginxInfo nginxDetail = new NginxInfo();
 		nginxDetail.setAddress(address());
-		nginxDetail.setVersion(version(nginxBin, nginxHome));
+		nginxDetail.setVersion(version(nginxBin));
 		try {
 			FileSystemBuilder.newBuilder().read().withDestination(pid(nginxHome)).withCharset("UTF-8")
 					.execute(content -> {
@@ -86,23 +87,16 @@ public class NginxInfoDiscover {
 	private File pid(String nginxHome) {
 		return new File(nginxHome, "nginx.pid");
 	}
-
-	private String version(String nginxBin, String nginxHome) {
-		RuntimeResult runtimeResult = commandLineInterfaceResourceImpl.version(nginxBin, nginxHome);
+	
+	private String version(String nginxBin) {
+		RuntimeResult runtimeResult = commandLineInterfaceResourceImpl.version(nginxBin);
 		if (runtimeResult.isSuccess()) {
 			Matcher version = Pattern.compile("([0-9]{1,}\\.[0-9]{1,}\\.[0-9]{1,})").matcher(runtimeResult.getOutput());
 			if (version.find()) {
 				return version.group(1);
 			}
 		}
-		return "unknow";
-	}
-
-	public static void main(String[] args) {
-		Duration duration = Duration.between(
-				LocalDateTime.ofInstant(Instant.ofEpochMilli(System.currentTimeMillis()), ZoneId.systemDefault()),
-				LocalDateTime.now());
-		System.out.println(duration.getSeconds());
+		return runtimeResult.getOutput();
 	}
 
 	private BigDecimal uptime(String nginxHome) {

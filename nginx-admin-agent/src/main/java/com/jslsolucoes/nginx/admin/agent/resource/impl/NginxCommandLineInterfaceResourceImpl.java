@@ -1,6 +1,6 @@
 package com.jslsolucoes.nginx.admin.agent.resource.impl;
 
-import java.io.File;
+import java.nio.file.Paths;
 
 import javax.enterprise.context.RequestScoped;
 
@@ -27,8 +27,8 @@ public class NginxCommandLineInterfaceResourceImpl {
 		return RuntimeBuilder.newBuilder().withCommand("sudo " + nginxBin + " -c " + conf(nginxHome) + " -s quit").execute();
 	}
 	
-	public RuntimeResult version(String nginxBin, String nginxHome) {
-		return RuntimeBuilder.newBuilder().withCommand("sudo " + nginxBin + " -c " + conf(nginxHome) + " -v").execute();
+	public RuntimeResult version(String nginxBin) {
+		return RuntimeBuilder.newBuilder().withCommand("sudo " + nginxBin + " -v ").execute();
 	}
 	
 	public RuntimeResult reload(String nginxBin, String nginxHome) {
@@ -44,8 +44,7 @@ public class NginxCommandLineInterfaceResourceImpl {
 	}
 	
 	private String conf(String nginxHome) {
-		File file = new File(nginxHome,"nginx.conf");
-		return file.getAbsolutePath();
+		return Paths.get(nginxHome, "nginx.conf").toAbsolutePath().toString();
 	}
 
 	public RuntimeResult restart(String nginxBin, String nginxHome) {

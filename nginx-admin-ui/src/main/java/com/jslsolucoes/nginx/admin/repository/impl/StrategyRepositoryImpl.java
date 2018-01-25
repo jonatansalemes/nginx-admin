@@ -15,8 +15,9 @@ import com.jslsolucoes.nginx.admin.repository.StrategyRepository;
 @RequestScoped
 public class StrategyRepositoryImpl extends RepositoryImpl<Strategy> implements StrategyRepository {
 
+	@Deprecated
 	public StrategyRepositoryImpl() {
-		// Default constructor
+		
 	}
 
 	@Inject

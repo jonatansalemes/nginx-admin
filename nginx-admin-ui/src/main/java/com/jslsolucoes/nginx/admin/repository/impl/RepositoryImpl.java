@@ -20,6 +20,7 @@ public abstract class RepositoryImpl<T> {
 	protected EntityManager entityManager;
 	private Class<T> clazz;
 
+	@Deprecated
 	public RepositoryImpl() {
 
 	}

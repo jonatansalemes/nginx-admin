@@ -26,8 +26,9 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 
 	private MailService mailService;
 
+	@Deprecated
 	public UserRepositoryImpl() {
-		// Default constructor
+		
 	}
 
 	@Inject

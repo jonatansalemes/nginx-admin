@@ -7,10 +7,10 @@ import org.junit.Test;
 
 import com.jslsolucoes.nginx.admin.agent.client.api.NginxAgentClientApis;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxAuthenticationFailResponse;
+import com.jslsolucoes.nginx.admin.agent.model.response.NginxConfigureResponse;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxExceptionResponse;
-import com.jslsolucoes.nginx.admin.agent.model.response.NginxOperationalSystemInfoResponse;
 
-public class NginxOperationSystemInfoTest {
+public class NginxConfigureTest {
 
 	private NginxAgentClient nginxAgentClient;
 
@@ -20,22 +20,19 @@ public class NginxOperationSystemInfoTest {
 	}
 
 	@Test
-	public void info() {
-		nginxAgentClient.api(NginxAgentClientApis.operationalSystemInfo())
-				.withAuthorizationKey("fdoinsafodsoianoifd")
-				.withEndpoint("http://192.168.99.100:3000")
-				.build()
-				.operationalSystemInfo()
-				.thenAccept(nginxResponse -> {
-					if(nginxResponse.error()) {
+	public void configure() {
+		nginxAgentClient.api(NginxAgentClientApis.configure()).withAuthorizationKey("fdoinsafodsoianoifd")
+				.withEndpoint("https://192.168.99.100:3443").withGzip(true).withHome("/opt/nginx-agent/settings")
+				.withMaxPostSize(15).build().configure().thenAccept(nginxResponse -> {
+					if (nginxResponse.error()) {
 						NginxExceptionResponse nginxExceptionResponse = (NginxExceptionResponse) nginxResponse;
 						Assert.fail(nginxExceptionResponse.getStackTrace());
-					} else if(nginxResponse.forbidden()) {
+					} else if (nginxResponse.forbidden()) {
 						NginxAuthenticationFailResponse nginxAuthenticationFailResponse = (NginxAuthenticationFailResponse) nginxResponse;
 						Assert.fail(nginxAuthenticationFailResponse.getMessage());
 					} else {
-						NginxOperationalSystemInfoResponse nginxOperationalSystemInfoResponse = (NginxOperationalSystemInfoResponse) nginxResponse;
-						Assert.assertEquals("amd64",nginxOperationalSystemInfoResponse.getArchitecture());
+						NginxConfigureResponse nginxConfigureResponse = (NginxConfigureResponse) nginxResponse;
+						Assert.assertTrue(nginxConfigureResponse.getSuccess());
 					}
 				}).join();
 	}

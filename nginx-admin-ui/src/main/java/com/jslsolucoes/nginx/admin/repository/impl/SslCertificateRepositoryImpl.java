@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -20,12 +19,8 @@ import javax.persistence.criteria.Root;
 import com.jslsolucoes.i18n.Messages;
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.model.Nginx_;
-import com.jslsolucoes.nginx.admin.model.Server_;
 import com.jslsolucoes.nginx.admin.model.SslCertificate;
 import com.jslsolucoes.nginx.admin.model.SslCertificate_;
-import com.jslsolucoes.nginx.admin.model.Upstream;
-import com.jslsolucoes.nginx.admin.model.UpstreamServer;
-import com.jslsolucoes.nginx.admin.model.Upstream_;
 import com.jslsolucoes.nginx.admin.repository.NginxRepository;
 import com.jslsolucoes.nginx.admin.repository.ResourceIdentifierRepository;
 import com.jslsolucoes.nginx.admin.repository.SslCertificateRepository;
@@ -36,8 +31,9 @@ public class SslCertificateRepositoryImpl extends RepositoryImpl<SslCertificate>
 	private NginxRepository nginxRepository;
 	private ResourceIdentifierRepository resourceIdentifierRepository;
 
+	@Deprecated
 	public SslCertificateRepositoryImpl() {
-		// Default constructor
+		
 	}
 
 	@Inject

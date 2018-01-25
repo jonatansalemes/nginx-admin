@@ -1,7 +1,6 @@
 package com.jslsolucoes.nginx.admin.repository.impl;
 
 import java.io.File;
-import com.jslsolucoes.i18n.Messages;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,7 +15,9 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.google.common.collect.Lists;
+import com.jslsolucoes.i18n.Messages;
 import com.jslsolucoes.nginx.admin.error.NginxAdminException;
+import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.model.Server;
 import com.jslsolucoes.nginx.admin.model.SslCertificate;
 import com.jslsolucoes.nginx.admin.model.Upstream;
@@ -45,8 +46,9 @@ public class ImportRepositoryImpl implements ImportRepository {
 	private VirtualHostRepository virtualHostRepository;
 	private SslCertificateRepository sslCertificateRepository;
 
+	@Deprecated
 	public ImportRepositoryImpl() {
-		// Default constructor
+		
 	}
 
 	@Inject
@@ -61,7 +63,7 @@ public class ImportRepositoryImpl implements ImportRepository {
 	}
 
 	@Override
-	public void importFrom(String nginxConf) throws NginxAdminException {
+	public void importFrom(Nginx nginx,String nginxConf) throws NginxAdminException {
 		try {
 			List<Directive> directives = new NginxConfParser(nginxConf).parse();
 			servers(directives);

@@ -18,8 +18,9 @@ import com.jslsolucoes.nginx.admin.repository.ResourceIdentifierRepository;
 public class ResourceIdentifierRepositoryImpl extends RepositoryImpl<ResourceIdentifier>
 		implements ResourceIdentifierRepository {
 
+	@Deprecated
 	public ResourceIdentifierRepositoryImpl() {
-		// Default constructor
+		
 	}
 
 	@Inject

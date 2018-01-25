@@ -22,12 +22,18 @@ public class NginxCommandLineInterfaceTest {
 	public void setUp() {
 		nginxAgentClient = NginxAgentClientBuilder.newBuilder()
 				.build();
-		nginxCommandLineInterface = nginxAgentClient.api(NginxAgentClientApis.commandLineInterface())
-				.withAuthorizationKey("fdoinsafodsoianoifd")
-				.withEndpoint("http://192.168.99.100:3000")
-				.withHome("/opt/nginx-agent/settings")
-				.withBin("/usr/sbin/nginx")
-				.build();
+		nginxAgentClient.api(NginxAgentClientApis.configure()).withAuthorizationKey("fdoinsafodsoianoifd")
+		.withEndpoint("https://192.168.99.100:3443").withGzip(true).withHome("/opt/nginx-agent/settings")
+		.withMaxPostSize(15).build().configure()
+		.thenAccept(nginxResponse -> {
+			nginxCommandLineInterface = nginxAgentClient.api(NginxAgentClientApis.commandLineInterface())
+					.withAuthorizationKey("fdoinsafodsoianoifd")
+					.withEndpoint("http://192.168.99.100:3000")
+					.withHome("/opt/nginx-agent/settings")
+					.withBin("/usr/sbin/nginx")
+					.build();
+		})
+		.join();
 	}
 	
 	@Test

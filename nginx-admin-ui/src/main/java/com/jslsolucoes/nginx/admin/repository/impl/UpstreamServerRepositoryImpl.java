@@ -20,8 +20,9 @@ import com.jslsolucoes.nginx.admin.repository.UpstreamServerRepository;
 @RequestScoped
 public class UpstreamServerRepositoryImpl extends RepositoryImpl<UpstreamServer> implements UpstreamServerRepository {
 
+	@Deprecated
 	public UpstreamServerRepositoryImpl() {
-		// Default constructor
+		
 	}
 
 	@Inject

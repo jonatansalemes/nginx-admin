@@ -9,7 +9,7 @@
 	<html:block>
 		<html:form action="/import/execute" 
 		 label="{import.nginx.conf.form}" validation="/import/validate">
-			
+			<html:input name="idNginx" type="hidden" value="${ nginx.id }"></html:input>
 			<html:formGroup label="{import.nginx.conf.location}" required="true">
 				<html:input name="nginxConf" 
 					placeholder="{import.nginx.conf.location.placeholder}" required="true"></html:input>

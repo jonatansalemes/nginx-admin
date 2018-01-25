@@ -23,6 +23,7 @@ public class DashboardController {
 	private NginxRepository nginxRepository;
 	private ConfigurationRepository configurationRepository;
 
+	@Deprecated
 	public DashboardController() {
 		
 	}
