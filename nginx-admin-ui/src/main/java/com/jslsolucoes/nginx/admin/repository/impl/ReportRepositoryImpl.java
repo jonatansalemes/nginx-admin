@@ -1,7 +1,6 @@
 package com.jslsolucoes.nginx.admin.repository.impl;
 
 import java.io.ByteArrayInputStream;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -28,6 +27,7 @@ import org.springframework.util.CollectionUtils;
 import com.google.common.collect.Lists;
 import com.jslsolucoes.i18n.Messages;
 import com.jslsolucoes.nginx.admin.error.NginxAdminException;
+import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.model.VirtualHostAlias;
 import com.jslsolucoes.nginx.admin.repository.ReportRepository;
 import com.jslsolucoes.nginx.admin.repository.VirtualHostAliasRepository;
@@ -56,7 +56,7 @@ public class ReportRepositoryImpl implements ReportRepository {
 
 	@Override
 	public List<String> validateBeforeSearch(List<VirtualHostAlias> aliases, LocalDate from, LocalTime fromTime,
-			LocalDate to, LocalTime toTime) {
+			LocalDate to, LocalTime toTime,Nginx nginx) {
 
 		List<String> errors = new ArrayList<>();
 		if (new DateTime(start(from, fromTime)).isAfter(new DateTime(end(to, toTime)))) {
@@ -89,10 +89,11 @@ public class ReportRepositoryImpl implements ReportRepository {
 
 	@Override
 	public InputStream statistics(List<VirtualHostAlias> aliases, LocalDate from, LocalTime fromTime, LocalDate to,
-			LocalTime toTime) throws NginxAdminException {
+			LocalTime toTime,Nginx nginx) throws NginxAdminException {
 		try {
 			Connection connection = dataSource.getConnection();
 			Map<String, Object> parameters = defaultParameters();
+			parameters.put("NGINX", nginx.getId());
 			parameters.put("FROM", start(from, fromTime));
 			parameters.put("TO", end(to, toTime));
 			parameters

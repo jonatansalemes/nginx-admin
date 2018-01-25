@@ -15,6 +15,8 @@
 				<html:menuItem url="/user/logout" icon="log-out" label="{logout}"></html:menuItem>
 			</html:menuButton>
 			<html:menuButton icon="briefcase" align="right" rendered="${ nginx != null }">
+				<html:menuItem url="#" label="${ nginx.name } (${ nginx.endpoint })" icon="stop"></html:menuItem>
+				<html:menuSeparator></html:menuSeparator>
 				<html:menuItem target="content" url="/import/form/${ nginx.id }" icon="copy" label="{import.nginx.conf}"></html:menuItem>
 				<html:menuItem target="content" url="/report/search/${ nginx.id }" icon="object-align-bottom" label="{reports}" ></html:menuItem>
 				<html:menuItem target="content" url="/sslCertificate/list/${ nginx.id }" icon="lock" label="{ssl.certificates}" ></html:menuItem>
@@ -25,10 +27,14 @@
 				<html:menuItem target="content" url="/errorLog/list/${ nginx.id }" icon="fire" label="{error.logs}"></html:menuItem>
 			</html:menuButton>
 			<html:menuButton icon="equalizer" align="right">
-				<html:menuItem url="/nginx/list" label="{nginx.agent.empty}" rendered="${ empty(nginxList) }"></html:menuItem>
-			
+				<html:menuItem url="/nginx/list" target="conteudo" label="{nginx.agent.empty}" rendered="${ empty(nginxList) }"></html:menuItem>
 				<c:forEach items="${ nginxList }" var="nginx">
-					<html:menuItem url="/applySessionFor/${ nginx.id }" icon="stop" label="Apply session for ${ nginx.name } (${ nginx.endpoint })"></html:menuItem>
+					<html:menuItem url="/applySessionFor/${ nginx.id }" icon="stop">
+						<fmt:message key="nginx.agent.apply.session">
+							<fmt:param value="${ nginx.name }"></fmt:param>
+							<fmt:param value="${ nginx.endpoint }"></fmt:param>
+						</fmt:message>
+					</html:menuItem>
 				</c:forEach>
 			</html:menuButton>
 		</html:container>

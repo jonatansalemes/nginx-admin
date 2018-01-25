@@ -11,6 +11,8 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 
+import com.jslsolucoes.nginx.admin.model.Nginx;
+import com.jslsolucoes.nginx.admin.model.Nginx_;
 import com.jslsolucoes.nginx.admin.model.VirtualHost;
 import com.jslsolucoes.nginx.admin.model.VirtualHostAlias;
 import com.jslsolucoes.nginx.admin.model.VirtualHostAlias_;
@@ -32,6 +34,17 @@ public class VirtualHostAliasRepositoryImpl extends RepositoryImpl<VirtualHostAl
 	}
 
 
+	@Override
+	public List<VirtualHostAlias> listAllFor(Nginx nginx) {
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<VirtualHostAlias> criteriaQuery = criteriaBuilder.createQuery(VirtualHostAlias.class);
+		Root<VirtualHostAlias> root = criteriaQuery.from(VirtualHostAlias.class);
+		criteriaQuery.where(criteriaBuilder.equal(root.join(VirtualHostAlias_.virtualHost, JoinType.INNER)
+								.join(VirtualHost_.nginx,JoinType.INNER).get(Nginx_.id),
+				nginx.getId()));
+		return entityManager.createQuery(criteriaQuery).getResultList();
+	}
+	
 	
 	@Override
 	public List<VirtualHostAlias> listAll(VirtualHost virtualHost) {

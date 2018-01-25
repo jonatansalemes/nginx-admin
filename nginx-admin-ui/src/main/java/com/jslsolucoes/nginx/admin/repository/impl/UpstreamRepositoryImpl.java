@@ -1,6 +1,5 @@
 package com.jslsolucoes.nginx.admin.repository.impl;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,13 +11,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import org.apache.commons.io.FileUtils;
-
 import com.jslsolucoes.i18n.Messages;
 import com.jslsolucoes.nginx.admin.error.NginxAdminException;
+import com.jslsolucoes.nginx.admin.model.Nginx;
+import com.jslsolucoes.nginx.admin.model.Nginx_;
+import com.jslsolucoes.nginx.admin.model.Server_;
 import com.jslsolucoes.nginx.admin.model.Upstream;
 import com.jslsolucoes.nginx.admin.model.UpstreamServer;
 import com.jslsolucoes.nginx.admin.model.Upstream_;
@@ -68,6 +69,17 @@ public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements 
 			throw new NginxAdminException(e);
 		}
 	}
+	
+	@Override
+	public List<Upstream> listAllFor(Nginx nginx) {
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Upstream> criteriaQuery = criteriaBuilder.createQuery(Upstream.class);
+		Root<Upstream> root = criteriaQuery.from(Upstream.class);
+		criteriaQuery
+				.where(criteriaBuilder.equal(root.join(Upstream_.nginx, JoinType.INNER).get(Nginx_.id), nginx.getId()));
+		criteriaQuery.orderBy(criteriaBuilder.asc(root.get(Upstream_.name)));
+		return entityManager.createQuery(criteriaQuery).getResultList();
+	}
 
 	@Override
 	public List<String> validateBeforeSaveOrUpdate(Upstream upstream, List<UpstreamServer> upstreamServers) {
@@ -104,6 +116,8 @@ public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements 
 			CriteriaQuery<Upstream> criteriaQuery = criteriaBuilder.createQuery(Upstream.class);
 			Root<Upstream> root = criteriaQuery.from(Upstream.class);
 			List<Predicate> predicates = new ArrayList<>();
+			predicates.add(criteriaBuilder.equal(root.join(Upstream_.nginx, JoinType.INNER).get(Nginx_.id),
+					upstream.getNginx().getId()));
 			predicates.add(criteriaBuilder.equal(root.get(Upstream_.name), upstream.getName()));
 			if (upstream.getId() != null) {
 				predicates.add(criteriaBuilder.notEqual(root.get(Upstream_.id), upstream.getId()));

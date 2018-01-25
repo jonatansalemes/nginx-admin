@@ -27,9 +27,9 @@
 			</html:gridColumn>
 			<html:gridColumn>
 				<html:buttonGroup spaced="true">
-					<html:button icon="pencil" url="/upstream/edit/${ upstream.id }"></html:button>
+					<html:button icon="pencil" url="/upstream/edit/${ nginx.id }/${ upstream.id }"></html:button>
 					<html:button disabled="${ !empty(upstream.virtualHostLocations) }" state="danger" id="${ upstream.id }" icon="trash" url="#"></html:button>
-					<html:confirm attachTo="${ upstream.id }" url="/upstream/delete/${ upstream.id }">
+					<html:confirm attachTo="${ upstream.id }" url="/upstream/delete/${ nginx.id }/${ upstream.id }">
 						<fmt:message key="upstream.delete.confirm">
 							<fmt:param value="${ upstream.name }"></fmt:param>
 						</fmt:message>
@@ -38,7 +38,7 @@
 			</html:gridColumn>
 			
 			<html:toolbar>
-				<html:button icon="plus" url="/upstream/form"></html:button>
+				<html:button icon="plus" url="/upstream/form/${ nginx.id }"></html:button>
 			</html:toolbar>
 			
 		</html:grid>

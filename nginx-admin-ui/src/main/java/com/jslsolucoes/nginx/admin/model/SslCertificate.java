@@ -47,11 +47,12 @@ public class SslCertificate implements Serializable {
 	}
 
 	public SslCertificate(Long id, String commonName, ResourceIdentifier resourceIdentifierCertificate,
-			ResourceIdentifier resourceIdentifierCertificatePrivateKey) {
+			ResourceIdentifier resourceIdentifierCertificatePrivateKey,Nginx nginx) {
 		this.id = id;
 		this.commonName = commonName;
 		this.resourceIdentifierCertificate = resourceIdentifierCertificate;
 		this.resourceIdentifierCertificatePrivateKey = resourceIdentifierCertificatePrivateKey;
+		this.nginx = nginx;
 	}
 
 	public SslCertificate(Long id) {

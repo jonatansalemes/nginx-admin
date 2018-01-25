@@ -15,13 +15,13 @@ import com.jslsolucoes.nginx.admin.agent.model.response.NginxResponse;
 public class NginxOperationalSystemInfo extends DefaultNginxAgentClientApi implements NginxAgentClientApi {
 
 	private final ScheduledExecutorService scheduledExecutorService;
-	private final String authorization;
+	private final String authorizationKey;
 	private String endpoint;
 
-	public NginxOperationalSystemInfo(ScheduledExecutorService scheduledExecutorService, String authorization,
+	public NginxOperationalSystemInfo(ScheduledExecutorService scheduledExecutorService, String authorizationKey,
 			String endpoint) {
 		this.scheduledExecutorService = scheduledExecutorService;
-		this.authorization = authorization;
+		this.authorizationKey = authorizationKey;
 		this.endpoint = endpoint;
 	}
 
@@ -30,7 +30,7 @@ public class NginxOperationalSystemInfo extends DefaultNginxAgentClientApi imple
 			try (RestClient restClient = RestClient.build()) {
 				WebTarget webTarget = restClient.target(endpoint);
 				Response response = webTarget.path("/admin/operationalSystemInfo").request()
-						.header(HttpHeader.AUTHORIZATION, authorization).get();
+						.header(HttpHeader.AUTHORIZATION, authorizationKey).get();
 				return responseFor(response, NginxOperationalSystemDescriptionResponse.class);
 			} catch (Exception e) {
 				return new NginxExceptionResponse(e);

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import com.jslsolucoes.nginx.admin.error.NginxAdminException;
+import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.model.Upstream;
 import com.jslsolucoes.nginx.admin.model.UpstreamServer;
 import com.jslsolucoes.nginx.admin.repository.impl.OperationResult;
@@ -11,7 +12,7 @@ import com.jslsolucoes.nginx.admin.repository.impl.OperationType;
 
 public interface UpstreamRepository {
 
-	public List<Upstream> listAll();
+	public List<Upstream> listAllFor(Nginx nginx);
 
 	public OperationType deleteWithResource(Upstream upstream) throws IOException;
 

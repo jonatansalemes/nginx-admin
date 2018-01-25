@@ -9,7 +9,7 @@
 	<html:block>
 
 		<html:grid
-		 search="true" url="/virtualHost/list"
+		 search="true" url="/virtualHost/list/${ nginx.id }"
 		 data="${ virtualHostList }" var="virtualHost" label="{virtualHost.list}" paginate="false">
 			<html:gridColumn label="{virtualHost.aliases}">
 				${ virtualHost.fullAliases }
@@ -32,9 +32,9 @@
 			</html:gridColumn>
 			<html:gridColumn>
 				<html:buttonGroup spaced="true">
-					<html:button icon="pencil" url="/virtualHost/edit/${ virtualHost.id }"></html:button>
+					<html:button icon="pencil" url="/virtualHost/edit/${ nginx.id }/${ virtualHost.id }"></html:button>
 					<html:button state="danger" id="${ virtualHost.id }" icon="trash" url="#"></html:button>
-					<html:confirm attachTo="${ virtualHost.id }" url="/virtualHost/delete/${ virtualHost.id }">
+					<html:confirm attachTo="${ virtualHost.id }" url="/virtualHost/delete/${ nginx.id }/${ virtualHost.id }">
 						<fmt:message key="virtualHost.delete.confirm">
 							<c:forEach items="${ virtualHost.aliases }" var="virtualHostAlias">
 								<fmt:param value="${ virtualHostAlias.alias }"></fmt:param>
@@ -45,7 +45,7 @@
 			</html:gridColumn>
 			
 			<html:toolbar>
-				<html:button icon="plus" url="/virtualHost/form"></html:button>
+				<html:button icon="plus" url="/virtualHost/form/${ nginx.id }"></html:button>
 			</html:toolbar>
 			
 		</html:grid>

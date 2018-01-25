@@ -22,4 +22,6 @@ public interface SslCertificateRepository {
 	public InputStream download(String hash) throws FileNotFoundException;
 
 	public List<SslCertificate> listAllFor(Nginx nginx);
+
+	public List<String> validateBeforeSaveOrUpdate(SslCertificate sslCertificate);
 }

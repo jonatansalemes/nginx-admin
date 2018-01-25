@@ -10,7 +10,7 @@ public class NginxCommandLineInterfaceBuilder implements NginxAgentClientApiBuil
 	private String bin;
 	private String home;
 	private String endpoint;
-	private String authorization;
+	private String authorizationKey;
 
 	private NginxCommandLineInterfaceBuilder() {
 
@@ -18,7 +18,7 @@ public class NginxCommandLineInterfaceBuilder implements NginxAgentClientApiBuil
 
 	@Override
 	public NginxCommandLineInterface build() {
-		return new NginxCommandLineInterface(scheduledExecutorService, endpoint, bin, home, authorization);
+		return new NginxCommandLineInterface(scheduledExecutorService, endpoint, bin, home, authorizationKey);
 	}
 
 	public static NginxCommandLineInterfaceBuilder newBuilder() {
@@ -46,8 +46,8 @@ public class NginxCommandLineInterfaceBuilder implements NginxAgentClientApiBuil
 		return this;
 	}
 
-	public NginxCommandLineInterfaceBuilder withAuthorization(String authorization) {
-		this.authorization = authorization;
+	public NginxCommandLineInterfaceBuilder withAuthorizationKey(String authorizationKey) {
+		this.authorizationKey = authorizationKey;
 		return this;
 	}
 

@@ -23,7 +23,7 @@ public class NginxPingTest {
 	public void ping() {
 		nginxAgentClient.api(NginxAgentClientApis.ping())
 				.withAuthorizationKey("fdoinsafodsoianoifd")
-				.withEndpoint("https://localhost:3443")
+				.withEndpoint("https://192.168.99.100:3443")
 				.build()
 				.ping()
 				.thenAccept(nginxResponse -> {

@@ -3,21 +3,29 @@ package com.jslsolucoes.nginx.admin.repository.impl;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import com.jslsolucoes.i18n.Messages;
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.model.Nginx_;
 import com.jslsolucoes.nginx.admin.model.Server_;
 import com.jslsolucoes.nginx.admin.model.SslCertificate;
 import com.jslsolucoes.nginx.admin.model.SslCertificate_;
+import com.jslsolucoes.nginx.admin.model.Upstream;
+import com.jslsolucoes.nginx.admin.model.UpstreamServer;
+import com.jslsolucoes.nginx.admin.model.Upstream_;
 import com.jslsolucoes.nginx.admin.repository.NginxRepository;
 import com.jslsolucoes.nginx.admin.repository.ResourceIdentifierRepository;
 import com.jslsolucoes.nginx.admin.repository.SslCertificateRepository;
@@ -56,6 +64,36 @@ public class SslCertificateRepositoryImpl extends RepositoryImpl<SslCertificate>
 		*/
 		return OperationType.DELETE;
 	}
+	
+	private SslCertificate hasEquals(SslCertificate sslCertificate) {
+		try {
+			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+			CriteriaQuery<SslCertificate> criteriaQuery = criteriaBuilder.createQuery(SslCertificate.class);
+			Root<SslCertificate> root = criteriaQuery.from(SslCertificate.class);
+			List<Predicate> predicates = new ArrayList<>();
+			predicates.add(criteriaBuilder.equal(root.join(SslCertificate_.nginx, JoinType.INNER).get(Nginx_.id),
+					sslCertificate.getNginx().getId()));
+			predicates.add(criteriaBuilder.equal(root.get(SslCertificate_.commonName), sslCertificate.getCommonName()));
+			if (sslCertificate.getId() != null) {
+				predicates.add(criteriaBuilder.notEqual(root.get(SslCertificate_.id), sslCertificate.getId()));
+			}
+			criteriaQuery.where(predicates.toArray(new Predicate[] {}));
+			return entityManager.createQuery(criteriaQuery).getSingleResult();
+		} catch (NoResultException noResultException) {
+			return null;
+		}
+	}
+	
+	@Override
+	public List<String> validateBeforeSaveOrUpdate(SslCertificate sslCertificate) {
+		List<String> errors = new ArrayList<>();
+		
+		if (hasEquals(sslCertificate) != null) {
+			errors.add(Messages.getString("ssl.already.exists"));
+		}
+
+		return errors;
+	}
 
 	@Override
 	public OperationResult saveOrUpdate(SslCertificate sslCertificate, InputStream certificateFile,
@@ -77,6 +115,8 @@ public class SslCertificateRepositoryImpl extends RepositoryImpl<SslCertificate>
 					new File(nginx.ssl(), sslCertificate.getResourceIdentifierCertificatePrivateKey().getHash())));
 		}
 		*/
+		sslCertificate.setResourceIdentifierCertificate(resourceIdentifierRepository.create());
+		sslCertificate.setResourceIdentifierCertificatePrivateKey(resourceIdentifierRepository.create());
 		return super.saveOrUpdate(sslCertificate);
 	}
 

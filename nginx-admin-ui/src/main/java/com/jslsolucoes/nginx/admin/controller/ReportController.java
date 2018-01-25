@@ -12,6 +12,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
 import com.jslsolucoes.nginx.admin.error.NginxAdminException;
+import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.model.VirtualHostAlias;
 import com.jslsolucoes.nginx.admin.repository.ReportRepository;
 import com.jslsolucoes.nginx.admin.repository.VirtualHostAliasRepository;
@@ -32,8 +33,9 @@ public class ReportController {
 	private VirtualHostAliasRepository virtualHostAliasRepository;
 	private HttpServletResponse httpServletResponse;
 
+	@Deprecated
 	public ReportController() {
-		this(null, null, null, null);
+		
 	}
 
 	@Inject
@@ -45,23 +47,25 @@ public class ReportController {
 		this.httpServletResponse = httpServletResponse;
 	}
 
-	public void validate(List<Long> aliases, LocalDate from, LocalTime fromTime, LocalDate to, LocalTime toTime) {
+	public void validate(List<Long> aliases, LocalDate from, LocalTime fromTime, LocalDate to, LocalTime toTime,Long idNginx) {
 		this.result.use(Results.json())
 				.from(FormValidation.newBuilder().toUnordenedList(
-						reportRepository.validateBeforeSearch(convert(aliases), from, fromTime, to, toTime)), "errors")
+						reportRepository.validateBeforeSearch(convert(aliases), from, fromTime, to, toTime,new Nginx(idNginx))), "errors")
 				.serialize();
 	}
 
-	public void search() {
-		this.result.include("virtualHostAliasList", virtualHostAliasRepository.listAll());
+	@Path("search/{idNginx}")
+	public void search(Long idNginx) {
+		this.result.include("virtualHostAliasList", virtualHostAliasRepository.listAllFor(new Nginx(idNginx)));
+		this.result.include("nginx",new Nginx(idNginx));
 	}
 
 	@Post
 	@Path("export.pdf")
-	public void export(List<Long> aliases, LocalDate from, LocalTime fromTime, LocalDate to, LocalTime toTime)
+	public void export(List<Long> aliases, LocalDate from, LocalTime fromTime, LocalDate to, LocalTime toTime,Long idNginx)
 			throws NginxAdminException, IOException {
 		httpServletResponse.setContentType("application/pdf");
-		IOUtils.copy(reportRepository.statistics(convert(aliases), from, fromTime, to, toTime),
+		IOUtils.copy(reportRepository.statistics(convert(aliases), from, fromTime, to, toTime,new Nginx(idNginx)),
 				httpServletResponse.getOutputStream());
 		this.result.use(Results.status()).ok();
 	}

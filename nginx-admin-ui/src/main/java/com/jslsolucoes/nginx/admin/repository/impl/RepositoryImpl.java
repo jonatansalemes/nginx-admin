@@ -101,9 +101,9 @@ public abstract class RepositoryImpl<T> {
 	}
 
 	public Long count() {
-		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<Long> criteriaQuery = builder.createQuery(Long.class);
-		criteriaQuery.select(builder.count(criteriaQuery.from(clazz).get("id")));
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+		criteriaQuery.select(criteriaBuilder.count(criteriaQuery.from(clazz).get("id")));
 		return entityManager.createQuery(criteriaQuery).getSingleResult();
 	}
 

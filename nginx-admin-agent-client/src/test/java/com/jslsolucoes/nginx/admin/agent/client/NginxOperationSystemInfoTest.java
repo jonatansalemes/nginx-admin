@@ -22,7 +22,7 @@ public class NginxOperationSystemInfoTest {
 	@Test
 	public void info() {
 		nginxAgentClient.api(NginxAgentClientApis.operationalSystemInfo())
-				.withAuthorization("fdoinsafodsoianoifd")
+				.withAuthorizationKey("fdoinsafodsoianoifd")
 				.withEndpoint("http://192.168.99.100:3000")
 				.build()
 				.operationalSystemInfo()

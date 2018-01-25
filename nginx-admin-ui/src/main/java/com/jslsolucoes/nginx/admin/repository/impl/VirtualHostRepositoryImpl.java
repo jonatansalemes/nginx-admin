@@ -1,6 +1,5 @@
 package com.jslsolucoes.nginx.admin.repository.impl;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,10 +16,11 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.SetJoin;
 
-import org.apache.commons.io.FileUtils;
-
 import com.jslsolucoes.i18n.Messages;
 import com.jslsolucoes.nginx.admin.error.NginxAdminException;
+import com.jslsolucoes.nginx.admin.model.Nginx;
+import com.jslsolucoes.nginx.admin.model.Nginx_;
+import com.jslsolucoes.nginx.admin.model.Upstream_;
 import com.jslsolucoes.nginx.admin.model.VirtualHost;
 import com.jslsolucoes.nginx.admin.model.VirtualHostAlias;
 import com.jslsolucoes.nginx.admin.model.VirtualHostAlias_;
@@ -122,6 +122,8 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 			Root<VirtualHost> root = criteriaQuery.from(VirtualHost.class);
 			SetJoin<VirtualHost, VirtualHostAlias> join = root.join(VirtualHost_.aliases, JoinType.INNER);
 			List<Predicate> predicates = new ArrayList<>();
+			predicates.add(criteriaBuilder.equal(root.join(VirtualHost_.nginx, JoinType.INNER).get(Nginx_.id),
+					virtualHost.getNginx().getId()));
 			predicates.add(join.get(VirtualHostAlias_.alias)
 					.in(aliases.stream().map(VirtualHostAlias::getAlias).collect(Collectors.toList())));
 			if (virtualHost.getId() != null) {
@@ -133,14 +135,29 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 			return null;
 		}
 	}
+	
+	@Override
+	public List<VirtualHost> listAllFor(Nginx nginx) {
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<VirtualHost> criteriaQuery = criteriaBuilder.createQuery(VirtualHost.class);
+		Root<VirtualHost> root = criteriaQuery.from(VirtualHost.class);
+		criteriaQuery
+				.where(criteriaBuilder.equal(root.join(VirtualHost_.nginx, JoinType.INNER).get(Nginx_.id), nginx.getId()));
+		return entityManager.createQuery(criteriaQuery).getResultList();
+	}
 
 	@Override
-	public List<VirtualHost> search(String term) {
+	public List<VirtualHost> searchFor(Nginx nginx,String term) {
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<VirtualHost> criteriaQuery = criteriaBuilder.createQuery(VirtualHost.class);
 		Root<VirtualHost> root = criteriaQuery.from(VirtualHost.class);
 		SetJoin<VirtualHost, VirtualHostAlias> join = root.join(VirtualHost_.aliases, JoinType.INNER);
-		criteriaQuery.where(criteriaBuilder.like(criteriaBuilder.lower(join.get(VirtualHostAlias_.alias)), term));
+		criteriaQuery.where(
+				criteriaBuilder.and(
+						criteriaBuilder.equal(root.join(VirtualHost_.nginx, JoinType.INNER).get(Nginx_.id), nginx.getId()),		
+						criteriaBuilder.like(criteriaBuilder.lower(join.get(VirtualHostAlias_.alias)), term.toLowerCase())
+				)
+		);
 		return entityManager.createQuery(criteriaQuery).getResultList();
 	}
 }

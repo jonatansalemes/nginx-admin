@@ -29,6 +29,10 @@ public class VirtualHost implements Serializable {
 
 	@Column(name = "https")
 	private Integer https;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_nginx")
+	private Nginx nginx;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_ssl_certificate")
@@ -52,8 +56,9 @@ public class VirtualHost implements Serializable {
 		this.id = id;
 	}
 
-	public VirtualHost(Long id, Integer https, SslCertificate sslCertificate, ResourceIdentifier resourceIdentifier) {
+	public VirtualHost(Long id, Integer https, SslCertificate sslCertificate, ResourceIdentifier resourceIdentifier,Nginx nginx) {
 		this.id = id;
+		this.nginx = nginx;
 		this.https = https == null ? 0 : https;
 		this.sslCertificate = sslCertificate;
 		this.resourceIdentifier = resourceIdentifier;
@@ -106,6 +111,14 @@ public class VirtualHost implements Serializable {
 
 	public String getFullAliases() {
 		return StringUtils.join(aliases.stream().map(VirtualHostAlias::getAlias).collect(Collectors.toSet()), " ");
+	}
+
+	public Nginx getNginx() {
+		return nginx;
+	}
+
+	public void setNginx(Nginx nginx) {
+		this.nginx = nginx;
 	}
 
 }

@@ -8,6 +8,7 @@ import javax.inject.Inject;
 
 import com.google.common.collect.Lists;
 import com.jslsolucoes.nginx.admin.error.NginxAdminException;
+import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.model.ResourceIdentifier;
 import com.jslsolucoes.nginx.admin.model.SslCertificate;
 import com.jslsolucoes.nginx.admin.model.Upstream;
@@ -35,8 +36,9 @@ public class VirtualHostController {
 	private UpstreamRepository upstreamRepository;
 	private SslCertificateRepository sslCertificateRepository;
 
+	@Deprecated
 	public VirtualHostController() {
-		this(null, null, null, null);
+		
 	}
 
 	@Inject
@@ -48,51 +50,55 @@ public class VirtualHostController {
 		this.sslCertificateRepository = sslCertificateRepository;
 	}
 
-	public void list(boolean search, String term) {
+	@Path("list/{idNginx}")
+	public void list(Long idNginx,boolean search, String term) {
 		if (search) {
-			this.result.include("virtualHostList", virtualHostRepository.search(term));
+			this.result.include("virtualHostList", virtualHostRepository.searchFor(new Nginx(idNginx),term));
 		} else {
-			this.result.include("virtualHostList", virtualHostRepository.listAll());
+			this.result.include("virtualHostList", virtualHostRepository.listAllFor(new Nginx(idNginx)));
 		}
+		this.result.include("nginx",new Nginx(idNginx));
 	}
 
-	public void form() {
-		this.result.include("upstreamList", upstreamRepository.listAll());
-		this.result.include("sslCertificateList", sslCertificateRepository.listAllFor(null));
+	@Path("form/{idNginx}")
+	public void form(Long idNginx) {
+		this.result.include("upstreamList", upstreamRepository.listAllFor(new Nginx(idNginx)));
+		this.result.include("sslCertificateList", sslCertificateRepository.listAllFor(new Nginx(idNginx)));
+		this.result.include("nginx",new Nginx(idNginx));
 	}
 
 	public void validate(Long id, Integer https, String idResourceIdentifier, Long idSslCertificate,
-			List<String> aliases, List<String> locations, List<Long> upstreams) {
+			List<String> aliases, List<String> locations, List<Long> upstreams,Long idNginx) {
 		this.result.use(Results.json())
 				.from(FormValidation.newBuilder().toUnordenedList(virtualHostRepository.validateBeforeSaveOrUpdate(
 						new VirtualHost(id, https, new SslCertificate(idSslCertificate),
-								new ResourceIdentifier(idResourceIdentifier)),
+								new ResourceIdentifier(idResourceIdentifier),new Nginx(idNginx)),
 						convert(aliases), convert(locations, upstreams))), "errors")
 				.serialize();
 	}
 
-	@Path("edit/{id}")
-	public void edit(Long id) {
+	@Path("edit/{idNginx}/{id}")
+	public void edit(Long idNginx,Long id) {
 		this.result.include("virtualHost", virtualHostRepository.load(new VirtualHost(id)));
-		this.result.forwardTo(this).form();
+		this.result.forwardTo(this).form(idNginx);
 	}
 
-	@Path("delete/{id}")
-	public void delete(Long id) throws IOException {
+	@Path("delete/{idNginx}/{id}")
+	public void delete(Long idNginx,Long id) throws IOException {
 		this.result.include("operation", virtualHostRepository.deleteWithResource(new VirtualHost(id)));
-		this.result.redirectTo(this).list(false, null);
+		this.result.redirectTo(this).list(idNginx,false, null);
 	}
 
 	@Post
 	public void saveOrUpdate(Long id, Integer https, Long idResourceIdentifier, Long idSslCertificate,
-			List<String> aliases, List<String> locations, List<Long> upstreams) throws NginxAdminException {
+			List<String> aliases, List<String> locations, List<Long> upstreams,Long idNginx) throws NginxAdminException {
 		OperationResult operationResult = virtualHostRepository
 				.saveOrUpdate(
 						new VirtualHost(id, https, new SslCertificate(idSslCertificate),
-								new ResourceIdentifier(idResourceIdentifier)),
+								new ResourceIdentifier(idResourceIdentifier),new Nginx(idNginx)),
 						convert(aliases), convert(locations, upstreams));
 		this.result.include("operation", operationResult.getOperationType());
-		this.result.redirectTo(this).edit(operationResult.getId());
+		this.result.redirectTo(this).edit(idNginx,operationResult.getId());
 	}
 
 	private List<VirtualHostLocation> convert(List<String> locations, List<Long> upstreams) {

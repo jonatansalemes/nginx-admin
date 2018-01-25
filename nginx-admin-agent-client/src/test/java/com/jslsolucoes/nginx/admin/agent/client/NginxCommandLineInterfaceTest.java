@@ -23,7 +23,7 @@ public class NginxCommandLineInterfaceTest {
 		nginxAgentClient = NginxAgentClientBuilder.newBuilder()
 				.build();
 		nginxCommandLineInterface = nginxAgentClient.api(NginxAgentClientApis.commandLineInterface())
-				.withAuthorization("fdoinsafodsoianoifd")
+				.withAuthorizationKey("fdoinsafodsoianoifd")
 				.withEndpoint("http://192.168.99.100:3000")
 				.withHome("/opt/nginx-agent/settings")
 				.withBin("/usr/sbin/nginx")

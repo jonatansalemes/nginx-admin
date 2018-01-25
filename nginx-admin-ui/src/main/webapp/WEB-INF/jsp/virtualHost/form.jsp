@@ -12,6 +12,8 @@
 		<html:form action="/virtualHost/saveOrUpdate"
 			label="{virtualHost.form}" validation="/virtualHost/validate">
 			<html:input name="id" type="hidden" value="${ virtualHost.id }"></html:input>
+			<html:input name="idNginx" type="hidden" value="${ nginx.id }"></html:input>
+			
 			<html:input name="idResourceIdentifier" type="hidden"
 				value="${ virtualHost.resourceIdentifier.id }"></html:input>
 			
@@ -76,6 +78,6 @@
 	</html:jsEvent>
 
 	<html:block align="center">
-		<html:link url="/virtualHost/list" label="{back}"></html:link>
+		<html:link url="/virtualHost/list/${ nginx.id }" label="{back}"></html:link>
 	</html:block>
 </html:view>

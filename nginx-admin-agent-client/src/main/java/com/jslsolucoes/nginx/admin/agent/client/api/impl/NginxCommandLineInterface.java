@@ -23,15 +23,15 @@ public class NginxCommandLineInterface extends DefaultNginxAgentClientApi implem
 	private final String endpoint;
 	private final String bin;
 	private final String home;
-	private final String authorization;
+	private final String authorizationKey;
 
 	public NginxCommandLineInterface(ScheduledExecutorService scheduledExecutorService, String endpoint, String bin,
-			String home, String authorization) {
+			String home, String authorizationKey) {
 		this.scheduledExecutorService = scheduledExecutorService;
 		this.endpoint = endpoint;
 		this.bin = bin;
 		this.home = home;
-		this.authorization = authorization;
+		this.authorizationKey = authorizationKey;
 	}
 
 	public CompletableFuture<NginxResponse> start() {
@@ -74,7 +74,7 @@ public class NginxCommandLineInterface extends DefaultNginxAgentClientApi implem
 				Entity<NginxCommandLineInterfaceRequest> entity = Entity.entity(nginxCommandLineInterfaceRequest,
 						MediaType.APPLICATION_JSON);
 				WebTarget webTarget = restClient.target(endpoint);
-				Response response = webTarget.path(path).request().header(HttpHeader.AUTHORIZATION, authorization)
+				Response response = webTarget.path(path).request().header(HttpHeader.AUTHORIZATION, authorizationKey)
 						.post(entity);
 				return responseFor(response, NginxCommandLineInterfaceResponse.class);
 			} catch (Exception e) {

@@ -24,9 +24,9 @@
 			</html:gridColumn>
 			<html:gridColumn>
 				<html:buttonGroup spaced="true">
-					<html:button icon="pencil" url="/sslCertificate/edit/${ sslCertificate.id }"></html:button>
+					<html:button icon="pencil" url="/sslCertificate/edit/${ nginx.id }/${ sslCertificate.id }"></html:button>
 					<html:button disabled="${ !empty(sslCertificate.virtualHosts) }" state="danger" id="${ sslCertificate.id }" icon="trash" url="#"></html:button>
-					<html:confirm attachTo="${ sslCertificate.id }" url="/sslCertificate/delete/${ sslCertificate.id }">
+					<html:confirm attachTo="${ sslCertificate.id }" url="/sslCertificate/delete/${ nginx.id }/${ sslCertificate.id }">
 						<fmt:message key="ssl.delete.confirm">
 							<fmt:param value="${ sslCertificate.commonName }"></fmt:param>
 						</fmt:message>
@@ -35,7 +35,7 @@
 			</html:gridColumn>
 			
 			<html:toolbar>
-				<html:button icon="plus" url="/sslCertificate/form"></html:button>
+				<html:button icon="plus" url="/sslCertificate/form/${ nginx.id }"></html:button>
 			</html:toolbar>
 			
 		</html:grid>

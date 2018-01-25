@@ -8,6 +8,7 @@ import javax.inject.Inject;
 
 import com.google.common.collect.Lists;
 import com.jslsolucoes.nginx.admin.error.NginxAdminException;
+import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.model.ResourceIdentifier;
 import com.jslsolucoes.nginx.admin.model.Server;
 import com.jslsolucoes.nginx.admin.model.Strategy;
@@ -47,44 +48,48 @@ public class UpstreamController {
 		this.strategyRepository = strategyRepository;
 	}
 
-	public void list() {
-		this.result.include("upstreamList", upstreamRepository.listAll());
+	@Path("list/{idNginx}")
+	public void list(Long idNginx) {
+		this.result.include("upstreamList", upstreamRepository.listAllFor(new Nginx(idNginx)));
+		this.result.include("nginx",new Nginx(idNginx));
 	}
 
-	public void form() {
-		this.result.include("serverList", serverRepository.listAllFor(null));
+	@Path("form/{idNginx}")
+	public void form(Long idNginx) {
+		this.result.include("serverList", serverRepository.listAllFor(new Nginx(idNginx)));
 		this.result.include("strategyList", strategyRepository.listAll());
+		this.result.include("nginx",new Nginx(idNginx));
 	}
 
 	public void validate(Long id, String name, Long idStrategy, List<Long> servers, List<Integer> ports,
-			Long idResourceIdentifier) {
+			Long idResourceIdentifier,Long idNginx) {
 		this.result.use(Results.json())
 				.from(FormValidation.newBuilder().toUnordenedList(upstreamRepository.validateBeforeSaveOrUpdate(
-						new Upstream(id, name, new Strategy(idStrategy), new ResourceIdentifier(idResourceIdentifier)),
+						new Upstream(id, name, new Strategy(idStrategy), new ResourceIdentifier(idResourceIdentifier),new Nginx(idNginx)),
 						convert(servers, ports))), "errors")
 				.serialize();
 	}
 
-	@Path("edit/{id}")
-	public void edit(Long id) {
+	@Path("edit/{idNginx}/{id}")
+	public void edit(Long idNginx,Long id) {
 		this.result.include("upstream", upstreamRepository.load(new Upstream(id)));
-		this.result.forwardTo(this).form();
+		this.result.forwardTo(this).form(idNginx);
 	}
 
-	@Path("delete/{id}")
-	public void delete(Long id) throws IOException {
+	@Path("delete/{idNginx}/{id}")
+	public void delete(Long idNginx,Long id) throws IOException {
 		this.result.include("operation", upstreamRepository.deleteWithResource(new Upstream(id)));
-		this.result.redirectTo(this).list();
+		this.result.redirectTo(this).list(idNginx);
 	}
 
 	@Post
 	public void saveOrUpdate(Long id, String name, Long idStrategy, List<Long> servers, List<Integer> ports,
-			Long idResourceIdentifier) throws NginxAdminException {
+			Long idResourceIdentifier,Long idNginx) throws NginxAdminException {
 		OperationResult operationResult = upstreamRepository.saveOrUpdate(
-				new Upstream(id, name, new Strategy(idStrategy), new ResourceIdentifier(idResourceIdentifier)),
+				new Upstream(id, name, new Strategy(idStrategy), new ResourceIdentifier(idResourceIdentifier),new Nginx(idNginx)),
 				convert(servers, ports));
 		this.result.include("operation", operationResult.getOperationType());
-		this.result.redirectTo(this).edit(operationResult.getId());
+		this.result.redirectTo(this).edit(idNginx,operationResult.getId());
 	}
 
 	private List<UpstreamServer> convert(List<Long> servers, List<Integer> ports) {

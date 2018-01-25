@@ -83,7 +83,7 @@ public class DashboardController {
 	private NginxOperationalSystemInfo nginxOperationalSystemInfo(Long id) {
 		Nginx nginx = nginx(id);
 		return nginxAgentClient.api(NginxAgentClientApis.operationalSystemInfo())
-					.withAuthorization(nginx.getAuthorizationKey())
+					.withAuthorizationKey(nginx.getAuthorizationKey())
 					.withEndpoint(nginx.getEndpoint())
 				.build();
 	}
@@ -91,7 +91,7 @@ public class DashboardController {
 	private NginxCommandLineInterface nginxCommandLineInterface(Long id) {
 		Nginx nginx = nginx(id);
 		return nginxAgentClient.api(NginxAgentClientApis.commandLineInterface())
-					.withAuthorization(nginx.getAuthorizationKey())
+					.withAuthorizationKey(nginx.getAuthorizationKey())
 					.withEndpoint(nginx.getEndpoint())
 				.build();
 	}

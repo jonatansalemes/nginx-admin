@@ -9,9 +9,10 @@
 	</html:block>
 
 	<html:block>
-		<html:form action="/sslCertificate/saveOrUpdate" multipart="true" label="{ssl.form}">
+		<html:form action="/sslCertificate/saveOrUpdate" multipart="true" 
+		   label="{ssl.form}" validation="/sslCertificate/validate">
 			<html:input name="id" type="hidden" value="${ sslCertificate.id }"></html:input>
-			
+			<html:input name="idNginx" type="hidden" value="${ nginx.id }"></html:input>
 			<html:input name="idResourceIdentifierCertificate" type="hidden"
 				value="${ virtualHost.resourceIdentifierCertificate.id }"></html:input>
 			<html:input name="idResourceIdentifierCertificatePrivateKey" type="hidden"
@@ -46,6 +47,6 @@
 	</html:block>
 
 	<html:block align="center">
-		<html:link url="/sslCertificate/list" label="{back}"></html:link>
+		<html:link url="/sslCertificate/list/${ nginx.id }" label="{back}"></html:link>
 	</html:block>
 </html:view>

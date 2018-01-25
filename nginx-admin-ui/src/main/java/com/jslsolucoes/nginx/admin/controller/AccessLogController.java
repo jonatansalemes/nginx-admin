@@ -2,6 +2,7 @@ package com.jslsolucoes.nginx.admin.controller;
 
 import javax.inject.Inject;
 
+import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.repository.AccessLogRepository;
 import com.jslsolucoes.vaptor4.misc.pagination.Paginator;
 
@@ -17,8 +18,9 @@ public class AccessLogController {
 	private AccessLogRepository accessLogRepository;
 	private Paginator paginator;
 
+	@Deprecated
 	public AccessLogController() {
-		this(null, null,null);
+		
 	}
 
 	@Inject
@@ -29,9 +31,10 @@ public class AccessLogController {
 	}
 
 	
-	public void list() {
-		this.result.include("totalResults",accessLogRepository.count());
-		this.result.include("accessLogList", accessLogRepository.listAll(paginator.start(), paginator.resultsPerPage()));
+	@Path("list/{idNginx}")
+	public void list(Long idNginx) {
+		this.result.include("totalResults",accessLogRepository.countFor(new Nginx(idNginx)));
+		this.result.include("accessLogList", accessLogRepository.listAllFor(new Nginx(idNginx),paginator.start(), paginator.resultsPerPage()));
 	}
 
 }

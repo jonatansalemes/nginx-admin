@@ -10,6 +10,7 @@ import com.jslsolucoes.nginx.admin.model.ResourceIdentifier;
 import com.jslsolucoes.nginx.admin.model.SslCertificate;
 import com.jslsolucoes.nginx.admin.repository.SslCertificateRepository;
 import com.jslsolucoes.nginx.admin.repository.impl.OperationResult;
+import com.jslsolucoes.tagria.lib.form.FormValidation;
 
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Path;
@@ -18,6 +19,7 @@ import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.observer.download.Download;
 import br.com.caelum.vraptor.observer.download.InputStreamDownload;
 import br.com.caelum.vraptor.observer.upload.UploadedFile;
+import br.com.caelum.vraptor.view.Results;
 
 @Controller
 @Path("sslCertificate")
@@ -39,11 +41,22 @@ public class SslCertificateController {
 	@Path("list/{idNginx}")
 	public void list(Long idNginx) {
 		this.result.include("sslCertificateList", sslCertificateRepository.listAllFor(new Nginx(idNginx)));
+		this.result.include("nginx", new Nginx(idNginx));
+	}
+
+	public void validate(Long id, String commonName, Long idResourceIdentifierCertificate,
+			Long idResourceIdentifierCertificatePrivateKey, UploadedFile certificateFile,
+			UploadedFile certificatePrivateKeyFile, Long idNginx) {
+		this.result.use(Results.json()).from(FormValidation.newBuilder()
+				.toUnordenedList(sslCertificateRepository.validateBeforeSaveOrUpdate(new SslCertificate(id, commonName,
+						new ResourceIdentifier(idResourceIdentifierCertificate),
+						new ResourceIdentifier(idResourceIdentifierCertificatePrivateKey), new Nginx(idNginx)))),
+				"errors").serialize();
 	}
 
 	@Path("form/{idNginx}")
 	public void form(Long idNginx) {
-		this.result.include("nginx",new Nginx(idNginx));
+		this.result.include("nginx", new Nginx(idNginx));
 	}
 
 	@Path("download/{hash}")
@@ -53,13 +66,13 @@ public class SslCertificateController {
 	}
 
 	@Path("edit/{idNginx}/{id}")
-	public void edit(Long idNginx,Long id) {
+	public void edit(Long idNginx, Long id) {
 		this.result.include("sslCertificate", sslCertificateRepository.load(new SslCertificate(id)));
 		this.result.forwardTo(this).form(idNginx);
 	}
 
 	@Path("delete/{idNginx}/{id}")
-	public void delete(Long idNginx,Long id) throws IOException {
+	public void delete(Long idNginx, Long id) throws IOException {
 		this.result.include("operation", sslCertificateRepository.deleteWithResource(new SslCertificate(id)));
 		this.result.redirectTo(this).list(idNginx);
 	}
@@ -67,13 +80,13 @@ public class SslCertificateController {
 	@Post
 	public void saveOrUpdate(Long id, String commonName, Long idResourceIdentifierCertificate,
 			Long idResourceIdentifierCertificatePrivateKey, UploadedFile certificateFile,
-			UploadedFile certificatePrivateKeyFile,Long idNginx) throws IOException {
+			UploadedFile certificatePrivateKeyFile, Long idNginx) throws IOException {
 		OperationResult operationResult = sslCertificateRepository.saveOrUpdate(
 				new SslCertificate(id, commonName, new ResourceIdentifier(idResourceIdentifierCertificate),
-						new ResourceIdentifier(idResourceIdentifierCertificatePrivateKey)),
+						new ResourceIdentifier(idResourceIdentifierCertificatePrivateKey), new Nginx(idNginx)),
 				certificateFile != null ? certificateFile.getFile() : null,
 				certificatePrivateKeyFile != null ? certificatePrivateKeyFile.getFile() : null);
 		this.result.include("operation", operationResult.getOperationType());
-		this.result.redirectTo(this).edit(idNginx,operationResult.getId());
+		this.result.redirectTo(this).edit(idNginx, operationResult.getId());
 	}
 }

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import com.jslsolucoes.nginx.admin.error.NginxAdminException;
+import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.model.VirtualHost;
 import com.jslsolucoes.nginx.admin.model.VirtualHostAlias;
 import com.jslsolucoes.nginx.admin.model.VirtualHostLocation;
@@ -12,7 +13,7 @@ import com.jslsolucoes.nginx.admin.repository.impl.OperationType;
 
 public interface VirtualHostRepository {
 
-	public List<VirtualHost> listAll();
+	public List<VirtualHost> listAllFor(Nginx nginx);
 
 	public OperationType deleteWithResource(VirtualHost virtualHost) throws IOException;
 
@@ -26,5 +27,5 @@ public interface VirtualHostRepository {
 
 	public VirtualHost hasEquals(VirtualHost virtualHost, List<VirtualHostAlias> aliases);
 
-	public List<VirtualHost> search(String term);
+	public List<VirtualHost> searchFor(Nginx nginx,String term);
 }

@@ -6,9 +6,12 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.google.gson.annotations.SerializedName;
@@ -28,6 +31,10 @@ public class AccessLog implements Serializable {
 	@Column(name = "remote_addr")
 	@SerializedName(value = "remote_addr")
 	private String remoteAddress;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_nginx")
+	private Nginx nginx;
 
 	@Column(name = "body_bytes_sent")
 	@SerializedName(value = "body_bytes_sent")
@@ -262,6 +269,14 @@ public class AccessLog implements Serializable {
 
 	public void setHttpXForwardedFor(String httpXForwardedFor) {
 		this.httpXForwardedFor = httpXForwardedFor;
+	}
+
+	public Nginx getNginx() {
+		return nginx;
+	}
+
+	public void setNginx(Nginx nginx) {
+		this.nginx = nginx;
 	}
 
 }

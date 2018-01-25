@@ -8,7 +8,7 @@ public class NginxOperationalSystemInfoBuilder extends DefaultNginxAgentClientAp
 
 	private ScheduledExecutorService scheduledExecutorService;
 	private String endpoint;
-	private String authorization;
+	private String authorizationKey;
 
 	private NginxOperationalSystemInfoBuilder() {
 
@@ -16,7 +16,7 @@ public class NginxOperationalSystemInfoBuilder extends DefaultNginxAgentClientAp
 
 	@Override
 	public NginxOperationalSystemInfo build() {
-		return new NginxOperationalSystemInfo(scheduledExecutorService, authorization, endpoint);
+		return new NginxOperationalSystemInfo(scheduledExecutorService, authorizationKey, endpoint);
 	}
 
 	public static NginxOperationalSystemInfoBuilder newBuilder() {
@@ -34,8 +34,8 @@ public class NginxOperationalSystemInfoBuilder extends DefaultNginxAgentClientAp
 		return this;
 	}
 
-	public NginxOperationalSystemInfoBuilder withAuthorization(String authorization) {
-		this.authorization = authorization;
+	public NginxOperationalSystemInfoBuilder withAuthorizationKey(String authorizationKey) {
+		this.authorizationKey = authorizationKey;
 		return this;
 	}
 

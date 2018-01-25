@@ -2,7 +2,9 @@ package com.jslsolucoes.nginx.admin.controller;
 
 import javax.inject.Inject;
 
+import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.repository.ErrorLogRepository;
+import com.jslsolucoes.vaptor4.misc.pagination.Paginator;
 
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Path;
@@ -14,19 +16,25 @@ public class ErrorLogController {
 
 	private Result result;
 	private ErrorLogRepository errorLogRepository;
+	private Paginator paginator;
 
+	@Deprecated
 	public ErrorLogController() {
-		this(null, null);
+		
 	}
 
 	@Inject
-	public ErrorLogController(Result result, ErrorLogRepository errorLogRepository) {
+	public ErrorLogController(Result result, ErrorLogRepository errorLogRepository,Paginator paginator) {
 		this.result = result;
 		this.errorLogRepository = errorLogRepository;
+		this.paginator = paginator;
 	}
 
-	public void list() {
-		this.result.include("errorLogContent",errorLogRepository.content());
+	@Path("list/{idNginx}")
+	public void list(Long idNginx) {
+		this.result.include("totalResults",errorLogRepository.countFor(new Nginx(idNginx)));
+		this.result.include("errorLogList", errorLogRepository.listAllFor(new Nginx(idNginx),paginator.start(), paginator.resultsPerPage()));
 	}
+
 
 }
