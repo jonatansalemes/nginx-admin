@@ -5,6 +5,7 @@ import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxConfigureBuilder;
 import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxOperationalSystemInfoBuilder;
 import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxPingBuilder;
 import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxServerInfoBuilder;
+import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxUpstreamBuilder;
 
 public class NginxAgentClientApis {
 
@@ -26,6 +27,10 @@ public class NginxAgentClientApis {
 	
 	public static Class<NginxConfigureBuilder> configure() {
 		return NginxConfigureBuilder.class;
+	}
+	
+	public static Class<NginxUpstreamBuilder> upstream() {
+		return NginxUpstreamBuilder.class;
 	}
 
 }

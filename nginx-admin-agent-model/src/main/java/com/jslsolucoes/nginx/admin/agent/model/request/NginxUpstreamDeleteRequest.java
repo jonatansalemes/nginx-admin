@@ -3,15 +3,12 @@ package com.jslsolucoes.nginx.admin.agent.model.request;
 public class NginxUpstreamDeleteRequest {
 
 	private String home;
-	private String uuid;
-	
 	public NginxUpstreamDeleteRequest() {
 		
 	}
 	
-	public NginxUpstreamDeleteRequest(String home,String uuid) {
+	public NginxUpstreamDeleteRequest(String home) {
 		this.home = home;
-		this.uuid = uuid;
 	}
 	
 	public String getHome() {
@@ -20,11 +17,4 @@ public class NginxUpstreamDeleteRequest {
 	public void setHome(String home) {
 		this.home = home;
 	}
-	public String getUuid() {
-		return uuid;
-	}
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-	}
-	
 }

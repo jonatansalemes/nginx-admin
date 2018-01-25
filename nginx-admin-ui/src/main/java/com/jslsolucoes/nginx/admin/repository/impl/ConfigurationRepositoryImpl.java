@@ -1,5 +1,8 @@
 package com.jslsolucoes.nginx.admin.repository.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -9,6 +12,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 
+import com.jslsolucoes.i18n.Messages;
 import com.jslsolucoes.nginx.admin.model.Configuration;
 import com.jslsolucoes.nginx.admin.model.Configuration_;
 import com.jslsolucoes.nginx.admin.model.Nginx;
@@ -41,6 +45,15 @@ public class ConfigurationRepositoryImpl extends RepositoryImpl<Configuration> i
 		} catch (NoResultException noResultException) {
 			return null;
 		}
+	}
+
+	@Override
+	public List<String> validateBeforeSaveOrUpdate(Configuration configuration) {
+		List<String> errors = new ArrayList<>();
+
+		//check permission and binary
+
+		return errors;
 	}
 
 }

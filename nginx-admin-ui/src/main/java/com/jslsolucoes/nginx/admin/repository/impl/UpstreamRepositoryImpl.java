@@ -19,7 +19,6 @@ import com.jslsolucoes.i18n.Messages;
 import com.jslsolucoes.nginx.admin.error.NginxAdminException;
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.model.Nginx_;
-import com.jslsolucoes.nginx.admin.model.Server_;
 import com.jslsolucoes.nginx.admin.model.Upstream;
 import com.jslsolucoes.nginx.admin.model.UpstreamServer;
 import com.jslsolucoes.nginx.admin.model.Upstream_;
@@ -32,7 +31,6 @@ import com.jslsolucoes.nginx.admin.repository.UpstreamServerRepository;
 public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements UpstreamRepository {
 
 	private UpstreamServerRepository upstreamServerRepository;
-	private NginxRepository nginxRepository;
 	private ResourceIdentifierRepository resourceIdentifierRepository;
 
 	@Deprecated
@@ -45,30 +43,18 @@ public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements 
 			NginxRepository nginxRepository, ResourceIdentifierRepository resourceIdentifierRepository) {
 		super(entityManager);
 		this.upstreamServerRepository = upstreamServerRepository;
-		this.nginxRepository = nginxRepository;
 		this.resourceIdentifierRepository = resourceIdentifierRepository;
 	}
 
 	@Override
 	public OperationResult saveOrUpdate(Upstream upstream, List<UpstreamServer> upstreamServers)
 			throws NginxAdminException {
-
 		if (upstream.getId() == null) {
 			upstream.setResourceIdentifier(resourceIdentifierRepository.create());
 		}
 		OperationResult operationResult = super.saveOrUpdate(upstream);
 		upstreamServerRepository.recreate(new Upstream(operationResult.getId()), upstreamServers);
-		flushAndClear();
-		configure(upstream);
 		return operationResult;
-	}
-
-	private void configure(Upstream upstream) throws NginxAdminException {
-		try {
-			
-		} catch (Exception e) {
-			throw new NginxAdminException(e);
-		}
 	}
 	
 	@Override

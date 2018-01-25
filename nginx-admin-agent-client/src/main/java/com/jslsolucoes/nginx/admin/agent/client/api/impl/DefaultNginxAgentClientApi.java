@@ -11,7 +11,7 @@ import com.jslsolucoes.nginx.admin.agent.model.response.NginxResponse;
 public class DefaultNginxAgentClientApi implements NginxAgentClientApi {
 
 	protected <T extends NginxResponse> NginxResponse responseFor(Response response,Class<T> clazz) {
-		if (response.getStatusInfo().equals(Status.OK)) {
+		if (response.getStatusInfo().equals(Status.OK) || response.getStatusInfo().equals(Status.CREATED)) {
 			return response.readEntity(clazz);
 		} else if (response.getStatusInfo().equals(Status.FORBIDDEN)) {
 			return response.readEntity(NginxAuthenticationFailResponse.class);

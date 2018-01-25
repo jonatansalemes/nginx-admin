@@ -123,7 +123,7 @@ public class ImportRepositoryImpl implements ImportRepository {
 			if (upstreamRepository.hasEquals(new Upstream(upstreamDirective.getName())) == null) {
 				upstreamRepository.saveOrUpdate(
 						new Upstream(upstreamDirective.getName(),
-								strategyRepository.findByName(upstreamDirective.getStrategy())),
+								strategyRepository.searchFor(upstreamDirective.getStrategy())),
 						Lists.transform(upstreamDirective.getServers(), upstreamDirectiveServer -> new UpstreamServer(
 								serverRepository.findByIp(upstreamDirectiveServer.getIp()),
 								upstreamDirectiveServer.getPort() == null ? 80 : upstreamDirectiveServer.getPort())));

@@ -56,20 +56,15 @@ public class FileObject {
 		this.content = content;
 	}
 	
+	public String getDecoded() {
+		return getDecoded("UTF-8");
+	}
+	
 	public String getDecoded(String charset) {
 		try {
-			return String.valueOf(Base64.getDecoder().decode(content.getBytes(charset)));
+			return new String(Base64.getDecoder().decode(content.getBytes(charset)));
 		} catch (UnsupportedEncodingException e) {
 			throw new RuntimeException(e);
 		}
 	}
-
-	public void encode(String content,String charset) {
-		try {
-			this.content = Base64.getEncoder().encodeToString(content.getBytes(charset));
-		} catch (UnsupportedEncodingException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
 }

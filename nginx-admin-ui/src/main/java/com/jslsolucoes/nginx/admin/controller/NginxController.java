@@ -39,7 +39,18 @@ public class NginxController {
 	public void list() {
 		this.result.include("nginxList", nginxRepository.listAll());
 	}
-
+	
+	@Path({ "tabs" , "tabs/{id}"})
+	public void tabs(Long id) {
+		if(id != null) {
+			this.result.include("nginx",new Nginx(id));
+		}
+	}
+	
+	public void reload(Long id) {
+		this.result.include("id",id);
+	}
+	
 	public void form() {
 		
 	}
@@ -79,7 +90,7 @@ public class NginxController {
 			throws NginxAdminException {
 		OperationResult operationResult = nginxRepository.saveOrUpdate(new Nginx(id,name, endpoint,authorizationKey));
 		this.result.include("operation", operationResult.getOperationType());
-		this.result.redirectTo(this).edit(operationResult.getId());
+		this.result.redirectTo(this).reload(operationResult.getId());
 	}
 
 }

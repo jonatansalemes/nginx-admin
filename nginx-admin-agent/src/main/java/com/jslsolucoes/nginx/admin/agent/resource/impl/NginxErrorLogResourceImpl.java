@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import com.jslsolucoes.file.system.FileSystemBuilder;
 import com.jslsolucoes.nginx.admin.agent.model.FileObject;
+import com.jslsolucoes.nginx.admin.agent.model.FileObjectBuilder;
 
 @RequestScoped
 public class NginxErrorLogResourceImpl {
@@ -42,12 +43,14 @@ public class NginxErrorLogResourceImpl {
 									.withDestination(file)
 									.withCharset("UTF-8")
 									.execute(content -> {
-											FileObject fileObject = new FileObject();
-											fileObject.setLastModified(new Date(file.lastModified()));
-											fileObject.setFileName(file.getName());
-											fileObject.setSize(file.length());
-											fileObject.encode(content,"UTF-8");
-											files.add(fileObject);
+										FileObject fileObject = FileObjectBuilder
+												.newBuilder()
+												.from(file)
+													.withCharset("UTF-8")
+													.withContent(content)
+													.withEncoded(true)
+												.build();
+										files.add(fileObject);
 									})
 						.end()
 						.delete()

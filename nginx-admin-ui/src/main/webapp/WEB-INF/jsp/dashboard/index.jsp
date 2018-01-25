@@ -1,6 +1,18 @@
 <%@include file="../app/taglibs.jsp"%>
 <html:view title="{title}">
 
+	<html:block rendered="${ nginxCommandLineInterfaceResponse != null }">
+		
+		<html:alert state="danger" rendered="${ nginxCommandLineInterfaceResponse.error() }">
+			${ nginxCommandLineInterfaceResponse.stackTrace }
+		</html:alert>
+		
+		<html:alert state="${ nginxCommandLineInterfaceResponse.success ? 'success' : 'danger' }" rendered="${ nginxCommandLineInterfaceResponse.success() }">
+			${ nginxCommandLineInterfaceResponse.output }
+		</html:alert>
+		
+	</html:block>
+
 	<html:block>
 		<html:card>
 			<html:cardBody>
@@ -14,25 +26,31 @@
 					<html:panelBody>
 						<html:buttonGroup spaced="true">
 
-							<html:button url="/admin/testConfig" state="success"
+							<html:button url="/dashboard/testConfiguration/${ nginx.id }" state="success"
 								label="{test.config}"></html:button>
 
-							<html:button url="/admin/start" state="success" label="{start}"></html:button>
+							<html:button url="/dashboard/start/${ nginx.id }" state="success" label="{start}"></html:button>
 
-							<html:button url="/admin/status" state="info" label="{status}"></html:button>
+							<html:button url="/dashboard/status/${ nginx.id }" state="info" label="{status}"></html:button>
+
+
+							<html:button id="killAll" state="danger" label="{killAll}"></html:button>
+							<html:confirm url="/dashboard/killAll/${ nginx.id }" attachTo="killAll"
+								label="{killAll.confirm}">
+							</html:confirm>
 
 							<html:button id="stop" state="danger" label="{stop}"></html:button>
-							<html:confirm url="/admin/stop" attachTo="stop"
+							<html:confirm url="/dashboard/stop/${ nginx.id }" attachTo="stop"
 								label="{stop.confirm}">
 							</html:confirm>
 
 							<html:button id="restart" state="danger" label="{restart}"></html:button>
-							<html:confirm url="/admin/restart" attachTo="restart"
+							<html:confirm url="/dashboard/restart/${ nginx.id }" attachTo="restart"
 								label="{restart.confirm}">
 							</html:confirm>
 
 							<html:button id="reload" state="danger" label="{reload}"></html:button>
-							<html:confirm url="/admin/reload" attachTo="reload"
+							<html:confirm url="/dashboard/reload/${ nginx.id }" attachTo="reload"
 								label="{reload.confirm}">
 							</html:confirm>
 
@@ -53,16 +71,21 @@
 						<html:panel>
 							<html:panelHead label="{so.details}"></html:panelHead>
 							<html:panelBody>
-								<html:listGroup rendered="${ nginxOperationalSystemDescriptionResponse.success() }">
+								<html:listGroup rendered="${ nginxOperationalSystemInfoResponse.success() }">
 									<html:listGroupItem>
-										<fmt:message key="so.arch" /> : ${ nginxOperationalSystemDescriptionResponse.architecture }</html:listGroupItem>
+										<fmt:message key="so.arch" /> : ${ nginxOperationalSystemInfoResponse.architecture }</html:listGroupItem>
 									<html:listGroupItem>
-										<fmt:message key="so.name" /> : ${ nginxOperationalSystemDescriptionResponse.name }</html:listGroupItem>
+										<fmt:message key="so.name" /> : ${ nginxOperationalSystemInfoResponse.name }</html:listGroupItem>
 									<html:listGroupItem>
-										<fmt:message key="so.version" /> : ${ nginxOperationalSystemDescriptionResponse.version }</html:listGroupItem>
-									<html:listGroupItem rendered="${ !empty(nginxOperationalSystemDescriptionResponse.distribution) }">
-										<fmt:message key="so.distribution" /> : ${ nginxOperationalSystemDescriptionResponse.distribution }</html:listGroupItem>
+										<fmt:message key="so.version" /> : ${ nginxOperationalSystemInfoResponse.version }</html:listGroupItem>
+									<html:listGroupItem rendered="${ !empty(nginxOperationalSystemInfoResponse.distribution) }">
+										<fmt:message key="so.distribution" /> : ${ nginxOperationalSystemInfoResponse.distribution }</html:listGroupItem>
 								</html:listGroup>
+								
+								<html:alert state="danger" rendered="${ nginxOperationalSystemInfoResponse.error() }">
+									${ nginxOperationalSystemInfoResponse.stackTrace }
+								</html:alert>
+								
 							</html:panelBody>
 						</html:panel>
 					</html:cardBody>
@@ -108,12 +131,16 @@
 						<html:panel>
 							<html:panelHead label="{nginx.details}"></html:panelHead>
 							<html:panelBody>
-								<html:listGroup>
-									<html:listGroupItem><fmt:message key="nginx.version"></fmt:message> : ${ nginxDetail.version }</html:listGroupItem>
-									<html:listGroupItem><fmt:message key="nginx.address"></fmt:message> : ${ nginxDetail.address }</html:listGroupItem>
-									<html:listGroupItem><fmt:message key="nginx.pid"></fmt:message> :     ${ nginxDetail.pid }</html:listGroupItem>
-									<html:listGroupItem><fmt:message key="nginx.uptime"></fmt:message> :  ${ nginxDetail.uptime } days</html:listGroupItem>
+								<html:listGroup rendered="${ nginxServerInfoResponse.success() }">
+									<html:listGroupItem><fmt:message key="nginx.version"></fmt:message> : ${ nginxServerInfoResponse.version }</html:listGroupItem>
+									<html:listGroupItem><fmt:message key="nginx.address"></fmt:message> : ${ nginxServerInfoResponse.address }</html:listGroupItem>
+									<html:listGroupItem><fmt:message key="nginx.pid"></fmt:message> :     ${ nginxServerInfoResponse.pid }</html:listGroupItem>
+									<html:listGroupItem><fmt:message key="nginx.uptime"></fmt:message> :  ${ nginxServerInfoResponse.uptime } days</html:listGroupItem>
 								</html:listGroup>
+								
+								<html:alert state="danger" rendered="${ nginxOperationalSystemInfoResponse.error() }">
+									${ nginxOperationalSystemInfoResponse.stackTrace }
+								</html:alert>
 							</html:panelBody>
 						</html:panel>
 					</html:cardBody>

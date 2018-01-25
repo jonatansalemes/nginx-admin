@@ -86,6 +86,7 @@ public class UpstreamController {
 	@Post
 	public void saveOrUpdate(Long id, String name, Long idStrategy, List<Long> servers, List<Integer> ports,
 			Long idResourceIdentifier,Long idNginx) throws NginxAdminException {
+		
 		OperationResult operationResult = upstreamRepository.saveOrUpdate(
 				new Upstream(id, name, new Strategy(idStrategy), new ResourceIdentifier(idResourceIdentifier),new Nginx(idNginx)),
 				convert(servers, ports));
@@ -98,4 +99,5 @@ public class UpstreamController {
 		return Lists.transform(servers,
 				server -> new UpstreamServer(new Server(server), ports.get(atomicInteger.getAndIncrement())));
 	}
+
 }

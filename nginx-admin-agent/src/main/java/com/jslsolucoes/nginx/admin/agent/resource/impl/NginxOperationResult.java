@@ -15,6 +15,11 @@ public class NginxOperationResult {
 	public NginxOperationResult(NginxOperationResultType nginxOperationResultType) {
 		this.nginxOperationResultType = nginxOperationResultType;
 	}
+	
+	public NginxOperationResult(NginxOperationResultType nginxOperationResultType,String output) {
+		this.nginxOperationResultType = nginxOperationResultType;
+		this.output = output;
+	}
 
 	public String getOutput() {
 		return output;

@@ -7,4 +7,6 @@ public interface ResourceIdentifierRepository {
 	public ResourceIdentifier create();
 
 	public void delete(String hash);
+
+	public ResourceIdentifier load(ResourceIdentifier resourceIdentifier);
 }

@@ -37,6 +37,19 @@ public class Configuration implements Serializable {
 	@Column(name = "max_post_size")
 	private Integer maxPostSize;
 	
+	public Configuration() {
+		
+	}
+	
+	public Configuration(Long id,String bin,String home,Integer gzip,Integer maxPostSize,Nginx nginx) {
+		this.id = id;
+		this.bin = bin;
+		this.home = home;
+		this.gzip = gzip;
+		this.maxPostSize = maxPostSize;
+		this.nginx = nginx;
+	}
+	
 	public Long getId() {
 		return id;
 	}

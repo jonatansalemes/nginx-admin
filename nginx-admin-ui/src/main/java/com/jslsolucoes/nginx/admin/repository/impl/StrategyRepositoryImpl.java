@@ -26,7 +26,7 @@ public class StrategyRepositoryImpl extends RepositoryImpl<Strategy> implements 
 	}
 
 	@Override
-	public Strategy findByName(String name) {
+	public Strategy searchFor(String name) {
 		try {
 			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 			CriteriaQuery<Strategy> criteriaQuery = criteriaBuilder.createQuery(Strategy.class);
