@@ -1,5 +1,8 @@
 package com.jslsolucoes.nginx.admin.nginx.parser;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -7,16 +10,18 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.jslsolucoes.nginx.admin.nginx.parser.directive.Directive;
 import com.jslsolucoes.nginx.admin.nginx.parser.directive.LocationDirective;
+import com.jslsolucoes.nginx.admin.nginx.parser.directive.SslDirective;
 import com.jslsolucoes.nginx.admin.nginx.parser.directive.VirtualHostDirective;
 
 public class ServerParser implements Parser {
 
 	private String fileContent;
-
+	
 	public ServerParser(String fileContent) {
 		this.fileContent = fileContent;
 	}
@@ -40,18 +45,29 @@ public class ServerParser implements Parser {
 
 			Matcher sslCertificate = Pattern.compile("ssl_certificate(\\s{1,})(.*?);").matcher(block);
 			if (sslCertificate.find()) {
-				virtualHost.setSslCertificate(sslCertificate.group(2));
+				virtualHost.setSslCertificate(ssl(sslCertificate.group(2)));
 			}
 
 			Matcher sslCertificateKey = Pattern.compile("ssl_certificate_key(\\s{1,})(.*?);").matcher(block);
 			if (sslCertificateKey.find()) {
-				virtualHost.setSslCertificateKey(sslCertificateKey.group(2));
+				virtualHost.setSslCertificateKey(ssl(sslCertificateKey.group(2)));
 			}
 
 			virtualHost.setLocations(locations(block));
 			virtualHosts.add(virtualHost);
 		}
 		return virtualHosts;
+	}
+
+	private SslDirective ssl(String value) {
+		try {
+			SslDirective sslDirective = new SslDirective();
+			sslDirective.setCommonName(Paths.get(value).getFileName().toString());
+			sslDirective.setContent(FileUtils.readFileToString(new File(value),"UTF-8"));
+			return sslDirective;
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	private List<LocationDirective> locations(String block) {

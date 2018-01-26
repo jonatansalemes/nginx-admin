@@ -6,8 +6,8 @@ public class VirtualHostDirective implements Directive {
 
 	private Integer port;
 	private List<String> aliases;
-	private String sslCertificate;
-	private String sslCertificateKey;
+	private SslDirective sslCertificate;
+	private SslDirective sslCertificateKey;
 	private List<LocationDirective> locations;
 
 	public Integer getPort() {
@@ -26,22 +26,6 @@ public class VirtualHostDirective implements Directive {
 		this.aliases = aliases;
 	}
 
-	public String getSslCertificate() {
-		return sslCertificate;
-	}
-
-	public void setSslCertificate(String sslCertificate) {
-		this.sslCertificate = sslCertificate;
-	}
-
-	public String getSslCertificateKey() {
-		return sslCertificateKey;
-	}
-
-	public void setSslCertificateKey(String sslCertificateKey) {
-		this.sslCertificateKey = sslCertificateKey;
-	}
-
 	public List<LocationDirective> getLocations() {
 		return locations;
 	}
@@ -53,6 +37,22 @@ public class VirtualHostDirective implements Directive {
 	@Override
 	public DirectiveType type() {
 		return DirectiveType.VIRTUAL_HOST;
+	}
+
+	public SslDirective getSslCertificate() {
+		return sslCertificate;
+	}
+
+	public void setSslCertificate(SslDirective sslCertificate) {
+		this.sslCertificate = sslCertificate;
+	}
+
+	public SslDirective getSslCertificateKey() {
+		return sslCertificateKey;
+	}
+
+	public void setSslCertificateKey(SslDirective sslCertificateKey) {
+		this.sslCertificateKey = sslCertificateKey;
 	}
 
 }

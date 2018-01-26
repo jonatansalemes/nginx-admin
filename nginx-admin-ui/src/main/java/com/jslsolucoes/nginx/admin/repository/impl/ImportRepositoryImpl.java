@@ -97,7 +97,7 @@ public class ImportRepositoryImpl implements ImportRepository {
 			if (!CollectionUtils.isEmpty(aliases) && !CollectionUtils.isEmpty(locations)
 					&& virtualHostRepository.hasEquals(new VirtualHost(), aliases) == null) {
 				SslCertificate sslCertificate = null;
-				if (!StringUtils.isEmpty(virtualHostDirective.getSslCertificate())) {
+				if (virtualHostDirective.getSslCertificate() != null) {
 						OperationResult operationResult = sslCertificateRepository.saveOrUpdate(
 								new SslCertificate(UUID.randomUUID().toString()));
 						sslCertificate = new SslCertificate(operationResult.getId());
