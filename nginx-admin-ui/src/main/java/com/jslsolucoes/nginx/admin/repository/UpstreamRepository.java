@@ -20,8 +20,7 @@ public interface UpstreamRepository {
 
 	public List<String> validateBeforeSaveOrUpdate(Upstream upstream, List<UpstreamServer> upstreamServers);
 
-	public Upstream findByName(String name);
+	public Upstream searchFor(String name,Nginx nginx);
 
-	public Upstream hasEquals(Upstream upstream);
-
+	
 }

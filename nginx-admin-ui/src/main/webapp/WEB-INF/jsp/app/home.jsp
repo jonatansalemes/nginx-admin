@@ -17,7 +17,7 @@
 			<html:menuButton icon="briefcase" align="right" rendered="${ nginx != null }">
 				<html:menuItem url="#" label="${ nginx.name } (${ nginx.endpoint })" icon="stop"></html:menuItem>
 				<html:menuSeparator></html:menuSeparator>
-				<html:menuItem target="content" url="/import/form/${ nginx.id }" icon="copy" label="{import.nginx.conf}"></html:menuItem>
+				<!-- <html:menuItem target="content" url="/import/form/${ nginx.id }" icon="copy" label="{import.nginx.conf}"></html:menuItem> -->
 				<html:menuItem target="content" url="/report/search/${ nginx.id }" icon="object-align-bottom" label="{reports}" ></html:menuItem>
 				<html:menuItem target="content" url="/sslCertificate/list/${ nginx.id }" icon="lock" label="{ssl.certificates}" ></html:menuItem>
 				<html:menuItem target="content" url="/server/list/${ nginx.id }" icon="list" label="{servers}" ></html:menuItem>

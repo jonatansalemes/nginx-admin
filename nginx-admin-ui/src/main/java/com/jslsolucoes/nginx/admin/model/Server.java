@@ -47,8 +47,9 @@ public class Server implements Serializable {
 		this.nginx = nginx;
 	}
 
-	public Server(String ip) {
+	public Server(String ip,Nginx nginx) {
 		this.ip = ip;
+		this.nginx = nginx;
 	}
 
 	public String getIp() {

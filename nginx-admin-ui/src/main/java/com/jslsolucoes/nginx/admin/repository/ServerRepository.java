@@ -19,9 +19,7 @@ public interface ServerRepository {
 
 	public List<String> validateBeforeSaveOrUpdate(Server server);
 
-	public Server hasEquals(Server server);
-
 	public OperationStatusType insert(Server server);
 
-	public Server findByIp(String ip);
+	public Server searchFor(String ip,Nginx nginx);
 }

@@ -89,8 +89,7 @@ public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements 
 		return OperationStatusType.DELETE;
 	}
 
-	@Override
-	public Upstream hasEquals(Upstream upstream) {
+	private Upstream hasEquals(Upstream upstream) {
 		try {
 			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 			CriteriaQuery<Upstream> criteriaQuery = criteriaBuilder.createQuery(Upstream.class);
@@ -110,13 +109,17 @@ public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements 
 	}
 
 	@Override
-	public Upstream findByName(String name) {
+	public Upstream searchFor(String name,Nginx nginx) {
 		try {
 			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 			CriteriaQuery<Upstream> criteriaQuery = criteriaBuilder.createQuery(Upstream.class);
 			Root<Upstream> root = criteriaQuery.from(Upstream.class);	
 			criteriaQuery.where(
-					criteriaBuilder.equal(root.get(Upstream_.name), name)
+					criteriaBuilder.and(
+							criteriaBuilder.equal(root.get(Upstream_.name), name),
+							criteriaBuilder.equal(root.join(Upstream_.nginx, JoinType.INNER).get(Nginx_.id),
+									nginx.getId())
+					)
 			);
 			return entityManager.createQuery(criteriaQuery).getSingleResult();
 		} catch (NoResultException noResultException) {

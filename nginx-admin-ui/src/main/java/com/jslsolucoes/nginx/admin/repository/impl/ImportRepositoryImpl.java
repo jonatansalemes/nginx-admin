@@ -9,6 +9,8 @@ import javax.inject.Inject;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
 import com.jslsolucoes.nginx.admin.agent.NginxAgentRunner;
@@ -43,6 +45,7 @@ public class ImportRepositoryImpl implements ImportRepository {
 	private VirtualHostRepository virtualHostRepository;
 	private SslCertificateRepository sslCertificateRepository;
 	private NginxAgentRunner nginxAgentRunner;
+	private static Logger logger = LoggerFactory.getLogger(ImportRepositoryImpl.class);
 
 	@Deprecated
 	public ImportRepositoryImpl() {
@@ -67,12 +70,12 @@ public class ImportRepositoryImpl implements ImportRepository {
 		if(nginxResponse.success()){
 			NginxImportConfResponse nginxImportConfResponse = (NginxImportConfResponse) nginxResponse;
 			List<Directive> directives = nginxImportConfResponse.getDirectives();
-			servers(directives);
-			upstreams(directives);
-			virtualHosts(directives);
-		} else {
+			servers(directives,nginx);
+			upstreams(directives,nginx);
+			virtualHosts(directives,nginx);
+		} else if(nginxResponse.error()){
 			NginxExceptionResponse nginxExceptionResponse = (NginxExceptionResponse) nginxResponse;
-			System.out.println(nginxExceptionResponse.getStackTrace());
+			logger.error(nginxExceptionResponse.getStackTrace());
 		}
 	}
 
@@ -81,7 +84,7 @@ public class ImportRepositoryImpl implements ImportRepository {
 				.collect(Collectors.toList());
 	}
 
-	private void virtualHosts(List<Directive> directives) {
+	private void virtualHosts(List<Directive> directives,Nginx nginx) {
 		for (Directive directive : filter(directives, DirectiveType.VIRTUAL_HOST)) {
 			VirtualHostDirective virtualHostDirective = (VirtualHostDirective) directive;
 
@@ -91,7 +94,7 @@ public class ImportRepositoryImpl implements ImportRepository {
 			List<VirtualHostLocation> locations = virtualHostDirective.getLocations().stream()
 					.filter(location -> !StringUtils.isEmpty(location.getUpstream()))
 					.map(location -> new VirtualHostLocation(location.getPath(),
-							upstreamRepository.findByName(location.getUpstream())))
+							upstreamRepository.searchFor(location.getUpstream(),nginx)))
 					.collect(Collectors.toList());
 
 			if (!CollectionUtils.isEmpty(aliases) && !CollectionUtils.isEmpty(locations)
@@ -105,30 +108,35 @@ public class ImportRepositoryImpl implements ImportRepository {
 				virtualHostRepository.saveOrUpdate(
 						new VirtualHost(virtualHostDirective.getPort() == 80 ? 0 : 1, sslCertificate), aliases,
 						locations);
+				//create ssl on current nginx
+				
 			}
+			
+			//create virtual host on current nginx
 		}
 	}
 
-	private void upstreams(List<Directive> directives) {
+	private void upstreams(List<Directive> directives,Nginx nginx) {
 		for (Directive directive : filter(directives, DirectiveType.UPSTREAM)) {
 			UpstreamDirective upstreamDirective = (UpstreamDirective) directive;
-			if (upstreamRepository.hasEquals(new Upstream(upstreamDirective.getName())) == null) {
+			if (upstreamRepository.searchFor(upstreamDirective.getName(),nginx) == null) {
 				upstreamRepository.saveOrUpdate(
 						new Upstream(upstreamDirective.getName(),
-								strategyRepository.searchFor(upstreamDirective.getStrategy())),
+								strategyRepository.searchFor(upstreamDirective.getStrategy()),nginx),
 						Lists.transform(upstreamDirective.getServers(), upstreamDirectiveServer -> new UpstreamServer(
-								serverRepository.findByIp(upstreamDirectiveServer.getIp()),
+								serverRepository.searchFor(upstreamDirectiveServer.getIp(),nginx),
 								upstreamDirectiveServer.getPort() == null ? 80 : upstreamDirectiveServer.getPort())));
+				//create upstream on current nginx
 			}
 		}
 	}
 
-	private void servers(List<Directive> directives) {
+	private void servers(List<Directive> directives,Nginx nginx) {
 		directives.stream().filter(directive -> directive.type().equals(DirectiveType.UPSTREAM)).forEach(directive -> {
 			UpstreamDirective upstreamDirective = (UpstreamDirective) directive;
 			upstreamDirective.getServers().stream().forEach(server -> {
-				if (serverRepository.hasEquals(new Server(server.getIp())) == null) {
-					serverRepository.insert(new Server(server.getIp()));
+				if (serverRepository.searchFor(server.getIp(),nginx) == null) {
+					serverRepository.insert(new Server(server.getIp(),nginx));
 				}
 			});
 		});

@@ -61,13 +61,10 @@ public class Upstream implements Serializable {
 		this.id = id;
 	}
 
-	public Upstream(String name, Strategy strategy) {
+	public Upstream(String name, Strategy strategy,Nginx nginx) {
 		this.name = name;
 		this.strategy = strategy;
-	}
-
-	public Upstream(String name) {
-		this.name = name;
+		this.nginx = nginx;
 	}
 
 	public Long getId() {

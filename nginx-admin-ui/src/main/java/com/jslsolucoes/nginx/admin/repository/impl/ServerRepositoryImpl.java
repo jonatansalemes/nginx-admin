@@ -44,8 +44,7 @@ public class ServerRepositoryImpl extends RepositoryImpl<Server> implements Serv
 		return errors;
 	}
 
-	@Override
-	public Server hasEquals(Server server) {
+	private Server hasEquals(Server server) {
 		try {
 			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 			CriteriaQuery<Server> criteriaQuery = criteriaBuilder.createQuery(Server.class);
@@ -65,12 +64,18 @@ public class ServerRepositoryImpl extends RepositoryImpl<Server> implements Serv
 	}
 
 	@Override
-	public Server findByIp(String ip) {
+	public Server searchFor(String ip,Nginx nginx) {
 		try {
 			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 			CriteriaQuery<Server> criteriaQuery = criteriaBuilder.createQuery(Server.class);
 			Root<Server> root = criteriaQuery.from(Server.class);
-			criteriaQuery.where(criteriaBuilder.equal(root.get(Server_.ip), ip));
+			criteriaQuery.where(
+					criteriaBuilder.and(
+							criteriaBuilder.equal(root.get(Server_.ip), ip),
+							criteriaBuilder.equal(root.join(Server_.nginx, JoinType.INNER).get(Nginx_.id),
+									nginx.getId())
+					)
+			);
 			return entityManager.createQuery(criteriaQuery).getSingleResult();
 		} catch (NoResultException noResultException) {
 			return null;
