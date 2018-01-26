@@ -1,8 +1,10 @@
 package com.jslsolucoes.nginx.admin.agent.resource;
 
 import javax.inject.Inject;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
@@ -12,7 +14,6 @@ import javax.ws.rs.core.Response;
 import com.jslsolucoes.nginx.admin.agent.auth.AuthHandler;
 import com.jslsolucoes.nginx.admin.agent.error.ErrorHandler;
 import com.jslsolucoes.nginx.admin.agent.model.request.NginxVirtualHostCreateRequest;
-import com.jslsolucoes.nginx.admin.agent.model.request.NginxVirtualHostDeleteRequest;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxVirtualHostCreateResponse;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxVirtualHostDeleteResponse;
 import com.jslsolucoes.nginx.admin.agent.resource.impl.NginxOperationResult;
@@ -24,22 +25,31 @@ import com.jslsolucoes.nginx.admin.agent.resource.impl.NginxVirtualHostResourceI
 @Produces(MediaType.APPLICATION_JSON)
 public class NginxVirtualHostResource {
 
-	@Inject
+	
 	private NginxVirtualHostResourceImpl nginxVirtualHostResourceImpl;
 	
+	@Deprecated
+	public NginxVirtualHostResource() {
+		
+	}
+	
+	@Inject
+	public NginxVirtualHostResource(NginxVirtualHostResourceImpl nginxVirtualHostResourceImpl) {
+		this.nginxVirtualHostResourceImpl = nginxVirtualHostResourceImpl;
+	}
+	
 	@POST
-	@Path("create")
 	public void create(NginxVirtualHostCreateRequest nginxVirtualHostCreateRequest, @Suspended AsyncResponse asyncResponse) {
-		NginxOperationResult nginxOperationResult = nginxVirtualHostResourceImpl.create(nginxVirtualHostCreateRequest.getHome(), nginxVirtualHostCreateRequest.getUuid(), nginxVirtualHostCreateRequest.getHttps(), nginxVirtualHostCreateRequest.getCertificateUuid(), nginxVirtualHostCreateRequest.getCertificatePrivateKeyUuid(), nginxVirtualHostCreateRequest.getAliases(), nginxVirtualHostCreateRequest.getLocations());
+		NginxOperationResult nginxOperationResult = nginxVirtualHostResourceImpl.create(nginxVirtualHostCreateRequest.getUuid(), nginxVirtualHostCreateRequest.getHttps(), nginxVirtualHostCreateRequest.getCertificateUuid(), nginxVirtualHostCreateRequest.getCertificatePrivateKeyUuid(), nginxVirtualHostCreateRequest.getAliases(), nginxVirtualHostCreateRequest.getLocations());
 		asyncResponse.resume(Response
 				.ok(new NginxVirtualHostCreateResponse(nginxOperationResult.getOutput(), nginxOperationResult.isSuccess()))
 				.build());
 	}
 	
-	@POST
-	@Path("delete")
-	public void delete(NginxVirtualHostDeleteRequest nginxVirtualHostDeleteRequest, @Suspended AsyncResponse asyncResponse) {
-		NginxOperationResult nginxOperationResult = nginxVirtualHostResourceImpl.delete(nginxVirtualHostDeleteRequest.getHome(), nginxVirtualHostDeleteRequest.getUuid());
+	@DELETE
+	@Path("{uuid}")
+	public void delete(@PathParam("uuid") String uuid,@Suspended AsyncResponse asyncResponse) {
+		NginxOperationResult nginxOperationResult = nginxVirtualHostResourceImpl.delete(uuid);
 		asyncResponse.resume(Response
 				.ok(new NginxVirtualHostDeleteResponse(nginxOperationResult.getOutput(), nginxOperationResult.isSuccess()))
 				.build());

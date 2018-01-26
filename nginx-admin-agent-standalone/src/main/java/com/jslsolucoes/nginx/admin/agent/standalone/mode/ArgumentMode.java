@@ -1,4 +1,4 @@
-package com.jslsolucoes.nginx.admin.standalone.mode;
+package com.jslsolucoes.nginx.admin.agent.standalone.mode;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;

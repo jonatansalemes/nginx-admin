@@ -29,7 +29,7 @@ public class NginxOperationalSystemInfo extends DefaultNginxAgentClientApi imple
 		return CompletableFuture.supplyAsync(() -> {
 			try (RestClient restClient = RestClient.build()) {
 				WebTarget webTarget = restClient.target(endpoint);
-				Response response = webTarget.path("/admin/operationalSystemInfo").request()
+				Response response = webTarget.path("admin").path("os").request()
 						.header(HttpHeader.AUTHORIZATION, authorizationKey).get();
 				return responseFor(response, NginxOperationalSystemInfoResponse.class);
 			} catch (Exception e) {

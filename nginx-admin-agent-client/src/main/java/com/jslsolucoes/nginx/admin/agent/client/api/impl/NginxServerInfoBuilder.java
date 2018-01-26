@@ -7,8 +7,6 @@ import com.jslsolucoes.nginx.admin.agent.client.api.NginxAgentClientApiBuilder;
 public class NginxServerInfoBuilder implements NginxAgentClientApiBuilder {
 
 	private ScheduledExecutorService scheduledExecutorService;
-	private String bin;
-	private String home;
 	private String endpoint;
 	private String authorizationKey;
 
@@ -18,7 +16,7 @@ public class NginxServerInfoBuilder implements NginxAgentClientApiBuilder {
 
 	@Override
 	public NginxServerInfo build() {
-		return new NginxServerInfo(scheduledExecutorService, endpoint, bin, home, authorizationKey);
+		return new NginxServerInfo(scheduledExecutorService, endpoint, authorizationKey);
 	}
 
 	public static NginxServerInfoBuilder newBuilder() {
@@ -28,16 +26,6 @@ public class NginxServerInfoBuilder implements NginxAgentClientApiBuilder {
 	public NginxServerInfoBuilder withScheduledExecutorService(
 			ScheduledExecutorService scheduledExecutorService) {
 		this.scheduledExecutorService = scheduledExecutorService;
-		return this;
-	}
-
-	public NginxServerInfoBuilder withBin(String bin) {
-		this.bin = bin;
-		return this;
-	}
-
-	public NginxServerInfoBuilder withHome(String home) {
-		this.home = home;
 		return this;
 	}
 

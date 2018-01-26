@@ -9,32 +9,41 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 import org.apache.commons.io.filefilter.NameFileFilter;
 import org.apache.commons.io.filefilter.PrefixFileFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.jslsolucoes.file.system.FileSystemBuilder;
+import com.jslsolucoes.nginx.admin.agent.config.Configuration;
 import com.jslsolucoes.nginx.admin.agent.model.FileObject;
 import com.jslsolucoes.nginx.admin.agent.model.FileObjectBuilder;
-import com.jslsolucoes.file.system.FileSystemBuilder;
 
 @RequestScoped
 public class NginxAccessLogResourceImpl {
 	
 	private Logger logger = LoggerFactory.getLogger(NginxAccessLogResourceImpl.class);
+	private Configuration configuration;
 
+	@Deprecated
 	public NginxAccessLogResourceImpl() {
 
 	}
 	
-	public List<FileObject> collect(String nginxHome) {
-		File logFolder = log(nginxHome);
+	@Inject
+	public NginxAccessLogResourceImpl(Configuration configuration) {
+		this.configuration = configuration;
+	}
+	
+	public List<FileObject> collect() {
+		File log = log();
 		List<FileObject> files = new ArrayList<>();
 		FileSystemBuilder
 		.newBuilder()
 		.iterate()
-			.withDestination(logFolder)
+			.withDestination(log)
 			.withFileFilter(new PrefixFileFilter("access.log."))
 			.execute(file -> {
 						FileSystemBuilder
@@ -48,7 +57,6 @@ public class NginxAccessLogResourceImpl {
 													.from(file)
 														.withCharset("UTF-8")
 														.withContent(content)
-														.withEncoded(true)
 													.build();
 											files.add(fileObject);
 									})
@@ -62,21 +70,21 @@ public class NginxAccessLogResourceImpl {
 		return files;
 	}	
 
-	public Integer rotate(String nginxHome) {
+	public Integer rotate() {
 		AtomicInteger atomicInteger = new AtomicInteger(0);
-		File logFolder = log(nginxHome);
+		File log = log();
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
 		
 		FileSystemBuilder
 		.newBuilder()
 		.iterate()
-			.withDestination(logFolder)
+			.withDestination(log)
 			.withFileFilter(new NameFileFilter("access.log"))
 			.execute(file -> {
 				if (file.length() > sizeLimit()) {
 					try {
 						atomicInteger.getAndIncrement();
-						File toRotate = new File(logFolder, "access.log." + simpleDateFormat.format(new Date()));
+						File toRotate = new File(log, "access.log." + simpleDateFormat.format(new Date()));
 						FileSystemBuilder
 							.newBuilder()
 							.copy()
@@ -103,8 +111,12 @@ public class NginxAccessLogResourceImpl {
 		return 1L * 1024L * 1024L;
 	}
 	
-	private File log(String nginxHome){
-		return new File(nginxHome,"log");
+	private File log(){
+		return new File(settings(),"log");
+	}
+	
+	private String settings() {
+		return configuration.getNginx().getSetting();
 	}
 
 }

@@ -6,6 +6,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
 import com.jslsolucoes.file.system.FileSystemBuilder;
+import com.jslsolucoes.nginx.admin.agent.config.Configuration;
 import com.jslsolucoes.nginx.admin.agent.resource.impl.nginx.NginxInfo;
 import com.jslsolucoes.nginx.admin.agent.resource.impl.nginx.NginxInfoDiscover;
 import com.jslsolucoes.nginx.admin.agent.resource.impl.os.OperationalSystem;
@@ -19,6 +20,7 @@ public class NginxAdminResourceImpl {
 	
 	private NginxInfoDiscover nginxInfoDiscover;
 	private NginxStatusDiscover nginxStatusDiscover;
+	private Configuration configuration;
 	
 	@Deprecated
 	public NginxAdminResourceImpl() {
@@ -26,60 +28,67 @@ public class NginxAdminResourceImpl {
 	}
 	
 	@Inject
-	public NginxAdminResourceImpl(NginxInfoDiscover nginxInfoDiscover,NginxStatusDiscover nginxStatusDiscover) {
+	public NginxAdminResourceImpl(NginxInfoDiscover nginxInfoDiscover,NginxStatusDiscover nginxStatusDiscover,Configuration configuration) {
+		this.configuration = configuration;
 		this.nginxInfoDiscover = nginxInfoDiscover;
 		this.nginxStatusDiscover = nginxStatusDiscover;
 	}
 
-	public NginxOperationResult configure(String nginxHome, Integer maxPostSize,Boolean gzip) {
+	public NginxOperationResult configure(Integer maxPostSize,Boolean gzip) {
 		try {
-			createFileSystem(nginxHome);
-			createTemplate(nginxHome,maxPostSize,gzip);
+			applyFs();
+			applyTemplate(maxPostSize,gzip);
 			return new NginxOperationResult(NginxOperationResultType.SUCCESS);
 		} catch (Exception exception) {
 			return new NginxOperationResult(NginxOperationResultType.ERROR,exception);
 		}
 	}
 
-	private void createTemplate(String nginxHome, Integer maxPostSize,Boolean gzip) {
+	private void applyTemplate(Integer maxPostSize,Boolean gzip) {
+		String settings = settings();
 		TemplateProcessor
 		.newBuilder()
 			.withTemplate("/template/nginx/dynamic", "root.tpl")
-			.withData("nginxHome", nginxHome)
-			.withOutputLocation(new File(virtualHost(nginxHome), "root.conf"))
+			.withData("settings", settings)
+			.withOutputLocation(new File(virtualHost(), "root.conf"))
 		.process()
 		.clear()
 			.withTemplate("/template/nginx/dynamic", "nginx.tpl")
-			.withData("nginxHome", nginxHome)
+			.withData("settings", settings)
 			.withData("gzip", gzip)
 			.withData("maxPostSize", maxPostSize)
-			.withOutputLocation(new File(nginxHome, "nginx.conf"))
+			.withOutputLocation(new File(settings, "nginx.conf"))
 		.process();
 	}
 	
-	private File virtualHost(String nginxHome) {
-		return new File(nginxHome,"virtual-host");
+	private File virtualHost() {
+		return new File(settings(),"virtual-host");
 	}	
 	
-	private void createFileSystem(String nginxHome) {
+	private void applyFs() {
+		String setting = settings();
 		FileSystemBuilder.newBuilder()
 		.create()
-			.withDestination(nginxHome)
+			.withDestination(setting)
 			.execute()
 		.end()
 		.copy()
 			.withClasspathResource("/template/nginx/fixed")
-			.withDestination(nginxHome)
+			.withDestination(setting)
 			.execute()
 		.end();
 	}
+	
+	private String settings() {
+		return configuration.getNginx().getSetting();
+	}
 
-	public OperationalSystemInfo operationSystemInfo() {
+	public OperationalSystemInfo os() {
 		return OperationalSystem.info();
 	}
 
-	public NginxInfo nginxInfo(String nginxBin, String nginxHome) {
-		return nginxInfoDiscover.info(nginxBin, nginxHome);
+	public NginxInfo info() {
+		return nginxInfoDiscover.info();
 	}
 
 	public NginxStatus status() {

@@ -2,7 +2,6 @@ package com.jslsolucoes.nginx.admin.agent.model.request;
 
 public class NginxSslCreateRequest {
 
-	private String home;
 	private String certificate;
 	private String certificateUuid;
 	private String certificatePrivateKey;
@@ -12,21 +11,12 @@ public class NginxSslCreateRequest {
 		
 	}
 
-	public NginxSslCreateRequest(String home, String certificate, String certificateUuid, String certificatePrivateKey,
+	public NginxSslCreateRequest(String certificate, String certificateUuid, String certificatePrivateKey,
 			String certificatePrivateKeyUuid) {
-		this.home = home;
 		this.certificate = certificate;
 		this.certificateUuid = certificateUuid;
 		this.certificatePrivateKey = certificatePrivateKey;
 		this.certificatePrivateKeyUuid = certificatePrivateKeyUuid;
-	}
-
-	public String getHome() {
-		return home;
-	}
-
-	public void setHome(String home) {
-		this.home = home;
 	}
 
 	public String getCertificate() {

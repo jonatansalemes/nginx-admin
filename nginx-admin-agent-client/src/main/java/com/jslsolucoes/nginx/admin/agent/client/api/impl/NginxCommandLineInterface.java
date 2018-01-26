@@ -4,14 +4,11 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ScheduledExecutorService;
 
 import javax.enterprise.inject.Vetoed;
-import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.jslsolucoes.nginx.admin.agent.client.RestClient;
 import com.jslsolucoes.nginx.admin.agent.client.api.NginxAgentClientApi;
-import com.jslsolucoes.nginx.admin.agent.model.request.NginxCommandLineInterfaceRequest;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxCommandLineInterfaceResponse;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxExceptionResponse;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxResponse;
@@ -21,16 +18,12 @@ public class NginxCommandLineInterface extends DefaultNginxAgentClientApi implem
 
 	private final ScheduledExecutorService scheduledExecutorService;
 	private final String endpoint;
-	private final String bin;
-	private final String home;
 	private final String authorizationKey;
 
-	public NginxCommandLineInterface(ScheduledExecutorService scheduledExecutorService, String endpoint, String bin,
-			String home, String authorizationKey) {
+	public NginxCommandLineInterface(ScheduledExecutorService scheduledExecutorService, String endpoint,
+			String authorizationKey) {
 		this.scheduledExecutorService = scheduledExecutorService;
 		this.endpoint = endpoint;
-		this.bin = bin;
-		this.home = home;
 		this.authorizationKey = authorizationKey;
 	}
 
@@ -69,13 +62,9 @@ public class NginxCommandLineInterface extends DefaultNginxAgentClientApi implem
 	public CompletableFuture<NginxResponse> request(String path) {
 		return CompletableFuture.supplyAsync(() -> {
 			try (RestClient restClient = RestClient.build()) {
-				NginxCommandLineInterfaceRequest nginxCommandLineInterfaceRequest = new NginxCommandLineInterfaceRequest(
-						bin, home);
-				Entity<NginxCommandLineInterfaceRequest> entity = Entity.entity(nginxCommandLineInterfaceRequest,
-						MediaType.APPLICATION_JSON);
 				WebTarget webTarget = restClient.target(endpoint);
 				Response response = webTarget.path(path).request().header(HttpHeader.AUTHORIZATION, authorizationKey)
-						.post(entity);
+						.get();
 				return responseFor(response, NginxCommandLineInterfaceResponse.class);
 			} catch (Exception e) {
 				return new NginxExceptionResponse(e);

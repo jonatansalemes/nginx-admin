@@ -6,7 +6,6 @@ import com.jslsolucoes.nginx.admin.agent.model.Location;
 
 public class NginxVirtualHostCreateRequest {
 
-	private String home;
 	private String uuid;
 	private Boolean https;
 	private String certificateUuid;
@@ -18,9 +17,8 @@ public class NginxVirtualHostCreateRequest {
 
 	}
 
-	public NginxVirtualHostCreateRequest(String home, String uuid, Boolean https, String certificateUuid,
+	public NginxVirtualHostCreateRequest(String uuid, Boolean https, String certificateUuid,
 			String certificatePrivateKeyUuid, List<String> aliases, List<Location> locations) {
-		this.home = home;
 		this.uuid = uuid;
 		this.https = https;
 		this.certificateUuid = certificateUuid;
@@ -59,14 +57,6 @@ public class NginxVirtualHostCreateRequest {
 
 	public void setLocations(List<Location> locations) {
 		this.locations = locations;
-	}
-
-	public String getHome() {
-		return home;
-	}
-
-	public void setHome(String home) {
-		this.home = home;
 	}
 
 	public String getCertificateUuid() {

@@ -8,7 +8,6 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
@@ -35,14 +34,23 @@ import com.jslsolucoes.nginx.admin.agent.resource.impl.NginxUpstreamResourceImpl
 @Produces(MediaType.APPLICATION_JSON)
 public class NginxUpstreamResource {
 
-	@Inject
+	
 	private NginxUpstreamResourceImpl nginxUpstreamResourceImpl;
+	
+	@Deprecated
+	public NginxUpstreamResource() {
+		
+	}
+	
+	@Inject
+	public NginxUpstreamResource(NginxUpstreamResourceImpl nginxUpstreamResourceImpl) {
+		this.nginxUpstreamResourceImpl = nginxUpstreamResourceImpl;
+	}
 	
 	@POST
 	public void create(NginxUpstreamCreateRequest nginxUpstreamCreateRequest, @Suspended AsyncResponse asyncResponse,
 			@Context UriInfo uriInfo) {
-		NginxOperationResult nginxOperationResult = nginxUpstreamResourceImpl.create(nginxUpstreamCreateRequest.getHome(),
-				nginxUpstreamCreateRequest.getName(), nginxUpstreamCreateRequest.getUuid(), nginxUpstreamCreateRequest.getStrategy(),
+		NginxOperationResult nginxOperationResult = nginxUpstreamResourceImpl.create(nginxUpstreamCreateRequest.getName(), nginxUpstreamCreateRequest.getUuid(), nginxUpstreamCreateRequest.getStrategy(),
 				nginxUpstreamCreateRequest.getEndpoints());
 		 UriBuilder builder = uriInfo.getAbsolutePathBuilder();
 	     builder.path(nginxUpstreamCreateRequest.getUuid());
@@ -55,8 +63,7 @@ public class NginxUpstreamResource {
 	@PUT
 	@Path("{uuid}")
 	public void update(@PathParam("uuid") String uuid,NginxUpstreamUpdateRequest nginxUpstreamUpdateRequest, @Suspended AsyncResponse asyncResponse) {
-		NginxOperationResult nginxOperationResult = nginxUpstreamResourceImpl.update(uuid,nginxUpstreamUpdateRequest.getHome(),
-				nginxUpstreamUpdateRequest.getName(), nginxUpstreamUpdateRequest.getStrategy(),
+		NginxOperationResult nginxOperationResult = nginxUpstreamResourceImpl.update(uuid,nginxUpstreamUpdateRequest.getName(), nginxUpstreamUpdateRequest.getStrategy(),
 				nginxUpstreamUpdateRequest.getEndpoints());
 		asyncResponse.resume(Response
 				.ok(new NginxUpstreamUpdateResponse(nginxOperationResult.getOutput(), nginxOperationResult.isSuccess()))
@@ -65,8 +72,8 @@ public class NginxUpstreamResource {
 	
 	@DELETE
 	@Path("{uuid}")
-	public void delete(@PathParam("uuid") String uuid,@QueryParam("home") String home, @Suspended AsyncResponse asyncResponse) {
-		NginxOperationResult nginxOperationResult = nginxUpstreamResourceImpl.delete(home, uuid);
+	public void delete(@PathParam("uuid") String uuid, @Suspended AsyncResponse asyncResponse) {
+		NginxOperationResult nginxOperationResult = nginxUpstreamResourceImpl.delete(uuid);
 		asyncResponse.resume(Response
 				.ok(new NginxUpstreamDeleteResponse(nginxOperationResult.getOutput(), nginxOperationResult.isSuccess()))
 				.build());
@@ -74,8 +81,8 @@ public class NginxUpstreamResource {
 	
 	@GET
 	@Path("{uuid}")
-	public void read(@PathParam("uuid") String uuid,@QueryParam("home") String home, @Suspended AsyncResponse asyncResponse) {
-		FileObject fileObject = nginxUpstreamResourceImpl.read(home, uuid);
+	public void read(@PathParam("uuid") String uuid, @Suspended AsyncResponse asyncResponse) {
+		FileObject fileObject = nginxUpstreamResourceImpl.read(uuid);
 		asyncResponse.resume(Response
 				.ok(new NginxUpstreamReadResponse(fileObject))
 				.build());

@@ -1,4 +1,4 @@
-package com.jslsolucoes.nginx.admin.standalone;
+package com.jslsolucoes.nginx.admin.agent.standalone;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,10 +15,10 @@ import org.wildfly.swarm.management.ManagementFraction;
 import org.wildfly.swarm.undertow.UndertowFraction;
 import org.wildfly.swarm.undertow.WARArchive;
 
-import com.jslsolucoes.nginx.admin.standalone.config.StandaloneConfiguration;
-import com.jslsolucoes.nginx.admin.standalone.config.StandaloneConfigurationParser;
-import com.jslsolucoes.nginx.admin.standalone.mode.Argument;
-import com.jslsolucoes.nginx.admin.standalone.mode.ArgumentMode;
+import com.jslsolucoes.nginx.admin.agent.config.Configuration;
+import com.jslsolucoes.nginx.admin.agent.config.ConfigurationLoader;
+import com.jslsolucoes.nginx.admin.agent.standalone.mode.Argument;
+import com.jslsolucoes.nginx.admin.agent.standalone.mode.ArgumentMode;
 
 public class Main {
 
@@ -33,14 +33,14 @@ public class Main {
 
 		if (!argument.getQuit()) {
 
-			StandaloneConfiguration standaloneConfiguration = StandaloneConfigurationParser.parse(argument.getConf());
+			Configuration configuration = ConfigurationLoader.newBuilder().withFile(argument.getConf()).build();
 			
 			File jks = copyToTemp("/keystore.jks");
-			File war = copyToTemp("/nginx-admin-agent-" + standaloneConfiguration.getApplication().getVersion() + ".war");
+			File war = copyToTemp("/nginx-admin-agent-" + configuration.getApplication().getVersion() + ".war");
 			
 			Swarm swarm = new Swarm(
-					new String[] { "-Dswarm.http.port=" + standaloneConfiguration.getServer().getHttpPort(),
-							"-Dswarm.https.port=" + standaloneConfiguration.getServer().getHttpsPort()});
+					new String[] { "-Dswarm.http.port=" + configuration.getServer().getHttpPort(),
+							"-Dswarm.https.port=" + configuration.getServer().getHttpsPort()});
 			swarm
 			.fraction(new ManagementFraction()
 					 .securityRealm("SSLRealm", realm -> {

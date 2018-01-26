@@ -24,8 +24,7 @@ public class NginxServerInfoTest {
 
 		nginxAgentClient.api(NginxAgentClientApis.nginxServerInfo()).withAuthorizationKey("fdoinsafodsoianoifd")
 				.withEndpoint("http://192.168.99.100:3000")
-				.withHome("/opt/nginx-agent/settings")
-				.withBin("/usr/sbin/nginx").build().info().thenAccept(nginxResponse -> {
+				.build().info().thenAccept(nginxResponse -> {
 					if (nginxResponse.error()) {
 						NginxExceptionResponse nginxExceptionResponse = (NginxExceptionResponse) nginxResponse;
 						Assert.fail(nginxExceptionResponse.getStackTrace());

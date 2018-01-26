@@ -9,7 +9,6 @@ import com.jslsolucoes.nginx.admin.agent.model.Endpoint;
 public class NginxUpstreamBuilder implements NginxAgentClientApiBuilder {
 
 	private ScheduledExecutorService scheduledExecutorService;
-	private String home;
 	private String endpoint;
 	private String authorizationKey;
 	private String name;
@@ -23,7 +22,7 @@ public class NginxUpstreamBuilder implements NginxAgentClientApiBuilder {
 
 	@Override
 	public NginxUpstream build() {
-		return new NginxUpstream(scheduledExecutorService, endpoint, home, authorizationKey, uuid, strategy, endpoints, name);
+		return new NginxUpstream(scheduledExecutorService, endpoint, authorizationKey, uuid, strategy, endpoints, name);
 	}
 
 	public static NginxUpstreamBuilder newBuilder() {
@@ -53,11 +52,6 @@ public class NginxUpstreamBuilder implements NginxAgentClientApiBuilder {
 	
 	public NginxUpstreamBuilder withStrategy(String strategy) {
 		this.strategy = strategy;
-		return this;
-	}
-
-	public NginxUpstreamBuilder withHome(String home) {
-		this.home = home;
 		return this;
 	}
 

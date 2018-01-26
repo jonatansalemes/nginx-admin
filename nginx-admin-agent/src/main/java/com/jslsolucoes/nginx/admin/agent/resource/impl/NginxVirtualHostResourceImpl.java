@@ -4,8 +4,10 @@ import java.io.File;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 import com.jslsolucoes.file.system.FileSystemBuilder;
+import com.jslsolucoes.nginx.admin.agent.config.Configuration;
 import com.jslsolucoes.nginx.admin.agent.model.Location;
 import com.jslsolucoes.template.TemplateProcessor;
 
@@ -13,28 +15,31 @@ import com.jslsolucoes.template.TemplateProcessor;
 public class NginxVirtualHostResourceImpl {
 	
 	
+	private Configuration configuration;
+
+	@Deprecated
 	public NginxVirtualHostResourceImpl() {
 
 	}
 	
-	private File virtualHost(String nginxHome) {
-		return new File(nginxHome,"virtual-host");
-	}	
+	@Inject
+	public NginxVirtualHostResourceImpl(Configuration configuration) {
+		this.configuration = configuration;
+	}
 
-	public NginxOperationResult create(String nginxHome,String uuid,Boolean https,
+	public NginxOperationResult create(String uuid,Boolean https,
 			String certificateUuid,String certificatePrivateKeyUuid,
 			List<String> aliases,List<Location> locations) {
 		try {
-			File virtualHostFolder = virtualHost(nginxHome);
 			TemplateProcessor.newBuilder()
 				.withTemplate("/template/nginx/dynamic","virtual-host.tpl")
 					.withData("https",  https)
 					.withData("certificateUuid",  certificateUuid)
 					.withData("certificatePrivateKeyUuid",  certificatePrivateKeyUuid)
-					.withData("nginxHome",  nginxHome)
+					.withData("settings",  settings())
 					.withData("aliases",  aliases)
 					.withData("locations",  locations)
-					.withOutputLocation(new File(virtualHostFolder, uuid + ".conf"))
+					.withOutputLocation(virtualHost(uuid))
 					.process();
 			return new NginxOperationResult(NginxOperationResultType.SUCCESS);
 		} catch (Exception e) {
@@ -42,22 +47,31 @@ public class NginxVirtualHostResourceImpl {
 		}
 	}
 	
-	public NginxOperationResult delete(String nginxHome,
-			String uuid) {
+	public NginxOperationResult delete(String uuid) {
 		try {
-			File virtualHostFolder = virtualHost(nginxHome);
 			FileSystemBuilder
 				.newBuilder()
 				.delete()
-					.withDestination(new File(virtualHostFolder,uuid + ".conf"))
+					.withDestination(virtualHost(uuid))
 					.execute()
 				.end();
-			
 			return new NginxOperationResult(NginxOperationResultType.SUCCESS);
 		} catch (Exception e) {
 			return new NginxOperationResult(NginxOperationResultType.ERROR,e);
 		}
 	}
 	
+	
+	private File virtualHost(String uuid) {
+		return new File(virtualHostFolder(),uuid + ".conf");
+	}
+	
+	private File virtualHostFolder() {
+		return new File(settings(),"virtual-host");
+	}	
+	
+	private String settings() {
+		return configuration.getNginx().getSetting();
+	}
 	
 }

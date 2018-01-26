@@ -6,7 +6,6 @@ import com.jslsolucoes.nginx.admin.agent.model.Endpoint;
 
 public class NginxUpstreamUpdateRequest {
 
-	private String home;
 	private String name;
 	private String strategy;
 	private List<Endpoint> endpoints;
@@ -15,19 +14,12 @@ public class NginxUpstreamUpdateRequest {
 		
 	}
 	
-	public NginxUpstreamUpdateRequest(String home,String name,String strategy,List<Endpoint> endpoints) {
-		this.home = home;
+	public NginxUpstreamUpdateRequest(String name,String strategy,List<Endpoint> endpoints) {
 		this.name = name;
 		this.strategy = strategy;
 		this.endpoints = endpoints;
 	}
 	
-	public String getHome() {
-		return home;
-	}
-	public void setHome(String home) {
-		this.home = home;
-	}
 	public String getName() {
 		return name;
 	}

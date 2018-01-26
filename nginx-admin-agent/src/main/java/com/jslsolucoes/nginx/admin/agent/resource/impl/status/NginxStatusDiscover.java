@@ -31,7 +31,7 @@ public class NginxStatusDiscover {
 	private String response() {
 		Client client = ClientBuilder.newClient();
 		try {
-			Response response = client.target("http://localhost").path("/status").request().get();
+			Response response = client.target("http://localhost").path("status").request().get();
 			if(response.getStatusInfo().equals(Status.OK)){
 				return response.readEntity(String.class);
 			} else {

@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.jslsolucoes</groupId>
 	<artifactId>nginx-admin</artifactId>
-	<version>1.0.7</version>
+	<version>2.0.0</version>
 	<packaging>pom</packaging>
  
  
@@ -20,11 +20,12 @@
 	</properties>
 
 	<modules>
+		<module>nginx-admin-parser</module>
 		<module>nginx-admin-agent-model</module>
 		<module>nginx-admin-agent-client</module>
+		<module>nginx-admin-agent-configuration</module>
 		<module>nginx-admin-agent</module>
 		<module>nginx-admin-agent-standalone</module>
-		<module>nginx-admin-parser</module>
 		<module>nginx-admin-ui-configuration</module>
 		<module>nginx-admin-ui</module>
 		<module>nginx-admin-ui-standalone</module>

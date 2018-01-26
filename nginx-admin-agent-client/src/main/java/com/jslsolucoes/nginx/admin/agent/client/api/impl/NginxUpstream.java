@@ -29,17 +29,15 @@ public class NginxUpstream extends DefaultNginxAgentClientApi implements NginxAg
 	private final String endpoint;
 	private final String authorizationKey;
 	private final String name;
-	private final String home;
 	private final String uuid;
 	private final String strategy;
 	private final List<Endpoint> endpoints;
 
 	public NginxUpstream(ScheduledExecutorService scheduledExecutorService, String endpoint, 
-			String home, String authorizationKey,String uuid,String strategy,List<Endpoint> endpoints,
+			String authorizationKey,String uuid,String strategy,List<Endpoint> endpoints,
 			String name) {
 		this.scheduledExecutorService = scheduledExecutorService;
 		this.endpoint = endpoint;
-		this.home = home;
 		this.authorizationKey = authorizationKey;
 		this.uuid = uuid;
 		this.strategy = strategy;
@@ -51,7 +49,7 @@ public class NginxUpstream extends DefaultNginxAgentClientApi implements NginxAg
 	public CompletableFuture<NginxResponse> update() {
 		return CompletableFuture.supplyAsync(() -> {
 			try (RestClient restClient = RestClient.build()) {
-				NginxUpstreamUpdateRequest nginxUpstreamUpdateRequest = new NginxUpstreamUpdateRequest(home, name, strategy, endpoints);
+				NginxUpstreamUpdateRequest nginxUpstreamUpdateRequest = new NginxUpstreamUpdateRequest(name, strategy, endpoints);
 				Entity<NginxUpstreamUpdateRequest> entity = Entity.entity(nginxUpstreamUpdateRequest,MediaType.APPLICATION_JSON);
 				WebTarget webTarget = restClient.target(endpoint);
 				Response response = webTarget.path("upstream").path(uuid).request()
@@ -67,7 +65,7 @@ public class NginxUpstream extends DefaultNginxAgentClientApi implements NginxAg
 	public CompletableFuture<NginxResponse> create() {
 		return CompletableFuture.supplyAsync(() -> {
 			try (RestClient restClient = RestClient.build()) {
-				NginxUpstreamCreateRequest nginxUpstreamCreateRequest = new NginxUpstreamCreateRequest(home, name, uuid, strategy, endpoints);
+				NginxUpstreamCreateRequest nginxUpstreamCreateRequest = new NginxUpstreamCreateRequest(name, uuid, strategy, endpoints);
 				Entity<NginxUpstreamCreateRequest> entity = Entity.entity(nginxUpstreamCreateRequest,MediaType.APPLICATION_JSON);
 				WebTarget webTarget = restClient.target(endpoint);
 				Response response = webTarget.path("upstream").request()
@@ -85,7 +83,6 @@ public class NginxUpstream extends DefaultNginxAgentClientApi implements NginxAg
 			try (RestClient restClient = RestClient.build()) {
 				WebTarget webTarget = restClient.target(endpoint);
 				Response response = webTarget.path("upstream").path(uuid)
-						.queryParam("home", home)
 						.request()
 						.header(HttpHeader.AUTHORIZATION, authorizationKey)
 						.delete();
@@ -101,7 +98,6 @@ public class NginxUpstream extends DefaultNginxAgentClientApi implements NginxAg
 			try (RestClient restClient = RestClient.build()) {
 				WebTarget webTarget = restClient.target(endpoint);
 				Response response = webTarget.path("upstream").path(uuid)
-						.queryParam("home", home)
 						.request()
 						.header(HttpHeader.AUTHORIZATION, authorizationKey)
 						.get();

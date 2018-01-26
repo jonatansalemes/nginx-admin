@@ -22,7 +22,7 @@ public class NginxConfigureTest {
 	@Test
 	public void configure() {
 		nginxAgentClient.api(NginxAgentClientApis.configure()).withAuthorizationKey("fdoinsafodsoianoifd")
-				.withEndpoint("https://192.168.99.100:3443").withGzip(true).withHome("/opt/nginx-agent/settings")
+				.withEndpoint("https://192.168.99.100:3443").withGzip(true)
 				.withMaxPostSize(15).build().configure().thenAccept(nginxResponse -> {
 					if (nginxResponse.error()) {
 						NginxExceptionResponse nginxExceptionResponse = (NginxExceptionResponse) nginxResponse;

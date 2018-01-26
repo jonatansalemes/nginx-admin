@@ -13,17 +13,10 @@ public class FileObject {
 	private Long size;
 	
 	private String content;
+	
+	private String charset = "UTF-8";
 
-	public FileObject() {
-
-	}
-
-	public FileObject(String fileName, Date lastModified, Long size) {
-		this.fileName = fileName;
-		this.lastModified = lastModified;
-		this.size = size;
-	}
-
+	
 	public String getFileName() {
 		return fileName;
 	}
@@ -49,22 +42,26 @@ public class FileObject {
 	}
 
 	public String getContent() {
-		return content;
-	}
-	
-	public void setContent(String content) {
-		this.content = content;
-	}
-	
-	public String getDecoded() {
-		return getDecoded("UTF-8");
-	}
-	
-	public String getDecoded(String charset) {
 		try {
 			return new String(Base64.getDecoder().decode(content.getBytes(charset)));
 		} catch (UnsupportedEncodingException e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	public void setContent(String content) {
+		try {
+			this.content = Base64.getEncoder().encodeToString(content.getBytes(charset));
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public String getCharset() {
+		return charset;
+	}
+
+	public void setCharset(String charset) {
+		this.charset = charset;
 	}
 }

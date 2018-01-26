@@ -6,7 +6,6 @@ import com.jslsolucoes.nginx.admin.agent.model.Endpoint;
 
 public class NginxUpstreamCreateRequest {
 
-	private String home;
 	private String name;
 	private String uuid;
 	private String strategy;
@@ -16,20 +15,14 @@ public class NginxUpstreamCreateRequest {
 		
 	}
 	
-	public NginxUpstreamCreateRequest(String home,String name,String uuid,String strategy,List<Endpoint> endpoints) {
-		this.home = home;
+	public NginxUpstreamCreateRequest(String name,String uuid,String strategy,List<Endpoint> endpoints) {
 		this.name = name;
 		this.uuid = uuid;
 		this.strategy = strategy;
 		this.endpoints = endpoints;
 	}
 	
-	public String getHome() {
-		return home;
-	}
-	public void setHome(String home) {
-		this.home = home;
-	}
+
 	public String getName() {
 		return name;
 	}

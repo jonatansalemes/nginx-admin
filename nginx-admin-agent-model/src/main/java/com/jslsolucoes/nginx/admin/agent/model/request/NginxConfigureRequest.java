@@ -2,7 +2,7 @@ package com.jslsolucoes.nginx.admin.agent.model.request;
 
 public class NginxConfigureRequest {
 
-	private String home;
+	
 	private Integer maxPostSize;
 	private Boolean gzip;
 	
@@ -10,18 +10,9 @@ public class NginxConfigureRequest {
 		
 	}
 	
-	public NginxConfigureRequest(String home,Integer maxPostSize,Boolean gzip) {
-		this.home = home;
+	public NginxConfigureRequest(Integer maxPostSize,Boolean gzip) {		
 		this.maxPostSize = maxPostSize;
 		this.gzip = gzip;
-	}
-
-	public String getHome() {
-		return home;
-	}
-
-	public void setHome(String home) {
-		this.home = home;
 	}
 
 	public Integer getMaxPostSize() {

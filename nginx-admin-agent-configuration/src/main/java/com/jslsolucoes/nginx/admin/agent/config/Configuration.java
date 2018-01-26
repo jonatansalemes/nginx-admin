@@ -1,9 +1,10 @@
-package com.jslsolucoes.nginx.admin.standalone.config;
+package com.jslsolucoes.nginx.admin.agent.config;
 
-public class StandaloneConfiguration {
+public class Configuration {
 
 	private Server server;
 	private Application application;
+	private Nginx nginx;
 
 	public Server getServer() {
 		return server;
@@ -19,6 +20,14 @@ public class StandaloneConfiguration {
 
 	public void setApplication(Application application) {
 		this.application = application;
+	}
+
+	public Nginx getNginx() {
+		return nginx;
+	}
+
+	public void setNginx(Nginx nginx) {
+		this.nginx = nginx;
 	}
 
 }

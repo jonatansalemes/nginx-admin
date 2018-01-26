@@ -13,7 +13,6 @@ import javax.ws.rs.core.Response;
 import com.jslsolucoes.nginx.admin.agent.auth.AuthHandler;
 import com.jslsolucoes.nginx.admin.agent.error.ErrorHandler;
 import com.jslsolucoes.nginx.admin.agent.model.request.NginxConfigureRequest;
-import com.jslsolucoes.nginx.admin.agent.model.request.NginxServerInfoRequest;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxConfigureResponse;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxOperationalSystemInfoResponse;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxServerInfoResponse;
@@ -30,34 +29,42 @@ import com.jslsolucoes.nginx.admin.agent.resource.impl.status.NginxStatus;
 @Produces(MediaType.APPLICATION_JSON)
 public class NginxAdminResource {
 
-	@Inject
 	private NginxAdminResourceImpl nginxAdminResourceImpl;
+	
+
+	@Deprecated
+	public NginxAdminResource() {
+		
+	}
+
+	@Inject
+	public NginxAdminResource(NginxAdminResourceImpl nginxAdminResourceImpl) {
+		this.nginxAdminResourceImpl = nginxAdminResourceImpl;
+	}
 
 	@POST
 	@Path("configure")
 	public void configure(NginxConfigureRequest nginxConfigureRequest, @Suspended AsyncResponse asyncResponse) {
-		NginxOperationResult nginxOperationResult = nginxAdminResourceImpl.configure(nginxConfigureRequest.getHome(),
-				nginxConfigureRequest.getMaxPostSize(), nginxConfigureRequest.getGzip());
+		NginxOperationResult nginxOperationResult = nginxAdminResourceImpl.configure(nginxConfigureRequest.getMaxPostSize(), nginxConfigureRequest.getGzip());
 		asyncResponse.resume(Response
 				.ok(new NginxConfigureResponse(nginxOperationResult.getOutput(), nginxOperationResult.isSuccess()))
 				.build());
 	}
 
 	@GET
-	@Path("operationalSystemInfo")
-	public void operationSystemInfo(@Suspended AsyncResponse asyncResponse) {
-		OperationalSystemInfo operationalSystemInfo = nginxAdminResourceImpl.operationSystemInfo();
+	@Path("os")
+	public void os(@Suspended AsyncResponse asyncResponse) {
+		OperationalSystemInfo operationalSystemInfo = nginxAdminResourceImpl.os();
 		asyncResponse.resume(Response.ok(new NginxOperationalSystemInfoResponse(operationalSystemInfo.getArch(),
 				operationalSystemInfo.getDistribution(), operationalSystemInfo.getName(),
 				operationalSystemInfo.getVersion())).build());
 	}
 
-	@POST
-	@Path("nginxInfo")
-	public void nginxInfo(NginxServerInfoRequest nginxServerInfoRequest,
+	@GET
+	@Path("info")
+	public void info(
 			@Suspended AsyncResponse asyncResponse) {
-		NginxInfo nginxInfo = nginxAdminResourceImpl.nginxInfo(nginxServerInfoRequest.getBin(),
-				nginxServerInfoRequest.getHome());
+		NginxInfo nginxInfo = nginxAdminResourceImpl.info();
 		asyncResponse.resume(Response.ok(new NginxServerInfoResponse(nginxInfo.getVersion(),
 				nginxInfo.getAddress(), nginxInfo.getPid(), nginxInfo.getUptime())).build());
 	}

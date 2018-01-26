@@ -1,7 +1,7 @@
 package com.jslsolucoes.nginx.admin.agent.resource;
 
 import javax.inject.Inject;
-import javax.ws.rs.POST;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.container.AsyncResponse;
@@ -11,8 +11,6 @@ import javax.ws.rs.core.Response;
 
 import com.jslsolucoes.nginx.admin.agent.auth.AuthHandler;
 import com.jslsolucoes.nginx.admin.agent.error.ErrorHandler;
-import com.jslsolucoes.nginx.admin.agent.model.request.NginxAccessLogCollectRequest;
-import com.jslsolucoes.nginx.admin.agent.model.request.NginxAccessLogRotateRequest;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxLogCollectResponse;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxLogRotateResponse;
 import com.jslsolucoes.nginx.admin.agent.resource.impl.NginxAccessLogResourceImpl;
@@ -23,28 +21,37 @@ import com.jslsolucoes.nginx.admin.agent.resource.impl.NginxAccessLogResourceImp
 @Produces(MediaType.APPLICATION_JSON)
 public class NginxAccessLogResource {
 
-	@Inject
 	private NginxAccessLogResourceImpl nginxAccessLogResourceImpl;
 	
-	@POST
+	@Deprecated
+	public NginxAccessLogResource() {
+		
+	}
+
+	@Inject
+	public NginxAccessLogResource(NginxAccessLogResourceImpl nginxAccessLogResourceImpl) {
+		this.nginxAccessLogResourceImpl = nginxAccessLogResourceImpl;
+	}
+	
+	@GET
 	@Path("collect")
-	public void collect(NginxAccessLogCollectRequest nginxAccessLogCollectRequest,
+	public void collect(
 			@Suspended AsyncResponse asyncResponse) {
 		asyncResponse
 				.resume(Response
 						.ok(new NginxLogCollectResponse(
-								nginxAccessLogResourceImpl.collect(nginxAccessLogCollectRequest.getHome())))
+								nginxAccessLogResourceImpl.collect()))
 						.build());
 	}
 	
-	@POST
+	@GET
 	@Path("rotate")
-	public void rotate(NginxAccessLogRotateRequest nginxAccessLogRotateRequest,
+	public void rotate(
 			@Suspended AsyncResponse asyncResponse) {
 		asyncResponse
 				.resume(Response
 						.ok(new NginxLogRotateResponse(
-								nginxAccessLogResourceImpl.rotate(nginxAccessLogRotateRequest.getHome())))
+								nginxAccessLogResourceImpl.rotate()))
 						.build());
 	}
 

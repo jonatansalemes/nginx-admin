@@ -2,7 +2,6 @@ package com.jslsolucoes.nginx.admin.agent.model.request;
 
 public class NginxSslDeleteRequest {
 
-	private String home;
 	private String certificateUuid;
 	private String certificatePrivateKeyUuid;
 	
@@ -10,18 +9,11 @@ public class NginxSslDeleteRequest {
 		
 	}
 	
-	public NginxSslDeleteRequest(String home,String certificateUuid,String certificatePrivateKeyUuid) {
-		this.home = home;
+	public NginxSslDeleteRequest(String certificateUuid,String certificatePrivateKeyUuid) {
 		this.certificateUuid = certificateUuid;
 		this.certificatePrivateKeyUuid = certificatePrivateKeyUuid;
 	}
 	
-	public String getHome() {
-		return home;
-	}
-	public void setHome(String home) {
-		this.home = home;
-	}
 	public String getCertificateUuid() {
 		return certificateUuid;
 	}

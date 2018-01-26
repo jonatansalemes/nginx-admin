@@ -30,7 +30,6 @@ public class NginxUpstreamTest {
 		.withUuid("fdsfsafdakdkdjs")
 		.withAuthorizationKey("fdoinsafodsoianoifd")
 		.withEndpoint("https://192.168.99.100:3443")
-		.withHome("/opt/nginx-agent/settings")
 		.withName("upstream01")
 		.withStrategy("round-robin")
 		.withEndpoints(Arrays.asList(new Endpoint("192.168.0.1",88),new Endpoint("192.168.0.1",89)))
@@ -115,7 +114,7 @@ public class NginxUpstreamTest {
 						Assert.assertNotNull(fileObject);
 						Assert.assertEquals(Long.valueOf(85), fileObject.getSize());
 						Assert.assertEquals("fdsfsafdakdkdjs.conf", fileObject.getFileName());
-						Assert.assertEquals("upstream upstream01 {round-robin;server 192.168.0.1:88;server 192.168.0.1:89;}", fileObject.getDecoded().replaceAll("(\n|\t|\r)",""));
+						Assert.assertEquals("upstream upstream01 {round-robin;server 192.168.0.1:88;server 192.168.0.1:89;}", fileObject.getContent().replaceAll("(\n|\t|\r)",""));
 					}
 				})
 		.join();

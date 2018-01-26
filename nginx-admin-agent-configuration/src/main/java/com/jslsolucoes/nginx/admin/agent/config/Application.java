@@ -1,8 +1,9 @@
-package com.jslsolucoes.nginx.admin.standalone.config;
+package com.jslsolucoes.nginx.admin.agent.config;
 
 public class Application {
 	private String version;
 	private String urlBase;
+	private String authorizationKey;
 
 	public String getVersion() {
 		return version;
@@ -18,5 +19,13 @@ public class Application {
 
 	public void setUrlBase(String urlBase) {
 		this.urlBase = urlBase;
+	}
+
+	public String getAuthorizationKey() {
+		return authorizationKey;
+	}
+
+	public void setAuthorizationKey(String authorizationKey) {
+		this.authorizationKey = authorizationKey;
 	}
 }

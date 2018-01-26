@@ -5,5 +5,5 @@
     <artifactId>nginx-admin</artifactId>
     <version>2.0.0</version>
   </parent>
-  <artifactId>nginx-admin-ui-configuration</artifactId>
+  <artifactId>nginx-admin-agent-configuration</artifactId>
 </project>

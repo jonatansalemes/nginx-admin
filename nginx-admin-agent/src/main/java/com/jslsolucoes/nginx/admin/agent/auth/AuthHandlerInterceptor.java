@@ -1,7 +1,5 @@
 package com.jslsolucoes.nginx.admin.agent.auth;
 
-import java.util.Properties;
-
 import javax.annotation.Priority;
 import javax.inject.Inject;
 import javax.interceptor.AroundInvoke;
@@ -14,7 +12,7 @@ import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.jslsolucoes.cdi.misc.annotation.ApplicationProperties;
+import com.jslsolucoes.nginx.admin.agent.config.Configuration;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxAuthenticationFailResponse;
 
 @Interceptor
@@ -22,9 +20,8 @@ import com.jslsolucoes.nginx.admin.agent.model.response.NginxAuthenticationFailR
 @Priority(Interceptor.Priority.APPLICATION + 1)
 public class AuthHandlerInterceptor {
 
-	@ApplicationProperties
 	@Inject
-	private Properties properties;
+	private Configuration configuration;
 
 	@Inject
 	private HttpServletRequest httpServletRequest;
@@ -56,6 +53,6 @@ public class AuthHandlerInterceptor {
 	}
 
 	private String authorizationKey() {
-		return properties.getProperty("NGINX_AGENT_AUTHORIZATION_KEY");
+		return configuration.getApplication().getAuthorizationKey();
 	}
 }

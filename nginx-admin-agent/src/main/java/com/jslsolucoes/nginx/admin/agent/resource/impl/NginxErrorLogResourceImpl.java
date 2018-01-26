@@ -1,7 +1,6 @@
 package com.jslsolucoes.nginx.admin.agent.resource.impl;
 
 import java.io.File;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,6 +8,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 import org.apache.commons.io.filefilter.NameFileFilter;
 import org.apache.commons.io.filefilter.PrefixFileFilter;
@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.jslsolucoes.file.system.FileSystemBuilder;
+import com.jslsolucoes.nginx.admin.agent.config.Configuration;
 import com.jslsolucoes.nginx.admin.agent.model.FileObject;
 import com.jslsolucoes.nginx.admin.agent.model.FileObjectBuilder;
 
@@ -23,18 +24,25 @@ import com.jslsolucoes.nginx.admin.agent.model.FileObjectBuilder;
 public class NginxErrorLogResourceImpl {
 	
 	private Logger logger = LoggerFactory.getLogger(NginxErrorLogResourceImpl.class);
+	private Configuration configuration;
 
+	@Deprecated
 	public NginxErrorLogResourceImpl() {
 
 	}
 	
-	public List<FileObject> collect(String nginxHome) {
-		File logFolder = log(nginxHome);
+	@Inject
+	public NginxErrorLogResourceImpl(Configuration configuration) {
+		this.configuration = configuration;
+	}
+	
+	public List<FileObject> collect() {
+		File log = log();
 		List<FileObject> files = new ArrayList<>();
 		FileSystemBuilder
 		.newBuilder()
 		.iterate()
-			.withDestination(logFolder)
+			.withDestination(log)
 			.withFileFilter(new PrefixFileFilter("error.log."))
 			.execute(file -> {
 						FileSystemBuilder
@@ -48,7 +56,6 @@ public class NginxErrorLogResourceImpl {
 												.from(file)
 													.withCharset("UTF-8")
 													.withContent(content)
-													.withEncoded(true)
 												.build();
 										files.add(fileObject);
 									})
@@ -62,21 +69,21 @@ public class NginxErrorLogResourceImpl {
 		return files;
 	}	
 
-	public Integer rotate(String nginxHome) {
+	public Integer rotate() {
 		AtomicInteger atomicInteger = new AtomicInteger(0);
-		File logFolder = log(nginxHome);
+		File log = log();
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
 		
 		FileSystemBuilder
 		.newBuilder()
 		.iterate()
-			.withDestination(logFolder)
+			.withDestination(log)
 			.withFileFilter(new NameFileFilter("error.log"))
 			.execute(file -> {
 				if (file.length() > sizeLimit()) {
 					try {
 						atomicInteger.getAndIncrement();
-						File toRotate = new File(logFolder,"error.log." + simpleDateFormat.format(new Date()));
+						File toRotate = new File(log,"error.log." + simpleDateFormat.format(new Date()));
 						FileSystemBuilder
 							.newBuilder()
 							.copy()
@@ -103,8 +110,12 @@ public class NginxErrorLogResourceImpl {
 		return 1L * 1024L * 1024L;
 	}
 	
-	private File log(String nginxHome){
-		return new File(nginxHome,"log");
+	private File log(){
+		return new File(settings(),"log");
+	}
+	
+	private String settings() {
+		return configuration.getNginx().getSetting();
 	}
 
 }
