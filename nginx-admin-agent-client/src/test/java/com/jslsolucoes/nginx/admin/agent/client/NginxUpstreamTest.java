@@ -13,10 +13,10 @@ import com.jslsolucoes.nginx.admin.agent.model.Endpoint;
 import com.jslsolucoes.nginx.admin.agent.model.FileObject;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxAuthenticationFailResponse;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxExceptionResponse;
-import com.jslsolucoes.nginx.admin.agent.model.response.NginxUpstreamCreateResponse;
-import com.jslsolucoes.nginx.admin.agent.model.response.NginxUpstreamDeleteResponse;
-import com.jslsolucoes.nginx.admin.agent.model.response.NginxUpstreamReadResponse;
-import com.jslsolucoes.nginx.admin.agent.model.response.NginxUpstreamUpdateResponse;
+import com.jslsolucoes.nginx.admin.agent.model.response.upstream.NginxUpstreamCreateResponse;
+import com.jslsolucoes.nginx.admin.agent.model.response.upstream.NginxUpstreamDeleteResponse;
+import com.jslsolucoes.nginx.admin.agent.model.response.upstream.NginxUpstreamReadResponse;
+import com.jslsolucoes.nginx.admin.agent.model.response.upstream.NginxUpstreamUpdateResponse;
 
 public class NginxUpstreamTest {
 

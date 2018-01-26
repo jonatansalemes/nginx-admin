@@ -11,8 +11,8 @@ import javax.ws.rs.core.Response;
 
 import com.jslsolucoes.nginx.admin.agent.auth.AuthHandler;
 import com.jslsolucoes.nginx.admin.agent.error.ErrorHandler;
-import com.jslsolucoes.nginx.admin.agent.model.response.NginxLogCollectResponse;
-import com.jslsolucoes.nginx.admin.agent.model.response.NginxLogRotateResponse;
+import com.jslsolucoes.nginx.admin.agent.model.response.error.log.NginxErrorLogCollectResponse;
+import com.jslsolucoes.nginx.admin.agent.model.response.error.log.NginxErrorLogRotateResponse;
 import com.jslsolucoes.nginx.admin.agent.resource.impl.NginxErrorLogResourceImpl;
 
 @Path("errorLog")
@@ -39,7 +39,7 @@ public class NginxErrorLogResource {
 			@Suspended AsyncResponse asyncResponse) {
 		asyncResponse
 				.resume(Response
-						.ok(new NginxLogCollectResponse(
+						.ok(new NginxErrorLogCollectResponse(
 								nginxErrorLogResourceImpl.collect()))
 						.build());
 	}
@@ -50,7 +50,7 @@ public class NginxErrorLogResource {
 			@Suspended AsyncResponse asyncResponse) {
 		asyncResponse
 				.resume(Response
-						.ok(new NginxLogRotateResponse(
+						.ok(new NginxErrorLogRotateResponse(
 								nginxErrorLogResourceImpl.rotate()))
 						.build());
 	}

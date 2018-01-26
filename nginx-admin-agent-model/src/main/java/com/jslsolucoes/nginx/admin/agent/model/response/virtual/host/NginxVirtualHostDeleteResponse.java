@@ -1,15 +1,17 @@
-package com.jslsolucoes.nginx.admin.agent.model.response;
+package com.jslsolucoes.nginx.admin.agent.model.response.virtual.host;
 
-public class NginxUpstreamDeleteResponse implements NginxResponse {
+import com.jslsolucoes.nginx.admin.agent.model.response.NginxResponse;
+
+public class NginxVirtualHostDeleteResponse implements NginxResponse {
 
 	private String stackTrace;
 	private Boolean success;
 	
-	public NginxUpstreamDeleteResponse() {
+	public NginxVirtualHostDeleteResponse() {
 		
 	}
 	
-	public NginxUpstreamDeleteResponse(String stackTrace,Boolean success) {
+	public NginxVirtualHostDeleteResponse(String stackTrace,Boolean success) {
 		this.stackTrace = stackTrace;
 		this.success = success;
 		

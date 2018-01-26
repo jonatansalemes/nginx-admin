@@ -1,4 +1,4 @@
-package com.jslsolucoes.nginx.admin.agent.model.request;
+package com.jslsolucoes.nginx.admin.agent.model.request.upstream;
 
 import java.util.List;
 

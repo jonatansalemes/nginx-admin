@@ -1,4 +1,6 @@
-package com.jslsolucoes.nginx.admin.agent.model.response;
+package com.jslsolucoes.nginx.admin.agent.model.response.upstream;
+
+import com.jslsolucoes.nginx.admin.agent.model.response.NginxResponse;
 
 public class NginxUpstreamCreateResponse implements NginxResponse {
 

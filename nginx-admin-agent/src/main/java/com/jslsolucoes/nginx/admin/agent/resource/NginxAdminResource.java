@@ -19,7 +19,7 @@ import com.jslsolucoes.nginx.admin.agent.model.response.NginxServerInfoResponse;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxStatusResponse;
 import com.jslsolucoes.nginx.admin.agent.resource.impl.NginxAdminResourceImpl;
 import com.jslsolucoes.nginx.admin.agent.resource.impl.NginxOperationResult;
-import com.jslsolucoes.nginx.admin.agent.resource.impl.nginx.NginxInfo;
+import com.jslsolucoes.nginx.admin.agent.resource.impl.info.NginxInfo;
 import com.jslsolucoes.nginx.admin.agent.resource.impl.os.OperationalSystemInfo;
 import com.jslsolucoes.nginx.admin.agent.resource.impl.status.NginxStatus;
 

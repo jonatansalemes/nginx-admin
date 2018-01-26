@@ -129,4 +129,13 @@ public class NginxAgentRunner {
 	private Nginx nginx(Long idNginx) {
 		return nginxRepository.load(new Nginx(idNginx));
 	}
+
+	public NginxResponse readUpstream(Long idNginx, String uuid) {
+		Nginx nginx = nginx(idNginx);
+		return nginxAgentClient.api(NginxAgentClientApis.upstream())
+				.withUuid(uuid)
+				.withAuthorizationKey(nginx.getAuthorizationKey())
+				.withEndpoint(nginx.getEndpoint())
+				.build().read().join();
+	}
 }

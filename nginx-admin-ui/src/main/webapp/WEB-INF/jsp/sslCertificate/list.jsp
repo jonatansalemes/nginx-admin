@@ -14,12 +14,12 @@
 			</html:gridColumn>
 			<html:gridColumn label="{ssl.certificate}">
 				<html:link target="_blank"
-						url="/sslCertificate/download/${ sslCertificate.resourceIdentifierCertificate.hash }"
+						url="/sslCertificate/download/${ sslCertificate.resourceIdentifierCertificate.uuid }"
 						label="{ssl.certificate.download}"></html:link>
 			</html:gridColumn>
 			<html:gridColumn label="{ssl.certificate.key}">
 				<html:link target="_blank"
-						url="/sslCertificate/download/${ sslCertificate.resourceIdentifierCertificatePrivateKey.hash }"
+						url="/sslCertificate/download/${ sslCertificate.resourceIdentifierCertificatePrivateKey.uuid }"
 						label="{ssl.certificate.key.download}"></html:link>
 			</html:gridColumn>
 			<html:gridColumn>

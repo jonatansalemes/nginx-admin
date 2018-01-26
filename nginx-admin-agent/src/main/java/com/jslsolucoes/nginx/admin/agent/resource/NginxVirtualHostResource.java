@@ -13,9 +13,9 @@ import javax.ws.rs.core.Response;
 
 import com.jslsolucoes.nginx.admin.agent.auth.AuthHandler;
 import com.jslsolucoes.nginx.admin.agent.error.ErrorHandler;
-import com.jslsolucoes.nginx.admin.agent.model.request.NginxVirtualHostCreateRequest;
-import com.jslsolucoes.nginx.admin.agent.model.response.NginxVirtualHostCreateResponse;
-import com.jslsolucoes.nginx.admin.agent.model.response.NginxVirtualHostDeleteResponse;
+import com.jslsolucoes.nginx.admin.agent.model.request.virtual.host.NginxVirtualHostCreateRequest;
+import com.jslsolucoes.nginx.admin.agent.model.response.virtual.host.NginxVirtualHostCreateResponse;
+import com.jslsolucoes.nginx.admin.agent.model.response.virtual.host.NginxVirtualHostDeleteResponse;
 import com.jslsolucoes.nginx.admin.agent.resource.impl.NginxOperationResult;
 import com.jslsolucoes.nginx.admin.agent.resource.impl.NginxVirtualHostResourceImpl;
 

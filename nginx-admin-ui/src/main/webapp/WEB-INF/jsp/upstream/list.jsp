@@ -14,7 +14,7 @@
 			<html:gridColumn label="{upstream.name}" exportable="true">
 				${ upstream.name }
 			</html:gridColumn>
-			<html:gridColumn label="{strategy.name}" exportable="true">
+			<html:gridColumn label="{upstream.strategy.name}" exportable="true">
 				${ upstream.strategy.name }
 			</html:gridColumn>
 			<html:gridColumn label="{upstream.servers}" collapsable="true">
@@ -26,6 +26,11 @@
 						${ upstreamServer.port }
 					</html:gridColumn>
 				</html:grid>
+			</html:gridColumn>
+			<html:gridColumn label="{upstream.download}">
+				<html:link target="_blank"
+						url="/upstream/download/${ nginx.id }/${ upstream.resourceIdentifier.uuid }"
+						label="{upstream.download.file}"></html:link>
 			</html:gridColumn>
 			<html:gridColumn>
 				<html:buttonGroup spaced="true">

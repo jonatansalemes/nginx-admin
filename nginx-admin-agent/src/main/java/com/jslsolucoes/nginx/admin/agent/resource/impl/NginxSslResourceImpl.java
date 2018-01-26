@@ -1,14 +1,14 @@
 package com.jslsolucoes.nginx.admin.agent.resource.impl;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.util.Base64;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
 import com.jslsolucoes.file.system.FileSystemBuilder;
 import com.jslsolucoes.nginx.admin.agent.config.Configuration;
+import com.jslsolucoes.nginx.admin.agent.model.FileObject;
+import com.jslsolucoes.nginx.admin.agent.model.FileObjectBuilder;
 
 @RequestScoped
 public class NginxSslResourceImpl {
@@ -40,23 +40,15 @@ public class NginxSslResourceImpl {
 		}
 	}
 	
-	public NginxOperationResult create(String certificate,String certificateUuid,String certificatePrivateKey,
-			String certificatePrivateKeyUuid) {
+	
+	private NginxOperationResult createOrUpdate(String uuid,FileObject fileObject) {
 		try {
-			File sslFolder = sslFolder();
-			
 			FileSystemBuilder
 				.newBuilder()
 				.write()
-					.withDestination(new File(sslFolder,certificateUuid + ".ssl"))
+					.withDestination(ssl(uuid))
 					.withCharset("UTF-8")
-					.withContent(decode(certificate, "UTF-8"))
-					.execute()
-				.end()
-				.write()
-					.withDestination(new File(sslFolder,certificatePrivateKeyUuid + ".ssl"))
-					.withCharset("UTF-8")
-					.withContent(decode(certificatePrivateKey, "UTF-8"))
+					.withContent(fileObject.getContent())
 					.execute()
 				.end();
 			
@@ -66,8 +58,12 @@ public class NginxSslResourceImpl {
 		}
 	}
 	
-	private String decode(String value,String charset) throws UnsupportedEncodingException {
-		return new String(Base64.getDecoder().decode(value.getBytes(charset)));
+	public NginxOperationResult update(String uuid,FileObject fileObject) {
+		return createOrUpdate(uuid, fileObject);
+	}
+	
+	public NginxOperationResult create(String uuid,FileObject fileObject) {
+		return createOrUpdate(uuid, fileObject);
 	}
 	
 	private File ssl(String uuid) {
@@ -80,5 +76,25 @@ public class NginxSslResourceImpl {
 	
 	private String settings() {
 		return configuration.getNginx().getSetting();
+	}
+
+	public FileObject read(String uuid) {
+		try {
+			File ssl = ssl(uuid);
+			String content = FileSystemBuilder
+					.newBuilder()
+					.read()
+						.withDestination(ssl)
+						.withCharset("UTF-8")
+						.execute();
+			return FileObjectBuilder
+					.newBuilder()
+					.from(ssl)
+						.withCharset("UTF-8")
+						.withContent(content)
+					.build();
+		} catch (Exception e) {
+			return null;
+		}
 	}
 }

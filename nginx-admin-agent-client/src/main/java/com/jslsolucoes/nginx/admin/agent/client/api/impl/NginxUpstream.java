@@ -13,14 +13,14 @@ import javax.ws.rs.core.Response;
 import com.jslsolucoes.nginx.admin.agent.client.RestClient;
 import com.jslsolucoes.nginx.admin.agent.client.api.NginxAgentClientApi;
 import com.jslsolucoes.nginx.admin.agent.model.Endpoint;
-import com.jslsolucoes.nginx.admin.agent.model.request.NginxUpstreamCreateRequest;
-import com.jslsolucoes.nginx.admin.agent.model.request.NginxUpstreamUpdateRequest;
+import com.jslsolucoes.nginx.admin.agent.model.request.upstream.NginxUpstreamCreateRequest;
+import com.jslsolucoes.nginx.admin.agent.model.request.upstream.NginxUpstreamUpdateRequest;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxExceptionResponse;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxResponse;
-import com.jslsolucoes.nginx.admin.agent.model.response.NginxUpstreamCreateResponse;
-import com.jslsolucoes.nginx.admin.agent.model.response.NginxUpstreamDeleteResponse;
-import com.jslsolucoes.nginx.admin.agent.model.response.NginxUpstreamReadResponse;
-import com.jslsolucoes.nginx.admin.agent.model.response.NginxUpstreamUpdateResponse;
+import com.jslsolucoes.nginx.admin.agent.model.response.upstream.NginxUpstreamCreateResponse;
+import com.jslsolucoes.nginx.admin.agent.model.response.upstream.NginxUpstreamDeleteResponse;
+import com.jslsolucoes.nginx.admin.agent.model.response.upstream.NginxUpstreamReadResponse;
+import com.jslsolucoes.nginx.admin.agent.model.response.upstream.NginxUpstreamUpdateResponse;
 
 @Vetoed
 public class NginxUpstream extends DefaultNginxAgentClientApi implements NginxAgentClientApi {

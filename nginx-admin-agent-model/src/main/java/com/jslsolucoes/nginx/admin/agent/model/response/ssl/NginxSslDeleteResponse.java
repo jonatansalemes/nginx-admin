@@ -1,15 +1,17 @@
-package com.jslsolucoes.nginx.admin.agent.model.response;
+package com.jslsolucoes.nginx.admin.agent.model.response.ssl;
 
-public class NginxUpstreamUpdateResponse implements NginxResponse {
+import com.jslsolucoes.nginx.admin.agent.model.response.NginxResponse;
+
+public class NginxSslDeleteResponse implements NginxResponse {
 
 	private String stackTrace;
 	private Boolean success;
 	
-	public NginxUpstreamUpdateResponse() {
+	public NginxSslDeleteResponse() {
 		
 	}
 	
-	public NginxUpstreamUpdateResponse(String stackTrace,Boolean success) {
+	public NginxSslDeleteResponse(String stackTrace,Boolean success) {
 		this.stackTrace = stackTrace;
 		this.success = success;
 		

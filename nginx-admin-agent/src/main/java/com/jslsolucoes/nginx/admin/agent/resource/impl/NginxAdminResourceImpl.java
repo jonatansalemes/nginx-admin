@@ -7,8 +7,8 @@ import javax.inject.Inject;
 
 import com.jslsolucoes.file.system.FileSystemBuilder;
 import com.jslsolucoes.nginx.admin.agent.config.Configuration;
-import com.jslsolucoes.nginx.admin.agent.resource.impl.nginx.NginxInfo;
-import com.jslsolucoes.nginx.admin.agent.resource.impl.nginx.NginxInfoDiscover;
+import com.jslsolucoes.nginx.admin.agent.resource.impl.info.NginxInfo;
+import com.jslsolucoes.nginx.admin.agent.resource.impl.info.NginxInfoDiscover;
 import com.jslsolucoes.nginx.admin.agent.resource.impl.os.OperationalSystem;
 import com.jslsolucoes.nginx.admin.agent.resource.impl.os.OperationalSystemInfo;
 import com.jslsolucoes.nginx.admin.agent.resource.impl.status.NginxStatus;

@@ -1,18 +1,19 @@
-package com.jslsolucoes.nginx.admin.agent.model.response;
+package com.jslsolucoes.nginx.admin.agent.model.response.error.log;
 
 import java.util.List;
 
 import com.jslsolucoes.nginx.admin.agent.model.FileObject;
+import com.jslsolucoes.nginx.admin.agent.model.response.NginxResponse;
 
-public class NginxLogCollectResponse implements NginxResponse {
+public class NginxErrorLogCollectResponse implements NginxResponse {
 
 	private List<FileObject> files;
 	
-	public NginxLogCollectResponse() {
+	public NginxErrorLogCollectResponse() {
 		
 	}
 	
-	public NginxLogCollectResponse(List<FileObject> files) {
+	public NginxErrorLogCollectResponse(List<FileObject> files) {
 		this.files = files;
 	}
 

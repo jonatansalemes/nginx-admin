@@ -19,12 +19,12 @@ import javax.ws.rs.core.UriInfo;
 import com.jslsolucoes.nginx.admin.agent.auth.AuthHandler;
 import com.jslsolucoes.nginx.admin.agent.error.ErrorHandler;
 import com.jslsolucoes.nginx.admin.agent.model.FileObject;
-import com.jslsolucoes.nginx.admin.agent.model.request.NginxUpstreamCreateRequest;
-import com.jslsolucoes.nginx.admin.agent.model.request.NginxUpstreamUpdateRequest;
-import com.jslsolucoes.nginx.admin.agent.model.response.NginxUpstreamCreateResponse;
-import com.jslsolucoes.nginx.admin.agent.model.response.NginxUpstreamDeleteResponse;
-import com.jslsolucoes.nginx.admin.agent.model.response.NginxUpstreamReadResponse;
-import com.jslsolucoes.nginx.admin.agent.model.response.NginxUpstreamUpdateResponse;
+import com.jslsolucoes.nginx.admin.agent.model.request.upstream.NginxUpstreamCreateRequest;
+import com.jslsolucoes.nginx.admin.agent.model.request.upstream.NginxUpstreamUpdateRequest;
+import com.jslsolucoes.nginx.admin.agent.model.response.upstream.NginxUpstreamCreateResponse;
+import com.jslsolucoes.nginx.admin.agent.model.response.upstream.NginxUpstreamDeleteResponse;
+import com.jslsolucoes.nginx.admin.agent.model.response.upstream.NginxUpstreamReadResponse;
+import com.jslsolucoes.nginx.admin.agent.model.response.upstream.NginxUpstreamUpdateResponse;
 import com.jslsolucoes.nginx.admin.agent.resource.impl.NginxOperationResult;
 import com.jslsolucoes.nginx.admin.agent.resource.impl.NginxUpstreamResourceImpl;
 
@@ -52,10 +52,10 @@ public class NginxUpstreamResource {
 			@Context UriInfo uriInfo) {
 		NginxOperationResult nginxOperationResult = nginxUpstreamResourceImpl.create(nginxUpstreamCreateRequest.getName(), nginxUpstreamCreateRequest.getUuid(), nginxUpstreamCreateRequest.getStrategy(),
 				nginxUpstreamCreateRequest.getEndpoints());
-		 UriBuilder builder = uriInfo.getAbsolutePathBuilder();
-	     builder.path(nginxUpstreamCreateRequest.getUuid());
+		 UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
+		 uriBuilder.path(nginxUpstreamCreateRequest.getUuid());
 	     asyncResponse.resume(Response
-				.created(builder.build())
+				.created(uriBuilder.build())
 				.entity(new NginxUpstreamCreateResponse(nginxOperationResult.getOutput(), nginxOperationResult.isSuccess()))
 				.build());
 	}

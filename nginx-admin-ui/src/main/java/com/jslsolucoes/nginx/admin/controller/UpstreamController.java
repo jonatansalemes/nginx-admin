@@ -1,5 +1,6 @@
 package com.jslsolucoes.nginx.admin.controller;
 
+import java.io.ByteArrayInputStream;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -7,9 +8,12 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 
 import com.google.common.collect.Lists;
+import com.jslsolucoes.i18n.Messages;
 import com.jslsolucoes.nginx.admin.agent.NginxAgentRunner;
 import com.jslsolucoes.nginx.admin.agent.model.Endpoint;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxResponse;
+import com.jslsolucoes.nginx.admin.agent.model.response.upstream.NginxUpstreamReadResponse;
+import com.jslsolucoes.nginx.admin.error.NginxAdminRuntimeException;
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.model.ResourceIdentifier;
 import com.jslsolucoes.nginx.admin.model.Server;
@@ -28,6 +32,8 @@ import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Result;
+import br.com.caelum.vraptor.observer.download.Download;
+import br.com.caelum.vraptor.observer.download.InputStreamDownload;
 import br.com.caelum.vraptor.view.Results;
 
 @Controller
@@ -69,6 +75,17 @@ public class UpstreamController {
 		this.result.include("serverList", serverRepository.listAllFor(new Nginx(idNginx)));
 		this.result.include("strategyList", strategyRepository.listAll());
 		this.result.include("nginx", new Nginx(idNginx));
+	}
+	
+	@Path("download/{idNginx}/{uuid}")
+	public Download download(Long idNginx,String uuid) {
+		NginxResponse nginxResponse = nginxAgentRunner.readUpstream(idNginx,uuid);
+		if(nginxResponse.success()){
+			NginxUpstreamReadResponse nginxUpstreamReadResponse = (NginxUpstreamReadResponse) nginxResponse;
+			return new InputStreamDownload(new ByteArrayInputStream(nginxUpstreamReadResponse.getFileObject().getContent().getBytes()), "application/octet-stream", uuid + ".conf", true, nginxUpstreamReadResponse.getFileObject().getSize());
+		} else {
+			throw new NginxAdminRuntimeException(Messages.getString("upstream.download.failed"));
+		}
 	}
 
 	public void validate(Long id, String name, Long idStrategy, List<Long> servers, List<Integer> ports,
