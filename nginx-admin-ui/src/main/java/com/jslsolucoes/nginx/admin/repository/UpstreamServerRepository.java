@@ -7,7 +7,7 @@ import com.jslsolucoes.nginx.admin.model.UpstreamServer;
 
 public interface UpstreamServerRepository {
 
-	public void recreate(Upstream upstream, List<UpstreamServer> upstreamServers);
+	public void create(Upstream upstream, List<UpstreamServer> upstreamServers);
 
 	public void deleteAllFor(Upstream upstream);
 

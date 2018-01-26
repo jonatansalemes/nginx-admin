@@ -16,10 +16,10 @@ insert into admin.user (login,email,password,password_force_change) values ('adm
 
 create table admin.resource_identifier (
 	id bigint(10) auto_increment not null, 
-	hash varchar(100) not null,
+	uuid varchar(100) not null,
 	primary key (id)
 );
-alter table admin.resource_identifier add constraint resource_identifier_uk1 unique(hash);
+alter table admin.resource_identifier add constraint resource_identifier_uk1 unique(uuid);
 
 create table admin.nginx (
 	id bigint(10) auto_increment not null,

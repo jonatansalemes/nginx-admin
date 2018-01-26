@@ -8,11 +8,11 @@ import java.util.List;
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.model.SslCertificate;
 import com.jslsolucoes.nginx.admin.repository.impl.OperationResult;
-import com.jslsolucoes.nginx.admin.repository.impl.OperationType;
+import com.jslsolucoes.nginx.admin.repository.impl.OperationStatusType;
 
 public interface SslCertificateRepository {
 
-	public OperationType deleteWithResource(SslCertificate sslCertificate) throws IOException;
+	public OperationStatusType deleteWithResource(SslCertificate sslCertificate) throws IOException;
 
 	public SslCertificate load(SslCertificate sslCertificate);
 

@@ -9,13 +9,13 @@ import com.jslsolucoes.nginx.admin.model.VirtualHost;
 import com.jslsolucoes.nginx.admin.model.VirtualHostAlias;
 import com.jslsolucoes.nginx.admin.model.VirtualHostLocation;
 import com.jslsolucoes.nginx.admin.repository.impl.OperationResult;
-import com.jslsolucoes.nginx.admin.repository.impl.OperationType;
+import com.jslsolucoes.nginx.admin.repository.impl.OperationStatusType;
 
 public interface VirtualHostRepository {
 
 	public List<VirtualHost> listAllFor(Nginx nginx);
 
-	public OperationType deleteWithResource(VirtualHost virtualHost) throws IOException;
+	public OperationStatusType deleteWithResource(VirtualHost virtualHost) throws IOException;
 
 	public VirtualHost load(VirtualHost virtualHost);
 

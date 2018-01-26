@@ -2,10 +2,10 @@ package com.jslsolucoes.nginx.admin.repository.impl;
 
 public class OperationResult {
 
-	private OperationType operationType;
+	private OperationStatusType operationType;
 	private Long id;
 
-	public OperationResult(OperationType operationType, Long id) {
+	public OperationResult(OperationStatusType operationType, Long id) {
 		this.operationType = operationType;
 		this.id = id;
 	}
@@ -14,7 +14,7 @@ public class OperationResult {
 		return id;
 	}
 
-	public OperationType getOperationType() {
+	public OperationStatusType getOperationType() {
 		return operationType;
 	}
 }

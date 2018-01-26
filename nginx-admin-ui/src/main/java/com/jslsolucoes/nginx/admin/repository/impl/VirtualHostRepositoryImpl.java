@@ -1,6 +1,5 @@
 package com.jslsolucoes.nginx.admin.repository.impl;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,10 +16,8 @@ import javax.persistence.criteria.Root;
 import javax.persistence.criteria.SetJoin;
 
 import com.jslsolucoes.i18n.Messages;
-import com.jslsolucoes.nginx.admin.error.NginxAdminException;
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.model.Nginx_;
-import com.jslsolucoes.nginx.admin.model.Upstream_;
 import com.jslsolucoes.nginx.admin.model.VirtualHost;
 import com.jslsolucoes.nginx.admin.model.VirtualHostAlias;
 import com.jslsolucoes.nginx.admin.model.VirtualHostAlias_;
@@ -58,7 +55,7 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 
 	@Override
 	public OperationResult saveOrUpdate(VirtualHost virtualHost, List<VirtualHostAlias> aliases,
-			List<VirtualHostLocation> locations) throws NginxAdminException {
+			List<VirtualHostLocation> locations) {
 		if (virtualHost.getId() == null) {
 			virtualHost.setResourceIdentifier(resourceIdentifierRepository.create());
 		}
@@ -68,30 +65,18 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 		OperationResult operationResult = super.saveOrUpdate(virtualHost);
 		virtualHostAliasRepository.recreate(new VirtualHost(operationResult.getId()), aliases);
 		virtualHostLocationRepository.recreate(new VirtualHost(operationResult.getId()), locations);
-		flushAndClear();
-		configure(virtualHost);
 		return operationResult;
 	}
 
 	@Override
-	public OperationType deleteWithResource(VirtualHost virtualHost) throws IOException {
+	public OperationStatusType deleteWithResource(VirtualHost virtualHost) {
 		virtualHostAliasRepository.deleteAllFor(virtualHost);
 		virtualHostLocationRepository.deleteAllFor(virtualHost);
-
 		VirtualHost virtualHostToDelete = load(virtualHost);
-		String hash = virtualHostToDelete.getResourceIdentifier().getHash();
-		//FileUtils.forceDelete(new File(nginxRepository.configuration().virtualHost(), hash + ".conf"));
+		String uuid = virtualHostToDelete.getResourceIdentifier().getUuid();
 		super.delete(virtualHostToDelete);
-		resourceIdentifierRepository.delete(hash);
-		return OperationType.DELETE;
-	}
-
-	private void configure(VirtualHost virtualHost) throws NginxAdminException {
-		try {
-			
-		} catch (Exception e) {
-			throw new NginxAdminException(e);
-		}
+		resourceIdentifierRepository.delete(uuid);
+		return OperationStatusType.DELETE;
 	}
 
 	@Override

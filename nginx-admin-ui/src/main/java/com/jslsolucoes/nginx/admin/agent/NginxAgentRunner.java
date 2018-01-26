@@ -45,6 +45,27 @@ public class NginxAgentRunner {
 				.withEndpoints(endpoints)
 				.build().create().join();
 	}
+	
+	public NginxResponse updateUpstream(Long idNginx,String uuid, String name,String strategy,List<Endpoint> endpoints) {
+		Nginx nginx = nginx(idNginx);
+		return nginxAgentClient.api(NginxAgentClientApis.upstream())
+				.withUuid(uuid)
+				.withAuthorizationKey(nginx.getAuthorizationKey())
+				.withEndpoint(nginx.getEndpoint())
+				.withName(name)
+				.withStrategy(strategy)
+				.withEndpoints(endpoints)
+				.build().update().join();
+	}
+	
+	public NginxResponse deleteUpstream(Long idNginx,String uuid) {
+		Nginx nginx = nginx(idNginx);
+		return nginxAgentClient.api(NginxAgentClientApis.upstream())
+				.withUuid(uuid)
+				.withAuthorizationKey(nginx.getAuthorizationKey())
+				.withEndpoint(nginx.getEndpoint())
+				.build().delete().join();
+	}
 
 	public NginxResponse configure(Long idNginx, Integer gzip, Integer maxPostSize) {
 		Nginx nginx = nginx(idNginx);

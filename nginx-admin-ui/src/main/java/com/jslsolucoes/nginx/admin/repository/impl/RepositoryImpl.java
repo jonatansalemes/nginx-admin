@@ -55,14 +55,14 @@ public abstract class RepositoryImpl<T> {
 		return (T) entityManager.find(clazz, id);
 	}
 
-	public OperationType insert(T entity) {
+	public OperationStatusType insert(T entity) {
 		this.entityManager.persist(entity);
-		return OperationType.INSERT;
+		return OperationStatusType.INSERT;
 	}
 
-	public OperationType update(T entity) {
+	public OperationStatusType update(T entity) {
 		this.entityManager.merge(entity);
-		return OperationType.UPDATE;
+		return OperationStatusType.UPDATE;
 	}
 
 	private Long id(T entity) {
@@ -83,13 +83,13 @@ public abstract class RepositoryImpl<T> {
 		return (Long) new Mirror().on(entity).invoke().getterFor(fields.get(0));
 	}
 
-	public OperationType delete(Long id) {
+	public OperationStatusType delete(Long id) {
 		return delete(load(id));
 	}
 
-	public OperationType delete(T entity) {
+	public OperationStatusType delete(T entity) {
 		this.entityManager.remove(load(entity));
-		return OperationType.DELETE;
+		return OperationStatusType.DELETE;
 	}
 
 	public OperationResult saveOrUpdate(T entity) {

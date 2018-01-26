@@ -1,6 +1,5 @@
 package com.jslsolucoes.nginx.admin.repository.impl;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,7 +15,6 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import com.jslsolucoes.i18n.Messages;
-import com.jslsolucoes.nginx.admin.error.NginxAdminException;
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.model.Nginx_;
 import com.jslsolucoes.nginx.admin.model.Upstream;
@@ -47,13 +45,9 @@ public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements 
 	}
 
 	@Override
-	public OperationResult saveOrUpdate(Upstream upstream, List<UpstreamServer> upstreamServers)
-			throws NginxAdminException {
-		if (upstream.getId() == null) {
-			upstream.setResourceIdentifier(resourceIdentifierRepository.create());
-		}
+	public OperationResult saveOrUpdate(Upstream upstream, List<UpstreamServer> upstreamServers) {
 		OperationResult operationResult = super.saveOrUpdate(upstream);
-		upstreamServerRepository.recreate(new Upstream(operationResult.getId()), upstreamServers);
+		upstreamServerRepository.create(new Upstream(operationResult.getId()), upstreamServers);
 		return operationResult;
 	}
 	
@@ -86,14 +80,13 @@ public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements 
 	}
 
 	@Override
-	public OperationType deleteWithResource(Upstream upstream) throws IOException {
-		upstreamServerRepository.deleteAllFor(upstream);
+	public OperationStatusType delete(Upstream upstream) {
 		Upstream upstreamToDelete = load(upstream);
-		String hash = upstreamToDelete.getResourceIdentifier().getHash();
-		//FileUtils.forceDelete(new File(nginxRepository.configuration().upstream(), hash + ".conf"));
+		upstreamServerRepository.deleteAllFor(upstreamToDelete);
+		String uuid = upstreamToDelete.getResourceIdentifier().getUuid();
 		super.delete(upstreamToDelete);
-		resourceIdentifierRepository.delete(hash);
-		return OperationType.DELETE;
+		resourceIdentifierRepository.delete(uuid);
+		return OperationStatusType.DELETE;
 	}
 
 	@Override

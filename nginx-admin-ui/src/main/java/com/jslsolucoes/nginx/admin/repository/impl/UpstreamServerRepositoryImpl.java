@@ -48,7 +48,7 @@ public class UpstreamServerRepositoryImpl extends RepositoryImpl<UpstreamServer>
 	}
 
 	@Override
-	public void recreate(Upstream upstream, List<UpstreamServer> upstreamServers) {
+	public void create(Upstream upstream, List<UpstreamServer> upstreamServers) {
 		deleteAllFor(upstream);
 		for (UpstreamServer upstreamServer : upstreamServers) {
 			upstreamServer.setUpstream(upstream);

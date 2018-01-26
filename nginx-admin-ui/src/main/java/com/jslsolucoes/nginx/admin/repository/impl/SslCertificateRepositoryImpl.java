@@ -45,7 +45,7 @@ public class SslCertificateRepositoryImpl extends RepositoryImpl<SslCertificate>
 	}
 
 	@Override
-	public OperationType deleteWithResource(SslCertificate sslCertificate) throws IOException {
+	public OperationStatusType deleteWithResource(SslCertificate sslCertificate) throws IOException {
 		/*
 		File ssl = nginxRepository.configuration().ssl();
 		SslCertificate sslCertificateToDelete = load(sslCertificate);
@@ -58,7 +58,7 @@ public class SslCertificateRepositoryImpl extends RepositoryImpl<SslCertificate>
 		resourceIdentifierRepository.delete(sslCertificateHash);
 		resourceIdentifierRepository.delete(sslCertificatePrivateKeyHash);
 		*/
-		return OperationType.DELETE;
+		return OperationStatusType.DELETE;
 	}
 	
 	private SslCertificate hasEquals(SslCertificate sslCertificate) {

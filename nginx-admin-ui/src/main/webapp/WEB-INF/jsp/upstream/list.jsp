@@ -4,6 +4,8 @@
 	<html:block>
 		<html:alert state="success" label="{upstream.delete.success}"
 			rendered="${ operation == 'DELETE' }"></html:alert>
+		<html:alert state="danger" label="{upstream.delete.failed}"
+			rendered="${ operation == 'DELETE_FAILED' }"></html:alert>
 	</html:block>
 
 	<html:block>

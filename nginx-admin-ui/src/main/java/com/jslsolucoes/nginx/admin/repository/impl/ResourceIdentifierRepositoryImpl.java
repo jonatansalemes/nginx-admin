@@ -40,12 +40,12 @@ public class ResourceIdentifierRepositoryImpl extends RepositoryImpl<ResourceIde
 		super.delete(findByHash(hash));
 	}
 
-	private ResourceIdentifier findByHash(String hash) {
+	private ResourceIdentifier findByHash(String uuid) {
 		try {
 			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 			CriteriaQuery<ResourceIdentifier> criteriaQuery = criteriaBuilder.createQuery(ResourceIdentifier.class);
 			Root<ResourceIdentifier> root = criteriaQuery.from(ResourceIdentifier.class);
-			criteriaQuery.where(criteriaBuilder.equal(root.get(ResourceIdentifier_.hash), hash));
+			criteriaQuery.where(criteriaBuilder.equal(root.get(ResourceIdentifier_.uuid), uuid));
 			return entityManager.createQuery(criteriaQuery).getSingleResult();
 		} catch (NoResultException noResultException) {
 			return null;

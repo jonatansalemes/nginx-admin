@@ -18,15 +18,15 @@ public class ResourceIdentifier implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "hash")
-	private String hash;
+	@Column(name = "uuid")
+	private String uuid;
 
 	public ResourceIdentifier() {
-		// default constructor
+		
 	}
 
-	public ResourceIdentifier(String hash) {
-		this.hash = hash;
+	public ResourceIdentifier(String uuid) {
+		this.uuid = uuid;
 	}
 
 	public ResourceIdentifier(Long id) {
@@ -41,12 +41,12 @@ public class ResourceIdentifier implements Serializable {
 		this.id = id;
 	}
 
-	public String getHash() {
-		return hash;
+	public String getUuid() {
+		return uuid;
 	}
 
-	public void setHash(String hash) {
-		this.hash = hash;
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 
 }
