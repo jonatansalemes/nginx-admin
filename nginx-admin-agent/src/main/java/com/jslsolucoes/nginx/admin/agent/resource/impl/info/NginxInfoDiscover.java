@@ -99,7 +99,7 @@ public class NginxInfoDiscover {
 				return version.group(1);
 			}
 		}
-		return runtimeResult.getOutput();
+		return "0.0.0";
 	}
 
 	private BigDecimal uptime() {

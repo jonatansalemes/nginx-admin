@@ -18,6 +18,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -85,15 +86,16 @@ public class ErrorLogRepositoryImpl extends RepositoryImpl<ErrorLog>  implements
 					try {
 						for(String line : IOUtils
 							.readLines(new StringReader(fileObject.getContent()))) {					
-								Matcher matcher = Pattern.compile("([0-9]{4}\\/[0-9]{2}\\/[0-9]{2}\\s[0-9]{2}:[0-9]{2}:[0-9]{2})\\s\\[(.*?)\\]\\s([0-9]{1,})#([0-9]{1,}):\\s\\*([0-9]{1,})\\s(.*)").matcher(line);
+								Matcher matcher = Pattern.compile("([0-9]{4}\\/[0-9]{2}\\/[0-9]{2}\\s[0-9]{2}:[0-9]{2}:[0-9]{2})\\s\\[(.*?)\\]\\s([0-9]{1,})#([0-9]{1,}):(\\s\\*([0-9]{1,}))?\\s(.*)").matcher(line);
 								if(matcher.find()){
 									try {
 										Date timestamp = simpleDateFormat.parse(matcher.group(1));
 										String level = matcher.group(2);
 										Long pid = Long.valueOf(matcher.group(3));
 										Long tid = Long.valueOf(matcher.group(4));
-										Long cid = Long.valueOf(matcher.group(5));
-										String message = matcher.group(6);
+										
+										Long cid = cid(matcher.group(6));
+										String message = matcher.group(7);
 										
 										ErrorLog errorLog = new ErrorLog();
 										errorLog.setCid(cid);
@@ -115,6 +117,10 @@ public class ErrorLogRepositoryImpl extends RepositoryImpl<ErrorLog>  implements
 				}
 			}
 		}
+	}
+
+	private Long cid(String value) {
+		return (!StringUtils.isEmpty(value) ?  Long.valueOf(value) : null);
 	}
 
 	@Override

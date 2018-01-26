@@ -179,6 +179,12 @@ public class NginxAgentRunner {
 				.withAuthorizationKey(authorizationKey(idNginx)).withEndpoint(endpoint(idNginx)).build().delete()
 				.join();
 	}
+	
+	public NginxResponse importFromNginxConfiguration(Long idNginx, String conf) {
+		return nginxAgentClient.api(NginxAgentClientApis.importation()).withConf(conf)
+				.withAuthorizationKey(authorizationKey(idNginx)).withEndpoint(endpoint(idNginx)).build().conf()
+				.join();
+	}
 
 	private Nginx nginx(Long idNginx) {
 		return nginxRepository.load(new Nginx(idNginx));

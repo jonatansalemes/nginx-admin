@@ -9,6 +9,7 @@ import com.jslsolucoes.nginx.admin.agent.client.api.impl.access.log.NginxAccessL
 import com.jslsolucoes.nginx.admin.agent.client.api.impl.cli.NginxCommandLineInterfaceBuilder;
 import com.jslsolucoes.nginx.admin.agent.client.api.impl.configure.NginxConfigureBuilder;
 import com.jslsolucoes.nginx.admin.agent.client.api.impl.error.log.NginxErrorLogBuilder;
+import com.jslsolucoes.nginx.admin.agent.client.api.impl.importation.NginxImportBuilder;
 import com.jslsolucoes.nginx.admin.agent.client.api.impl.info.NginxServerInfoBuilder;
 import com.jslsolucoes.nginx.admin.agent.client.api.impl.os.NginxOperationalSystemInfoBuilder;
 import com.jslsolucoes.nginx.admin.agent.client.api.impl.ping.NginxPingBuilder;
@@ -60,6 +61,9 @@ public class NginxAgentClient {
 					.withScheduledExecutorService(scheduledExecutorService);
 		} else if (clazz.equals(NginxSslBuilder.class)) {
 			return (T) NginxSslBuilder.newBuilder()
+					.withScheduledExecutorService(scheduledExecutorService);
+		} else if (clazz.equals(NginxImportBuilder.class)) {
+			return (T) NginxImportBuilder.newBuilder()
 					.withScheduledExecutorService(scheduledExecutorService);
 		}
 		throw new IllegalArgumentException("Please select an valid api");

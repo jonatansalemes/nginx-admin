@@ -18,11 +18,6 @@
 		</dependency>
 		<dependency>
 			<groupId>com.jslsolucoes</groupId>
-			<artifactId>nginx-admin-parser</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.jslsolucoes</groupId>
 			<artifactId>nginx-admin-ui-configuration</artifactId>
 			<version>${project.version}</version>
 		</dependency>
@@ -64,7 +59,7 @@
 		<dependency>
 			<groupId>com.jslsolucoes</groupId>
 			<artifactId>vraptor4-scheduler</artifactId>
-			<version>1.0.1</version>
+			<version>1.0.2-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>br.com.caelum</groupId>

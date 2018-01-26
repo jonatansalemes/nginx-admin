@@ -7,6 +7,10 @@ public class UpstreamDirective implements Directive {
 	private String name;
 	private String strategy;
 	private List<UpstreamDirectiveServer> servers;
+	
+	public UpstreamDirective() {
+		
+	}
 
 	public UpstreamDirective(String name, String strategy, List<UpstreamDirectiveServer> servers) {
 		this.name = name;

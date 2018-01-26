@@ -2,7 +2,7 @@ package com.jslsolucoes.nginx.admin.nginx.parser.directive;
 
 import java.util.List;
 
-public class ServerDirective implements Directive {
+public class VirtualHostDirective implements Directive {
 
 	private Integer port;
 	private List<String> aliases;
@@ -52,7 +52,7 @@ public class ServerDirective implements Directive {
 
 	@Override
 	public DirectiveType type() {
-		return DirectiveType.SERVER;
+		return DirectiveType.VIRTUAL_HOST;
 	}
 
 }

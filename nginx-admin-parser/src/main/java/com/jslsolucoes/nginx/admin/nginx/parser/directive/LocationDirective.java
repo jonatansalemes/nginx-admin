@@ -4,7 +4,7 @@ public class LocationDirective {
 
 	private String path;
 	private String upstream;
-
+	
 	public String getPath() {
 		return path;
 	}

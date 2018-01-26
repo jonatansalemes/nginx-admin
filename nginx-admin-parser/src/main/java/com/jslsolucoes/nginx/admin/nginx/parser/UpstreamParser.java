@@ -1,7 +1,5 @@
 package com.jslsolucoes.nginx.admin.nginx.parser;
 
-import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -22,7 +20,7 @@ public class UpstreamParser implements Parser {
 	}
 
 	@Override
-	public List<Directive> parse() throws IOException {
+	public List<Directive> parse() {
 		List<Directive> upstreams = new ArrayList<>();
 		Matcher upstreamers = Pattern.compile("upstream(\\s{1,})(.*?)\\{(.*?)\\}", Pattern.DOTALL).matcher(fileContent);
 		while (upstreamers.find()) {
@@ -59,7 +57,7 @@ public class UpstreamParser implements Parser {
 	}
 
 	@Override
-	public Boolean accepts() throws IOException {
+	public Boolean accepts() {
 		return Pattern.compile("upstream(\\s{1,})(.*?)\\{(.*?)\\}", Pattern.DOTALL).matcher(fileContent).find();
 	}
 }

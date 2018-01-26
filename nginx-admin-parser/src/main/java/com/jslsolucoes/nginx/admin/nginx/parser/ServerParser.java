@@ -1,7 +1,5 @@
 package com.jslsolucoes.nginx.admin.nginx.parser;
 
-import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,7 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.jslsolucoes.nginx.admin.nginx.parser.directive.Directive;
 import com.jslsolucoes.nginx.admin.nginx.parser.directive.LocationDirective;
-import com.jslsolucoes.nginx.admin.nginx.parser.directive.ServerDirective;
+import com.jslsolucoes.nginx.admin.nginx.parser.directive.VirtualHostDirective;
 
 public class ServerParser implements Parser {
 
@@ -24,11 +22,11 @@ public class ServerParser implements Parser {
 	}
 
 	@Override
-	public List<Directive> parse() throws IOException {
+	public List<Directive> parse() {
 		List<Directive> virtualHosts = new ArrayList<>();
 		for (String block : blocks()) {
 
-			ServerDirective virtualHost = new ServerDirective();
+			VirtualHostDirective virtualHost = new VirtualHostDirective();
 
 			Matcher listen = Pattern.compile("listen(\\s{1,})([0-9]{2,})(\\s(.*?))?;").matcher(block);
 			if (listen.find()) {
@@ -74,7 +72,7 @@ public class ServerParser implements Parser {
 		return locationDirectives;
 	}
 
-	private List<String> blocks() throws IOException {
+	private List<String> blocks() {
 		List<String> blocks = new ArrayList<>();
 		List<String> lines = Arrays.asList(fileContent.split("\n"));
 
@@ -99,7 +97,7 @@ public class ServerParser implements Parser {
 	}
 
 	@Override
-	public Boolean accepts() throws IOException {
+	public Boolean accepts() {
 		return Pattern.compile("server(\\s{1,})\\{").matcher(fileContent).find();
 	}
 
