@@ -19,6 +19,6 @@ public class ConfigurationFactory {
 
 	@Produces
 	public Configuration getInstance() {
-		return ConfigurationLoader.buildFrom(properties);
+		return ConfigurationLoader.newBuilder().withProperties(properties).build();
 	}
 }

@@ -33,8 +33,6 @@ alter table admin.nginx add constraint nginx_uk1 unique(endpoint);
 create table admin.configuration (
 	id bigint(10) auto_increment not null, 
 	id_nginx bigint(10) not null,
-	bin varchar(255) not null,
-	home varchar(255) not null,
 	gzip int(1) not null,
 	max_post_size int(4) not null,
 	primary key (id)

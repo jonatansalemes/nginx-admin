@@ -5,15 +5,16 @@ import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxConfigureBuilder;
 import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxOperationalSystemInfoBuilder;
 import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxPingBuilder;
 import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxServerInfoBuilder;
+import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxStatusBuilder;
 import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxUpstreamBuilder;
 
 public class NginxAgentClientApis {
 
-	public static Class<NginxCommandLineInterfaceBuilder> commandLineInterface() {
+	public static Class<NginxCommandLineInterfaceBuilder> cli() {
 		return NginxCommandLineInterfaceBuilder.class;
 	}
 
-	public static Class<NginxOperationalSystemInfoBuilder> operationalSystemInfo() {
+	public static Class<NginxOperationalSystemInfoBuilder> os() {
 		return NginxOperationalSystemInfoBuilder.class;
 	}
 	
@@ -21,8 +22,12 @@ public class NginxAgentClientApis {
 		return NginxPingBuilder.class;
 	}
 	
-	public static Class<NginxServerInfoBuilder> nginxServerInfo() {
+	public static Class<NginxServerInfoBuilder> info() {
 		return NginxServerInfoBuilder.class;
+	}
+	
+	public static Class<NginxStatusBuilder> status() {
+		return NginxStatusBuilder.class;
 	}
 	
 	public static Class<NginxConfigureBuilder> configure() {

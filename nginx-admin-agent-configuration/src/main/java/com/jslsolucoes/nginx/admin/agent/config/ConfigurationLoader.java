@@ -53,15 +53,7 @@ public class ConfigurationLoader {
 		}
 		return value;
 	}
-
-	public static void main(String[] args) throws IOException {
-		Properties sample = new Properties();
-		sample.load(ConfigurationLoader.class.getResourceAsStream("/nginx-agent.conf"));
-		Configuration configuration = ConfigurationLoader.newBuilder()
-				.withProperties(sample).replace().build();
-		System.out.println(configuration.getNginx().getSetting());
-	}
-
+	
 	public Configuration build() {
 		Configuration standaloneConfiguration = new Configuration();
 		standaloneConfiguration.setServer(server());

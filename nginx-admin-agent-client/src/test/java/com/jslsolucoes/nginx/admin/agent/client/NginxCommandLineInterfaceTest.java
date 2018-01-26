@@ -22,7 +22,7 @@ public class NginxCommandLineInterfaceTest {
 		nginxAgentClient.api(NginxAgentClientApis.configure()).withAuthorizationKey("fdoinsafodsoianoifd")
 				.withEndpoint("https://192.168.99.100:3443").withGzip(true).withMaxPostSize(15).build().configure()
 				.join();
-		nginxCommandLineInterface = nginxAgentClient.api(NginxAgentClientApis.commandLineInterface())
+		nginxCommandLineInterface = nginxAgentClient.api(NginxAgentClientApis.cli())
 				.withAuthorizationKey("fdoinsafodsoianoifd").withEndpoint("http://192.168.99.100:3000").build();
 	}
 

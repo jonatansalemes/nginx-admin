@@ -12,18 +12,9 @@
 	</html:block>
 	
 	<html:block>
-		<html:form action="/configuration/saveOrUpdate" validation="/configuration/validate"
-			label="{nginx.configure.form}">
+		<html:form action="/configuration/saveOrUpdate" label="{nginx.configure.form}">
 			<html:input name="id" value="${ configuration.id }" type="hidden"></html:input>
 			<html:input name="idNginx" type="hidden" value="${ nginx.id }"></html:input>
-			<html:formGroup label="{nginx.configure.bin}" required="true">
-				<html:input name="bin" value="${ configuration == null ? '/usr/sbin/nginx' : configuration.bin }"
-					placeholder="{nginx.configure.bin.placeholder}" required="true"></html:input>
-			</html:formGroup>
-			<html:formGroup label="{nginx.configure.home.folder}" required="true">
-				<html:input name="home" value="${ configuration == null ? '/opt/nginx-agent/settings' : configuration.home }"
-					placeholder="{nginx.configure.home.folder.placeholder}" required="true"></html:input>
-			</html:formGroup>
 			<html:formGroup>
 				<html:listGroup>
 					<html:listGroupItem>

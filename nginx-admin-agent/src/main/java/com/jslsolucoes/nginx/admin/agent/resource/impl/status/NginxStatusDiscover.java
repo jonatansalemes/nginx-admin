@@ -9,10 +9,14 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @RequestScoped
 public class NginxStatusDiscover {
 
 	private static final String PATTERN = "([0-9]{1,})\\s([0-9]{1,})\\s([0-9]{1,})";
+	private static Logger logger = LoggerFactory.getLogger(NginxStatusDiscover.class);
 	
 	public NginxStatus status() {
 		String response = response();
@@ -37,6 +41,9 @@ public class NginxStatusDiscover {
 			} else {
 				return "";
 			}
+		} catch (Exception e) {
+			logger.warn("Could not read status from nginx",e);
+			return "";
 		} finally {
 			client.close();
 		}

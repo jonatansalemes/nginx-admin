@@ -1,10 +1,8 @@
 package com.jslsolucoes.nginx.admin.ui.standalone;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Properties;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -37,11 +35,7 @@ public class Main {
 
 		if (!argument.getQuit()) {
 			
-			
-			Properties properties = new Properties();
-			properties.load(new FileInputStream(new File(argument.getConf())));
-			
-			Configuration configuration = ConfigurationLoader.buildFrom(properties);
+			Configuration configuration = ConfigurationLoader.newBuilder().withFile(argument.getConf()).build();
 			
 			File jks = copyToTemp("/keystore.jks");
 			File war = copyToTemp("/nginx-admin-agent-" + configuration.getApplication().getVersion() + ".war");

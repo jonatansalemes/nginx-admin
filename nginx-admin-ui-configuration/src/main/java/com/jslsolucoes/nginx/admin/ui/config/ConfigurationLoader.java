@@ -1,24 +1,58 @@
 package com.jslsolucoes.nginx.admin.ui.config;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class ConfigurationLoader {
 
 	private Properties properties;
 
-	private ConfigurationLoader(Properties properties) {
+	public static ConfigurationLoader newBuilder() {
+		return new ConfigurationLoader();
+	}
+	
+	public ConfigurationLoader withProperties(Properties properties) {
 		this.properties = properties;
+		return replace();
+	}
+	
+	public ConfigurationLoader withFile(String path) {
+		try {
+			properties.load(new FileInputStream(new File(path)));
+			return replace();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
-	public static Configuration buildFrom(Properties properties) {
-		ConfigurationLoader standaloneConfigurationParser = new ConfigurationLoader(properties);
-		return standaloneConfigurationParser.build();
+	private ConfigurationLoader replace() {
+		properties
+			.entrySet()
+			.forEach(entry-> {
+				String key = (String) entry.getKey();
+				String value = (String) entry.getValue();
+				properties.setProperty(key, replace(value));
+			});
+		return this;
+	}
+	
+	private String replace(String oldValue) {
+		String value = oldValue;
+		Matcher matcher = Pattern.compile("\\$([\\w]*)").matcher(value);
+		while(matcher.find()){
+			String currentValue = (String) properties.get(matcher.group(1));
+			value = matcher.replaceAll(currentValue);
+		}
+		return value;
 	}
 
-	private Configuration build() {
+	public Configuration build() {
 		Configuration standaloneConfiguration = new Configuration();
 		standaloneConfiguration.setServer(server());
 		standaloneConfiguration.setApplication(application());

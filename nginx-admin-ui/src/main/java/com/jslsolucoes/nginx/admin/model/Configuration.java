@@ -21,12 +21,6 @@ public class Configuration implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "bin")
-	private String bin;
-
-	@Column(name = "home")
-	private String home;
-
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_nginx")
 	private Nginx nginx;
@@ -41,10 +35,8 @@ public class Configuration implements Serializable {
 		
 	}
 	
-	public Configuration(Long id,String bin,String home,Integer gzip,Integer maxPostSize,Nginx nginx) {
+	public Configuration(Long id,Integer gzip,Integer maxPostSize,Nginx nginx) {
 		this.id = id;
-		this.bin = bin;
-		this.home = home;
 		this.gzip = gzip;
 		this.maxPostSize = maxPostSize;
 		this.nginx = nginx;
@@ -56,22 +48,6 @@ public class Configuration implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getBin() {
-		return bin;
-	}
-
-	public void setBin(String bin) {
-		this.bin = bin;
-	}
-
-	public String getHome() {
-		return home;
-	}
-
-	public void setHome(String home) {
-		this.home = home;
 	}
 
 	public Nginx getNginx() {

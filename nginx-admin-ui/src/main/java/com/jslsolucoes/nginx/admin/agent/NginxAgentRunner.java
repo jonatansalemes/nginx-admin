@@ -10,9 +10,7 @@ import com.jslsolucoes.nginx.admin.agent.client.api.NginxAgentClientApis;
 import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxCommandLineInterface;
 import com.jslsolucoes.nginx.admin.agent.model.Endpoint;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxResponse;
-import com.jslsolucoes.nginx.admin.model.Configuration;
 import com.jslsolucoes.nginx.admin.model.Nginx;
-import com.jslsolucoes.nginx.admin.repository.ConfigurationRepository;
 import com.jslsolucoes.nginx.admin.repository.NginxRepository;
 
 @RequestScoped
@@ -20,7 +18,6 @@ public class NginxAgentRunner {
 
 	private NginxAgentClient nginxAgentClient;
 	private NginxRepository nginxRepository;
-	private ConfigurationRepository configurationRepository;
 	
 	@Deprecated
 	public NginxAgentRunner() {
@@ -28,10 +25,9 @@ public class NginxAgentRunner {
 	}
 	
 	@Inject
-	public NginxAgentRunner(NginxAgentClient nginxAgentClient,NginxRepository nginxRepository,ConfigurationRepository configurationRepository) {
+	public NginxAgentRunner(NginxAgentClient nginxAgentClient,NginxRepository nginxRepository) {
 		this.nginxAgentClient = nginxAgentClient;
 		this.nginxRepository = nginxRepository;
-		this.configurationRepository = configurationRepository;
 	}
 
 	public NginxResponse stop(Long idNginx) {
@@ -40,36 +36,40 @@ public class NginxAgentRunner {
 	
 	public NginxResponse createUpstream(Long idNginx,String uuid, String name,String strategy,List<Endpoint> endpoints) {
 		Nginx nginx = nginx(idNginx);
-		Configuration configuration = configuration(idNginx);
 		return nginxAgentClient.api(NginxAgentClientApis.upstream())
 				.withUuid(uuid)
 				.withAuthorizationKey(nginx.getAuthorizationKey())
 				.withEndpoint(nginx.getEndpoint())
-				.withHome(configuration.getHome())
 				.withName(name)
 				.withStrategy(strategy)
 				.withEndpoints(endpoints)
 				.build().create().join();
 	}
 
-	public NginxResponse configure(Long idNginx, Integer gzip, String home, Integer maxPostSize) {
+	public NginxResponse configure(Long idNginx, Integer gzip, Integer maxPostSize) {
 		Nginx nginx = nginx(idNginx);
 		return nginxAgentClient.api(NginxAgentClientApis.configure()).withAuthorizationKey(nginx.getAuthorizationKey())
-				.withEndpoint(nginx.getEndpoint()).withHome(home).withGzip((gzip == null ? false : true))
+				.withEndpoint(nginx.getEndpoint()).withGzip((gzip == null ? false : true))
 				.withMaxPostSize(maxPostSize).build().configure().join();
 	}
-
-	public NginxResponse nginxServerInfo(Long idNginx) {
+	
+	public NginxResponse statusForNginx(Long idNginx) {
 		Nginx nginx = nginx(idNginx);
-		Configuration configuration = configuration(idNginx);
-		return nginxAgentClient.api(NginxAgentClientApis.nginxServerInfo())
+		return nginxAgentClient.api(NginxAgentClientApis.status())
 				.withAuthorizationKey(nginx.getAuthorizationKey()).withEndpoint(nginx.getEndpoint())
-				.withBin(configuration.getBin()).withHome(configuration.getHome()).build().info().join();
+				.build().status().join();
 	}
 
-	public NginxResponse nginxOperationalSystemInfo(Long idNginx) {
+	public NginxResponse info(Long idNginx) {
 		Nginx nginx = nginx(idNginx);
-		return nginxAgentClient.api(NginxAgentClientApis.operationalSystemInfo())
+		return nginxAgentClient.api(NginxAgentClientApis.info())
+				.withAuthorizationKey(nginx.getAuthorizationKey()).withEndpoint(nginx.getEndpoint())
+				.build().info().join();
+	}
+
+	public NginxResponse os(Long idNginx) {
+		Nginx nginx = nginx(idNginx);
+		return nginxAgentClient.api(NginxAgentClientApis.os())
 				.withAuthorizationKey(nginx.getAuthorizationKey()).withEndpoint(nginx.getEndpoint()).build()
 				.operationalSystemInfo().join();
 	}
@@ -100,17 +100,12 @@ public class NginxAgentRunner {
 	
 	private NginxCommandLineInterface nginxCommandLineInterface(Long idNginx) {
 		Nginx nginx = nginx(idNginx);
-		Configuration configuration = configuration(idNginx);
-		return nginxAgentClient.api(NginxAgentClientApis.commandLineInterface())
+		return nginxAgentClient.api(NginxAgentClientApis.cli())
 				.withAuthorizationKey(nginx.getAuthorizationKey()).withEndpoint(nginx.getEndpoint())
-				.withBin(configuration.getBin()).withHome(configuration.getHome()).build();
+				.build();
 	}
 
 	private Nginx nginx(Long idNginx) {
 		return nginxRepository.load(new Nginx(idNginx));
-	}
-
-	private Configuration configuration(Long idNginx) {
-		return configurationRepository.loadFor(new Nginx(idNginx));
 	}
 }

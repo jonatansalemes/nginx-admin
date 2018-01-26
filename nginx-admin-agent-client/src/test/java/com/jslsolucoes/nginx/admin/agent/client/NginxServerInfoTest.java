@@ -22,7 +22,7 @@ public class NginxServerInfoTest {
 	@Test
 	public void info() {
 
-		nginxAgentClient.api(NginxAgentClientApis.nginxServerInfo()).withAuthorizationKey("fdoinsafodsoianoifd")
+		nginxAgentClient.api(NginxAgentClientApis.info()).withAuthorizationKey("fdoinsafodsoianoifd")
 				.withEndpoint("http://192.168.99.100:3000")
 				.build().info().thenAccept(nginxResponse -> {
 					if (nginxResponse.error()) {

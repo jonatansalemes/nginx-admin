@@ -8,9 +8,9 @@ import org.junit.Test;
 import com.jslsolucoes.nginx.admin.agent.client.api.NginxAgentClientApis;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxAuthenticationFailResponse;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxExceptionResponse;
-import com.jslsolucoes.nginx.admin.agent.model.response.NginxOperationalSystemInfoResponse;
+import com.jslsolucoes.nginx.admin.agent.model.response.NginxStatusResponse;
 
-public class NginxOperationSystemInfoTest {
+public class NginxStatusTest {
 
 	private NginxAgentClient nginxAgentClient;
 
@@ -20,22 +20,20 @@ public class NginxOperationSystemInfoTest {
 	}
 
 	@Test
-	public void info() {
-		nginxAgentClient.api(NginxAgentClientApis.os())
-				.withAuthorizationKey("fdoinsafodsoianoifd")
+	public void status() {
+
+		nginxAgentClient.api(NginxAgentClientApis.status()).withAuthorizationKey("fdoinsafodsoianoifd")
 				.withEndpoint("http://192.168.99.100:3000")
-				.build()
-				.operationalSystemInfo()
-				.thenAccept(nginxResponse -> {
-					if(nginxResponse.error()) {
+				.build().status().thenAccept(nginxResponse -> {
+					if (nginxResponse.error()) {
 						NginxExceptionResponse nginxExceptionResponse = (NginxExceptionResponse) nginxResponse;
 						Assert.fail(nginxExceptionResponse.getStackTrace());
-					} else if(nginxResponse.forbidden()) {
+					} else if (nginxResponse.forbidden()) {
 						NginxAuthenticationFailResponse nginxAuthenticationFailResponse = (NginxAuthenticationFailResponse) nginxResponse;
 						Assert.fail(nginxAuthenticationFailResponse.getMessage());
 					} else {
-						NginxOperationalSystemInfoResponse nginxOperationalSystemInfoResponse = (NginxOperationalSystemInfoResponse) nginxResponse;
-						Assert.assertEquals("amd64",nginxOperationalSystemInfoResponse.getArchitecture());
+						NginxStatusResponse nginxStatusResponse = (NginxStatusResponse) nginxResponse;
+						Assert.assertTrue(nginxStatusResponse.getAccepts() > 0);
 					}
 				}).join();
 	}

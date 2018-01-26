@@ -6,7 +6,6 @@ import java.math.RoundingMode;
 import java.net.Inet4Address;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -89,7 +88,7 @@ public class NginxInfoDiscover {
 	}
 
 	private File pid() {
-		return new File(conf(), "nginx.pid");
+		return new File(settings(), "nginx.pid");
 	}
 	
 	private String version() {
@@ -114,7 +113,7 @@ public class NginxInfoDiscover {
 				.divide(BigDecimal.valueOf(24), 5, RoundingMode.HALF_UP);
 	}
 	
-	private String conf() {
-		return Paths.get(configuration.getNginx().getSetting(), "nginx.conf").toAbsolutePath().toString();
+	private String settings() {
+		return configuration.getNginx().getSetting();
 	}
 }
