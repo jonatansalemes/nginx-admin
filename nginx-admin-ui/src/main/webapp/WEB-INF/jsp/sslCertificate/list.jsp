@@ -4,6 +4,8 @@
 	<html:block>
 		<html:alert state="success" label="{ssl.delete.success}"
 			rendered="${ operation == 'DELETE' }"></html:alert>
+		<html:alert state="danger" label="{ssl.delete.failed}"
+			rendered="${ operation == 'DELETE_FAILED' }"></html:alert>
 	</html:block>
 
 	<html:block>
@@ -14,12 +16,12 @@
 			</html:gridColumn>
 			<html:gridColumn label="{ssl.certificate}">
 				<html:link target="_blank"
-						url="/sslCertificate/download/${ sslCertificate.resourceIdentifierCertificate.uuid }"
+						url="/sslCertificate/download/${ nginx.id }/${ sslCertificate.resourceIdentifierCertificate.uuid }"
 						label="{ssl.certificate.download}"></html:link>
 			</html:gridColumn>
 			<html:gridColumn label="{ssl.certificate.key}">
 				<html:link target="_blank"
-						url="/sslCertificate/download/${ sslCertificate.resourceIdentifierCertificatePrivateKey.uuid }"
+						url="/sslCertificate/download/${ nginx.id }/${ sslCertificate.resourceIdentifierCertificatePrivateKey.uuid }"
 						label="{ssl.certificate.key.download}"></html:link>
 			</html:gridColumn>
 			<html:gridColumn>

@@ -47,7 +47,7 @@
 	</ajax:function>
 	
 	<html:block align="center">
-		<html:link url="/nginx/list" label="{back}"></html:link>
+		<html:link url="/nginx/list" label="{back}" target="_parent"></html:link>
 	</html:block>
 	
 </html:view>

@@ -100,9 +100,7 @@ public class ImportRepositoryImpl implements ImportRepository {
 						try(FileInputStream sslCertificateFileInputStream = new FileInputStream(new File(serverDirective.getSslCertificate()));
 								FileInputStream sslCertificateKeyFileInputStream = new FileInputStream(new File(serverDirective.getSslCertificateKey()))){
 							OperationResult operationResult = sslCertificateRepository.saveOrUpdate(
-									new SslCertificate(UUID.randomUUID().toString()),
-									sslCertificateFileInputStream,
-									sslCertificateKeyFileInputStream);
+									new SslCertificate(UUID.randomUUID().toString()));
 							sslCertificate = new SslCertificate(operationResult.getId());
 						}
 						

@@ -1,37 +1,42 @@
-package com.jslsolucoes.nginx.admin.agent.client.api.impl;
+package com.jslsolucoes.nginx.admin.agent.client.api.impl.status;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ScheduledExecutorService;
 
+import javax.enterprise.inject.Vetoed;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
 import com.jslsolucoes.nginx.admin.agent.client.RestClient;
 import com.jslsolucoes.nginx.admin.agent.client.api.NginxAgentClientApi;
+import com.jslsolucoes.nginx.admin.agent.client.api.impl.DefaultNginxAgentClientApi;
+import com.jslsolucoes.nginx.admin.agent.client.api.impl.HttpHeader;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxExceptionResponse;
-import com.jslsolucoes.nginx.admin.agent.model.response.NginxOperationalSystemInfoResponse;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxResponse;
+import com.jslsolucoes.nginx.admin.agent.model.response.NginxStatusResponse;
 
-public class NginxOperationalSystemInfo extends DefaultNginxAgentClientApi implements NginxAgentClientApi {
+@Vetoed
+public class NginxStatus extends DefaultNginxAgentClientApi implements NginxAgentClientApi {
 
 	private final ScheduledExecutorService scheduledExecutorService;
+	private final String endpoint;
 	private final String authorizationKey;
-	private String endpoint;
 
-	public NginxOperationalSystemInfo(ScheduledExecutorService scheduledExecutorService, String authorizationKey,
-			String endpoint) {
+	public NginxStatus(ScheduledExecutorService scheduledExecutorService, String endpoint,  String authorizationKey) {
 		this.scheduledExecutorService = scheduledExecutorService;
-		this.authorizationKey = authorizationKey;
 		this.endpoint = endpoint;
+		this.authorizationKey = authorizationKey;
 	}
 
-	public CompletableFuture<NginxResponse> operationalSystemInfo() {
+
+	public CompletableFuture<NginxResponse> status() {
 		return CompletableFuture.supplyAsync(() -> {
 			try (RestClient restClient = RestClient.build()) {
 				WebTarget webTarget = restClient.target(endpoint);
-				Response response = webTarget.path("admin").path("os").request()
-						.header(HttpHeader.AUTHORIZATION, authorizationKey).get();
-				return responseFor(response, NginxOperationalSystemInfoResponse.class);
+				Response response = webTarget.path("admin").path("status").request()
+						.header(HttpHeader.AUTHORIZATION, authorizationKey)
+						.get();
+				return responseFor(response, NginxStatusResponse.class);
 			} catch (Exception e) {
 				return new NginxExceptionResponse(e);
 			}

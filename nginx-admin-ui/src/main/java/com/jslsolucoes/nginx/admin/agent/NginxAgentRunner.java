@@ -7,8 +7,9 @@ import javax.inject.Inject;
 
 import com.jslsolucoes.nginx.admin.agent.client.NginxAgentClient;
 import com.jslsolucoes.nginx.admin.agent.client.api.NginxAgentClientApis;
-import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxCommandLineInterface;
+import com.jslsolucoes.nginx.admin.agent.client.api.impl.cli.NginxCommandLineInterface;
 import com.jslsolucoes.nginx.admin.agent.model.Endpoint;
+import com.jslsolucoes.nginx.admin.agent.model.FileObject;
 import com.jslsolucoes.nginx.admin.agent.model.Location;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxResponse;
 import com.jslsolucoes.nginx.admin.model.Nginx;
@@ -56,20 +57,23 @@ public class NginxAgentRunner {
 	}
 
 	public NginxResponse configure(Long idNginx, Boolean gzip, Integer maxPostSize) {
-		return nginxAgentClient.api(NginxAgentClientApis.configure()).withAuthorizationKey(authorizationKey(idNginx)).withEndpoint(endpoint(idNginx)).withGzip(gzip).withMaxPostSize(maxPostSize)
-				.build().configure().join();
+		return nginxAgentClient.api(NginxAgentClientApis.configure()).withAuthorizationKey(authorizationKey(idNginx))
+				.withEndpoint(endpoint(idNginx)).withGzip(gzip).withMaxPostSize(maxPostSize).build().configure().join();
 	}
 
 	public NginxResponse statusForNginx(Long idNginx) {
-		return nginxAgentClient.api(NginxAgentClientApis.status()).withAuthorizationKey(authorizationKey(idNginx)).withEndpoint(endpoint(idNginx)).build().status().join();
+		return nginxAgentClient.api(NginxAgentClientApis.status()).withAuthorizationKey(authorizationKey(idNginx))
+				.withEndpoint(endpoint(idNginx)).build().status().join();
 	}
 
 	public NginxResponse info(Long idNginx) {
-		return nginxAgentClient.api(NginxAgentClientApis.info()).withAuthorizationKey(authorizationKey(idNginx)).withEndpoint(endpoint(idNginx)).build().info().join();
+		return nginxAgentClient.api(NginxAgentClientApis.info()).withAuthorizationKey(authorizationKey(idNginx))
+				.withEndpoint(endpoint(idNginx)).build().info().join();
 	}
 
 	public NginxResponse os(Long idNginx) {
-		return nginxAgentClient.api(NginxAgentClientApis.os()).withAuthorizationKey(authorizationKey(idNginx)).withEndpoint(endpoint(idNginx)).build().operationalSystemInfo().join();
+		return nginxAgentClient.api(NginxAgentClientApis.os()).withAuthorizationKey(authorizationKey(idNginx))
+				.withEndpoint(endpoint(idNginx)).build().operationalSystemInfo().join();
 	}
 
 	public NginxResponse reload(Long idNginx) {
@@ -154,7 +158,28 @@ public class NginxAgentRunner {
 				.withCertificatePrivateKeyUuid(certificatePrivateKeyUuid).withLocations(locations).build().create()
 				.join();
 	}
-	
+
+	public NginxResponse createSsl(Long idNginx, String uuid, FileObject fileObject) {
+		return nginxAgentClient.api(NginxAgentClientApis.ssl()).withAuthorizationKey(authorizationKey(idNginx))
+				.withEndpoint(endpoint(idNginx)).withUuid(uuid).withFileObject(fileObject).build().create().join();
+	}
+
+	public NginxResponse updateSsl(Long idNginx, String uuid, FileObject fileObject) {
+		return nginxAgentClient.api(NginxAgentClientApis.ssl()).withAuthorizationKey(authorizationKey(idNginx))
+				.withEndpoint(endpoint(idNginx)).withUuid(uuid).withFileObject(fileObject).build().update().join();
+	}
+
+	public NginxResponse readSsl(Long idNginx, String uuid) {
+		return nginxAgentClient.api(NginxAgentClientApis.ssl()).withAuthorizationKey(authorizationKey(idNginx))
+				.withEndpoint(endpoint(idNginx)).withUuid(uuid).build().read().join();
+	}
+
+	public NginxResponse deleteSsl(Long idNginx, String uuid) {
+		return nginxAgentClient.api(NginxAgentClientApis.ssl()).withUuid(uuid)
+				.withAuthorizationKey(authorizationKey(idNginx)).withEndpoint(endpoint(idNginx)).build().delete()
+				.join();
+	}
+
 	private Nginx nginx(Long idNginx) {
 		return nginxRepository.load(new Nginx(idNginx));
 	}

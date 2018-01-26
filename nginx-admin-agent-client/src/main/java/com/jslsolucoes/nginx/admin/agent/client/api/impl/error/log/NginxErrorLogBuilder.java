@@ -1,4 +1,4 @@
-package com.jslsolucoes.nginx.admin.agent.client.api.impl;
+package com.jslsolucoes.nginx.admin.agent.client.api.impl.error.log;
 
 import java.util.concurrent.ScheduledExecutorService;
 

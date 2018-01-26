@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.jslsolucoes.nginx.admin.agent.client.api.NginxAgentClientApis;
-import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxCommandLineInterface;
+import com.jslsolucoes.nginx.admin.agent.client.api.impl.cli.NginxCommandLineInterface;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxAuthenticationFailResponse;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxCommandLineInterfaceResponse;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxExceptionResponse;

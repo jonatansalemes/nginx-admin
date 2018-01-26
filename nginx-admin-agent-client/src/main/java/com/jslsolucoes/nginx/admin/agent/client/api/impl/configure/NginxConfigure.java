@@ -1,4 +1,4 @@
-package com.jslsolucoes.nginx.admin.agent.client.api.impl;
+package com.jslsolucoes.nginx.admin.agent.client.api.impl.configure;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ScheduledExecutorService;
@@ -10,6 +10,8 @@ import javax.ws.rs.core.Response;
 
 import com.jslsolucoes.nginx.admin.agent.client.RestClient;
 import com.jslsolucoes.nginx.admin.agent.client.api.NginxAgentClientApi;
+import com.jslsolucoes.nginx.admin.agent.client.api.impl.DefaultNginxAgentClientApi;
+import com.jslsolucoes.nginx.admin.agent.client.api.impl.HttpHeader;
 import com.jslsolucoes.nginx.admin.agent.model.request.NginxConfigureRequest;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxConfigureResponse;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxExceptionResponse;

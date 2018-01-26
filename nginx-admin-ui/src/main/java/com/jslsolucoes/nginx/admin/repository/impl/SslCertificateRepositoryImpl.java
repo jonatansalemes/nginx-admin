@@ -1,6 +1,5 @@
 package com.jslsolucoes.nginx.admin.repository.impl;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,24 +77,6 @@ public class SslCertificateRepositoryImpl extends RepositoryImpl<SslCertificate>
 		}
 
 		return errors;
-	}
-
-	@Override
-	public OperationResult saveOrUpdate(SslCertificate sslCertificate, InputStream certificateFile,
-			InputStream certificatePrivateKeyFile) {
-		if (certificateFile != null) {
-			if (sslCertificate.getResourceIdentifierCertificate().getId() == null) {
-				sslCertificate.setResourceIdentifierCertificate(resourceIdentifierRepository.create());
-			}
-		}
-		if (certificatePrivateKeyFile != null) {
-			if (sslCertificate.getResourceIdentifierCertificatePrivateKey().getId() == null) {
-				sslCertificate.setResourceIdentifierCertificatePrivateKey(resourceIdentifierRepository.create());
-			}
-		}
-		sslCertificate.setResourceIdentifierCertificate(resourceIdentifierRepository.create());
-		sslCertificate.setResourceIdentifierCertificatePrivateKey(resourceIdentifierRepository.create());
-		return super.saveOrUpdate(sslCertificate);
 	}
 
 	@Override

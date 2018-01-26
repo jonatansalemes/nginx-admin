@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.jslsolucoes.nginx.admin.agent.client.api.NginxAgentClientApis;
-import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxUpstream;
+import com.jslsolucoes.nginx.admin.agent.client.api.impl.upstream.NginxUpstream;
 import com.jslsolucoes.nginx.admin.agent.model.Endpoint;
 import com.jslsolucoes.nginx.admin.agent.model.FileObject;
 import com.jslsolucoes.nginx.admin.agent.model.response.NginxAuthenticationFailResponse;

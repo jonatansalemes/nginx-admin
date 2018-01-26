@@ -1,4 +1,4 @@
-package com.jslsolucoes.nginx.admin.agent.client.api.impl;
+package com.jslsolucoes.nginx.admin.agent.client.api.impl.virtual.host;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -12,6 +12,8 @@ import javax.ws.rs.core.Response;
 
 import com.jslsolucoes.nginx.admin.agent.client.RestClient;
 import com.jslsolucoes.nginx.admin.agent.client.api.NginxAgentClientApi;
+import com.jslsolucoes.nginx.admin.agent.client.api.impl.DefaultNginxAgentClientApi;
+import com.jslsolucoes.nginx.admin.agent.client.api.impl.HttpHeader;
 import com.jslsolucoes.nginx.admin.agent.model.Location;
 import com.jslsolucoes.nginx.admin.agent.model.request.virtual.host.NginxVirtualHostCreateRequest;
 import com.jslsolucoes.nginx.admin.agent.model.request.virtual.host.NginxVirtualHostUpdateRequest;

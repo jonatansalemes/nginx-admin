@@ -1,6 +1,5 @@
 package com.jslsolucoes.nginx.admin.repository;
 
-import java.io.InputStream;
 import java.util.List;
 
 import com.jslsolucoes.nginx.admin.model.Nginx;
@@ -14,7 +13,7 @@ public interface SslCertificateRepository {
 
 	public SslCertificate load(SslCertificate sslCertificate);
 
-	public OperationResult saveOrUpdate(SslCertificate sslCertificate, InputStream certificate, InputStream privateKey);
+	public OperationResult saveOrUpdate(SslCertificate sslCertificate);
 	
 	public List<SslCertificate> listAllFor(Nginx nginx);
 

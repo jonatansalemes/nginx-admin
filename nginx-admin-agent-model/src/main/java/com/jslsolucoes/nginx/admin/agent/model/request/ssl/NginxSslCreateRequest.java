@@ -11,8 +11,9 @@ public class NginxSslCreateRequest {
 		
 	}
 
-	public NginxSslCreateRequest(FileObject fileObject) {
+	public NginxSslCreateRequest(String uuid,FileObject fileObject) {
 		this.fileObject = fileObject;
+		this.uuid = uuid;
 	}
 
 	public FileObject getFileObject() {

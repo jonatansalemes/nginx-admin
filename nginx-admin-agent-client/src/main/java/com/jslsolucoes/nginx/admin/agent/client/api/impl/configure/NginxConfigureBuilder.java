@@ -1,8 +1,9 @@
-package com.jslsolucoes.nginx.admin.agent.client.api.impl;
+package com.jslsolucoes.nginx.admin.agent.client.api.impl.configure;
 
 import java.util.concurrent.ScheduledExecutorService;
 
 import com.jslsolucoes.nginx.admin.agent.client.api.NginxAgentClientApiBuilder;
+import com.jslsolucoes.nginx.admin.agent.client.api.impl.DefaultNginxAgentClientApi;
 
 public class NginxConfigureBuilder extends DefaultNginxAgentClientApi implements NginxAgentClientApiBuilder {
 

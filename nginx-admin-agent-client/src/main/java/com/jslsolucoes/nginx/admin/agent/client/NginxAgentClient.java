@@ -5,16 +5,17 @@ import java.util.concurrent.ScheduledExecutorService;
 import javax.enterprise.inject.Vetoed;
 
 import com.jslsolucoes.nginx.admin.agent.client.api.NginxAgentClientApiBuilder;
-import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxAccessLogBuilder;
-import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxCommandLineInterfaceBuilder;
-import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxConfigureBuilder;
-import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxErrorLogBuilder;
-import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxOperationalSystemInfoBuilder;
-import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxPingBuilder;
-import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxServerInfoBuilder;
-import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxStatusBuilder;
-import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxUpstreamBuilder;
-import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxVirtualHostBuilder;
+import com.jslsolucoes.nginx.admin.agent.client.api.impl.access.log.NginxAccessLogBuilder;
+import com.jslsolucoes.nginx.admin.agent.client.api.impl.cli.NginxCommandLineInterfaceBuilder;
+import com.jslsolucoes.nginx.admin.agent.client.api.impl.configure.NginxConfigureBuilder;
+import com.jslsolucoes.nginx.admin.agent.client.api.impl.error.log.NginxErrorLogBuilder;
+import com.jslsolucoes.nginx.admin.agent.client.api.impl.info.NginxServerInfoBuilder;
+import com.jslsolucoes.nginx.admin.agent.client.api.impl.os.NginxOperationalSystemInfoBuilder;
+import com.jslsolucoes.nginx.admin.agent.client.api.impl.ping.NginxPingBuilder;
+import com.jslsolucoes.nginx.admin.agent.client.api.impl.ssl.NginxSslBuilder;
+import com.jslsolucoes.nginx.admin.agent.client.api.impl.status.NginxStatusBuilder;
+import com.jslsolucoes.nginx.admin.agent.client.api.impl.upstream.NginxUpstreamBuilder;
+import com.jslsolucoes.nginx.admin.agent.client.api.impl.virtual.host.NginxVirtualHostBuilder;
 
 @Vetoed
 public class NginxAgentClient {
@@ -56,6 +57,9 @@ public class NginxAgentClient {
 					.withScheduledExecutorService(scheduledExecutorService);
 		} else if (clazz.equals(NginxVirtualHostBuilder.class)) {
 			return (T) NginxVirtualHostBuilder.newBuilder()
+					.withScheduledExecutorService(scheduledExecutorService);
+		} else if (clazz.equals(NginxSslBuilder.class)) {
+			return (T) NginxSslBuilder.newBuilder()
 					.withScheduledExecutorService(scheduledExecutorService);
 		}
 		throw new IllegalArgumentException("Please select an valid api");
