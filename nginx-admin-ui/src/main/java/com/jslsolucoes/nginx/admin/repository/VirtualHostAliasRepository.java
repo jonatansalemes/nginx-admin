@@ -8,7 +8,7 @@ import com.jslsolucoes.nginx.admin.model.VirtualHostAlias;
 
 public interface VirtualHostAliasRepository {
 
-	public void recreate(VirtualHost virtualHost, List<VirtualHostAlias> aliases);
+	public void recreateAllFor(VirtualHost virtualHost, List<VirtualHostAlias> aliases);
 
 	public void deleteAllFor(VirtualHost virtualHost);
 

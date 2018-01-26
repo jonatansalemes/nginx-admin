@@ -49,7 +49,7 @@ public class VirtualHostLocationRepositoryImpl extends RepositoryImpl<VirtualHos
 	}
 
 	@Override
-	public void recreate(VirtualHost virtualHost, List<VirtualHostLocation> aliases) {
+	public void recreateAllFor(VirtualHost virtualHost, List<VirtualHostLocation> aliases) {
 		deleteAllFor(virtualHost);
 		for (VirtualHostLocation virtualHostLocation : aliases) {
 			virtualHostLocation.setVirtualHost(virtualHost);

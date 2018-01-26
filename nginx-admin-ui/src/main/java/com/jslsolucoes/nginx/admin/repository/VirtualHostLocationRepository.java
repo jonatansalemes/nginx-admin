@@ -7,7 +7,7 @@ import com.jslsolucoes.nginx.admin.model.VirtualHostLocation;
 
 public interface VirtualHostLocationRepository {
 
-	public void recreate(VirtualHost virtualHost, List<VirtualHostLocation> locations);
+	public void recreateAllFor(VirtualHost virtualHost, List<VirtualHostLocation> locations);
 
 	public void deleteAllFor(VirtualHost virtualHost);
 

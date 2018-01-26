@@ -14,7 +14,7 @@
 			<html:gridColumn label="{upstream.name}" exportable="true">
 				${ upstream.name }
 			</html:gridColumn>
-			<html:gridColumn label="{upstream.strategy.name}" exportable="true">
+			<html:gridColumn label="{upstream.strategy}" exportable="true">
 				${ upstream.strategy.name }
 			</html:gridColumn>
 			<html:gridColumn label="{upstream.servers}" collapsable="true">

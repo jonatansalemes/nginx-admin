@@ -1,7 +1,6 @@
 package com.jslsolucoes.nginx.admin.controller;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import javax.inject.Inject;
 
@@ -16,8 +15,6 @@ import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Result;
-import br.com.caelum.vraptor.observer.download.Download;
-import br.com.caelum.vraptor.observer.download.InputStreamDownload;
 import br.com.caelum.vraptor.observer.upload.UploadedFile;
 import br.com.caelum.vraptor.view.Results;
 
@@ -60,11 +57,6 @@ public class SslCertificateController {
 		this.result.include("nginx", new Nginx(idNginx));
 	}
 
-	@Path("download/{hash}")
-	public Download download(String hash) throws IOException {
-		InputStream inputStream = sslCertificateRepository.download(hash);
-		return new InputStreamDownload(inputStream, "application/octet-stream", hash, true, inputStream.available());
-	}
 
 	@Path("edit/{idNginx}/{id}")
 	public void edit(Long idNginx, Long id) {
@@ -73,8 +65,8 @@ public class SslCertificateController {
 	}
 
 	@Path("delete/{idNginx}/{id}")
-	public void delete(Long idNginx, Long id) throws IOException {
-		this.result.include("operation", sslCertificateRepository.deleteWithResource(new SslCertificate(id)));
+	public void delete(Long idNginx, Long id) {
+		this.result.include("operation", sslCertificateRepository.delete(new SslCertificate(id)));
 		this.result.redirectTo(this).list(idNginx);
 	}
 

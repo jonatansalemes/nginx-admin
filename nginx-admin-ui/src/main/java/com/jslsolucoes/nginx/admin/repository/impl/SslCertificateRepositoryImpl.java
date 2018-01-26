@@ -1,7 +1,5 @@
 package com.jslsolucoes.nginx.admin.repository.impl;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,14 +19,12 @@ import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.model.Nginx_;
 import com.jslsolucoes.nginx.admin.model.SslCertificate;
 import com.jslsolucoes.nginx.admin.model.SslCertificate_;
-import com.jslsolucoes.nginx.admin.repository.NginxRepository;
 import com.jslsolucoes.nginx.admin.repository.ResourceIdentifierRepository;
 import com.jslsolucoes.nginx.admin.repository.SslCertificateRepository;
 
 @RequestScoped
 public class SslCertificateRepositoryImpl extends RepositoryImpl<SslCertificate> implements SslCertificateRepository {
 
-	private NginxRepository nginxRepository;
 	private ResourceIdentifierRepository resourceIdentifierRepository;
 
 	@Deprecated
@@ -37,27 +33,20 @@ public class SslCertificateRepositoryImpl extends RepositoryImpl<SslCertificate>
 	}
 
 	@Inject
-	public SslCertificateRepositoryImpl(EntityManager entityManager, NginxRepository nginxRepository,
-			ResourceIdentifierRepository resourceIdentifierRepository) {
+	public SslCertificateRepositoryImpl(EntityManager entityManager, ResourceIdentifierRepository resourceIdentifierRepository) {
 		super(entityManager);
-		this.nginxRepository = nginxRepository;
 		this.resourceIdentifierRepository = resourceIdentifierRepository;
 	}
 
 	@Override
-	public OperationStatusType deleteWithResource(SslCertificate sslCertificate) throws IOException {
-		/*
-		File ssl = nginxRepository.configuration().ssl();
+	public OperationStatusType delete(SslCertificate sslCertificate) {
 		SslCertificate sslCertificateToDelete = load(sslCertificate);
-		String sslCertificateHash = sslCertificateToDelete.getResourceIdentifierCertificate().getHash();
+		String sslCertificateHash = sslCertificateToDelete.getResourceIdentifierCertificate().getUuid();
 		String sslCertificatePrivateKeyHash = sslCertificateToDelete.getResourceIdentifierCertificatePrivateKey()
-				.getHash();
-		FileUtils.forceDelete(new File(ssl, sslCertificateHash));
-		FileUtils.forceDelete(new File(ssl, sslCertificatePrivateKeyHash));
+				.getUuid();
 		super.delete(sslCertificateToDelete);
 		resourceIdentifierRepository.delete(sslCertificateHash);
 		resourceIdentifierRepository.delete(sslCertificatePrivateKeyHash);
-		*/
 		return OperationStatusType.DELETE;
 	}
 	
@@ -93,34 +82,20 @@ public class SslCertificateRepositoryImpl extends RepositoryImpl<SslCertificate>
 
 	@Override
 	public OperationResult saveOrUpdate(SslCertificate sslCertificate, InputStream certificateFile,
-			InputStream certificatePrivateKeyFile) throws IOException {
-		/*
-		Nginx nginx = nginxRepository.configuration();
+			InputStream certificatePrivateKeyFile) {
 		if (certificateFile != null) {
 			if (sslCertificate.getResourceIdentifierCertificate().getId() == null) {
 				sslCertificate.setResourceIdentifierCertificate(resourceIdentifierRepository.create());
 			}
-			IOUtils.copy(certificateFile, new FileOutputStream(
-					new File(nginx.ssl(), sslCertificate.getResourceIdentifierCertificate().getHash())));
 		}
 		if (certificatePrivateKeyFile != null) {
 			if (sslCertificate.getResourceIdentifierCertificatePrivateKey().getId() == null) {
 				sslCertificate.setResourceIdentifierCertificatePrivateKey(resourceIdentifierRepository.create());
 			}
-			IOUtils.copy(certificatePrivateKeyFile, new FileOutputStream(
-					new File(nginx.ssl(), sslCertificate.getResourceIdentifierCertificatePrivateKey().getHash())));
 		}
-		*/
 		sslCertificate.setResourceIdentifierCertificate(resourceIdentifierRepository.create());
 		sslCertificate.setResourceIdentifierCertificatePrivateKey(resourceIdentifierRepository.create());
 		return super.saveOrUpdate(sslCertificate);
-	}
-
-	@Override
-	public InputStream download(String hash) throws FileNotFoundException {
-		//Nginx nginx = nginxRepository.configuration();
-		//return new FileInputStream(new File(nginx.ssl(), hash));
-		return null;
 	}
 
 	@Override

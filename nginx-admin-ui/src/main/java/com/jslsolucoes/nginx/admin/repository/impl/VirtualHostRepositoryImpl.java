@@ -23,7 +23,6 @@ import com.jslsolucoes.nginx.admin.model.VirtualHostAlias;
 import com.jslsolucoes.nginx.admin.model.VirtualHostAlias_;
 import com.jslsolucoes.nginx.admin.model.VirtualHostLocation;
 import com.jslsolucoes.nginx.admin.model.VirtualHost_;
-import com.jslsolucoes.nginx.admin.repository.NginxRepository;
 import com.jslsolucoes.nginx.admin.repository.ResourceIdentifierRepository;
 import com.jslsolucoes.nginx.admin.repository.VirtualHostAliasRepository;
 import com.jslsolucoes.nginx.admin.repository.VirtualHostLocationRepository;
@@ -33,7 +32,6 @@ import com.jslsolucoes.nginx.admin.repository.VirtualHostRepository;
 public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> implements VirtualHostRepository {
 
 	private ResourceIdentifierRepository resourceIdentifierRepository;
-	private NginxRepository nginxRepository;
 	private VirtualHostAliasRepository virtualHostAliasRepository;
 	private VirtualHostLocationRepository virtualHostLocationRepository;
 
@@ -44,11 +42,10 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 
 	@Inject
 	public VirtualHostRepositoryImpl(EntityManager entityManager, ResourceIdentifierRepository resourceIdentifierRepository,
-			NginxRepository nginxRepository, VirtualHostAliasRepository virtualHostAliasRepository,
+			VirtualHostAliasRepository virtualHostAliasRepository,
 			VirtualHostLocationRepository virtualHostLocationRepository) {
 		super(entityManager);
 		this.resourceIdentifierRepository = resourceIdentifierRepository;
-		this.nginxRepository = nginxRepository;
 		this.virtualHostAliasRepository = virtualHostAliasRepository;
 		this.virtualHostLocationRepository = virtualHostLocationRepository;
 	}
@@ -56,20 +53,17 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 	@Override
 	public OperationResult saveOrUpdate(VirtualHost virtualHost, List<VirtualHostAlias> aliases,
 			List<VirtualHostLocation> locations) {
-		if (virtualHost.getId() == null) {
-			virtualHost.setResourceIdentifier(resourceIdentifierRepository.create());
-		}
 		if (virtualHost.getHttps() == 0) {
 			virtualHost.setSslCertificate(null);
 		}
 		OperationResult operationResult = super.saveOrUpdate(virtualHost);
-		virtualHostAliasRepository.recreate(new VirtualHost(operationResult.getId()), aliases);
-		virtualHostLocationRepository.recreate(new VirtualHost(operationResult.getId()), locations);
+		virtualHostAliasRepository.recreateAllFor(new VirtualHost(operationResult.getId()), aliases);
+		virtualHostLocationRepository.recreateAllFor(new VirtualHost(operationResult.getId()), locations);
 		return operationResult;
 	}
 
 	@Override
-	public OperationStatusType deleteWithResource(VirtualHost virtualHost) {
+	public OperationStatusType delete(VirtualHost virtualHost) {
 		virtualHostAliasRepository.deleteAllFor(virtualHost);
 		virtualHostLocationRepository.deleteAllFor(virtualHost);
 		VirtualHost virtualHostToDelete = load(virtualHost);

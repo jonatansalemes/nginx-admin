@@ -44,7 +44,7 @@ public class ConfigurationController {
 	
 	@Post
 	public void saveOrUpdate(Long id,Long idNginx,Integer gzip,Integer maxPostSize) {
-		NginxResponse nginxResponse = nginxAgentRunner.configure(idNginx, gzip, maxPostSize);
+		NginxResponse nginxResponse = nginxAgentRunner.configure(idNginx, (gzip != null && gzip == 1), maxPostSize);
 		if(nginxResponse.success()) {
 			OperationResult operationResult = configurationRepository.saveOrUpdate(new Configuration(id, (gzip == null ? 0 : gzip), maxPostSize, new Nginx(idNginx)));
 			this.result.include("operation", operationResult.getOperationType());

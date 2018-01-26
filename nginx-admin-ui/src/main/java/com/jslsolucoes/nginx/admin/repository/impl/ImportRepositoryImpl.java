@@ -112,7 +112,7 @@ public class ImportRepositoryImpl implements ImportRepository {
 							locations);
 				}
 			}
-		} catch (IOException | NginxAdminException e) {
+		} catch (IOException  e) {
 			throw new NginxAdminException(e);
 		}
 	}

@@ -1,9 +1,7 @@
 package com.jslsolucoes.nginx.admin.repository;
 
-import java.io.IOException;
 import java.util.List;
 
-import com.jslsolucoes.nginx.admin.error.NginxAdminException;
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.model.VirtualHost;
 import com.jslsolucoes.nginx.admin.model.VirtualHostAlias;
@@ -15,12 +13,12 @@ public interface VirtualHostRepository {
 
 	public List<VirtualHost> listAllFor(Nginx nginx);
 
-	public OperationStatusType deleteWithResource(VirtualHost virtualHost) throws IOException;
+	public OperationStatusType delete(VirtualHost virtualHost);
 
 	public VirtualHost load(VirtualHost virtualHost);
 
 	public OperationResult saveOrUpdate(VirtualHost virtualHost, List<VirtualHostAlias> aliases,
-			List<VirtualHostLocation> locations) throws NginxAdminException;
+			List<VirtualHostLocation> locations);
 
 	public List<String> validateBeforeSaveOrUpdate(VirtualHost virtualHost, List<VirtualHostAlias> aliases,
 			List<VirtualHostLocation> locations);

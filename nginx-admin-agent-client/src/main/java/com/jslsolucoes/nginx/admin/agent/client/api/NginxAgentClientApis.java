@@ -1,12 +1,15 @@
 package com.jslsolucoes.nginx.admin.agent.client.api;
 
+import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxAccessLogBuilder;
 import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxCommandLineInterfaceBuilder;
 import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxConfigureBuilder;
+import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxErrorLogBuilder;
 import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxOperationalSystemInfoBuilder;
 import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxPingBuilder;
 import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxServerInfoBuilder;
 import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxStatusBuilder;
 import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxUpstreamBuilder;
+import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxVirtualHostBuilder;
 
 public class NginxAgentClientApis {
 
@@ -36,6 +39,18 @@ public class NginxAgentClientApis {
 	
 	public static Class<NginxUpstreamBuilder> upstream() {
 		return NginxUpstreamBuilder.class;
+	}
+	
+	public static Class<NginxAccessLogBuilder> accessLog() {
+		return NginxAccessLogBuilder.class;
+	}
+	
+	public static Class<NginxErrorLogBuilder> errorLog() {
+		return NginxErrorLogBuilder.class;
+	}
+	
+	public static Class<NginxVirtualHostBuilder> virtualHost() {
+		return NginxVirtualHostBuilder.class;
 	}
 
 }

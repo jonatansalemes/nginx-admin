@@ -55,10 +55,26 @@ public class ConfigurationLoader {
 	public Configuration build() {
 		Configuration standaloneConfiguration = new Configuration();
 		standaloneConfiguration.setServer(server());
+		standaloneConfiguration.setAccessLog(accessLog());
+		standaloneConfiguration.setErrorLog(errorLog());
 		standaloneConfiguration.setApplication(application());
 		standaloneConfiguration.setDatabase(database());
 		standaloneConfiguration.setSmtp(smtp());
 		return standaloneConfiguration;
+	}
+
+	private Log accessLog() {
+		Log log = new Log();
+		log.setCollect(Integer.valueOf(properties.getProperty("NGINX_ADMIN_LOG_ACCESS_COLLECT_INTERVAL")));
+		log.setRotate(Integer.valueOf(properties.getProperty("NGINX_ADMIN_LOG_ACCESS_ROTATE_INTERVAL")));
+		return log;
+	}
+	
+	private Log errorLog() {
+		Log log = new Log();
+		log.setCollect(Integer.valueOf(properties.getProperty("NGINX_ADMIN_LOG_ERROR_COLLECT_INTERVAL")));
+		log.setRotate(Integer.valueOf(properties.getProperty("NGINX_ADMIN_LOG_ERROR_ROTATE_INTERVAL")));
+		return log;
 	}
 
 	private Smtp smtp() {

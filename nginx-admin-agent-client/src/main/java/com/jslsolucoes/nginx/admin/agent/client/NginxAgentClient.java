@@ -5,13 +5,16 @@ import java.util.concurrent.ScheduledExecutorService;
 import javax.enterprise.inject.Vetoed;
 
 import com.jslsolucoes.nginx.admin.agent.client.api.NginxAgentClientApiBuilder;
+import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxAccessLogBuilder;
 import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxCommandLineInterfaceBuilder;
 import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxConfigureBuilder;
+import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxErrorLogBuilder;
 import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxOperationalSystemInfoBuilder;
 import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxPingBuilder;
 import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxServerInfoBuilder;
 import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxStatusBuilder;
 import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxUpstreamBuilder;
+import com.jslsolucoes.nginx.admin.agent.client.api.impl.NginxVirtualHostBuilder;
 
 @Vetoed
 public class NginxAgentClient {
@@ -44,6 +47,15 @@ public class NginxAgentClient {
 					.withScheduledExecutorService(scheduledExecutorService);
 		} else if (clazz.equals(NginxStatusBuilder.class)) {
 			return (T) NginxStatusBuilder.newBuilder()
+					.withScheduledExecutorService(scheduledExecutorService);
+		} else if (clazz.equals(NginxAccessLogBuilder.class)) {
+			return (T) NginxAccessLogBuilder.newBuilder()
+					.withScheduledExecutorService(scheduledExecutorService);
+		} else if (clazz.equals(NginxErrorLogBuilder.class)) {
+			return (T) NginxErrorLogBuilder.newBuilder()
+					.withScheduledExecutorService(scheduledExecutorService);
+		} else if (clazz.equals(NginxVirtualHostBuilder.class)) {
+			return (T) NginxVirtualHostBuilder.newBuilder()
 					.withScheduledExecutorService(scheduledExecutorService);
 		}
 		throw new IllegalArgumentException("Please select an valid api");

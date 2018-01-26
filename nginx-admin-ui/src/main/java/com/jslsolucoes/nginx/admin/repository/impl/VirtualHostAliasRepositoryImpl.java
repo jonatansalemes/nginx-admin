@@ -66,7 +66,7 @@ public class VirtualHostAliasRepositoryImpl extends RepositoryImpl<VirtualHostAl
 	}
 
 	@Override
-	public void recreate(VirtualHost virtualHost, List<VirtualHostAlias> aliases) {
+	public void recreateAllFor(VirtualHost virtualHost, List<VirtualHostAlias> aliases) {
 		deleteAllFor(virtualHost);
 		for (VirtualHostAlias virtualHostAlias : aliases) {
 			virtualHostAlias.setVirtualHost(virtualHost);

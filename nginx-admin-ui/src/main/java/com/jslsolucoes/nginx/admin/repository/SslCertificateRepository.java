@@ -1,7 +1,5 @@
 package com.jslsolucoes.nginx.admin.repository;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -12,15 +10,12 @@ import com.jslsolucoes.nginx.admin.repository.impl.OperationStatusType;
 
 public interface SslCertificateRepository {
 
-	public OperationStatusType deleteWithResource(SslCertificate sslCertificate) throws IOException;
+	public OperationStatusType delete(SslCertificate sslCertificate) ;
 
 	public SslCertificate load(SslCertificate sslCertificate);
 
-	public OperationResult saveOrUpdate(SslCertificate sslCertificate, InputStream certificate, InputStream privateKey)
-			throws IOException;
-
-	public InputStream download(String hash) throws FileNotFoundException;
-
+	public OperationResult saveOrUpdate(SslCertificate sslCertificate, InputStream certificate, InputStream privateKey);
+	
 	public List<SslCertificate> listAllFor(Nginx nginx);
 
 	public List<String> validateBeforeSaveOrUpdate(SslCertificate sslCertificate);

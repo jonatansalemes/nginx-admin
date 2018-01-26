@@ -2,6 +2,8 @@ package com.jslsolucoes.nginx.admin.ui.config;
 
 public class Configuration {
 
+	private Log accessLog;
+	private Log errorLog;
 	private Server server;
 	private Database database;
 	private Application application;
@@ -37,5 +39,21 @@ public class Configuration {
 
 	public void setSmtp(Smtp smtp) {
 		this.smtp = smtp;
+	}
+
+	public Log getAccessLog() {
+		return accessLog;
+	}
+
+	public void setAccessLog(Log accessLog) {
+		this.accessLog = accessLog;
+	}
+
+	public Log getErrorLog() {
+		return errorLog;
+	}
+
+	public void setErrorLog(Log errorLog) {
+		this.errorLog = errorLog;
 	}
 }

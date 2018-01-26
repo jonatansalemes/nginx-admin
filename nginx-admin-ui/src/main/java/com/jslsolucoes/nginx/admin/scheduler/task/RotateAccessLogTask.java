@@ -6,7 +6,8 @@ import org.quartz.SimpleScheduleBuilder;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 
-import com.jslsolucoes.nginx.admin.repository.LogRepository;
+import com.jslsolucoes.nginx.admin.repository.AccessLogRepository;
+import com.jslsolucoes.nginx.admin.ui.config.Configuration;
 import com.jslsolucoes.vraptor4.auth.annotation.Public;
 import com.jslsolucoes.vraptor4.scheduler.SchedulerTask;
 
@@ -16,32 +17,34 @@ import br.com.caelum.vraptor.view.Results;
 
 @Controller
 @Public
-public class RotateLogTask implements SchedulerTask {
+public class RotateAccessLogTask implements SchedulerTask {
 	
-	private LogRepository logRepository;
+	private AccessLogRepository accessLogRepository;
 	private Result result;
+	private Configuration configuration;
 
-	public RotateLogTask() {
+	public RotateAccessLogTask() {
 		
 	}
 
 	@Inject
-	public RotateLogTask(Result result, LogRepository logRepository) {
+	public RotateAccessLogTask(Result result, AccessLogRepository accessLogRepository,Configuration configuration) {
 		this.result = result;
-		this.logRepository = logRepository;
+		this.accessLogRepository = accessLogRepository;
+		this.configuration = configuration;
 
 	}
 
 	@Override
 	public void execute() {
-		logRepository.rotate();
+		accessLogRepository.rotate();
 		this.result.use(Results.status()).ok();
 	}
 
 	@Override
 	public Trigger frequency() {
 		return TriggerBuilder.newTrigger().startNow()
-				.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(30).repeatForever()).build();
+				.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(configuration.getAccessLog().getRotate()).repeatForever()).build();
 	} 
 
 	

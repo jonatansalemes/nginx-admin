@@ -4,6 +4,8 @@
 	<html:block>
 		<html:alert state="success" label="{virtualHost.delete.success}"
 			rendered="${ operation == 'DELETE' }"></html:alert>
+		<html:alert state="danger" label="{virtualHost.delete.failed}"
+			rendered="${ operation == 'DELETE_FAILED' }"></html:alert>
 	</html:block>
 
 	<html:block>
@@ -29,6 +31,11 @@
 						${ virtualHostLocation.upstream.name }
 					</html:gridColumn>
 				</html:grid>
+			</html:gridColumn>
+			<html:gridColumn label="{virtualHost.download}">
+				<html:link target="_blank"
+						url="/virtualHost/download/${ nginx.id }/${ virtualHost.resourceIdentifier.uuid }"
+						label="{virtualHost.download.file}"></html:link>
 			</html:gridColumn>
 			<html:gridColumn>
 				<html:buttonGroup spaced="true">
