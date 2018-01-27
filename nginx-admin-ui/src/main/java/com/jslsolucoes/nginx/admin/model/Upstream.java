@@ -30,7 +30,7 @@ public class Upstream implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_strategy")
 	private Strategy strategy;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_nginx")
 	private Nginx nginx;
@@ -49,7 +49,7 @@ public class Upstream implements Serializable {
 		// default constructor
 	}
 
-	public Upstream(Long id, String name, Strategy strategy, ResourceIdentifier resourceIdentifier,Nginx nginx) {
+	public Upstream(Long id, String name, Strategy strategy, ResourceIdentifier resourceIdentifier, Nginx nginx) {
 		this.id = id;
 		this.name = name;
 		this.strategy = strategy;
@@ -61,7 +61,7 @@ public class Upstream implements Serializable {
 		this.id = id;
 	}
 
-	public Upstream(String name, Strategy strategy,Nginx nginx) {
+	public Upstream(String name, Strategy strategy, Nginx nginx) {
 		this.name = name;
 		this.strategy = strategy;
 		this.nginx = nginx;

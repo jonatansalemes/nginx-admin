@@ -22,20 +22,19 @@ public class NginxServerInfo extends DefaultNginxAgentClientApi implements Nginx
 	private final String endpoint;
 	private final String authorizationKey;
 
-	public NginxServerInfo(ScheduledExecutorService scheduledExecutorService, String endpoint,  String authorizationKey) {
+	public NginxServerInfo(ScheduledExecutorService scheduledExecutorService, String endpoint,
+			String authorizationKey) {
 		this.scheduledExecutorService = scheduledExecutorService;
 		this.endpoint = endpoint;
 		this.authorizationKey = authorizationKey;
 	}
-
 
 	public CompletableFuture<NginxResponse> info() {
 		return CompletableFuture.supplyAsync(() -> {
 			try (RestClient restClient = RestClient.build()) {
 				WebTarget webTarget = restClient.target(endpoint);
 				Response response = webTarget.path("admin").path("info").request()
-						.header(HttpHeader.AUTHORIZATION, authorizationKey)
-						.get();
+						.header(HttpHeader.AUTHORIZATION, authorizationKey).get();
 				return responseFor(response, NginxServerInfoResponse.class);
 			} catch (Exception e) {
 				return new NginxExceptionResponse(e);

@@ -20,22 +20,22 @@ public class AccessLogController {
 
 	@Deprecated
 	public AccessLogController() {
-		
+
 	}
 
 	@Inject
-	public AccessLogController(Result result, AccessLogRepository accessLogRepository,Paginator paginator) {
+	public AccessLogController(Result result, AccessLogRepository accessLogRepository, Paginator paginator) {
 		this.result = result;
 		this.accessLogRepository = accessLogRepository;
 		this.paginator = paginator;
 	}
 
-	
 	@Path("list/{idNginx}")
 	public void list(Long idNginx) {
-		this.result.include("nginx",new Nginx(idNginx));
-		this.result.include("totalResults",accessLogRepository.countFor(new Nginx(idNginx)));
-		this.result.include("accessLogList", accessLogRepository.listAllFor(new Nginx(idNginx),paginator.start(), paginator.resultsPerPage()));
+		this.result.include("nginx", new Nginx(idNginx));
+		this.result.include("totalResults", accessLogRepository.countFor(new Nginx(idNginx)));
+		this.result.include("accessLogList",
+				accessLogRepository.listAllFor(new Nginx(idNginx), paginator.start(), paginator.resultsPerPage()));
 	}
 
 }

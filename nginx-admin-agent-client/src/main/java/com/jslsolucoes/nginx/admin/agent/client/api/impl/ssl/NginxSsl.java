@@ -32,8 +32,8 @@ public class NginxSsl extends DefaultNginxAgentClientApi implements NginxAgentCl
 	private final String uuid;
 	private final FileObject fileObject;
 
-	public NginxSsl(ScheduledExecutorService scheduledExecutorService, String endpoint, 
-			String authorizationKey,String uuid,FileObject fileObject) {
+	public NginxSsl(ScheduledExecutorService scheduledExecutorService, String endpoint, String authorizationKey,
+			String uuid, FileObject fileObject) {
 		this.scheduledExecutorService = scheduledExecutorService;
 		this.endpoint = endpoint;
 		this.authorizationKey = authorizationKey;
@@ -41,16 +41,14 @@ public class NginxSsl extends DefaultNginxAgentClientApi implements NginxAgentCl
 		this.fileObject = fileObject;
 	}
 
-	
 	public CompletableFuture<NginxResponse> update() {
 		return CompletableFuture.supplyAsync(() -> {
 			try (RestClient restClient = RestClient.build()) {
 				NginxSslUpdateRequest nginxSslUpdateRequest = new NginxSslUpdateRequest(fileObject);
-				Entity<NginxSslUpdateRequest> entity = Entity.entity(nginxSslUpdateRequest,MediaType.APPLICATION_JSON);
+				Entity<NginxSslUpdateRequest> entity = Entity.entity(nginxSslUpdateRequest, MediaType.APPLICATION_JSON);
 				WebTarget webTarget = restClient.target(endpoint);
 				Response response = webTarget.path("virtualHost").path(uuid).request()
-						.header(HttpHeader.AUTHORIZATION, authorizationKey)
-						.put(entity);
+						.header(HttpHeader.AUTHORIZATION, authorizationKey).put(entity);
 				return responseFor(response, NginxSslUpdateResponse.class);
 			} catch (Exception e) {
 				return new NginxExceptionResponse(e);
@@ -61,11 +59,10 @@ public class NginxSsl extends DefaultNginxAgentClientApi implements NginxAgentCl
 	public CompletableFuture<NginxResponse> create() {
 		return CompletableFuture.supplyAsync(() -> {
 			try (RestClient restClient = RestClient.build()) {
-				NginxSslCreateRequest nginxSslCreateRequest = new NginxSslCreateRequest(uuid,fileObject);
-				Entity<NginxSslCreateRequest> entity = Entity.entity(nginxSslCreateRequest,MediaType.APPLICATION_JSON);
+				NginxSslCreateRequest nginxSslCreateRequest = new NginxSslCreateRequest(uuid, fileObject);
+				Entity<NginxSslCreateRequest> entity = Entity.entity(nginxSslCreateRequest, MediaType.APPLICATION_JSON);
 				WebTarget webTarget = restClient.target(endpoint);
-				Response response = webTarget.path("ssl").request()
-						.header(HttpHeader.AUTHORIZATION, authorizationKey)
+				Response response = webTarget.path("ssl").request().header(HttpHeader.AUTHORIZATION, authorizationKey)
 						.post(entity);
 				return responseFor(response, NginxSslCreateResponse.class);
 			} catch (Exception e) {
@@ -73,30 +70,26 @@ public class NginxSsl extends DefaultNginxAgentClientApi implements NginxAgentCl
 			}
 		}, scheduledExecutorService);
 	}
-	
+
 	public CompletableFuture<NginxResponse> delete() {
 		return CompletableFuture.supplyAsync(() -> {
 			try (RestClient restClient = RestClient.build()) {
 				WebTarget webTarget = restClient.target(endpoint);
-				Response response = webTarget.path("ssl").path(uuid)
-						.request()
-						.header(HttpHeader.AUTHORIZATION, authorizationKey)
-						.delete();
+				Response response = webTarget.path("ssl").path(uuid).request()
+						.header(HttpHeader.AUTHORIZATION, authorizationKey).delete();
 				return responseFor(response, NginxSslDeleteResponse.class);
 			} catch (Exception e) {
 				return new NginxExceptionResponse(e);
 			}
 		}, scheduledExecutorService);
 	}
-	
+
 	public CompletableFuture<NginxResponse> read() {
 		return CompletableFuture.supplyAsync(() -> {
 			try (RestClient restClient = RestClient.build()) {
 				WebTarget webTarget = restClient.target(endpoint);
-				Response response = webTarget.path("ssl").path(uuid)
-						.request()
-						.header(HttpHeader.AUTHORIZATION, authorizationKey)
-						.get();
+				Response response = webTarget.path("ssl").path(uuid).request()
+						.header(HttpHeader.AUTHORIZATION, authorizationKey).get();
 				return responseFor(response, NginxSslReadResponse.class);
 			} catch (Exception e) {
 				return new NginxExceptionResponse(e);

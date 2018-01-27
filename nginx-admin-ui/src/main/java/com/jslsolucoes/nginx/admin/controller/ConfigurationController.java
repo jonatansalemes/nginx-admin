@@ -24,32 +24,32 @@ public class ConfigurationController {
 
 	@Deprecated
 	public ConfigurationController() {
-		
+
 	}
 
 	@Inject
-	public ConfigurationController(Result result, ConfigurationRepository configurationRepository,NginxAgentRunner nginxAgentRunner) {
+	public ConfigurationController(Result result, ConfigurationRepository configurationRepository,
+			NginxAgentRunner nginxAgentRunner) {
 		this.result = result;
 		this.configurationRepository = configurationRepository;
 		this.nginxAgentRunner = nginxAgentRunner;
 	}
-	
 
-	
 	@Path("edit/{idNginx}")
 	public void edit(Long idNginx) {
-		this.result.include("configuration",configurationRepository.loadFor(new Nginx(idNginx)));
-		this.result.include("nginx",new Nginx(idNginx));
+		this.result.include("configuration", configurationRepository.loadFor(new Nginx(idNginx)));
+		this.result.include("nginx", new Nginx(idNginx));
 	}
-	
+
 	@Post
-	public void saveOrUpdate(Long id,Long idNginx,Integer gzip,Integer maxPostSize) {
+	public void saveOrUpdate(Long id, Long idNginx, Integer gzip, Integer maxPostSize) {
 		NginxResponse nginxResponse = nginxAgentRunner.configure(idNginx, (gzip != null && gzip == 1), maxPostSize);
-		if(nginxResponse.success()) {
-			OperationResult operationResult = configurationRepository.saveOrUpdate(new Configuration(id, (gzip == null ? 0 : gzip), maxPostSize, new Nginx(idNginx)));
+		if (nginxResponse.success()) {
+			OperationResult operationResult = configurationRepository
+					.saveOrUpdate(new Configuration(id, (gzip == null ? 0 : gzip), maxPostSize, new Nginx(idNginx)));
 			this.result.include("operation", operationResult.getOperationType());
 		}
-		this.result.include("nginxConfigureResponse",nginxResponse);
+		this.result.include("nginxConfigureResponse", nginxResponse);
 		this.result.redirectTo(this).edit(idNginx);
 	}
 }

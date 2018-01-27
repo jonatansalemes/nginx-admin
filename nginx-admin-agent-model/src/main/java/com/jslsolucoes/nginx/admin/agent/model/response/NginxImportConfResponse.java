@@ -12,19 +12,17 @@ import com.jslsolucoes.nginx.admin.nginx.parser.directive.VirtualHostDirective;
 
 public class NginxImportConfResponse implements NginxResponse {
 
-	@XmlElements({
-		@XmlElement(type=VirtualHostDirective.class,name="virtualHost"),
-		@XmlElement(type=LocationDirective.class,name="location"),
-		@XmlElement(type=UpstreamDirective.class,name="upstream"),
-	})
+	@XmlElements({ @XmlElement(type = VirtualHostDirective.class, name = "virtualHost"),
+			@XmlElement(type = LocationDirective.class, name = "location"),
+			@XmlElement(type = UpstreamDirective.class, name = "upstream"), })
 	private List<Directive> directives;
-	
+
 	public NginxImportConfResponse() {
-		
+
 	}
-	
+
 	public NginxImportConfResponse(List<Directive> directives) {
-		this.directives = directives;	
+		this.directives = directives;
 	}
 
 	public List<Directive> getDirectives() {
@@ -34,5 +32,5 @@ public class NginxImportConfResponse implements NginxResponse {
 	public void setDirectives(List<Directive> directives) {
 		this.directives = directives;
 	}
-	
+
 }

@@ -26,7 +26,7 @@ public class NginxErrorLog extends DefaultNginxAgentClientApi implements NginxAg
 		this.endpoint = endpoint;
 		this.authorizationKey = authorizationKey;
 	}
-	
+
 	public CompletableFuture<NginxResponse> collect() {
 		return CompletableFuture.supplyAsync(() -> {
 			try (RestClient restClient = RestClient.build()) {
@@ -39,7 +39,7 @@ public class NginxErrorLog extends DefaultNginxAgentClientApi implements NginxAg
 			}
 		}, scheduledExecutorService);
 	}
-	
+
 	public CompletableFuture<NginxResponse> rotate() {
 		return CompletableFuture.supplyAsync(() -> {
 			try (RestClient restClient = RestClient.build()) {

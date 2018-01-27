@@ -8,12 +8,12 @@ public class NginxServerInfoResponse implements NginxResponse {
 	private String address;
 	private Integer pid;
 	private BigDecimal uptime;
-	
+
 	public NginxServerInfoResponse() {
-		
+
 	}
-	
-	public NginxServerInfoResponse(String version,String address,Integer pid,BigDecimal uptime) {
+
+	public NginxServerInfoResponse(String version, String address, Integer pid, BigDecimal uptime) {
 		this.version = version;
 		this.address = address;
 		this.pid = pid;

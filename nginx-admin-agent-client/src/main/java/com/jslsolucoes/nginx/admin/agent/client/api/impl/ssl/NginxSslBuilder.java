@@ -26,17 +26,16 @@ public class NginxSslBuilder implements NginxAgentClientApiBuilder {
 		return new NginxSslBuilder();
 	}
 
-	public NginxSslBuilder withScheduledExecutorService(
-			ScheduledExecutorService scheduledExecutorService) {
+	public NginxSslBuilder withScheduledExecutorService(ScheduledExecutorService scheduledExecutorService) {
 		this.scheduledExecutorService = scheduledExecutorService;
 		return this;
 	}
-	
+
 	public NginxSslBuilder withUuid(String uuid) {
 		this.uuid = uuid;
 		return this;
 	}
-	
+
 	public NginxSslBuilder withFileObject(FileObject fileObject) {
 		this.fileObject = fileObject;
 		return this;

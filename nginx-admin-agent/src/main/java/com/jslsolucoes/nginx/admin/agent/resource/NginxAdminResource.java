@@ -30,11 +30,10 @@ import com.jslsolucoes.nginx.admin.agent.resource.impl.status.NginxStatus;
 public class NginxAdminResource {
 
 	private NginxAdminResourceImpl nginxAdminResourceImpl;
-	
 
 	@Deprecated
 	public NginxAdminResource() {
-		
+
 	}
 
 	@Inject
@@ -45,7 +44,8 @@ public class NginxAdminResource {
 	@POST
 	@Path("configure")
 	public void configure(NginxConfigureRequest nginxConfigureRequest, @Suspended AsyncResponse asyncResponse) {
-		NginxOperationResult nginxOperationResult = nginxAdminResourceImpl.configure(nginxConfigureRequest.getMaxPostSize(), nginxConfigureRequest.getGzip());
+		NginxOperationResult nginxOperationResult = nginxAdminResourceImpl
+				.configure(nginxConfigureRequest.getMaxPostSize(), nginxConfigureRequest.getGzip());
 		asyncResponse.resume(Response
 				.ok(new NginxConfigureResponse(nginxOperationResult.getOutput(), nginxOperationResult.isSuccess()))
 				.build());
@@ -62,11 +62,10 @@ public class NginxAdminResource {
 
 	@GET
 	@Path("info")
-	public void info(
-			@Suspended AsyncResponse asyncResponse) {
+	public void info(@Suspended AsyncResponse asyncResponse) {
 		NginxInfo nginxInfo = nginxAdminResourceImpl.info();
-		asyncResponse.resume(Response.ok(new NginxServerInfoResponse(nginxInfo.getVersion(),
-				nginxInfo.getAddress(), nginxInfo.getPid(), nginxInfo.getUptime())).build());
+		asyncResponse.resume(Response.ok(new NginxServerInfoResponse(nginxInfo.getVersion(), nginxInfo.getAddress(),
+				nginxInfo.getPid(), nginxInfo.getUptime())).build());
 	}
 
 	@GET

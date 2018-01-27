@@ -23,7 +23,7 @@ public class ServerController {
 
 	@Deprecated
 	public ServerController() {
-		
+
 	}
 
 	@Inject
@@ -35,37 +35,37 @@ public class ServerController {
 	@Path("list/{idNginx}")
 	public void list(Long idNginx) {
 		this.result.include("serverList", serverRepository.listAllFor(new Nginx(idNginx)));
-		this.result.include("nginx",new Nginx(idNginx));
+		this.result.include("nginx", new Nginx(idNginx));
 	}
 
 	@Path("form/{idNginx}")
 	public void form(Long idNginx) {
-		this.result.include("nginx",new Nginx(idNginx));
+		this.result.include("nginx", new Nginx(idNginx));
 	}
 
-	public void validate(Long id, String ip,Long idNginx) {
+	public void validate(Long id, String ip, Long idNginx) {
 		this.result.use(Results.json())
-				.from(FormValidation.newBuilder().toUnordenedList(serverRepository.validateBeforeSaveOrUpdate(new Server(id, ip,new Nginx(idNginx)))),
-						"errors")
+				.from(FormValidation.newBuilder().toUnordenedList(
+						serverRepository.validateBeforeSaveOrUpdate(new Server(id, ip, new Nginx(idNginx)))), "errors")
 				.serialize();
 	}
 
 	@Path("edit/{idNginx}/{id}")
-	public void edit(Long idNginx,Long id) {
-		this.result.include("server",serverRepository.load(new Server(id)));
+	public void edit(Long idNginx, Long id) {
+		this.result.include("server", serverRepository.load(new Server(id)));
 		this.result.forwardTo(this).form(idNginx);
 	}
 
 	@Path("delete/{idNginx}/{id}")
-	public void delete(Long idNginx,Long id) {
+	public void delete(Long idNginx, Long id) {
 		this.result.include("operation", serverRepository.delete(new Server(id)));
 		this.result.redirectTo(this).list(idNginx);
 	}
 
 	@Post
-	public void saveOrUpdate(Long id, String ip,Long idNginx) {
-		OperationResult operationResult = serverRepository.saveOrUpdate(new Server(id, ip,new Nginx(idNginx)));
+	public void saveOrUpdate(Long id, String ip, Long idNginx) {
+		OperationResult operationResult = serverRepository.saveOrUpdate(new Server(id, ip, new Nginx(idNginx)));
 		this.result.include("operation", operationResult.getOperationType());
-		this.result.redirectTo(this).edit(idNginx,operationResult.getId());
+		this.result.redirectTo(this).edit(idNginx, operationResult.getId());
 	}
 }

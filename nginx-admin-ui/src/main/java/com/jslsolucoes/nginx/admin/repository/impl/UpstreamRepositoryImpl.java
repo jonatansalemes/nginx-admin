@@ -33,11 +33,11 @@ public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements 
 
 	@Deprecated
 	public UpstreamRepositoryImpl() {
-		
+
 	}
 
 	@Inject
-	public UpstreamRepositoryImpl(EntityManager entityManager,UpstreamServerRepository upstreamServerRepository,
+	public UpstreamRepositoryImpl(EntityManager entityManager, UpstreamServerRepository upstreamServerRepository,
 			NginxRepository nginxRepository, ResourceIdentifierRepository resourceIdentifierRepository) {
 		super(entityManager);
 		this.upstreamServerRepository = upstreamServerRepository;
@@ -50,7 +50,7 @@ public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements 
 		upstreamServerRepository.create(new Upstream(operationResult.getId()), upstreamServers);
 		return operationResult;
 	}
-	
+
 	@Override
 	public List<Upstream> listAllFor(Nginx nginx) {
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -109,18 +109,13 @@ public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements 
 	}
 
 	@Override
-	public Upstream searchFor(String name,Nginx nginx) {
+	public Upstream searchFor(String name, Nginx nginx) {
 		try {
 			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 			CriteriaQuery<Upstream> criteriaQuery = criteriaBuilder.createQuery(Upstream.class);
-			Root<Upstream> root = criteriaQuery.from(Upstream.class);	
-			criteriaQuery.where(
-					criteriaBuilder.and(
-							criteriaBuilder.equal(root.get(Upstream_.name), name),
-							criteriaBuilder.equal(root.join(Upstream_.nginx, JoinType.INNER).get(Nginx_.id),
-									nginx.getId())
-					)
-			);
+			Root<Upstream> root = criteriaQuery.from(Upstream.class);
+			criteriaQuery.where(criteriaBuilder.and(criteriaBuilder.equal(root.get(Upstream_.name), name),
+					criteriaBuilder.equal(root.join(Upstream_.nginx, JoinType.INNER).get(Nginx_.id), nginx.getId())));
 			return entityManager.createQuery(criteriaQuery).getSingleResult();
 		} catch (NoResultException noResultException) {
 			return null;

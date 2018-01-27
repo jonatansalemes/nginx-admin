@@ -22,7 +22,7 @@ public class UpstreamServerRepositoryImpl extends RepositoryImpl<UpstreamServer>
 
 	@Deprecated
 	public UpstreamServerRepositoryImpl() {
-		
+
 	}
 
 	@Inject

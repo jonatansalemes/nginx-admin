@@ -25,24 +25,21 @@ import com.jslsolucoes.nginx.admin.nginx.parser.directive.Directive;
 public class NginxImportResource {
 
 	private NginxImportResourceImpl nginxImportResourceImpl;
-	
+
 	@Deprecated
 	public NginxImportResource() {
-		
+
 	}
 
 	@Inject
 	public NginxImportResource(NginxImportResourceImpl nginxImportResourceImpl) {
 		this.nginxImportResourceImpl = nginxImportResourceImpl;
 	}
-	
+
 	@POST
 	@Path("conf")
 	public void conf(NginxImportConfRequest nginxImportConfRequest, @Suspended AsyncResponse asyncResponse) {
 		List<Directive> directives = nginxImportResourceImpl.importFromConfiguration(nginxImportConfRequest.getConf());
-		asyncResponse
-		.resume(Response
-				.ok(new NginxImportConfResponse(directives))
-				.build());		
+		asyncResponse.resume(Response.ok(new NginxImportConfResponse(directives)).build());
 	}
 }

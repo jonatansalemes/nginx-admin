@@ -22,37 +22,28 @@ import com.jslsolucoes.nginx.admin.agent.resource.impl.NginxErrorLogResourceImpl
 public class NginxErrorLogResource {
 
 	private NginxErrorLogResourceImpl nginxErrorLogResourceImpl;
-	
+
 	@Deprecated
 	public NginxErrorLogResource() {
-		
+
 	}
 
 	@Inject
 	public NginxErrorLogResource(NginxErrorLogResourceImpl nginxErrorLogResourceImpl) {
 		this.nginxErrorLogResourceImpl = nginxErrorLogResourceImpl;
 	}
-	
+
 	@GET
 	@Path("collect")
-	public void collect(
-			@Suspended AsyncResponse asyncResponse) {
+	public void collect(@Suspended AsyncResponse asyncResponse) {
 		asyncResponse
-				.resume(Response
-						.ok(new NginxErrorLogCollectResponse(
-								nginxErrorLogResourceImpl.collect()))
-						.build());
+				.resume(Response.ok(new NginxErrorLogCollectResponse(nginxErrorLogResourceImpl.collect())).build());
 	}
-	
+
 	@GET
 	@Path("rotate")
-	public void rotate(
-			@Suspended AsyncResponse asyncResponse) {
-		asyncResponse
-				.resume(Response
-						.ok(new NginxErrorLogRotateResponse(
-								nginxErrorLogResourceImpl.rotate()))
-						.build());
+	public void rotate(@Suspended AsyncResponse asyncResponse) {
+		asyncResponse.resume(Response.ok(new NginxErrorLogRotateResponse(nginxErrorLogResourceImpl.rotate())).build());
 	}
-	
+
 }

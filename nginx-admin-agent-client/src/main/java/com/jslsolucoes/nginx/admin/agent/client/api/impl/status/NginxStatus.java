@@ -22,20 +22,18 @@ public class NginxStatus extends DefaultNginxAgentClientApi implements NginxAgen
 	private final String endpoint;
 	private final String authorizationKey;
 
-	public NginxStatus(ScheduledExecutorService scheduledExecutorService, String endpoint,  String authorizationKey) {
+	public NginxStatus(ScheduledExecutorService scheduledExecutorService, String endpoint, String authorizationKey) {
 		this.scheduledExecutorService = scheduledExecutorService;
 		this.endpoint = endpoint;
 		this.authorizationKey = authorizationKey;
 	}
-
 
 	public CompletableFuture<NginxResponse> status() {
 		return CompletableFuture.supplyAsync(() -> {
 			try (RestClient restClient = RestClient.build()) {
 				WebTarget webTarget = restClient.target(endpoint);
 				Response response = webTarget.path("admin").path("status").request()
-						.header(HttpHeader.AUTHORIZATION, authorizationKey)
-						.get();
+						.header(HttpHeader.AUTHORIZATION, authorizationKey).get();
 				return responseFor(response, NginxStatusResponse.class);
 			} catch (Exception e) {
 				return new NginxExceptionResponse(e);

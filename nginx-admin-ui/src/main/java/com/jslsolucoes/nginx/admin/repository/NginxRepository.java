@@ -8,7 +8,7 @@ import com.jslsolucoes.nginx.admin.repository.impl.OperationResult;
 import com.jslsolucoes.nginx.admin.repository.impl.OperationStatusType;
 
 public interface NginxRepository {
-	
+
 	public OperationStatusType insert(Nginx nginx);
 
 	public List<String> validateBeforeSaveOrUpdate(Nginx nginx);

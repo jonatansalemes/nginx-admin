@@ -15,7 +15,7 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 
 	@Deprecated
 	public NginxRepositoryImpl() {
-	
+
 	}
 
 	@Inject

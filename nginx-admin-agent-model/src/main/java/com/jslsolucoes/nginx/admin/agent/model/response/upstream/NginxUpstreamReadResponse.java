@@ -6,11 +6,11 @@ import com.jslsolucoes.nginx.admin.agent.model.response.NginxResponse;
 public class NginxUpstreamReadResponse implements NginxResponse {
 
 	private FileObject fileObject;
-	
+
 	public NginxUpstreamReadResponse() {
-		
+
 	}
-	
+
 	public NginxUpstreamReadResponse(FileObject fileObject) {
 		this.fileObject = fileObject;
 	}
@@ -22,5 +22,5 @@ public class NginxUpstreamReadResponse implements NginxResponse {
 	public void setFileObject(FileObject fileObject) {
 		this.fileObject = fileObject;
 	}
-	
+
 }

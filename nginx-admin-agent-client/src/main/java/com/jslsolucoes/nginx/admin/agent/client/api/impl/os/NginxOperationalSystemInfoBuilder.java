@@ -5,7 +5,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import com.jslsolucoes.nginx.admin.agent.client.api.NginxAgentClientApiBuilder;
 import com.jslsolucoes.nginx.admin.agent.client.api.impl.DefaultNginxAgentClientApi;
 
-public class NginxOperationalSystemInfoBuilder extends DefaultNginxAgentClientApi implements NginxAgentClientApiBuilder {
+public class NginxOperationalSystemInfoBuilder extends DefaultNginxAgentClientApi
+		implements NginxAgentClientApiBuilder {
 
 	private ScheduledExecutorService scheduledExecutorService;
 	private String endpoint;

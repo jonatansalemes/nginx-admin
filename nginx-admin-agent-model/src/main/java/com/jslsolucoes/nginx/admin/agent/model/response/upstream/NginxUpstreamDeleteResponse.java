@@ -6,15 +6,15 @@ public class NginxUpstreamDeleteResponse implements NginxResponse {
 
 	private String stackTrace;
 	private Boolean success;
-	
+
 	public NginxUpstreamDeleteResponse() {
-		
+
 	}
-	
-	public NginxUpstreamDeleteResponse(String stackTrace,Boolean success) {
+
+	public NginxUpstreamDeleteResponse(String stackTrace, Boolean success) {
 		this.stackTrace = stackTrace;
 		this.success = success;
-		
+
 	}
 
 	public String getStackTrace() {

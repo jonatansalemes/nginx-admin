@@ -37,12 +37,12 @@ public class AppController {
 		this.result.use(Results.json()).from(configuration.getApplication().getVersion(), "version").serialize();
 	}
 
-	@Path(value = { "/", "/home"})
+	@Path(value = { "/", "/home" })
 	public void home() {
 		this.result.include("nginxList", nginxRepository.listAll());
-		
+
 	}
-	
+
 	@Path("/applySessionFor/{id}")
 	public void applyFor(Long id) {
 		this.result.include("nginx", nginxRepository.load(new Nginx(id)));

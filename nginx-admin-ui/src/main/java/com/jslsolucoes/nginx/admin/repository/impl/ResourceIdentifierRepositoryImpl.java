@@ -20,7 +20,7 @@ public class ResourceIdentifierRepositoryImpl extends RepositoryImpl<ResourceIde
 
 	@Deprecated
 	public ResourceIdentifierRepositoryImpl() {
-		
+
 	}
 
 	@Inject

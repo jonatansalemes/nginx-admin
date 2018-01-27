@@ -2,15 +2,14 @@ package com.jslsolucoes.nginx.admin.agent.model.request;
 
 public class NginxConfigureRequest {
 
-	
 	private Integer maxPostSize;
 	private Boolean gzip;
-	
+
 	public NginxConfigureRequest() {
-		
+
 	}
-	
-	public NginxConfigureRequest(Integer maxPostSize,Boolean gzip) {		
+
+	public NginxConfigureRequest(Integer maxPostSize, Boolean gzip) {
 		this.maxPostSize = maxPostSize;
 		this.gzip = gzip;
 	}
@@ -30,5 +29,5 @@ public class NginxConfigureRequest {
 	public void setGzip(Boolean gzip) {
 		this.gzip = gzip;
 	}
-	
+
 }

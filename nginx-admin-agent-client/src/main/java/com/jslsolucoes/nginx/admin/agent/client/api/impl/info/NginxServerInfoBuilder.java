@@ -23,8 +23,7 @@ public class NginxServerInfoBuilder implements NginxAgentClientApiBuilder {
 		return new NginxServerInfoBuilder();
 	}
 
-	public NginxServerInfoBuilder withScheduledExecutorService(
-			ScheduledExecutorService scheduledExecutorService) {
+	public NginxServerInfoBuilder withScheduledExecutorService(ScheduledExecutorService scheduledExecutorService) {
 		this.scheduledExecutorService = scheduledExecutorService;
 		return this;
 	}

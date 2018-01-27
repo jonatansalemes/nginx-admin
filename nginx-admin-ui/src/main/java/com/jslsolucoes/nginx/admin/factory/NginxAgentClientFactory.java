@@ -1,6 +1,5 @@
 package com.jslsolucoes.nginx.admin.factory;
 
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
@@ -15,7 +14,7 @@ public class NginxAgentClientFactory {
 	public NginxAgentClient produces() {
 		return NginxAgentClientBuilder.newBuilder().build();
 	}
-	
+
 	public void disposes(@Disposes NginxAgentClient nginxAgentClient) {
 		nginxAgentClient.close();
 	}

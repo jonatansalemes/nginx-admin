@@ -4,15 +4,15 @@ public class NginxConfigureResponse implements NginxResponse {
 
 	private String stackTrace;
 	private Boolean success;
-	
+
 	public NginxConfigureResponse() {
-		
+
 	}
-	
-	public NginxConfigureResponse(String stackTrace,Boolean success) {
+
+	public NginxConfigureResponse(String stackTrace, Boolean success) {
 		this.stackTrace = stackTrace;
 		this.success = success;
-		
+
 	}
 
 	public String getStackTrace() {

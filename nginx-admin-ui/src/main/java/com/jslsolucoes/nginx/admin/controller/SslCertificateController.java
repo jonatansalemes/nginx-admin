@@ -118,8 +118,8 @@ public class SslCertificateController {
 			ResourceIdentifier resourceIdentifierForCertificate = resourceIdentifierRepository.create();
 			ResourceIdentifier resourceIdentifierForCertificatePrivateKey = resourceIdentifierRepository.create();
 
-			NginxResponse nginxResponseForCertificate = createOrUpdateSsl(idNginx, resourceIdentifierForCertificate.getUuid(),
-					certificateFile.getFile());
+			NginxResponse nginxResponseForCertificate = createOrUpdateSsl(idNginx,
+					resourceIdentifierForCertificate.getUuid(), certificateFile.getFile());
 			NginxResponse nginxResponseForCertificatePrivateKey = createOrUpdateSsl(idNginx,
 					resourceIdentifierForCertificatePrivateKey.getUuid(), certificatePrivateKeyFile.getFile());
 
@@ -135,23 +135,24 @@ public class SslCertificateController {
 			}
 		} else {
 			SslCertificate sslCertificate = sslCertificateRepository.load(new SslCertificate(id));
-			
+
 			boolean success = true;
-			if(certificateFile != null) {
-				NginxResponse nginxResponseForCertificate = createOrUpdateSsl(idNginx, sslCertificate.getResourceIdentifierCertificate().getUuid(),
-						certificateFile.getFile());
+			if (certificateFile != null) {
+				NginxResponse nginxResponseForCertificate = createOrUpdateSsl(idNginx,
+						sslCertificate.getResourceIdentifierCertificate().getUuid(), certificateFile.getFile());
 				success = nginxResponseForCertificate.success();
 			}
-			
-			if(certificatePrivateKeyFile != null) {
+
+			if (certificatePrivateKeyFile != null) {
 				NginxResponse nginxResponseForCertificatePrivateKey = createOrUpdateSsl(idNginx,
-						sslCertificate.getResourceIdentifierCertificatePrivateKey().getUuid(), certificatePrivateKeyFile.getFile());
+						sslCertificate.getResourceIdentifierCertificatePrivateKey().getUuid(),
+						certificatePrivateKeyFile.getFile());
 				success = nginxResponseForCertificatePrivateKey.success();
 			}
-			
+
 			if (success) {
-				OperationResult operationResult = sslCertificateRepository
-						.saveOrUpdate(new SslCertificate(id, commonName, sslCertificate.getResourceIdentifierCertificate(),
+				OperationResult operationResult = sslCertificateRepository.saveOrUpdate(
+						new SslCertificate(id, commonName, sslCertificate.getResourceIdentifierCertificate(),
 								sslCertificate.getResourceIdentifierCertificatePrivateKey(), new Nginx(idNginx)));
 				this.result.include("operation", operationResult.getOperationType());
 				this.result.redirectTo(this).edit(idNginx, operationResult.getId());
@@ -159,7 +160,7 @@ public class SslCertificateController {
 				this.result.include("operation", OperationStatusType.UPDATE_FAILED);
 				this.result.redirectTo(this).form(idNginx);
 			}
-			
+
 		}
 	}
 

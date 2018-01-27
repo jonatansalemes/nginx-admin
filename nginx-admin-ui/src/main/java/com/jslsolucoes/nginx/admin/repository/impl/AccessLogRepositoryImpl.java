@@ -41,13 +41,12 @@ public class AccessLogRepositoryImpl extends RepositoryImpl<AccessLog> implement
 	}
 
 	@Inject
-	public AccessLogRepositoryImpl(EntityManager entityManager,NginxAgentRunner nginxAgentRunner,NginxRepository nginxRepository) {
+	public AccessLogRepositoryImpl(EntityManager entityManager, NginxAgentRunner nginxAgentRunner,
+			NginxRepository nginxRepository) {
 		super(entityManager);
 		this.nginxAgentRunner = nginxAgentRunner;
 		this.nginxRepository = nginxRepository;
 	}
-
-	
 
 	public Long countFor(Nginx nginx) {
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -71,27 +70,26 @@ public class AccessLogRepositoryImpl extends RepositoryImpl<AccessLog> implement
 		}
 		return query.getResultList();
 	}
-	
+
 	@Override
 	public void collect() {
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
-		for(Nginx nginx : nginxRepository.listAll()) {
+		for (Nginx nginx : nginxRepository.listAll()) {
 			NginxResponse nginxResponse = nginxAgentRunner.collectAccessLog(nginx.getId());
-			if(nginxResponse.success()) {
+			if (nginxResponse.success()) {
 				NginxAccessLogCollectResponse nginxAccessLogCollectResponse = (NginxAccessLogCollectResponse) nginxResponse;
-				for(FileObject fileObject : nginxAccessLogCollectResponse.getFiles()) {
-					
-					Arrays.asList(fileObject.getContent().split("\n"))
-					.stream()
-					.filter(line -> line.trim().startsWith("{") && line.trim().endsWith("}")).forEach(line -> {
-						try {
-							AccessLog accessLog = gson.fromJson(line, AccessLog.class);
-							accessLog.setNginx(nginx);
-							super.insert(accessLog);
-						} catch (Exception exception) {
-							logger.error(line + " could'n be stored ", exception);
-						}
-					});
+				for (FileObject fileObject : nginxAccessLogCollectResponse.getFiles()) {
+
+					Arrays.asList(fileObject.getContent().split("\n")).stream()
+							.filter(line -> line.trim().startsWith("{") && line.trim().endsWith("}")).forEach(line -> {
+								try {
+									AccessLog accessLog = gson.fromJson(line, AccessLog.class);
+									accessLog.setNginx(nginx);
+									super.insert(accessLog);
+								} catch (Exception exception) {
+									logger.error(line + " could'n be stored ", exception);
+								}
+							});
 				}
 			}
 		}
@@ -99,7 +97,7 @@ public class AccessLogRepositoryImpl extends RepositoryImpl<AccessLog> implement
 
 	@Override
 	public void rotate() {
-		for(Nginx nginx : nginxRepository.listAll()) {
+		for (Nginx nginx : nginxRepository.listAll()) {
 			nginxAgentRunner.rotateAccessLog(nginx.getId());
 		}
 	}

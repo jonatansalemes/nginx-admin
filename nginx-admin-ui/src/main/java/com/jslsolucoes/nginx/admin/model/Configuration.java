@@ -20,7 +20,7 @@ public class Configuration implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_nginx")
 	private Nginx nginx;
@@ -30,18 +30,18 @@ public class Configuration implements Serializable {
 
 	@Column(name = "max_post_size")
 	private Integer maxPostSize;
-	
+
 	public Configuration() {
-		
+
 	}
-	
-	public Configuration(Long id,Integer gzip,Integer maxPostSize,Nginx nginx) {
+
+	public Configuration(Long id, Integer gzip, Integer maxPostSize, Nginx nginx) {
 		this.id = id;
 		this.gzip = gzip;
 		this.maxPostSize = maxPostSize;
 		this.nginx = nginx;
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -73,5 +73,5 @@ public class Configuration implements Serializable {
 	public void setMaxPostSize(Integer maxPostSize) {
 		this.maxPostSize = maxPostSize;
 	}
-	
+
 }

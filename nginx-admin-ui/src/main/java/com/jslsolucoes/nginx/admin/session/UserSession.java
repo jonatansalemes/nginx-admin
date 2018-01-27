@@ -14,10 +14,9 @@ import com.jslsolucoes.vraptor4.auth.model.AuthUserSession;
 @SuppressWarnings("serial")
 @SessionScoped
 @Named
-public class UserSession implements Serializable,AuthUserSession {
+public class UserSession implements Serializable, AuthUserSession {
 
 	private User user;
-	
 
 	public void logout() {
 		this.user = null;

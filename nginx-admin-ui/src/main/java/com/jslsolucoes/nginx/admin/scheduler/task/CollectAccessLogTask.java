@@ -24,11 +24,11 @@ public class CollectAccessLogTask implements SchedulerTask {
 	private Configuration configuration;
 
 	public CollectAccessLogTask() {
-		
+
 	}
 
 	@Inject
-	public CollectAccessLogTask(Result result, AccessLogRepository accessLogRepository,Configuration configuration) {
+	public CollectAccessLogTask(Result result, AccessLogRepository accessLogRepository, Configuration configuration) {
 		this.result = result;
 		this.accessLogRepository = accessLogRepository;
 		this.configuration = configuration;
@@ -44,7 +44,7 @@ public class CollectAccessLogTask implements SchedulerTask {
 
 	@Override
 	public Trigger frequency() {
-		return TriggerBuilder.newTrigger().startNow()
-				.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(configuration.getAccessLog().getCollect()).repeatForever()).build();
+		return TriggerBuilder.newTrigger().startNow().withSchedule(SimpleScheduleBuilder.simpleSchedule()
+				.withIntervalInMinutes(configuration.getAccessLog().getCollect()).repeatForever()).build();
 	}
 }

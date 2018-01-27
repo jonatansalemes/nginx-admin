@@ -35,9 +35,8 @@ public class NginxUpstream extends DefaultNginxAgentClientApi implements NginxAg
 	private final String strategy;
 	private final List<Endpoint> endpoints;
 
-	public NginxUpstream(ScheduledExecutorService scheduledExecutorService, String endpoint, 
-			String authorizationKey,String uuid,String strategy,List<Endpoint> endpoints,
-			String name) {
+	public NginxUpstream(ScheduledExecutorService scheduledExecutorService, String endpoint, String authorizationKey,
+			String uuid, String strategy, List<Endpoint> endpoints, String name) {
 		this.scheduledExecutorService = scheduledExecutorService;
 		this.endpoint = endpoint;
 		this.authorizationKey = authorizationKey;
@@ -47,16 +46,16 @@ public class NginxUpstream extends DefaultNginxAgentClientApi implements NginxAg
 		this.name = name;
 	}
 
-	
 	public CompletableFuture<NginxResponse> update() {
 		return CompletableFuture.supplyAsync(() -> {
 			try (RestClient restClient = RestClient.build()) {
-				NginxUpstreamUpdateRequest nginxUpstreamUpdateRequest = new NginxUpstreamUpdateRequest(name, strategy, endpoints);
-				Entity<NginxUpstreamUpdateRequest> entity = Entity.entity(nginxUpstreamUpdateRequest,MediaType.APPLICATION_JSON);
+				NginxUpstreamUpdateRequest nginxUpstreamUpdateRequest = new NginxUpstreamUpdateRequest(name, strategy,
+						endpoints);
+				Entity<NginxUpstreamUpdateRequest> entity = Entity.entity(nginxUpstreamUpdateRequest,
+						MediaType.APPLICATION_JSON);
 				WebTarget webTarget = restClient.target(endpoint);
 				Response response = webTarget.path("upstream").path(uuid).request()
-						.header(HttpHeader.AUTHORIZATION, authorizationKey)
-						.put(entity);
+						.header(HttpHeader.AUTHORIZATION, authorizationKey).put(entity);
 				return responseFor(response, NginxUpstreamUpdateResponse.class);
 			} catch (Exception e) {
 				return new NginxExceptionResponse(e);
@@ -67,42 +66,39 @@ public class NginxUpstream extends DefaultNginxAgentClientApi implements NginxAg
 	public CompletableFuture<NginxResponse> create() {
 		return CompletableFuture.supplyAsync(() -> {
 			try (RestClient restClient = RestClient.build()) {
-				NginxUpstreamCreateRequest nginxUpstreamCreateRequest = new NginxUpstreamCreateRequest(name, uuid, strategy, endpoints);
-				Entity<NginxUpstreamCreateRequest> entity = Entity.entity(nginxUpstreamCreateRequest,MediaType.APPLICATION_JSON);
+				NginxUpstreamCreateRequest nginxUpstreamCreateRequest = new NginxUpstreamCreateRequest(name, uuid,
+						strategy, endpoints);
+				Entity<NginxUpstreamCreateRequest> entity = Entity.entity(nginxUpstreamCreateRequest,
+						MediaType.APPLICATION_JSON);
 				WebTarget webTarget = restClient.target(endpoint);
 				Response response = webTarget.path("upstream").request()
-						.header(HttpHeader.AUTHORIZATION, authorizationKey)
-						.post(entity);
+						.header(HttpHeader.AUTHORIZATION, authorizationKey).post(entity);
 				return responseFor(response, NginxUpstreamCreateResponse.class);
 			} catch (Exception e) {
 				return new NginxExceptionResponse(e);
 			}
 		}, scheduledExecutorService);
 	}
-	
+
 	public CompletableFuture<NginxResponse> delete() {
 		return CompletableFuture.supplyAsync(() -> {
 			try (RestClient restClient = RestClient.build()) {
 				WebTarget webTarget = restClient.target(endpoint);
-				Response response = webTarget.path("upstream").path(uuid)
-						.request()
-						.header(HttpHeader.AUTHORIZATION, authorizationKey)
-						.delete();
+				Response response = webTarget.path("upstream").path(uuid).request()
+						.header(HttpHeader.AUTHORIZATION, authorizationKey).delete();
 				return responseFor(response, NginxUpstreamDeleteResponse.class);
 			} catch (Exception e) {
 				return new NginxExceptionResponse(e);
 			}
 		}, scheduledExecutorService);
 	}
-	
+
 	public CompletableFuture<NginxResponse> read() {
 		return CompletableFuture.supplyAsync(() -> {
 			try (RestClient restClient = RestClient.build()) {
 				WebTarget webTarget = restClient.target(endpoint);
-				Response response = webTarget.path("upstream").path(uuid)
-						.request()
-						.header(HttpHeader.AUTHORIZATION, authorizationKey)
-						.get();
+				Response response = webTarget.path("upstream").path(uuid).request()
+						.header(HttpHeader.AUTHORIZATION, authorizationKey).get();
 				return responseFor(response, NginxUpstreamReadResponse.class);
 			} catch (Exception e) {
 				return new NginxExceptionResponse(e);

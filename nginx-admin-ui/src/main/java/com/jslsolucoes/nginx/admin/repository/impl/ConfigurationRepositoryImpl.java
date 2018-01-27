@@ -20,7 +20,7 @@ public class ConfigurationRepositoryImpl extends RepositoryImpl<Configuration> i
 
 	@Deprecated
 	public ConfigurationRepositoryImpl() {
-		
+
 	}
 
 	@Inject
@@ -33,10 +33,9 @@ public class ConfigurationRepositoryImpl extends RepositoryImpl<Configuration> i
 		try {
 			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 			CriteriaQuery<Configuration> criteriaQuery = criteriaBuilder.createQuery(Configuration.class);
-			Root<Configuration> root = criteriaQuery.from(Configuration.class);	
-			criteriaQuery.where(
-					criteriaBuilder.equal(root.join(Configuration_.nginx,JoinType.INNER).get(Nginx_.id), nginx.getId())
-			);
+			Root<Configuration> root = criteriaQuery.from(Configuration.class);
+			criteriaQuery.where(criteriaBuilder.equal(root.join(Configuration_.nginx, JoinType.INNER).get(Nginx_.id),
+					nginx.getId()));
 			return entityManager.createQuery(criteriaQuery).getSingleResult();
 		} catch (NoResultException noResultException) {
 			return null;

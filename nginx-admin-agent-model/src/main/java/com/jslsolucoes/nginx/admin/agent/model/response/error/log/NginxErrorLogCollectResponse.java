@@ -8,11 +8,11 @@ import com.jslsolucoes.nginx.admin.agent.model.response.NginxResponse;
 public class NginxErrorLogCollectResponse implements NginxResponse {
 
 	private List<FileObject> files;
-	
+
 	public NginxErrorLogCollectResponse() {
-		
+
 	}
-	
+
 	public NginxErrorLogCollectResponse(List<FileObject> files) {
 		this.files = files;
 	}
@@ -24,7 +24,5 @@ public class NginxErrorLogCollectResponse implements NginxResponse {
 	public void setFiles(List<FileObject> files) {
 		this.files = files;
 	}
-
-	
 
 }

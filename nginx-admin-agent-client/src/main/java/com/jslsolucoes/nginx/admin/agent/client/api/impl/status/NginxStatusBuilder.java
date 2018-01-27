@@ -23,8 +23,7 @@ public class NginxStatusBuilder implements NginxAgentClientApiBuilder {
 		return new NginxStatusBuilder();
 	}
 
-	public NginxStatusBuilder withScheduledExecutorService(
-			ScheduledExecutorService scheduledExecutorService) {
+	public NginxStatusBuilder withScheduledExecutorService(ScheduledExecutorService scheduledExecutorService) {
 		this.scheduledExecutorService = scheduledExecutorService;
 		return this;
 	}

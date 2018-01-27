@@ -6,18 +6,17 @@ import com.jslsolucoes.nginx.admin.agent.client.api.NginxAgentClientApiBuilder;
 
 public class NginxAccessLogBuilder implements NginxAgentClientApiBuilder {
 
-	
 	private ScheduledExecutorService scheduledExecutorService;
 	private String endpoint;
 	private String authorizationKey;
 
 	private NginxAccessLogBuilder() {
-		
+
 	}
-	
+
 	@Override
 	public NginxAccessLog build() {
-		return new NginxAccessLog(scheduledExecutorService,endpoint,authorizationKey);
+		return new NginxAccessLog(scheduledExecutorService, endpoint, authorizationKey);
 	}
 
 	public static NginxAccessLogBuilder newBuilder() {
@@ -28,7 +27,7 @@ public class NginxAccessLogBuilder implements NginxAgentClientApiBuilder {
 		this.scheduledExecutorService = scheduledExecutorService;
 		return this;
 	}
-	
+
 	public NginxAccessLogBuilder withEndpoint(String endpoint) {
 		this.endpoint = endpoint;
 		return this;

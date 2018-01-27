@@ -18,13 +18,13 @@ public class NginxConfParser {
 	private String conf;
 
 	private NginxConfParser() {
-		
+
 	}
-	
+
 	public static NginxConfParser newBuilder() {
 		return new NginxConfParser();
 	}
-	
+
 	public NginxConfParser withConfigurationFile(String conf) {
 		this.conf = conf;
 		return this;

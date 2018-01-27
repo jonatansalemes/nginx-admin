@@ -16,8 +16,8 @@ public class NginxVirtualHostUpdateRequest {
 
 	}
 
-	public NginxVirtualHostUpdateRequest(Boolean https, String certificateUuid,
-			String certificatePrivateKeyUuid, List<String> aliases, List<Location> locations) {
+	public NginxVirtualHostUpdateRequest(Boolean https, String certificateUuid, String certificatePrivateKeyUuid,
+			List<String> aliases, List<Location> locations) {
 		this.https = https;
 		this.certificateUuid = certificateUuid;
 		this.certificatePrivateKeyUuid = certificatePrivateKeyUuid;

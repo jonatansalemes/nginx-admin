@@ -36,35 +36,25 @@ public class NginxAgentClient {
 			return (T) NginxOperationalSystemInfoBuilder.newBuilder()
 					.withScheduledExecutorService(scheduledExecutorService);
 		} else if (clazz.equals(NginxPingBuilder.class)) {
-			return (T) NginxPingBuilder.newBuilder()
-					.withScheduledExecutorService(scheduledExecutorService);
+			return (T) NginxPingBuilder.newBuilder().withScheduledExecutorService(scheduledExecutorService);
 		} else if (clazz.equals(NginxServerInfoBuilder.class)) {
-			return (T) NginxServerInfoBuilder.newBuilder()
-					.withScheduledExecutorService(scheduledExecutorService);
+			return (T) NginxServerInfoBuilder.newBuilder().withScheduledExecutorService(scheduledExecutorService);
 		} else if (clazz.equals(NginxConfigureBuilder.class)) {
-			return (T) NginxConfigureBuilder.newBuilder()
-					.withScheduledExecutorService(scheduledExecutorService);
+			return (T) NginxConfigureBuilder.newBuilder().withScheduledExecutorService(scheduledExecutorService);
 		} else if (clazz.equals(NginxUpstreamBuilder.class)) {
-			return (T) NginxUpstreamBuilder.newBuilder()
-					.withScheduledExecutorService(scheduledExecutorService);
+			return (T) NginxUpstreamBuilder.newBuilder().withScheduledExecutorService(scheduledExecutorService);
 		} else if (clazz.equals(NginxStatusBuilder.class)) {
-			return (T) NginxStatusBuilder.newBuilder()
-					.withScheduledExecutorService(scheduledExecutorService);
+			return (T) NginxStatusBuilder.newBuilder().withScheduledExecutorService(scheduledExecutorService);
 		} else if (clazz.equals(NginxAccessLogBuilder.class)) {
-			return (T) NginxAccessLogBuilder.newBuilder()
-					.withScheduledExecutorService(scheduledExecutorService);
+			return (T) NginxAccessLogBuilder.newBuilder().withScheduledExecutorService(scheduledExecutorService);
 		} else if (clazz.equals(NginxErrorLogBuilder.class)) {
-			return (T) NginxErrorLogBuilder.newBuilder()
-					.withScheduledExecutorService(scheduledExecutorService);
+			return (T) NginxErrorLogBuilder.newBuilder().withScheduledExecutorService(scheduledExecutorService);
 		} else if (clazz.equals(NginxVirtualHostBuilder.class)) {
-			return (T) NginxVirtualHostBuilder.newBuilder()
-					.withScheduledExecutorService(scheduledExecutorService);
+			return (T) NginxVirtualHostBuilder.newBuilder().withScheduledExecutorService(scheduledExecutorService);
 		} else if (clazz.equals(NginxSslBuilder.class)) {
-			return (T) NginxSslBuilder.newBuilder()
-					.withScheduledExecutorService(scheduledExecutorService);
+			return (T) NginxSslBuilder.newBuilder().withScheduledExecutorService(scheduledExecutorService);
 		} else if (clazz.equals(NginxImportBuilder.class)) {
-			return (T) NginxImportBuilder.newBuilder()
-					.withScheduledExecutorService(scheduledExecutorService);
+			return (T) NginxImportBuilder.newBuilder().withScheduledExecutorService(scheduledExecutorService);
 		}
 		throw new IllegalArgumentException("Please select an valid api");
 	}

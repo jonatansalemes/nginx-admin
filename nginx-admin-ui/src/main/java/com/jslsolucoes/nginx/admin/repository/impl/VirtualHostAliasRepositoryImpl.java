@@ -25,15 +25,13 @@ public class VirtualHostAliasRepositoryImpl extends RepositoryImpl<VirtualHostAl
 
 	@Deprecated
 	public VirtualHostAliasRepositoryImpl() {
-		
-	}
 
+	}
 
 	@Inject
 	public VirtualHostAliasRepositoryImpl(EntityManager entityManager) {
 		super(entityManager);
 	}
-
 
 	@Override
 	public List<VirtualHostAlias> listAllFor(Nginx nginx) {
@@ -41,12 +39,10 @@ public class VirtualHostAliasRepositoryImpl extends RepositoryImpl<VirtualHostAl
 		CriteriaQuery<VirtualHostAlias> criteriaQuery = criteriaBuilder.createQuery(VirtualHostAlias.class);
 		Root<VirtualHostAlias> root = criteriaQuery.from(VirtualHostAlias.class);
 		criteriaQuery.where(criteriaBuilder.equal(root.join(VirtualHostAlias_.virtualHost, JoinType.INNER)
-								.join(VirtualHost_.nginx,JoinType.INNER).get(Nginx_.id),
-				nginx.getId()));
+				.join(VirtualHost_.nginx, JoinType.INNER).get(Nginx_.id), nginx.getId()));
 		return entityManager.createQuery(criteriaQuery).getResultList();
 	}
-	
-	
+
 	@Override
 	public List<VirtualHostAlias> listAll(VirtualHost virtualHost) {
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();

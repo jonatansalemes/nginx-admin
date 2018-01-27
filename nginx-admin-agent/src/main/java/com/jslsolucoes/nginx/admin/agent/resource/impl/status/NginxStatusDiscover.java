@@ -17,7 +17,7 @@ public class NginxStatusDiscover {
 
 	private static final String PATTERN = "([0-9]{1,})\\s([0-9]{1,})\\s([0-9]{1,})";
 	private static Logger logger = LoggerFactory.getLogger(NginxStatusDiscover.class);
-	
+
 	public NginxStatus status() {
 		String response = response();
 		NginxStatus nginxStatus = new NginxStatus();
@@ -31,18 +31,18 @@ public class NginxStatusDiscover {
 		nginxStatus.setRequests(requests(response));
 		return nginxStatus;
 	}
-	
+
 	private String response() {
 		Client client = ClientBuilder.newClient();
 		try {
 			Response response = client.target("http://localhost").path("status").request().get();
-			if(response.getStatusInfo().equals(Status.OK)){
+			if (response.getStatusInfo().equals(Status.OK)) {
 				return response.readEntity(String.class);
 			} else {
 				return "";
 			}
 		} catch (Exception e) {
-			logger.warn("Could not read status from nginx",e);
+			logger.warn("Could not read status from nginx", e);
 			return "";
 		} finally {
 			client.close();

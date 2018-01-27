@@ -18,13 +18,12 @@ import com.jslsolucoes.nginx.admin.agent.model.response.NginxPingResponse;
 @AuthHandler
 @Produces(MediaType.APPLICATION_JSON)
 public class NginxIndexResource {
-	
-	
+
 	private Configuration configuration;
 
 	@Deprecated
 	public NginxIndexResource() {
-		
+
 	}
 
 	@Inject
@@ -37,7 +36,7 @@ public class NginxIndexResource {
 	public Response index() {
 		return Response.ok(new NginxIndexResponse(configuration.getApplication().getVersion())).build();
 	}
-	
+
 	@GET
 	@Path("ping")
 	public Response ping() {

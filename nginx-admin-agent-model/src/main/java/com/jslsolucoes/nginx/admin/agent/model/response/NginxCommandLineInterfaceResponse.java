@@ -4,12 +4,12 @@ public class NginxCommandLineInterfaceResponse implements NginxResponse {
 
 	private String output;
 	private Boolean success;
-	
+
 	public NginxCommandLineInterfaceResponse() {
-		
+
 	}
-	
-	public NginxCommandLineInterfaceResponse(String output,Boolean success) {
+
+	public NginxCommandLineInterfaceResponse(String output, Boolean success) {
 		this.output = output;
 		this.success = success;
 	}

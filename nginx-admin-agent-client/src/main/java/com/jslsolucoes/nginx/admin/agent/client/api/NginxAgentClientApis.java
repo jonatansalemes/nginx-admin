@@ -22,43 +22,43 @@ public class NginxAgentClientApis {
 	public static Class<NginxOperationalSystemInfoBuilder> os() {
 		return NginxOperationalSystemInfoBuilder.class;
 	}
-	
+
 	public static Class<NginxPingBuilder> ping() {
 		return NginxPingBuilder.class;
 	}
-	
+
 	public static Class<NginxServerInfoBuilder> info() {
 		return NginxServerInfoBuilder.class;
 	}
-	
+
 	public static Class<NginxStatusBuilder> status() {
 		return NginxStatusBuilder.class;
 	}
-	
+
 	public static Class<NginxConfigureBuilder> configure() {
 		return NginxConfigureBuilder.class;
 	}
-	
+
 	public static Class<NginxUpstreamBuilder> upstream() {
 		return NginxUpstreamBuilder.class;
 	}
-	
+
 	public static Class<NginxAccessLogBuilder> accessLog() {
 		return NginxAccessLogBuilder.class;
 	}
-	
+
 	public static Class<NginxErrorLogBuilder> errorLog() {
 		return NginxErrorLogBuilder.class;
 	}
-	
+
 	public static Class<NginxVirtualHostBuilder> virtualHost() {
 		return NginxVirtualHostBuilder.class;
 	}
-	
+
 	public static Class<NginxSslBuilder> ssl() {
 		return NginxSslBuilder.class;
 	}
-	
+
 	public static Class<NginxImportBuilder> importation() {
 		return NginxImportBuilder.class;
 	}

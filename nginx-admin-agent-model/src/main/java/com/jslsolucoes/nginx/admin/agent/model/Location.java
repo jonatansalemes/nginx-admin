@@ -3,12 +3,12 @@ package com.jslsolucoes.nginx.admin.agent.model;
 public class Location {
 	private String path;
 	private String upstream;
-	
+
 	public Location() {
-		
+
 	}
-	
-	public Location(String path,String upstream) {
+
+	public Location(String path, String upstream) {
 		this.path = path;
 		this.upstream = upstream;
 	}

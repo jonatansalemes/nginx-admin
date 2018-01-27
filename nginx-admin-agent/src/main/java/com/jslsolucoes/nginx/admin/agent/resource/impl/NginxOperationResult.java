@@ -11,12 +11,12 @@ public class NginxOperationResult {
 		this.nginxOperationResultType = nginxOperationResultType;
 		this.output = ExceptionUtils.getStackTrace(throwable);
 	}
-	
+
 	public NginxOperationResult(NginxOperationResultType nginxOperationResultType) {
 		this.nginxOperationResultType = nginxOperationResultType;
 	}
-	
-	public NginxOperationResult(NginxOperationResultType nginxOperationResultType,String output) {
+
+	public NginxOperationResult(NginxOperationResultType nginxOperationResultType, String output) {
 		this.nginxOperationResultType = nginxOperationResultType;
 		this.output = output;
 	}
@@ -28,15 +28,15 @@ public class NginxOperationResult {
 	public void setOutput(String output) {
 		this.output = output;
 	}
-	
-	public Boolean is(NginxOperationResultType nginxOperationResultType){
+
+	public Boolean is(NginxOperationResultType nginxOperationResultType) {
 		return this.nginxOperationResultType.equals(nginxOperationResultType);
 	}
-	
+
 	public Boolean isSuccess() {
 		return is(NginxOperationResultType.SUCCESS);
 	}
-	
+
 	public Boolean isError() {
 		return is(NginxOperationResultType.ERROR);
 	}

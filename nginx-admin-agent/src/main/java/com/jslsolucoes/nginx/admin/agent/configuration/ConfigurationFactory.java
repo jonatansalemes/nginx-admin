@@ -2,7 +2,6 @@ package com.jslsolucoes.nginx.admin.agent.configuration;
 
 import java.util.Properties;
 
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
@@ -15,7 +14,7 @@ import com.jslsolucoes.nginx.admin.agent.config.ConfigurationLoader;
 public class ConfigurationFactory {
 
 	@Inject
-	@ApplicationProperties 
+	@ApplicationProperties
 	private Properties properties;
 
 	@Produces

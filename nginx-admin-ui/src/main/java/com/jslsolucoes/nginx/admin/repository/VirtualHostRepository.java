@@ -25,5 +25,5 @@ public interface VirtualHostRepository {
 
 	public VirtualHost hasEquals(VirtualHost virtualHost, List<VirtualHostAlias> aliases);
 
-	public List<VirtualHost> searchFor(Nginx nginx,String term);
+	public List<VirtualHost> searchFor(Nginx nginx, String term);
 }

@@ -21,7 +21,7 @@ import com.jslsolucoes.nginx.admin.nginx.parser.directive.VirtualHostDirective;
 public class ServerParser implements Parser {
 
 	private String fileContent;
-	
+
 	public ServerParser(String fileContent) {
 		this.fileContent = fileContent;
 	}
@@ -63,7 +63,7 @@ public class ServerParser implements Parser {
 		try {
 			SslDirective sslDirective = new SslDirective();
 			sslDirective.setCommonName(Paths.get(value).getFileName().toString());
-			sslDirective.setContent(FileUtils.readFileToString(new File(value),"UTF-8"));
+			sslDirective.setContent(FileUtils.readFileToString(new File(value), "UTF-8"));
 			return sslDirective;
 		} catch (IOException e) {
 			throw new RuntimeException(e);

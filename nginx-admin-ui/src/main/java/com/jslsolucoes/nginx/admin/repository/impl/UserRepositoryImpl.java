@@ -28,7 +28,7 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 
 	@Deprecated
 	public UserRepositoryImpl() {
-		
+
 	}
 
 	@Inject
@@ -38,23 +38,18 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 	}
 
 	@Override
-	public User authenticate(String identification,String password) {
+	public User authenticate(String identification, String password) {
 		try {
-		    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-		    CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
-		    Root<User> root = criteriaQuery.from(User.class);
-		    criteriaQuery.where(
-		    		criteriaBuilder.and(
-		    				criteriaBuilder.or(
-		    							criteriaBuilder.equal(root.get(User_.login), identification),
-		    							criteriaBuilder.equal(root.get(User_.email), identification)
-		    				),
-		    				criteriaBuilder.equal(root.get(User_.password), DigestUtils.sha256Hex(password))
-		    		)
-		    );
-		    return entityManager.createQuery(criteriaQuery).getSingleResult();
+			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+			CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+			Root<User> root = criteriaQuery.from(User.class);
+			criteriaQuery.where(criteriaBuilder.and(
+					criteriaBuilder.or(criteriaBuilder.equal(root.get(User_.login), identification),
+							criteriaBuilder.equal(root.get(User_.email), identification)),
+					criteriaBuilder.equal(root.get(User_.password), DigestUtils.sha256Hex(password))));
+			return entityManager.createQuery(criteriaQuery).getSingleResult();
 		} catch (NoResultException noResultException) {
-		    return null;
+			return null;
 		}
 	}
 
@@ -70,17 +65,13 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 	private User findFor(String identification) {
 		try {
 			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-		    CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
-		    Root<User> root = criteriaQuery.from(User.class);
-		    criteriaQuery.where(
-		    	criteriaBuilder.or(
-					criteriaBuilder.equal(root.get(User_.login), identification),
-					criteriaBuilder.equal(root.get(User_.email), identification)
-				)
-		    );
-		    return entityManager.createQuery(criteriaQuery).getSingleResult();
+			CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+			Root<User> root = criteriaQuery.from(User.class);
+			criteriaQuery.where(criteriaBuilder.or(criteriaBuilder.equal(root.get(User_.login), identification),
+					criteriaBuilder.equal(root.get(User_.email), identification)));
+			return entityManager.createQuery(criteriaQuery).getSingleResult();
 		} catch (NoResultException noResultException) {
-		    return null;
+			return null;
 		}
 	}
 
@@ -136,17 +127,17 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 	public User loadForSession(User user) {
 		try {
 			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-		    CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
-		    Root<User> root = criteriaQuery.from(User.class);
-		    criteriaQuery.where(criteriaBuilder.equal(root.get(User_.id), user.getId()));
-		    return entityManager.createQuery(criteriaQuery).getSingleResult();
+			CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+			Root<User> root = criteriaQuery.from(User.class);
+			criteriaQuery.where(criteriaBuilder.equal(root.get(User_.id), user.getId()));
+			return entityManager.createQuery(criteriaQuery).getSingleResult();
 		} catch (NoResultException noResultException) {
-		    return null;
+			return null;
 		}
 	}
 
 	@Override
-	public List<String> validateBeforeCreateUser(String login,String loginConfirm,String email, String password,
+	public List<String> validateBeforeCreateUser(String login, String loginConfirm, String email, String password,
 			String passwordConfirm) {
 
 		List<String> errors = new ArrayList<>();
@@ -160,7 +151,7 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 	}
 
 	@Override
-	public void create(String login,String email, String password) {
+	public void create(String login, String email, String password) {
 		User user = new User();
 		user.setPassword(DigestUtils.sha256Hex(password));
 		user.setLogin(login);

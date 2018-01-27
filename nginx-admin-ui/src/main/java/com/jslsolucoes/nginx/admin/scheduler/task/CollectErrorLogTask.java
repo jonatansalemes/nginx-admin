@@ -24,11 +24,11 @@ public class CollectErrorLogTask implements SchedulerTask {
 	private Configuration configuration;
 
 	public CollectErrorLogTask() {
-		
+
 	}
 
 	@Inject
-	public CollectErrorLogTask(Result result, ErrorLogRepository errorLogRepository,Configuration configuration) {
+	public CollectErrorLogTask(Result result, ErrorLogRepository errorLogRepository, Configuration configuration) {
 		this.result = result;
 		this.errorLogRepository = errorLogRepository;
 		this.configuration = configuration;
@@ -44,7 +44,7 @@ public class CollectErrorLogTask implements SchedulerTask {
 
 	@Override
 	public Trigger frequency() {
-		return TriggerBuilder.newTrigger().startNow()
-				.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(configuration.getErrorLog().getCollect()).repeatForever()).build();
+		return TriggerBuilder.newTrigger().startNow().withSchedule(SimpleScheduleBuilder.simpleSchedule()
+				.withIntervalInMinutes(configuration.getErrorLog().getCollect()).repeatForever()).build();
 	}
 }

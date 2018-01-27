@@ -40,7 +40,8 @@ public class NginxInfoDiscover {
 	}
 
 	@Inject
-	public NginxInfoDiscover(NginxCommandLineInterfaceResourceImpl commandLineInterfaceResourceImpl,Configuration configuration) {
+	public NginxInfoDiscover(NginxCommandLineInterfaceResourceImpl commandLineInterfaceResourceImpl,
+			Configuration configuration) {
 		this.configuration = configuration;
 		this.commandLineInterfaceResourceImpl = commandLineInterfaceResourceImpl;
 	}
@@ -50,10 +51,9 @@ public class NginxInfoDiscover {
 		nginxDetail.setAddress(address());
 		nginxDetail.setVersion(version());
 		try {
-			FileSystemBuilder.newBuilder().read().withDestination(pid()).withCharset("UTF-8")
-					.execute(content -> {
-						nginxDetail.setPid(Integer.valueOf(clear(content)));
-					}).end();
+			FileSystemBuilder.newBuilder().read().withDestination(pid()).withCharset("UTF-8").execute(content -> {
+				nginxDetail.setPid(Integer.valueOf(clear(content)));
+			}).end();
 			nginxDetail.setUptime(uptime());
 		} catch (Exception ioException) {
 			logger.error("Could not read pid file", ioException);
@@ -90,7 +90,7 @@ public class NginxInfoDiscover {
 	private File pid() {
 		return new File(settings(), "nginx.pid");
 	}
-	
+
 	private String version() {
 		RuntimeResult runtimeResult = commandLineInterfaceResourceImpl.version();
 		if (runtimeResult.isSuccess()) {
@@ -107,12 +107,11 @@ public class NginxInfoDiscover {
 		Duration duration = Duration.between(
 				LocalDateTime.ofInstant(Instant.ofEpochMilli(pid.lastModified()), ZoneId.systemDefault()),
 				LocalDateTime.now());
-		return BigDecimal.valueOf(duration.getSeconds())
-				.divide(BigDecimal.valueOf(60), 5, RoundingMode.HALF_UP)
+		return BigDecimal.valueOf(duration.getSeconds()).divide(BigDecimal.valueOf(60), 5, RoundingMode.HALF_UP)
 				.divide(BigDecimal.valueOf(60), 5, RoundingMode.HALF_UP)
 				.divide(BigDecimal.valueOf(24), 5, RoundingMode.HALF_UP);
 	}
-	
+
 	private String settings() {
 		return configuration.getNginx().getSetting();
 	}

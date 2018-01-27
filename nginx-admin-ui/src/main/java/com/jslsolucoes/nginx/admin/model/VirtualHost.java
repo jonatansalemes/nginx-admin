@@ -29,7 +29,7 @@ public class VirtualHost implements Serializable {
 
 	@Column(name = "https")
 	private Integer https;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_nginx")
 	private Nginx nginx;
@@ -56,7 +56,8 @@ public class VirtualHost implements Serializable {
 		this.id = id;
 	}
 
-	public VirtualHost(Long id, Integer https, SslCertificate sslCertificate, ResourceIdentifier resourceIdentifier,Nginx nginx) {
+	public VirtualHost(Long id, Integer https, SslCertificate sslCertificate, ResourceIdentifier resourceIdentifier,
+			Nginx nginx) {
 		this.id = id;
 		this.nginx = nginx;
 		this.https = https == null ? 0 : https;

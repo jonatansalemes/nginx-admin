@@ -20,18 +20,18 @@ public class Nginx implements Serializable {
 
 	@Column(name = "name")
 	private String name;
-	
+
 	@Column(name = "endpoint")
 	private String endpoint;
-	
+
 	@Column(name = "authorization_key")
 	private String authorizationKey;
 
 	public Nginx() {
-	
+
 	}
 
-	public Nginx(Long id,String name, String endpoint,String authorizationKey) {
+	public Nginx(Long id, String name, String endpoint, String authorizationKey) {
 		this.id = id;
 		this.name = name;
 		this.endpoint = endpoint;

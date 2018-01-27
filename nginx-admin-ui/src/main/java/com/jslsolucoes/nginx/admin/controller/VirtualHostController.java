@@ -132,21 +132,22 @@ public class VirtualHostController {
 	public void saveOrUpdate(Long id, Integer https, Long idResourceIdentifier, Long idSslCertificate,
 			List<String> aliases, List<String> locations, List<Long> upstreams, Long idNginx) {
 
-		
 		SslCertificate sslCertificate = null;
-		if((https != null && https == 1)) {
+		if ((https != null && https == 1)) {
 			sslCertificate = sslCertificateRepository.load(new SslCertificate(idSslCertificate));
 		}
-		
+
 		if (id == null) {
 			ResourceIdentifier resourceIdentifier = resourceIdentifierRepository.create();
 			NginxResponse nginxResponse = nginxAgentRunner.createVirtualHost(idNginx, resourceIdentifier.getUuid(),
-					aliases, sslCertificate !=null ? sslCertificate.getResourceIdentifierCertificate().getUuid() : null, (https != null && https == 1),
-							sslCertificate!=null ? sslCertificate.getResourceIdentifierCertificatePrivateKey().getUuid() : null,
+					aliases,
+					sslCertificate != null ? sslCertificate.getResourceIdentifierCertificate().getUuid() : null,
+					(https != null && https == 1), sslCertificate != null
+							? sslCertificate.getResourceIdentifierCertificatePrivateKey().getUuid() : null,
 					locations(locations, upstreams));
 			if (nginxResponse.success()) {
 				OperationResult operationResult = virtualHostRepository.saveOrUpdate(
-						new VirtualHost(id, https, sslCertificate,resourceIdentifier, new Nginx(idNginx)),
+						new VirtualHost(id, https, sslCertificate, resourceIdentifier, new Nginx(idNginx)),
 						convert(aliases), convert(locations, upstreams));
 				this.result.include("operation", operationResult.getOperationType());
 				this.result.redirectTo(this).edit(idNginx, operationResult.getId());
@@ -156,14 +157,16 @@ public class VirtualHostController {
 			}
 		} else {
 			VirtualHost virtualHost = virtualHostRepository.load(new VirtualHost(id));
-			NginxResponse nginxResponse = nginxAgentRunner.updateVirtualHost(idNginx, virtualHost.getResourceIdentifier().getUuid(), aliases, 
-					sslCertificate !=null ? sslCertificate.getResourceIdentifierCertificate().getUuid() : null, (https != null && https == 1), 
-							sslCertificate!=null ? sslCertificate.getResourceIdentifierCertificatePrivateKey().getUuid() : null, locations(locations, upstreams));
+			NginxResponse nginxResponse = nginxAgentRunner.updateVirtualHost(idNginx,
+					virtualHost.getResourceIdentifier().getUuid(), aliases,
+					sslCertificate != null ? sslCertificate.getResourceIdentifierCertificate().getUuid() : null,
+					(https != null && https == 1), sslCertificate != null
+							? sslCertificate.getResourceIdentifierCertificatePrivateKey().getUuid() : null,
+					locations(locations, upstreams));
 			if (nginxResponse.success()) {
-				OperationResult operationResult = virtualHostRepository.saveOrUpdate(
-						new VirtualHost(id, https, sslCertificate,
-								virtualHost.getResourceIdentifier(), new Nginx(idNginx)),
-						convert(aliases), convert(locations, upstreams));
+				OperationResult operationResult = virtualHostRepository.saveOrUpdate(new VirtualHost(id, https,
+						sslCertificate, virtualHost.getResourceIdentifier(), new Nginx(idNginx)), convert(aliases),
+						convert(locations, upstreams));
 				this.result.include("operation", operationResult.getOperationType());
 				this.result.redirectTo(this).edit(idNginx, operationResult.getId());
 			} else {

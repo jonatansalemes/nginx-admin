@@ -6,15 +6,15 @@ public class NginxUpstreamUpdateResponse implements NginxResponse {
 
 	private String stackTrace;
 	private Boolean success;
-	
+
 	public NginxUpstreamUpdateResponse() {
-		
+
 	}
-	
-	public NginxUpstreamUpdateResponse(String stackTrace,Boolean success) {
+
+	public NginxUpstreamUpdateResponse(String stackTrace, Boolean success) {
 		this.stackTrace = stackTrace;
 		this.success = success;
-		
+
 	}
 
 	public String getStackTrace() {

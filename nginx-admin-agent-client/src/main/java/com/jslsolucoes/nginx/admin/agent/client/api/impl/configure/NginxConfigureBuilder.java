@@ -19,24 +19,23 @@ public class NginxConfigureBuilder extends DefaultNginxAgentClientApi implements
 
 	@Override
 	public NginxConfigure build() {
-		return new NginxConfigure(scheduledExecutorService, authorizationKey, endpoint,maxPostSize,gzip);
+		return new NginxConfigure(scheduledExecutorService, authorizationKey, endpoint, maxPostSize, gzip);
 	}
 
 	public static NginxConfigureBuilder newBuilder() {
 		return new NginxConfigureBuilder();
 	}
 
-	public NginxConfigureBuilder withScheduledExecutorService(
-			ScheduledExecutorService scheduledExecutorService) {
+	public NginxConfigureBuilder withScheduledExecutorService(ScheduledExecutorService scheduledExecutorService) {
 		this.scheduledExecutorService = scheduledExecutorService;
 		return this;
 	}
-	
+
 	public NginxConfigureBuilder withEndpoint(String endpoint) {
 		this.endpoint = endpoint;
 		return this;
 	}
-	
+
 	public NginxConfigureBuilder withMaxPostSize(Integer maxPostSize) {
 		this.maxPostSize = maxPostSize;
 		return this;

@@ -16,18 +16,18 @@ import br.com.caelum.vraptor.Result;
 @Controller
 @Path("settings")
 public class SettingsController {
-	
+
 	private Result result;
 	private MailService mailService;
 	private Configuration configuration;
-	
+
 	@Deprecated
 	public SettingsController() {
-		
+
 	}
-	
+
 	@Inject
-	public SettingsController(Result result,MailService mailService,Configuration configuration) {
+	public SettingsController(Result result, MailService mailService, Configuration configuration) {
 		this.result = result;
 		this.mailService = mailService;
 		this.configuration = configuration;
@@ -40,11 +40,11 @@ public class SettingsController {
 	public void smtp() {
 		this.result.include("smtp", configuration.getSmtp());
 	}
-	
+
 	public void app() {
 		this.result.include("application", configuration.getApplication());
 	}
-	
+
 	@Post
 	@Path("smtp/test")
 	public void smtpTest(String to, String subject, String message) throws InterruptedException, ExecutionException {

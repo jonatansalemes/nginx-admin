@@ -3,9 +3,9 @@ package com.jslsolucoes.nginx.admin.agent.model.response;
 public class NginxIndexResponse implements NginxResponse {
 
 	private String message;
-	
+
 	public NginxIndexResponse() {
-		
+
 	}
 
 	public NginxIndexResponse(String message) {

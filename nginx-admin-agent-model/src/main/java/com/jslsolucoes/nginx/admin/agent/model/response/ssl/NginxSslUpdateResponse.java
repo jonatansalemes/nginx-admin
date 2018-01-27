@@ -6,15 +6,15 @@ public class NginxSslUpdateResponse implements NginxResponse {
 
 	private String stackTrace;
 	private Boolean success;
-	
+
 	public NginxSslUpdateResponse() {
-		
+
 	}
-	
-	public NginxSslUpdateResponse(String stackTrace,Boolean success) {
+
+	public NginxSslUpdateResponse(String stackTrace, Boolean success) {
 		this.stackTrace = stackTrace;
 		this.success = success;
-		
+
 	}
 
 	public String getStackTrace() {

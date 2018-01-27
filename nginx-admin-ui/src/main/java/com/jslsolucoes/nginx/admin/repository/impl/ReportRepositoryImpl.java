@@ -41,13 +41,13 @@ import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 @RequestScoped
 public class ReportRepositoryImpl implements ReportRepository {
 
-	@Resource(mappedName="java:jboss/datasources/nginx-admin")
+	@Resource(mappedName = "java:jboss/datasources/nginx-admin")
 	private DataSource dataSource;
 	private VirtualHostAliasRepository virtualHostAliasRepository;
 
 	@Deprecated
 	public ReportRepositoryImpl() {
-		
+
 	}
 
 	@Inject
@@ -57,7 +57,7 @@ public class ReportRepositoryImpl implements ReportRepository {
 
 	@Override
 	public List<String> validateBeforeSearch(List<VirtualHostAlias> aliases, LocalDate from, LocalTime fromTime,
-			LocalDate to, LocalTime toTime,Nginx nginx) {
+			LocalDate to, LocalTime toTime, Nginx nginx) {
 
 		List<String> errors = new ArrayList<>();
 		if (new DateTime(start(from, fromTime)).isAfter(new DateTime(end(to, toTime)))) {
@@ -90,20 +90,16 @@ public class ReportRepositoryImpl implements ReportRepository {
 
 	@Override
 	public InputStream statistics(List<VirtualHostAlias> aliases, LocalDate from, LocalTime fromTime, LocalDate to,
-			LocalTime toTime,Nginx nginx) throws NginxAdminException {
+			LocalTime toTime, Nginx nginx) throws NginxAdminException {
 		try {
 			Connection connection = dataSource.getConnection();
 			Map<String, Object> parameters = defaultParameters();
 			parameters.put("NGINX", nginx.getId());
 			parameters.put("FROM", start(from, fromTime));
 			parameters.put("TO", end(to, toTime));
-			parameters
-					.put("ALIASES",
-							StringUtils
-									.join(aliases.stream()
-											.map(virtualHostAlias -> "'" + virtualHostAliasRepository
-													.load(virtualHostAlias).getAlias() + "'")
-											.collect(Collectors.toSet()), ","));
+			parameters.put("ALIASES", StringUtils.join(aliases.stream()
+					.map(virtualHostAlias -> "'" + virtualHostAliasRepository.load(virtualHostAlias).getAlias() + "'")
+					.collect(Collectors.toSet()), ","));
 			InputStream inputStream = export("statistics", parameters, connection);
 			connection.close();
 			return inputStream;

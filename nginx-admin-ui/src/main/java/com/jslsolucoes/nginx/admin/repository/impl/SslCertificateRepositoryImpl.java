@@ -28,11 +28,12 @@ public class SslCertificateRepositoryImpl extends RepositoryImpl<SslCertificate>
 
 	@Deprecated
 	public SslCertificateRepositoryImpl() {
-		
+
 	}
 
 	@Inject
-	public SslCertificateRepositoryImpl(EntityManager entityManager, ResourceIdentifierRepository resourceIdentifierRepository) {
+	public SslCertificateRepositoryImpl(EntityManager entityManager,
+			ResourceIdentifierRepository resourceIdentifierRepository) {
 		super(entityManager);
 		this.resourceIdentifierRepository = resourceIdentifierRepository;
 	}
@@ -48,7 +49,7 @@ public class SslCertificateRepositoryImpl extends RepositoryImpl<SslCertificate>
 		resourceIdentifierRepository.delete(sslCertificatePrivateKeyHash);
 		return OperationStatusType.DELETE;
 	}
-	
+
 	private SslCertificate hasEquals(SslCertificate sslCertificate) {
 		try {
 			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -67,11 +68,11 @@ public class SslCertificateRepositoryImpl extends RepositoryImpl<SslCertificate>
 			return null;
 		}
 	}
-	
+
 	@Override
 	public List<String> validateBeforeSaveOrUpdate(SslCertificate sslCertificate) {
 		List<String> errors = new ArrayList<>();
-		
+
 		if (hasEquals(sslCertificate) != null) {
 			errors.add(Messages.getString("ssl.already.exists"));
 		}
@@ -84,7 +85,8 @@ public class SslCertificateRepositoryImpl extends RepositoryImpl<SslCertificate>
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<SslCertificate> criteriaQuery = criteriaBuilder.createQuery(SslCertificate.class);
 		Root<SslCertificate> root = criteriaQuery.from(SslCertificate.class);
-		criteriaQuery.where(criteriaBuilder.equal(root.join(SslCertificate_.nginx, JoinType.INNER).get(Nginx_.id), nginx.getId()));
+		criteriaQuery.where(
+				criteriaBuilder.equal(root.join(SslCertificate_.nginx, JoinType.INNER).get(Nginx_.id), nginx.getId()));
 		criteriaQuery.orderBy(criteriaBuilder.asc(root.get(SslCertificate_.commonName)));
 		return entityManager.createQuery(criteriaQuery).getResultList();
 	}

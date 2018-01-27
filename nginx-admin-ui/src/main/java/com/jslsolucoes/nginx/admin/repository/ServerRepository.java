@@ -21,5 +21,5 @@ public interface ServerRepository {
 
 	public OperationStatusType insert(Server server);
 
-	public Server searchFor(String ip,Nginx nginx);
+	public Server searchFor(String ip, Nginx nginx);
 }

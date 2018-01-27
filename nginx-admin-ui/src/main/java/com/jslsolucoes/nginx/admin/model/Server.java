@@ -25,7 +25,7 @@ public class Server implements Serializable {
 
 	@Column(name = "ip")
 	private String ip;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_nginx")
 	private Nginx nginx;
@@ -41,13 +41,13 @@ public class Server implements Serializable {
 		this.id = id;
 	}
 
-	public Server(Long id, String ip,Nginx nginx) {
+	public Server(Long id, String ip, Nginx nginx) {
 		this.id = id;
 		this.ip = ip;
 		this.nginx = nginx;
 	}
 
-	public Server(String ip,Nginx nginx) {
+	public Server(String ip, Nginx nginx) {
 		this.ip = ip;
 		this.nginx = nginx;
 	}

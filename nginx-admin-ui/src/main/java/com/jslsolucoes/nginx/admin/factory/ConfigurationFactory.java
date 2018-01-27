@@ -14,7 +14,7 @@ import com.jslsolucoes.nginx.admin.ui.config.ConfigurationLoader;
 public class ConfigurationFactory {
 
 	@Inject
-	@ApplicationProperties 
+	@ApplicationProperties
 	private Properties properties;
 
 	@Produces

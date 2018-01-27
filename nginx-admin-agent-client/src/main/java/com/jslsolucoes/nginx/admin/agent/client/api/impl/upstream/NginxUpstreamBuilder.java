@@ -29,27 +29,26 @@ public class NginxUpstreamBuilder implements NginxAgentClientApiBuilder {
 		return new NginxUpstreamBuilder();
 	}
 
-	public NginxUpstreamBuilder withScheduledExecutorService(
-			ScheduledExecutorService scheduledExecutorService) {
+	public NginxUpstreamBuilder withScheduledExecutorService(ScheduledExecutorService scheduledExecutorService) {
 		this.scheduledExecutorService = scheduledExecutorService;
 		return this;
 	}
-	
+
 	public NginxUpstreamBuilder withName(String name) {
 		this.name = name;
 		return this;
 	}
-	
+
 	public NginxUpstreamBuilder withUuid(String uuid) {
 		this.uuid = uuid;
 		return this;
 	}
-	
+
 	public NginxUpstreamBuilder withEndpoints(List<Endpoint> endpoints) {
 		this.endpoints = endpoints;
 		return this;
 	}
-	
+
 	public NginxUpstreamBuilder withStrategy(String strategy) {
 		this.strategy = strategy;
 		return this;

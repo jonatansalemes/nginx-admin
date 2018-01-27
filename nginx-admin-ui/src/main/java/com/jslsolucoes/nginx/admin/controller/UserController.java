@@ -22,12 +22,11 @@ public class UserController {
 
 	@Deprecated
 	public UserController() {
-		
+
 	}
 
 	@Inject
-	public UserController(UserSession userSession, Result result,
-			UserRepository userRepository) {
+	public UserController(UserSession userSession, Result result, UserRepository userRepository) {
 		this.userSession = userSession;
 		this.result = result;
 		this.userRepository = userRepository;
@@ -71,21 +70,21 @@ public class UserController {
 
 	@Public
 	public void resetPassword() {
-		
+
 	}
 
 	@Public
 	@Post
 	public void reset(String identification) {
 		String emailAddress = userRepository.resetPasswordFor(identification);
-		this.result.include("passwordRecovery",true);
+		this.result.include("passwordRecovery", true);
 		this.result.include("passwordRecoveryForEmailAddress", emailAddress);
 		this.result.redirectTo(this).login();
 	}
 
 	@Public
 	public void login() {
-		
+
 	}
 
 	@Post

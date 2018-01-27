@@ -18,17 +18,17 @@ import br.com.caelum.vraptor.view.Results;
 @Controller
 @Public
 public class RotateErrorLogTask implements SchedulerTask {
-	
+
 	private ErrorLogRepository errorLogRepository;
 	private Result result;
 	private Configuration configuration;
 
 	public RotateErrorLogTask() {
-		
+
 	}
 
 	@Inject
-	public RotateErrorLogTask(Result result, ErrorLogRepository errorLogRepository,Configuration configuration) {
+	public RotateErrorLogTask(Result result, ErrorLogRepository errorLogRepository, Configuration configuration) {
 		this.result = result;
 		this.errorLogRepository = errorLogRepository;
 		this.configuration = configuration;
@@ -43,10 +43,8 @@ public class RotateErrorLogTask implements SchedulerTask {
 
 	@Override
 	public Trigger frequency() {
-		return TriggerBuilder.newTrigger().startNow()
-				.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(configuration.getErrorLog().getRotate()).repeatForever()).build();
-	} 
-
-	
+		return TriggerBuilder.newTrigger().startNow().withSchedule(SimpleScheduleBuilder.simpleSchedule()
+				.withIntervalInMinutes(configuration.getErrorLog().getRotate()).repeatForever()).build();
+	}
 
 }

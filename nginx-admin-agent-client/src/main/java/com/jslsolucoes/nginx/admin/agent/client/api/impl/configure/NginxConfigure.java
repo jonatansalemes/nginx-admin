@@ -25,8 +25,8 @@ public class NginxConfigure extends DefaultNginxAgentClientApi implements NginxA
 	private final Integer maxPostSize;
 	private final Boolean gzip;
 
-	public NginxConfigure(ScheduledExecutorService scheduledExecutorService, String authorizationKey,
-			String endpoint,  Integer maxPostSize, Boolean gzip) {
+	public NginxConfigure(ScheduledExecutorService scheduledExecutorService, String authorizationKey, String endpoint,
+			Integer maxPostSize, Boolean gzip) {
 		this.scheduledExecutorService = scheduledExecutorService;
 		this.authorizationKey = authorizationKey;
 		this.endpoint = endpoint;
@@ -38,8 +38,7 @@ public class NginxConfigure extends DefaultNginxAgentClientApi implements NginxA
 		return CompletableFuture.supplyAsync(() -> {
 			try (RestClient restClient = RestClient.build()) {
 				NginxConfigureRequest nginxConfigureRequest = new NginxConfigureRequest(maxPostSize, gzip);
-				Entity<NginxConfigureRequest> entity = Entity.entity(nginxConfigureRequest,
-						MediaType.APPLICATION_JSON);
+				Entity<NginxConfigureRequest> entity = Entity.entity(nginxConfigureRequest, MediaType.APPLICATION_JSON);
 				WebTarget webTarget = restClient.target(endpoint);
 				Response response = webTarget.path("/admin/configure").request()
 						.header(HttpHeader.AUTHORIZATION, authorizationKey).post(entity);

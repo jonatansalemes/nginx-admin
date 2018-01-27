@@ -25,7 +25,7 @@ public class ServerRepositoryImpl extends RepositoryImpl<Server> implements Serv
 
 	@Deprecated
 	public ServerRepositoryImpl() {
-		
+
 	}
 
 	@Inject
@@ -64,18 +64,13 @@ public class ServerRepositoryImpl extends RepositoryImpl<Server> implements Serv
 	}
 
 	@Override
-	public Server searchFor(String ip,Nginx nginx) {
+	public Server searchFor(String ip, Nginx nginx) {
 		try {
 			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 			CriteriaQuery<Server> criteriaQuery = criteriaBuilder.createQuery(Server.class);
 			Root<Server> root = criteriaQuery.from(Server.class);
-			criteriaQuery.where(
-					criteriaBuilder.and(
-							criteriaBuilder.equal(root.get(Server_.ip), ip),
-							criteriaBuilder.equal(root.join(Server_.nginx, JoinType.INNER).get(Nginx_.id),
-									nginx.getId())
-					)
-			);
+			criteriaQuery.where(criteriaBuilder.and(criteriaBuilder.equal(root.get(Server_.ip), ip),
+					criteriaBuilder.equal(root.join(Server_.nginx, JoinType.INNER).get(Nginx_.id), nginx.getId())));
 			return entityManager.createQuery(criteriaQuery).getSingleResult();
 		} catch (NoResultException noResultException) {
 			return null;

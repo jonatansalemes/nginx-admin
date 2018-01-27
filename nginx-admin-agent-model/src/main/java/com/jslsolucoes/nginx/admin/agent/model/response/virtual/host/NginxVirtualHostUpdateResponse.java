@@ -6,15 +6,15 @@ public class NginxVirtualHostUpdateResponse implements NginxResponse {
 
 	private String stackTrace;
 	private Boolean success;
-	
+
 	public NginxVirtualHostUpdateResponse() {
-		
+
 	}
-	
-	public NginxVirtualHostUpdateResponse(String stackTrace,Boolean success) {
+
+	public NginxVirtualHostUpdateResponse(String stackTrace, Boolean success) {
 		this.stackTrace = stackTrace;
 		this.success = success;
-		
+
 	}
 
 	public String getStackTrace() {

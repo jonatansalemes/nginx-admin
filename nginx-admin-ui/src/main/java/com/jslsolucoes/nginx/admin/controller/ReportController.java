@@ -35,7 +35,7 @@ public class ReportController {
 
 	@Deprecated
 	public ReportController() {
-		
+
 	}
 
 	@Inject
@@ -47,25 +47,27 @@ public class ReportController {
 		this.httpServletResponse = httpServletResponse;
 	}
 
-	public void validate(List<Long> aliases, LocalDate from, LocalTime fromTime, LocalDate to, LocalTime toTime,Long idNginx) {
+	public void validate(List<Long> aliases, LocalDate from, LocalTime fromTime, LocalDate to, LocalTime toTime,
+			Long idNginx) {
 		this.result.use(Results.json())
-				.from(FormValidation.newBuilder().toUnordenedList(
-						reportRepository.validateBeforeSearch(convert(aliases), from, fromTime, to, toTime,new Nginx(idNginx))), "errors")
+				.from(FormValidation.newBuilder().toUnordenedList(reportRepository
+						.validateBeforeSearch(convert(aliases), from, fromTime, to, toTime, new Nginx(idNginx))),
+						"errors")
 				.serialize();
 	}
 
 	@Path("search/{idNginx}")
 	public void search(Long idNginx) {
 		this.result.include("virtualHostAliasList", virtualHostAliasRepository.listAllFor(new Nginx(idNginx)));
-		this.result.include("nginx",new Nginx(idNginx));
+		this.result.include("nginx", new Nginx(idNginx));
 	}
 
 	@Post
 	@Path("export.pdf")
-	public void export(List<Long> aliases, LocalDate from, LocalTime fromTime, LocalDate to, LocalTime toTime,Long idNginx)
-			throws NginxAdminException, IOException {
+	public void export(List<Long> aliases, LocalDate from, LocalTime fromTime, LocalDate to, LocalTime toTime,
+			Long idNginx) throws NginxAdminException, IOException {
 		httpServletResponse.setContentType("application/pdf");
-		IOUtils.copy(reportRepository.statistics(convert(aliases), from, fromTime, to, toTime,new Nginx(idNginx)),
+		IOUtils.copy(reportRepository.statistics(convert(aliases), from, fromTime, to, toTime, new Nginx(idNginx)),
 				httpServletResponse.getOutputStream());
 		this.result.use(Results.status()).ok();
 	}

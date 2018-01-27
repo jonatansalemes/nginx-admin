@@ -9,12 +9,12 @@ import com.jslsolucoes.nginx.admin.repository.impl.OperationStatusType;
 
 public interface SslCertificateRepository {
 
-	public OperationStatusType delete(SslCertificate sslCertificate) ;
+	public OperationStatusType delete(SslCertificate sslCertificate);
 
 	public SslCertificate load(SslCertificate sslCertificate);
 
 	public OperationResult saveOrUpdate(SslCertificate sslCertificate);
-	
+
 	public List<SslCertificate> listAllFor(Nginx nginx);
 
 	public List<String> validateBeforeSaveOrUpdate(SslCertificate sslCertificate);

@@ -6,12 +6,12 @@ public class NginxSslCreateRequest {
 
 	private FileObject fileObject;
 	private String uuid;
-	
+
 	public NginxSslCreateRequest() {
-		
+
 	}
 
-	public NginxSslCreateRequest(String uuid,FileObject fileObject) {
+	public NginxSslCreateRequest(String uuid, FileObject fileObject) {
 		this.fileObject = fileObject;
 		this.uuid = uuid;
 	}

@@ -25,13 +25,13 @@ public class NginxPing extends DefaultNginxAgentClientApi implements NginxAgentC
 		this.endpoint = endpoint;
 		this.authorizationKey = authorizationKey;
 	}
-	
+
 	public CompletableFuture<NginxResponse> ping() {
 		return CompletableFuture.supplyAsync(() -> {
 			try (RestClient restClient = RestClient.build()) {
 				WebTarget webTarget = restClient.target(endpoint);
-				Response response = webTarget.path("/ping").request()
-						.header(HttpHeader.AUTHORIZATION, authorizationKey).get();
+				Response response = webTarget.path("/ping").request().header(HttpHeader.AUTHORIZATION, authorizationKey)
+						.get();
 				return responseFor(response, NginxPingResponse.class);
 			} catch (Exception e) {
 				return new NginxExceptionResponse(e);

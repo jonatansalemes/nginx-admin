@@ -6,15 +6,15 @@ public class NginxUpstreamCreateResponse implements NginxResponse {
 
 	private String stackTrace;
 	private Boolean success;
-	
+
 	public NginxUpstreamCreateResponse() {
-		
+
 	}
-	
-	public NginxUpstreamCreateResponse(String stackTrace,Boolean success) {
+
+	public NginxUpstreamCreateResponse(String stackTrace, Boolean success) {
 		this.stackTrace = stackTrace;
 		this.success = success;
-		
+
 	}
 
 	public String getStackTrace() {

@@ -24,51 +24,49 @@ public class NginxController {
 	private Result result;
 	private NginxRepository nginxRepository;
 	private NginxAgentClient nginxAgentClient;
-	
+
 	public NginxController() {
-		
+
 	}
 
 	@Inject
-	public NginxController(Result result, NginxRepository nginxRepository,NginxAgentClient nginxAgentClient) {
+	public NginxController(Result result, NginxRepository nginxRepository, NginxAgentClient nginxAgentClient) {
 		this.result = result;
 		this.nginxRepository = nginxRepository;
 		this.nginxAgentClient = nginxAgentClient;
 	}
-	
+
 	public void list() {
 		this.result.include("nginxList", nginxRepository.listAll());
 	}
-	
-	@Path({ "tabs" , "tabs/{id}"})
+
+	@Path({ "tabs", "tabs/{id}" })
 	public void tabs(Long id) {
-		if(id != null) {
-			this.result.include("nginx",new Nginx(id));
+		if (id != null) {
+			this.result.include("nginx", new Nginx(id));
 		}
 	}
-	
+
 	public void reload(Long id) {
-		this.result.include("id",id);
+		this.result.include("id", id);
 	}
-	
+
 	public void form() {
-		
+
 	}
-	
-	public void ping(String endpoint,String authorizationKey) { 
-		NginxResponse nginxResponse = nginxAgentClient
-			.api(NginxAgentClientApis.ping())
-				.withEndpoint(endpoint)
-				.withAuthorizationKey(authorizationKey)
-				.build()
-				.ping().join();
-		this.result.include("nginxResponse",nginxResponse);
+
+	public void ping(String endpoint, String authorizationKey) {
+		NginxResponse nginxResponse = nginxAgentClient.api(NginxAgentClientApis.ping()).withEndpoint(endpoint)
+				.withAuthorizationKey(authorizationKey).build().ping().join();
+		this.result.include("nginxResponse", nginxResponse);
 	}
-	
-	public void validate(Long id,String name, String endpoint,  String authorizationKey) {
-		this.result.use(Results.json())
-				.from(FormValidation.newBuilder().toUnordenedList(
-						nginxRepository.validateBeforeSaveOrUpdate(new Nginx(id,name, endpoint,authorizationKey))),
+
+	public void validate(Long id, String name, String endpoint, String authorizationKey) {
+		this.result
+				.use(Results.json()).from(
+						FormValidation.newBuilder()
+								.toUnordenedList(nginxRepository
+										.validateBeforeSaveOrUpdate(new Nginx(id, name, endpoint, authorizationKey))),
 						"errors")
 				.serialize();
 	}
@@ -78,7 +76,7 @@ public class NginxController {
 		this.result.include("nginx", nginxRepository.load(new Nginx(id)));
 		this.result.forwardTo(this).form();
 	}
-	
+
 	@Path("delete/{id}")
 	public void delete(Long id) {
 		this.result.include("operation", nginxRepository.delete(new Nginx(id)));
@@ -86,9 +84,9 @@ public class NginxController {
 	}
 
 	@Post
-	public void saveOrUpdate(Long id,String name, String endpoint,  String authorizationKey)
+	public void saveOrUpdate(Long id, String name, String endpoint, String authorizationKey)
 			throws NginxAdminException {
-		OperationResult operationResult = nginxRepository.saveOrUpdate(new Nginx(id,name, endpoint,authorizationKey));
+		OperationResult operationResult = nginxRepository.saveOrUpdate(new Nginx(id, name, endpoint, authorizationKey));
 		this.result.include("operation", operationResult.getOperationType());
 		this.result.redirectTo(this).reload(operationResult.getId());
 	}

@@ -27,20 +27,20 @@ public class ErrorLog implements Serializable {
 
 	@Column(name = "level")
 	private String level;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_nginx")
 	private Nginx nginx;
-	
+
 	@Column(name = "message")
 	private String message;
 
 	@Column(name = "pid")
 	private Long pid;
-	
+
 	@Column(name = "cid")
 	private Long cid;
-	
+
 	@Column(name = "tid")
 	private Long tid;
 

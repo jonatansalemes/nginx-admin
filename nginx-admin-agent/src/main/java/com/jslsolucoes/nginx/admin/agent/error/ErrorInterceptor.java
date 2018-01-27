@@ -23,13 +23,13 @@ public class ErrorInterceptor {
 			Response response = Response.status(Status.INTERNAL_SERVER_ERROR)
 					.entity(new NginxExceptionResponse(exception)).build();
 			AsyncResponse asyncResponse = asyncResponse(invocationContext);
-			if(asyncResponse != null){
+			if (asyncResponse != null) {
 				asyncResponse.resume(response);
 			}
 			return response;
 		}
 	}
-	
+
 	private AsyncResponse asyncResponse(InvocationContext invocationContext) {
 		for (Object object : invocationContext.getParameters()) {
 			if (AsyncResponse.class.isInstance(object)) {

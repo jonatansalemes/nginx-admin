@@ -22,7 +22,7 @@ public class ImportController {
 
 	@Deprecated
 	public ImportController() {
-		
+
 	}
 
 	@Inject
@@ -33,12 +33,12 @@ public class ImportController {
 
 	@Path("form/{idNginx}")
 	public void form(Long idNginx) {
-		this.result.include("nginx",new Nginx(idNginx));
+		this.result.include("nginx", new Nginx(idNginx));
 	}
 
 	@Post
-	public void execute(Long idNginx,String nginxConf) throws IOException, NginxAdminException {
-		importRepository.importFrom(new Nginx(idNginx),nginxConf);
+	public void execute(Long idNginx, String nginxConf) throws IOException, NginxAdminException {
+		importRepository.importFrom(new Nginx(idNginx), nginxConf);
 		this.result.include("import", true);
 		this.result.redirectTo(this).form(idNginx);
 	}

@@ -6,18 +6,17 @@ import com.jslsolucoes.nginx.admin.agent.client.api.NginxAgentClientApiBuilder;
 
 public class NginxPingBuilder implements NginxAgentClientApiBuilder {
 
-	
 	private ScheduledExecutorService scheduledExecutorService;
 	private String endpoint;
 	private String authorizationKey;
 
 	private NginxPingBuilder() {
-		
+
 	}
-	
+
 	@Override
 	public NginxPing build() {
-		return new NginxPing(scheduledExecutorService,endpoint,authorizationKey);
+		return new NginxPing(scheduledExecutorService, endpoint, authorizationKey);
 	}
 
 	public static NginxPingBuilder newBuilder() {
@@ -28,7 +27,7 @@ public class NginxPingBuilder implements NginxAgentClientApiBuilder {
 		this.scheduledExecutorService = scheduledExecutorService;
 		return this;
 	}
-	
+
 	public NginxPingBuilder withEndpoint(String endpoint) {
 		this.endpoint = endpoint;
 		return this;

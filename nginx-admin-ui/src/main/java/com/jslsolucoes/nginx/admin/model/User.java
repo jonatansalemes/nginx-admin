@@ -14,7 +14,7 @@ import com.jslsolucoes.vraptor4.auth.model.AuthUser;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "user", schema = "admin")
-public class User implements Serializable,AuthUser {
+public class User implements Serializable, AuthUser {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +22,7 @@ public class User implements Serializable,AuthUser {
 
 	@Column(name = "login")
 	private String login;
-	
+
 	@Column(name = "email")
 	private String email;
 

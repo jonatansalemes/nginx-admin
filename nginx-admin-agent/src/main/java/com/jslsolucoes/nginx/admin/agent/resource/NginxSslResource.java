@@ -35,39 +35,41 @@ import com.jslsolucoes.nginx.admin.agent.resource.impl.NginxSslResourceImpl;
 public class NginxSslResource {
 
 	private NginxSslResourceImpl nginxSslResourceImpl;
-	
+
 	@Deprecated
 	public NginxSslResource() {
-		
+
 	}
-	
+
 	@Inject
 	public NginxSslResource(NginxSslResourceImpl nginxSslResourceImpl) {
 		this.nginxSslResourceImpl = nginxSslResourceImpl;
 	}
-	
+
 	@POST
 	public void create(NginxSslCreateRequest nginxSslCreateRequest, @Suspended AsyncResponse asyncResponse,
 			@Context UriInfo uriInfo) {
-		NginxOperationResult nginxOperationResult = nginxSslResourceImpl.create(nginxSslCreateRequest.getUuid(),nginxSslCreateRequest.getFileObject());
-		
+		NginxOperationResult nginxOperationResult = nginxSslResourceImpl.create(nginxSslCreateRequest.getUuid(),
+				nginxSslCreateRequest.getFileObject());
+
 		UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
 		uriBuilder.path(nginxSslCreateRequest.getUuid());
-	    asyncResponse.resume(Response
-				.created(uriBuilder.build())
+		asyncResponse.resume(Response.created(uriBuilder.build())
 				.entity(new NginxSslCreateResponse(nginxOperationResult.getOutput(), nginxOperationResult.isSuccess()))
 				.build());
 	}
-	
+
 	@PUT
 	@Path("{uuid}")
-	public void update(@PathParam("uuid") String uuid,NginxSslUpdateRequest nginxSslUpdateRequest, @Suspended AsyncResponse asyncResponse) {
-		NginxOperationResult nginxOperationResult = nginxSslResourceImpl.update(uuid,nginxSslUpdateRequest.getFileObject());
+	public void update(@PathParam("uuid") String uuid, NginxSslUpdateRequest nginxSslUpdateRequest,
+			@Suspended AsyncResponse asyncResponse) {
+		NginxOperationResult nginxOperationResult = nginxSslResourceImpl.update(uuid,
+				nginxSslUpdateRequest.getFileObject());
 		asyncResponse.resume(Response
 				.ok(new NginxSslUpdateResponse(nginxOperationResult.getOutput(), nginxOperationResult.isSuccess()))
 				.build());
 	}
-		
+
 	@DELETE
 	@Path("{uuid}")
 	public void delete(@PathParam("uuid") String uuid, @Suspended AsyncResponse asyncResponse) {
@@ -76,14 +78,12 @@ public class NginxSslResource {
 				.ok(new NginxSslDeleteResponse(nginxOperationResult.getOutput(), nginxOperationResult.isSuccess()))
 				.build());
 	}
-	
+
 	@GET
 	@Path("{uuid}")
 	public void read(@PathParam("uuid") String uuid, @Suspended AsyncResponse asyncResponse) {
 		FileObject fileObject = nginxSslResourceImpl.read(uuid);
-		asyncResponse.resume(Response
-				.ok(new NginxSslReadResponse(fileObject))
-				.build());
+		asyncResponse.resume(Response.ok(new NginxSslReadResponse(fileObject)).build());
 	}
 
 }

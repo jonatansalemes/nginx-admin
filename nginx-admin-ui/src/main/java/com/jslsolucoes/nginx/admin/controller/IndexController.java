@@ -16,7 +16,7 @@ public class IndexController {
 
 	@Deprecated
 	public IndexController() {
-		
+
 	}
 
 	@Inject

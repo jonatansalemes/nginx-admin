@@ -5,11 +5,11 @@ import com.jslsolucoes.nginx.admin.agent.model.response.NginxResponse;
 public class NginxErrorLogRotateResponse implements NginxResponse {
 
 	private Integer count;
-	
+
 	public NginxErrorLogRotateResponse() {
-		
+
 	}
-	
+
 	public NginxErrorLogRotateResponse(Integer count) {
 		this.count = count;
 	}

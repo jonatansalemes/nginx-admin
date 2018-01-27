@@ -22,37 +22,29 @@ import com.jslsolucoes.nginx.admin.agent.resource.impl.NginxAccessLogResourceImp
 public class NginxAccessLogResource {
 
 	private NginxAccessLogResourceImpl nginxAccessLogResourceImpl;
-	
+
 	@Deprecated
 	public NginxAccessLogResource() {
-		
+
 	}
 
 	@Inject
 	public NginxAccessLogResource(NginxAccessLogResourceImpl nginxAccessLogResourceImpl) {
 		this.nginxAccessLogResourceImpl = nginxAccessLogResourceImpl;
 	}
-	
+
 	@GET
 	@Path("collect")
-	public void collect(
-			@Suspended AsyncResponse asyncResponse) {
+	public void collect(@Suspended AsyncResponse asyncResponse) {
 		asyncResponse
-				.resume(Response
-						.ok(new NginxAccessLogCollectResponse(
-								nginxAccessLogResourceImpl.collect()))
-						.build());
+				.resume(Response.ok(new NginxAccessLogCollectResponse(nginxAccessLogResourceImpl.collect())).build());
 	}
-	
+
 	@GET
 	@Path("rotate")
-	public void rotate(
-			@Suspended AsyncResponse asyncResponse) {
+	public void rotate(@Suspended AsyncResponse asyncResponse) {
 		asyncResponse
-				.resume(Response
-						.ok(new NginxAccessLogRotateResponse(
-								nginxAccessLogResourceImpl.rotate()))
-						.build());
+				.resume(Response.ok(new NginxAccessLogRotateResponse(nginxAccessLogResourceImpl.rotate())).build());
 	}
 
 }

@@ -36,7 +36,7 @@ public class AuthHandlerInterceptor {
 			Response response = Response.status(Status.FORBIDDEN)
 					.entity(new NginxAuthenticationFailResponse("Resource forbidden")).build();
 			AsyncResponse asyncResponse = asyncResponse(invocationContext);
-			if(asyncResponse != null){
+			if (asyncResponse != null) {
 				asyncResponse.resume(response);
 			}
 			return response;

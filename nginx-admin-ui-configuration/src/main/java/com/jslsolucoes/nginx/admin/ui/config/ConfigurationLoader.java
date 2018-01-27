@@ -16,12 +16,12 @@ public class ConfigurationLoader {
 	public static ConfigurationLoader newBuilder() {
 		return new ConfigurationLoader();
 	}
-	
+
 	public ConfigurationLoader withProperties(Properties properties) {
 		this.properties = properties;
 		return replace();
 	}
-	
+
 	public ConfigurationLoader withFile(String path) {
 		try {
 			properties.load(new FileInputStream(new File(path)));
@@ -32,20 +32,18 @@ public class ConfigurationLoader {
 	}
 
 	private ConfigurationLoader replace() {
-		properties
-			.entrySet()
-			.forEach(entry-> {
-				String key = (String) entry.getKey();
-				String value = (String) entry.getValue();
-				properties.setProperty(key, replace(value));
-			});
+		properties.entrySet().forEach(entry -> {
+			String key = (String) entry.getKey();
+			String value = (String) entry.getValue();
+			properties.setProperty(key, replace(value));
+		});
 		return this;
 	}
-	
+
 	private String replace(String oldValue) {
 		String value = oldValue;
 		Matcher matcher = Pattern.compile("\\$([\\w]*)").matcher(value);
-		while(matcher.find()){
+		while (matcher.find()) {
 			String currentValue = (String) properties.get(matcher.group(1));
 			value = matcher.replaceAll(currentValue);
 		}
@@ -69,7 +67,7 @@ public class ConfigurationLoader {
 		log.setRotate(Integer.valueOf(properties.getProperty("NGINX_ADMIN_LOG_ACCESS_ROTATE_INTERVAL")));
 		return log;
 	}
-	
+
 	private Log errorLog() {
 		Log log = new Log();
 		log.setCollect(Integer.valueOf(properties.getProperty("NGINX_ADMIN_LOG_ERROR_COLLECT_INTERVAL")));

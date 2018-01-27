@@ -24,44 +24,44 @@ public class NginxVirtualHostBuilder implements NginxAgentClientApiBuilder {
 
 	@Override
 	public NginxVirtualHost build() {
-		return new NginxVirtualHost(scheduledExecutorService, endpoint, authorizationKey, uuid, https, certificateUuid, certificatePrivateKeyUuid, aliases, locations);
+		return new NginxVirtualHost(scheduledExecutorService, endpoint, authorizationKey, uuid, https, certificateUuid,
+				certificatePrivateKeyUuid, aliases, locations);
 	}
 
 	public static NginxVirtualHostBuilder newBuilder() {
 		return new NginxVirtualHostBuilder();
 	}
 
-	public NginxVirtualHostBuilder withScheduledExecutorService(
-			ScheduledExecutorService scheduledExecutorService) {
+	public NginxVirtualHostBuilder withScheduledExecutorService(ScheduledExecutorService scheduledExecutorService) {
 		this.scheduledExecutorService = scheduledExecutorService;
 		return this;
 	}
-	
+
 	public NginxVirtualHostBuilder withHttps(Boolean https) {
 		this.https = https;
 		return this;
 	}
-	
+
 	public NginxVirtualHostBuilder withCertificateUuid(String certificateUuid) {
 		this.certificateUuid = certificateUuid;
 		return this;
 	}
-	
+
 	public NginxVirtualHostBuilder withCertificatePrivateKeyUuid(String certificatePrivateKeyUuid) {
 		this.certificatePrivateKeyUuid = certificatePrivateKeyUuid;
 		return this;
 	}
-	
+
 	public NginxVirtualHostBuilder withAliases(List<String> aliases) {
 		this.aliases = aliases;
 		return this;
 	}
-	
+
 	public NginxVirtualHostBuilder withLocations(List<Location> locations) {
 		this.locations = locations;
 		return this;
 	}
-	
+
 	public NginxVirtualHostBuilder withUuid(String uuid) {
 		this.uuid = uuid;
 		return this;

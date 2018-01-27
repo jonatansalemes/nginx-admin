@@ -6,15 +6,15 @@ public class NginxVirtualHostDeleteResponse implements NginxResponse {
 
 	private String stackTrace;
 	private Boolean success;
-	
+
 	public NginxVirtualHostDeleteResponse() {
-		
+
 	}
-	
-	public NginxVirtualHostDeleteResponse(String stackTrace,Boolean success) {
+
+	public NginxVirtualHostDeleteResponse(String stackTrace, Boolean success) {
 		this.stackTrace = stackTrace;
 		this.success = success;
-		
+
 	}
 
 	public String getStackTrace() {

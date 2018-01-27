@@ -5,12 +5,11 @@ import java.util.List;
 import com.jslsolucoes.nginx.admin.model.User;
 
 public interface UserRepository {
-	public User authenticate(String identification,String password);
+	public User authenticate(String identification, String password);
 
 	public List<String> validateBeforeResetPasswordFor(String identification);
 
 	public String resetPasswordFor(String identification);
-	
 
 	public List<String> validateBeforeChangePassword(User user, String oldPassword, String password,
 			String passwordConfirm);
@@ -23,8 +22,8 @@ public interface UserRepository {
 
 	public List<User> listAll();
 
-	public List<String> validateBeforeCreateUser(String login,String loginConfirm,String email, String password,
+	public List<String> validateBeforeCreateUser(String login, String loginConfirm, String email, String password,
 			String passwordConfirm);
 
-	public void create(String login,String email, String password);
+	public void create(String login, String email, String password);
 }

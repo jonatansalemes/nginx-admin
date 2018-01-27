@@ -5,9 +5,9 @@ import com.jslsolucoes.nginx.admin.agent.model.FileObject;
 public class NginxSslUpdateRequest {
 
 	private FileObject fileObject;
-	
+
 	public NginxSslUpdateRequest() {
-		
+
 	}
 
 	public NginxSslUpdateRequest(FileObject fileObject) {

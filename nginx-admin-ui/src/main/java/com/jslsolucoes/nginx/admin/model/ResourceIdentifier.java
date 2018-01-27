@@ -22,7 +22,7 @@ public class ResourceIdentifier implements Serializable {
 	private String uuid;
 
 	public ResourceIdentifier() {
-		
+
 	}
 
 	public ResourceIdentifier(String uuid) {

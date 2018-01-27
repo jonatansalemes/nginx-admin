@@ -31,7 +31,7 @@ public class AccessLog implements Serializable {
 	@Column(name = "remote_addr")
 	@SerializedName(value = "remote_addr")
 	private String remoteAddress;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_nginx")
 	private Nginx nginx;

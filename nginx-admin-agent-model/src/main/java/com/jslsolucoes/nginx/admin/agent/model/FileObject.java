@@ -11,12 +11,11 @@ public class FileObject {
 	private Date lastModified;
 
 	private Long size;
-	
+
 	private String content;
-	
+
 	private String charset = "UTF-8";
 
-	
 	public String getFileName() {
 		return fileName;
 	}
@@ -48,7 +47,7 @@ public class FileObject {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	public void setContent(String content) {
 		try {
 			this.content = Base64.getEncoder().encodeToString(content.getBytes(charset));

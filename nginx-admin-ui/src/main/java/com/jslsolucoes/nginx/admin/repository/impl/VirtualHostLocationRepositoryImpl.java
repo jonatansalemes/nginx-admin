@@ -23,7 +23,7 @@ public class VirtualHostLocationRepositoryImpl extends RepositoryImpl<VirtualHos
 
 	@Deprecated
 	public VirtualHostLocationRepositoryImpl() {
-		
+
 	}
 
 	@Inject

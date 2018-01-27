@@ -37,9 +37,9 @@ public class NginxVirtualHost extends DefaultNginxAgentClientApi implements Ngin
 	private final List<String> aliases;
 	private final List<Location> locations;
 
-	public NginxVirtualHost(ScheduledExecutorService scheduledExecutorService, String endpoint, 
-			String authorizationKey,String uuid,Boolean https,String certificateUuid,
-			String certificatePrivateKeyUuid,List<String> aliases,List<Location> locations) {
+	public NginxVirtualHost(ScheduledExecutorService scheduledExecutorService, String endpoint, String authorizationKey,
+			String uuid, Boolean https, String certificateUuid, String certificatePrivateKeyUuid, List<String> aliases,
+			List<Location> locations) {
 		this.scheduledExecutorService = scheduledExecutorService;
 		this.endpoint = endpoint;
 		this.authorizationKey = authorizationKey;
@@ -51,16 +51,16 @@ public class NginxVirtualHost extends DefaultNginxAgentClientApi implements Ngin
 		this.locations = locations;
 	}
 
-	
 	public CompletableFuture<NginxResponse> update() {
 		return CompletableFuture.supplyAsync(() -> {
 			try (RestClient restClient = RestClient.build()) {
-				NginxVirtualHostUpdateRequest nginxVirtualHostUpdateRequest = new NginxVirtualHostUpdateRequest(https, certificateUuid, certificatePrivateKeyUuid, aliases, locations);
-				Entity<NginxVirtualHostUpdateRequest> entity = Entity.entity(nginxVirtualHostUpdateRequest,MediaType.APPLICATION_JSON);
+				NginxVirtualHostUpdateRequest nginxVirtualHostUpdateRequest = new NginxVirtualHostUpdateRequest(https,
+						certificateUuid, certificatePrivateKeyUuid, aliases, locations);
+				Entity<NginxVirtualHostUpdateRequest> entity = Entity.entity(nginxVirtualHostUpdateRequest,
+						MediaType.APPLICATION_JSON);
 				WebTarget webTarget = restClient.target(endpoint);
 				Response response = webTarget.path("virtualHost").path(uuid).request()
-						.header(HttpHeader.AUTHORIZATION, authorizationKey)
-						.put(entity);
+						.header(HttpHeader.AUTHORIZATION, authorizationKey).put(entity);
 				return responseFor(response, NginxVirtualHostUpdateResponse.class);
 			} catch (Exception e) {
 				return new NginxExceptionResponse(e);
@@ -71,42 +71,39 @@ public class NginxVirtualHost extends DefaultNginxAgentClientApi implements Ngin
 	public CompletableFuture<NginxResponse> create() {
 		return CompletableFuture.supplyAsync(() -> {
 			try (RestClient restClient = RestClient.build()) {
-				NginxVirtualHostCreateRequest nginxVirtualHostCreateRequest = new NginxVirtualHostCreateRequest(uuid, https, certificateUuid, certificatePrivateKeyUuid, aliases, locations);
-				Entity<NginxVirtualHostCreateRequest> entity = Entity.entity(nginxVirtualHostCreateRequest,MediaType.APPLICATION_JSON);
+				NginxVirtualHostCreateRequest nginxVirtualHostCreateRequest = new NginxVirtualHostCreateRequest(uuid,
+						https, certificateUuid, certificatePrivateKeyUuid, aliases, locations);
+				Entity<NginxVirtualHostCreateRequest> entity = Entity.entity(nginxVirtualHostCreateRequest,
+						MediaType.APPLICATION_JSON);
 				WebTarget webTarget = restClient.target(endpoint);
 				Response response = webTarget.path("virtualHost").request()
-						.header(HttpHeader.AUTHORIZATION, authorizationKey)
-						.post(entity);
+						.header(HttpHeader.AUTHORIZATION, authorizationKey).post(entity);
 				return responseFor(response, NginxVirtualHostCreateResponse.class);
 			} catch (Exception e) {
 				return new NginxExceptionResponse(e);
 			}
 		}, scheduledExecutorService);
 	}
-	
+
 	public CompletableFuture<NginxResponse> delete() {
 		return CompletableFuture.supplyAsync(() -> {
 			try (RestClient restClient = RestClient.build()) {
 				WebTarget webTarget = restClient.target(endpoint);
-				Response response = webTarget.path("virtualHost").path(uuid)
-						.request()
-						.header(HttpHeader.AUTHORIZATION, authorizationKey)
-						.delete();
+				Response response = webTarget.path("virtualHost").path(uuid).request()
+						.header(HttpHeader.AUTHORIZATION, authorizationKey).delete();
 				return responseFor(response, NginxVirtualHostDeleteResponse.class);
 			} catch (Exception e) {
 				return new NginxExceptionResponse(e);
 			}
 		}, scheduledExecutorService);
 	}
-	
+
 	public CompletableFuture<NginxResponse> read() {
 		return CompletableFuture.supplyAsync(() -> {
 			try (RestClient restClient = RestClient.build()) {
 				WebTarget webTarget = restClient.target(endpoint);
-				Response response = webTarget.path("virtualHost").path(uuid)
-						.request()
-						.header(HttpHeader.AUTHORIZATION, authorizationKey)
-						.get();
+				Response response = webTarget.path("virtualHost").path(uuid).request()
+						.header(HttpHeader.AUTHORIZATION, authorizationKey).get();
 				return responseFor(response, NginxVirtualHostReadResponse.class);
 			} catch (Exception e) {
 				return new NginxExceptionResponse(e);

@@ -6,15 +6,15 @@ public class NginxSslCreateResponse implements NginxResponse {
 
 	private String stackTrace;
 	private Boolean success;
-	
+
 	public NginxSslCreateResponse() {
-		
+
 	}
-	
-	public NginxSslCreateResponse(String stackTrace,Boolean success) {
+
+	public NginxSslCreateResponse(String stackTrace, Boolean success) {
 		this.stackTrace = stackTrace;
 		this.success = success;
-		
+
 	}
 
 	public String getStackTrace() {

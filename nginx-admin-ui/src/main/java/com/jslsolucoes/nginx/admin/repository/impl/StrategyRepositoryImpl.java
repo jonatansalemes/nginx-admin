@@ -17,7 +17,7 @@ public class StrategyRepositoryImpl extends RepositoryImpl<Strategy> implements 
 
 	@Deprecated
 	public StrategyRepositoryImpl() {
-		
+
 	}
 
 	@Inject
@@ -30,10 +30,8 @@ public class StrategyRepositoryImpl extends RepositoryImpl<Strategy> implements 
 		try {
 			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 			CriteriaQuery<Strategy> criteriaQuery = criteriaBuilder.createQuery(Strategy.class);
-			Root<Strategy> root = criteriaQuery.from(Strategy.class);	
-			criteriaQuery.where(
-					criteriaBuilder.equal(root.get(Strategy_.name), name)
-			);
+			Root<Strategy> root = criteriaQuery.from(Strategy.class);
+			criteriaQuery.where(criteriaBuilder.equal(root.get(Strategy_.name), name));
 			return entityManager.createQuery(criteriaQuery).getSingleResult();
 		} catch (NoResultException noResultException) {
 			return null;

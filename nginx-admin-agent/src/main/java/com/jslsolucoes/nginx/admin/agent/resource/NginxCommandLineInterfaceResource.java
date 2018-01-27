@@ -22,14 +22,15 @@ import com.jslsolucoes.runtime.RuntimeResult;
 public class NginxCommandLineInterfaceResource {
 
 	private NginxCommandLineInterfaceResourceImpl nginxCommandLineInterfaceResourceImpl;
-	
+
 	@Deprecated
 	public NginxCommandLineInterfaceResource() {
-		
+
 	}
 
 	@Inject
-	public NginxCommandLineInterfaceResource(NginxCommandLineInterfaceResourceImpl nginxCommandLineInterfaceResourceImpl) {
+	public NginxCommandLineInterfaceResource(
+			NginxCommandLineInterfaceResourceImpl nginxCommandLineInterfaceResourceImpl) {
 		this.nginxCommandLineInterfaceResourceImpl = nginxCommandLineInterfaceResourceImpl;
 	}
 
@@ -37,8 +38,9 @@ public class NginxCommandLineInterfaceResource {
 	@Path("start")
 	public void start(@Suspended AsyncResponse asyncResponse) {
 		RuntimeResult runtimeResult = nginxCommandLineInterfaceResourceImpl.start();
-		asyncResponse.resume(Response.ok(new NginxCommandLineInterfaceResponse(runtimeResult.getOutput(),
-				runtimeResult.isSuccess())).build());
+		asyncResponse.resume(
+				Response.ok(new NginxCommandLineInterfaceResponse(runtimeResult.getOutput(), runtimeResult.isSuccess()))
+						.build());
 	}
 
 	@GET
@@ -46,7 +48,8 @@ public class NginxCommandLineInterfaceResource {
 	public void killAll(@Suspended AsyncResponse asyncResponse) {
 		RuntimeResult runtimeResult = nginxCommandLineInterfaceResourceImpl.killAll();
 		asyncResponse.resume(
-				Response.ok(new NginxCommandLineInterfaceResponse(runtimeResult.getOutput(), runtimeResult.isSuccess())).build());
+				Response.ok(new NginxCommandLineInterfaceResponse(runtimeResult.getOutput(), runtimeResult.isSuccess()))
+						.build());
 	}
 
 	@GET
@@ -54,7 +57,8 @@ public class NginxCommandLineInterfaceResource {
 	public void stop(@Suspended AsyncResponse asyncResponse) {
 		RuntimeResult runtimeResult = nginxCommandLineInterfaceResourceImpl.stop();
 		asyncResponse.resume(
-				Response.ok(new NginxCommandLineInterfaceResponse(runtimeResult.getOutput(), runtimeResult.isSuccess())).build());
+				Response.ok(new NginxCommandLineInterfaceResponse(runtimeResult.getOutput(), runtimeResult.isSuccess()))
+						.build());
 	}
 
 	@GET
@@ -62,39 +66,44 @@ public class NginxCommandLineInterfaceResource {
 	public void status(@Suspended AsyncResponse asyncResponse) {
 		RuntimeResult runtimeResult = nginxCommandLineInterfaceResourceImpl.status();
 		asyncResponse.resume(
-				Response.ok(new NginxCommandLineInterfaceResponse(runtimeResult.getOutput(), runtimeResult.isSuccess())).build());
+				Response.ok(new NginxCommandLineInterfaceResponse(runtimeResult.getOutput(), runtimeResult.isSuccess()))
+						.build());
 	}
-	
+
 	@GET
 	@Path("testConfiguration")
-	public void testConfiguration( @Suspended AsyncResponse asyncResponse) {
+	public void testConfiguration(@Suspended AsyncResponse asyncResponse) {
 		RuntimeResult runtimeResult = nginxCommandLineInterfaceResourceImpl.testConfiguration();
 		asyncResponse.resume(
-				Response.ok(new NginxCommandLineInterfaceResponse(runtimeResult.getOutput(), runtimeResult.isSuccess())).build());
+				Response.ok(new NginxCommandLineInterfaceResponse(runtimeResult.getOutput(), runtimeResult.isSuccess()))
+						.build());
 	}
-	
+
 	@GET
 	@Path("version")
-	public void version( @Suspended AsyncResponse asyncResponse) {
+	public void version(@Suspended AsyncResponse asyncResponse) {
 		RuntimeResult runtimeResult = nginxCommandLineInterfaceResourceImpl.version();
 		asyncResponse.resume(
-				Response.ok(new NginxCommandLineInterfaceResponse(runtimeResult.getOutput(), runtimeResult.isSuccess())).build());
+				Response.ok(new NginxCommandLineInterfaceResponse(runtimeResult.getOutput(), runtimeResult.isSuccess()))
+						.build());
 	}
-	
+
 	@GET
 	@Path("reload")
 	public void reload(@Suspended AsyncResponse asyncResponse) {
 		RuntimeResult runtimeResult = nginxCommandLineInterfaceResourceImpl.reload();
 		asyncResponse.resume(
-				Response.ok(new NginxCommandLineInterfaceResponse(runtimeResult.getOutput(), runtimeResult.isSuccess())).build());
+				Response.ok(new NginxCommandLineInterfaceResponse(runtimeResult.getOutput(), runtimeResult.isSuccess()))
+						.build());
 	}
-	
+
 	@GET
 	@Path("restart")
 	public void restart(@Suspended AsyncResponse asyncResponse) {
 		RuntimeResult runtimeResult = nginxCommandLineInterfaceResourceImpl.restart();
 		asyncResponse.resume(
-				Response.ok(new NginxCommandLineInterfaceResponse(runtimeResult.getOutput(), runtimeResult.isSuccess())).build());
+				Response.ok(new NginxCommandLineInterfaceResponse(runtimeResult.getOutput(), runtimeResult.isSuccess()))
+						.build());
 	}
 
 }

@@ -1,8 +1,8 @@
 package com.jslsolucoes.nginx.admin.ui.config;
 
 public enum DatabaseDriver {
-	ORACLE("oracle"),H2("h2");
-	
+	ORACLE("oracle"), H2("h2");
+
 	private String driverName;
 
 	private DatabaseDriver(String driverName) {
@@ -13,9 +13,9 @@ public enum DatabaseDriver {
 		return driverName;
 	}
 
-	public static DatabaseDriver forName(String driverName){
-		for(DatabaseDriver databaseDriver : values()){
-			if(databaseDriver.getDriverName().equals(driverName)) {
+	public static DatabaseDriver forName(String driverName) {
+		for (DatabaseDriver databaseDriver : values()) {
+			if (databaseDriver.getDriverName().equals(driverName)) {
 				return databaseDriver;
 			}
 		}

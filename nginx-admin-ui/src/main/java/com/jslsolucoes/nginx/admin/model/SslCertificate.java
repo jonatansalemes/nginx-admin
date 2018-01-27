@@ -26,7 +26,7 @@ public class SslCertificate implements Serializable {
 
 	@Column(name = "common_name")
 	private String commonName;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_nginx")
 	private Nginx nginx;
@@ -47,7 +47,7 @@ public class SslCertificate implements Serializable {
 	}
 
 	public SslCertificate(Long id, String commonName, ResourceIdentifier resourceIdentifierCertificate,
-			ResourceIdentifier resourceIdentifierCertificatePrivateKey,Nginx nginx) {
+			ResourceIdentifier resourceIdentifierCertificatePrivateKey, Nginx nginx) {
 		this.id = id;
 		this.commonName = commonName;
 		this.resourceIdentifierCertificate = resourceIdentifierCertificate;

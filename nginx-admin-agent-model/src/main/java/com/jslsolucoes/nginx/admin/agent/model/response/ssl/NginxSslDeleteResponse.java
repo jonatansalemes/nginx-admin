@@ -6,15 +6,15 @@ public class NginxSslDeleteResponse implements NginxResponse {
 
 	private String stackTrace;
 	private Boolean success;
-	
+
 	public NginxSslDeleteResponse() {
-		
+
 	}
-	
-	public NginxSslDeleteResponse(String stackTrace,Boolean success) {
+
+	public NginxSslDeleteResponse(String stackTrace, Boolean success) {
 		this.stackTrace = stackTrace;
 		this.success = success;
-		
+
 	}
 
 	public String getStackTrace() {

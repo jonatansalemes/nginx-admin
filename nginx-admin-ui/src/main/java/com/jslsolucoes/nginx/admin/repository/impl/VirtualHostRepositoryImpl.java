@@ -37,11 +37,12 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 
 	@Deprecated
 	public VirtualHostRepositoryImpl() {
-		
+
 	}
 
 	@Inject
-	public VirtualHostRepositoryImpl(EntityManager entityManager, ResourceIdentifierRepository resourceIdentifierRepository,
+	public VirtualHostRepositoryImpl(EntityManager entityManager,
+			ResourceIdentifierRepository resourceIdentifierRepository,
 			VirtualHostAliasRepository virtualHostAliasRepository,
 			VirtualHostLocationRepository virtualHostLocationRepository) {
 		super(entityManager);
@@ -115,29 +116,26 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 			return null;
 		}
 	}
-	
+
 	@Override
 	public List<VirtualHost> listAllFor(Nginx nginx) {
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<VirtualHost> criteriaQuery = criteriaBuilder.createQuery(VirtualHost.class);
 		Root<VirtualHost> root = criteriaQuery.from(VirtualHost.class);
-		criteriaQuery
-				.where(criteriaBuilder.equal(root.join(VirtualHost_.nginx, JoinType.INNER).get(Nginx_.id), nginx.getId()));
+		criteriaQuery.where(
+				criteriaBuilder.equal(root.join(VirtualHost_.nginx, JoinType.INNER).get(Nginx_.id), nginx.getId()));
 		return entityManager.createQuery(criteriaQuery).getResultList();
 	}
 
 	@Override
-	public List<VirtualHost> searchFor(Nginx nginx,String term) {
+	public List<VirtualHost> searchFor(Nginx nginx, String term) {
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<VirtualHost> criteriaQuery = criteriaBuilder.createQuery(VirtualHost.class);
 		Root<VirtualHost> root = criteriaQuery.from(VirtualHost.class);
 		SetJoin<VirtualHost, VirtualHostAlias> join = root.join(VirtualHost_.aliases, JoinType.INNER);
-		criteriaQuery.where(
-				criteriaBuilder.and(
-						criteriaBuilder.equal(root.join(VirtualHost_.nginx, JoinType.INNER).get(Nginx_.id), nginx.getId()),		
-						criteriaBuilder.like(criteriaBuilder.lower(join.get(VirtualHostAlias_.alias)), term.toLowerCase())
-				)
-		);
+		criteriaQuery.where(criteriaBuilder.and(
+				criteriaBuilder.equal(root.join(VirtualHost_.nginx, JoinType.INNER).get(Nginx_.id), nginx.getId()),
+				criteriaBuilder.like(criteriaBuilder.lower(join.get(VirtualHostAlias_.alias)), term.toLowerCase())));
 		return entityManager.createQuery(criteriaQuery).getResultList();
 	}
 }

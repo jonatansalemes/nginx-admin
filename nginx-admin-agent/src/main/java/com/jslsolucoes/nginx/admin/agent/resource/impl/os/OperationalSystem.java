@@ -54,7 +54,7 @@ public class OperationalSystem {
 	}
 
 	private static String clear(String distribution) {
-		if(!StringUtils.isEmpty(distribution)){
+		if (!StringUtils.isEmpty(distribution)) {
 			return distribution.replaceAll("\n\t\r", "").trim();
 		}
 		return distribution;
