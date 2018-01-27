@@ -54,9 +54,6 @@ public class Main {
 					"-Dmail.authenticate=" + configuration.getSmtp().getAuthenticate(),
 					"-Dmail.username=" + configuration.getSmtp().getUserName(),
 					"-Dmail.password=" + configuration.getSmtp().getPassword(),
-					"-Derror.mail.mailing.list="
-							+ configuration.getSmtp().getMailList().stream().collect(Collectors.joining(",")),
-					"\"-Derror.mail.subject=" + configuration.getSmtp().getSubject() + "\"",
 					"-Dmail.charset=" + configuration.getSmtp().getSubject() });
 			swarm.fraction(new DatasourcesFraction().jdbcDriver("com.oracle", (d) -> {
 				d.driverClassName("oracle.jdbc.driver.OracleDriver");
@@ -71,29 +68,28 @@ public class Main {
 				ds.minPoolSize(configuration.getDatabase().getDatabasePool().getMinConnection());
 				ds.initialPoolSize(configuration.getDatabase().getDatabasePool().getInitialConnection());
 			}))
-
-					.fraction(new ManagementFraction().securityRealm("SSLRealm", realm -> {
-						realm.sslServerIdentity(sslServerIdentity -> {
-							sslServerIdentity.keystorePath(jks.getAbsolutePath()).keystorePassword("password")
-									.alias("selfsigned");
-						});
-					})).fraction(new UndertowFraction().server("default-server", server -> {
-						server.httpListener("default", httpListener -> {
-							httpListener.socketBinding("http").redirectSocket("https").enableHttp2(true);
-						}).httpsListener("https", httpsListener -> {
-							httpsListener.securityRealm("SSLRealm").socketBinding("https").enableHttp2(true);
-						}).host("default-host", host -> {
-							host.alias("localhost");
-						});
-					}).bufferCache("default").servletContainer("default", servletContainer -> {
-						servletContainer.websocketsSetting().jspSetting();
-					})).fraction(new LoggingFraction().consoleHandler("CONSOLE", f -> {
-						f.level(Level.INFO);
-						f.formatter("%d{HH:mm:ss,SSS} %-5p [%c] (%t) %s%e%n");
-					}).rootLogger(rootLogger -> {
-						rootLogger.level(Level.ERROR);
-						rootLogger.handler("CONSOLE");
-					}));
+			.fraction(new ManagementFraction().securityRealm("SSLRealm", realm -> {
+				realm.sslServerIdentity(sslServerIdentity -> {
+					sslServerIdentity.keystorePath(jks.getAbsolutePath()).keystorePassword("password")
+							.alias("selfsigned");
+				});
+			})).fraction(new UndertowFraction().server("default-server", server -> {
+				server.httpListener("default", httpListener -> {
+					httpListener.socketBinding("http").redirectSocket("https").enableHttp2(true);
+				}).httpsListener("https", httpsListener -> {
+					httpsListener.securityRealm("SSLRealm").socketBinding("https").enableHttp2(true);
+				}).host("default-host", host -> {
+					host.alias("localhost");
+				});
+			}).bufferCache("default").servletContainer("default", servletContainer -> {
+				servletContainer.websocketsSetting().jspSetting();
+			})).fraction(new LoggingFraction().consoleHandler("CONSOLE", f -> {
+				f.level(Level.INFO);
+				f.formatter("%d{HH:mm:ss,SSS} %-5p [%c] (%t) %s%e%n");
+			}).rootLogger(rootLogger -> {
+				rootLogger.level(Level.ERROR);
+				rootLogger.handler("CONSOLE");
+			}));
 			swarm.start();
 
 			WARArchive warArchive = ShrinkWrap.createFromZipFile(WARArchive.class, war);

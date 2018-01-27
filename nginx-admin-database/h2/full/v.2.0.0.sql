@@ -66,8 +66,9 @@ insert into admin.strategy (name) values ('ip_hash');
 insert into admin.strategy (name) values ('round-robin');
 insert into admin.strategy (name) values ('least-connected');
 
+create sequence admin.server_sq minvalue 1 start with 1 increment by 1;
 create table admin.server (
-	id bigint(10) auto_increment not null, 
+	id bigint(10) not null, 
 	ip varchar(15) not null,
 	id_nginx bigint(10) not null,
 	primary key (id)

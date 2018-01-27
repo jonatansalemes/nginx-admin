@@ -12,15 +12,17 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "server", schema = "admin")
+@SequenceGenerator(name = "server_sq", initialValue = 1, schema = "admin", allocationSize = 1, sequenceName = "admin.server_sq")
 public class Server implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY,generator="server_sq")
 	private Long id;
 
 	@Column(name = "ip")
