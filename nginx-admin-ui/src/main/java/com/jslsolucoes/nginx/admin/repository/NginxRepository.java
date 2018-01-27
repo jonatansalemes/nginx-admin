@@ -16,6 +16,8 @@ public interface NginxRepository {
 	public OperationResult saveOrUpdate(Nginx nginx) throws NginxAdminException;
 
 	public List<Nginx> listAll();
+	
+	public List<Nginx> listAllConfigured();
 
 	public Nginx load(Nginx nginx);
 

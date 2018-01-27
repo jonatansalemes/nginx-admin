@@ -22,6 +22,7 @@
 			<html:gridColumn>
 				<html:buttonGroup spaced="true">
 					<html:button icon="pencil" url="/nginx/tabs/${ nginx.id }"></html:button>
+					<html:button state="danger" id="${ nginx.id }" icon="trash" url="#"></html:button>
 					<html:confirm attachTo="${ nginx.id }" url="/nginx/delete/${ nginx.id }">
 						<fmt:message key="nginx.agent.delete.confirm">
 							<fmt:param value="${ nginx.name }"></fmt:param>

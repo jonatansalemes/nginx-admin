@@ -28,7 +28,8 @@ create table admin.nginx (
 	authorization_key varchar(255) not null,
 	primary key (id)
 );
-alter table admin.nginx add constraint nginx_uk1 unique(endpoint);
+alter table admin.nginx add constraint nginx_uk1 unique(name);
+alter table admin.nginx add constraint nginx_uk2 unique(endpoint);
 
 create table admin.configuration (
 	id bigint(10) auto_increment not null, 

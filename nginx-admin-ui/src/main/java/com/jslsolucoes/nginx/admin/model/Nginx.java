@@ -4,9 +4,11 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @SuppressWarnings("serial")
@@ -26,6 +28,9 @@ public class Nginx implements Serializable {
 
 	@Column(name = "authorization_key")
 	private String authorizationKey;
+	
+	@OneToOne(fetch=FetchType.LAZY,mappedBy="nginx")
+	private Configuration configuration;
 
 	public Nginx() {
 
@@ -72,6 +77,10 @@ public class Nginx implements Serializable {
 
 	public void setAuthorizationKey(String authorizationKey) {
 		this.authorizationKey = authorizationKey;
+	}
+
+	public Configuration getConfiguration() {
+		return configuration;
 	}
 
 }

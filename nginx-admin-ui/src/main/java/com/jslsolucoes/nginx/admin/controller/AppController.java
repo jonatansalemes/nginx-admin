@@ -39,7 +39,7 @@ public class AppController {
 
 	@Path(value = { "/", "/home" })
 	public void home() {
-		this.result.include("nginxList", nginxRepository.listAll());
+		this.result.include("nginxList", nginxRepository.listAllConfigured());
 
 	}
 

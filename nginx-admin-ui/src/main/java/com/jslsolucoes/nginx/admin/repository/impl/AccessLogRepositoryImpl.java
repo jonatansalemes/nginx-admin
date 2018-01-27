@@ -74,7 +74,7 @@ public class AccessLogRepositoryImpl extends RepositoryImpl<AccessLog> implement
 	@Override
 	public void collect() {
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
-		for (Nginx nginx : nginxRepository.listAll()) {
+		for (Nginx nginx : nginxRepository.listAllConfigured()) {
 			NginxResponse nginxResponse = nginxAgentRunner.collectAccessLog(nginx.getId());
 			if (nginxResponse.success()) {
 				NginxAccessLogCollectResponse nginxAccessLogCollectResponse = (NginxAccessLogCollectResponse) nginxResponse;
@@ -97,7 +97,7 @@ public class AccessLogRepositoryImpl extends RepositoryImpl<AccessLog> implement
 
 	@Override
 	public void rotate() {
-		for (Nginx nginx : nginxRepository.listAll()) {
+		for (Nginx nginx : nginxRepository.listAllConfigured()) {
 			nginxAgentRunner.rotateAccessLog(nginx.getId());
 		}
 	}

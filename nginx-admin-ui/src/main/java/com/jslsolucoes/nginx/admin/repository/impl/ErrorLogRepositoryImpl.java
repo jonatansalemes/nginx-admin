@@ -79,7 +79,7 @@ public class ErrorLogRepositoryImpl extends RepositoryImpl<ErrorLog> implements 
 	@Override
 	public void collect() {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		for (Nginx nginx : nginxRepository.listAll()) {
+		for (Nginx nginx : nginxRepository.listAllConfigured()) {
 			NginxResponse nginxResponse = nginxAgentRunner.collectErrorLog(nginx.getId());
 			if (nginxResponse.success()) {
 				NginxErrorLogCollectResponse nginxErrorLogCollectResponse = (NginxErrorLogCollectResponse) nginxResponse;
@@ -129,7 +129,7 @@ public class ErrorLogRepositoryImpl extends RepositoryImpl<ErrorLog> implements 
 
 	@Override
 	public void rotate() {
-		for (Nginx nginx : nginxRepository.listAll()) {
+		for (Nginx nginx : nginxRepository.listAllConfigured()) {
 			nginxAgentRunner.rotateErrorLog(nginx.getId());
 		}
 	}
