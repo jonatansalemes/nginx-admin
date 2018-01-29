@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class ConfigurationLoader {
 
-	private Properties properties;
+	private Properties properties = new Properties();
 
 	public static ConfigurationLoader newBuilder() {
 		return new ConfigurationLoader();

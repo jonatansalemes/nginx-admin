@@ -83,12 +83,7 @@ public class Database {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public String getConnectionUrl() {
-		if (databaseDriver.equals(DatabaseDriver.H2)) {
-			return "jdbc:h2:" + location + ";DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE";
-		}
-		throw new RuntimeException("Could not build connection database url");
-	}
+	
+	
 
 }

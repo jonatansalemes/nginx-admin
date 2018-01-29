@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module xmlns="urn:jboss:module:1.3" name="com.mysql">
+<module xmlns="urn:jboss:module:1.3" name="org.postgresql">
  	<resources>
-    	<artifact name="mysql:mysql-connector-java:5.1.45"/>
+    	<artifact name="org.postgresql:postgresql:42.1.4"/>
   	</resources>
     <dependencies>
         <module name="javax.api"/>

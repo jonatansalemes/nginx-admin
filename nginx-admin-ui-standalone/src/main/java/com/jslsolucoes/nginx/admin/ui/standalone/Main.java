@@ -18,6 +18,8 @@ import org.wildfly.swarm.undertow.WARArchive;
 
 import com.jslsolucoes.nginx.admin.ui.config.Configuration;
 import com.jslsolucoes.nginx.admin.ui.config.ConfigurationLoader;
+import com.jslsolucoes.nginx.admin.ui.config.Database;
+import com.jslsolucoes.nginx.admin.ui.config.DatabaseDriver;
 import com.jslsolucoes.nginx.admin.ui.standalone.mode.Argument;
 import com.jslsolucoes.nginx.admin.ui.standalone.mode.ArgumentMode;
 
@@ -35,15 +37,19 @@ public class Main {
 		if (!argument.getQuit()) {
 
 			Configuration configuration = ConfigurationLoader.newBuilder().withFile(argument.getConf()).build();
+			
+			System.out.println(driverName(configuration.getDatabase()));
+			System.out.println(connectionUrl(configuration.getDatabase()));
+			System.out.println(configuration.getDatabase().getUserName());
+			System.out.println(configuration.getDatabase().getPassword());
 
 			File jks = copyToTemp("/keystore.jks");
-			File war = copyToTemp("/nginx-admin-agent-" + configuration.getApplication().getVersion() + ".war");
+			File war = copyToTemp("/nginx-admin-ui-" + configuration.getApplication().getVersion() + ".war");
 
 			Swarm swarm = new Swarm(new String[] { "-Dswarm.http.port=" + configuration.getServer().getHttpPort(),
 					"-Dswarm.https.port=" + configuration.getServer().getHttpsPort(),
 					"-Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel",
 					"\"-Dapplication.properties=" + argument.getConf() + "\"",
-					"-Dversion=" + configuration.getApplication().getVersion(),
 					"-Durl.base=" + configuration.getApplication().getUrlBase(),
 					"-Dmail.server=" + configuration.getSmtp().getHost(),
 					"-Dmail.port=" + configuration.getSmtp().getPort(),
@@ -58,15 +64,20 @@ public class Main {
 			swarm.fraction(new DatasourcesFraction()/*.jdbcDriver("com.oracle", (d) -> {
 				d.driverClassName("oracle.jdbc.driver.OracleDriver");
 				d.xaDatasourceClass("oracle.jdbc.xa.OracleXADataSource");
-				d.driverModuleName("oracle");
-			}).jdbcDriver("com.mysql", (d) -> {
+				d.driverModuleName("com.oracle");
+			}).jdbcDriver("org.postgresql", (d) -> {
+				d.driverClassName("org.postgresql.Driver");
+				d.xaDatasourceClass("org.postgresql.xa.PGXADataSource");
+				d.driverModuleName("org.postgresql");
+			})*/.jdbcDriver("com.mysql", (d) -> {
 				d.driverClassName("com.mysql.jdbc.Driver");
 				d.xaDatasourceClass("com.mysql.jdbc.jdbc2.optional.MysqlXADataSource");
-				d.driverModuleName("mysql");
-			})*/.dataSource("NginxAdminDataSource", ds -> {
+				d.driverModuleName("com.mysql");
+			}).dataSource("NginxAdminDataSource", ds -> {
 				ds.jndiName("java:jboss/datasources/nginx-admin");
-				ds.driverName(configuration.getDatabase().getDatabaseDriver().getDriverName());
-				ds.connectionUrl(configuration.getDatabase().getConnectionUrl());
+				ds.connectionUrl(connectionUrl(configuration.getDatabase()));
+				ds.driverName(driverName(configuration.getDatabase()));
+				ds.userName(configuration.getDatabase().getUserName());
 				ds.password(configuration.getDatabase().getPassword());
 				ds.maxPoolSize(configuration.getDatabase().getDatabasePool().getMaxConnection());
 				ds.minPoolSize(configuration.getDatabase().getDatabasePool().getMinConnection());
@@ -101,6 +112,22 @@ public class Main {
 		}
 
 	}
+	
+	private static String driverName(Database database) {
+		if (database.getDatabaseDriver().equals(DatabaseDriver.MYSQL)) { 
+			return "com.mysql";
+		}
+		throw new RuntimeException("Could not resolve driver name");
+	}
+
+	private static String connectionUrl(Database database) {
+			if (database.getDatabaseDriver().equals(DatabaseDriver.H2)) {
+				return "jdbc:h2:" + database.getLocation() + ";DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE";
+			} else if (database.getDatabaseDriver().equals(DatabaseDriver.MYSQL)) {
+				return "jdbc:mysql://"+database.getHost()+":"+database.getPort()+"/"+database.getName()+"?useSSL=false";
+			}
+			throw new RuntimeException("Could not build connection database url");
+	}
 
 	private static File copyToTemp(String classpath) throws IOException {
 		InputStream war = Main.class.getResourceAsStream(classpath);
@@ -109,4 +136,6 @@ public class Main {
 		file.deleteOnExit();
 		return file;
 	}
+	
+	// java -server -Djava.net.preferIPv4Stack=true -Xms256m -Xmx1g -jar nginx-admin-ui-standalone-2.0.0-swarm.jar -c "D:\workspace\github\nginx-admin\nginx-admin-ui-standalone\nginx-admin\conf\nginx-admin.conf"
 }
