@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -55,11 +54,16 @@ public class Main {
 					"-Dmail.username=" + configuration.getSmtp().getUserName(),
 					"-Dmail.password=" + configuration.getSmtp().getPassword(),
 					"-Dmail.charset=" + configuration.getSmtp().getSubject() });
-			swarm.fraction(new DatasourcesFraction().jdbcDriver("com.oracle", (d) -> {
+			
+			swarm.fraction(new DatasourcesFraction()/*.jdbcDriver("com.oracle", (d) -> {
 				d.driverClassName("oracle.jdbc.driver.OracleDriver");
 				d.xaDatasourceClass("oracle.jdbc.xa.OracleXADataSource");
 				d.driverModuleName("oracle");
-			}).dataSource("NginxAdminDataSource", ds -> {
+			}).jdbcDriver("com.mysql", (d) -> {
+				d.driverClassName("com.mysql.jdbc.Driver");
+				d.xaDatasourceClass("com.mysql.jdbc.jdbc2.optional.MysqlXADataSource");
+				d.driverModuleName("mysql");
+			})*/.dataSource("NginxAdminDataSource", ds -> {
 				ds.jndiName("java:jboss/datasources/nginx-admin");
 				ds.driverName(configuration.getDatabase().getDatabaseDriver().getDriverName());
 				ds.connectionUrl(configuration.getDatabase().getConnectionUrl());

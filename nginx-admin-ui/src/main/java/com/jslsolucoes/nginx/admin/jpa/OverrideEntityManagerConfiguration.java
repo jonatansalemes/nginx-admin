@@ -31,6 +31,14 @@ public class OverrideEntityManagerConfiguration extends DefaultEntityManagerConf
 		DatabaseDriver databaseDriver = configuration.getDatabase().getDatabaseDriver();
 		if (databaseDriver.equals(DatabaseDriver.H2)) {
 			return "org.hibernate.dialect.H2Dialect";
+		} else if (databaseDriver.equals(DatabaseDriver.MYSQL)) {
+			return "org.hibernate.dialect.MySQL5Dialect";
+		} else if (databaseDriver.equals(DatabaseDriver.ORACLE)) {
+			return "org.hibernate.dialect.Oracle10gDialect";
+		} else if (databaseDriver.equals(DatabaseDriver.POSTGRESQL)) {
+			return "org.hibernate.dialect.PostgreSQLDialect";
+		}  else if (databaseDriver.equals(DatabaseDriver.SQLSERVER)) {
+			return "org.hibernate.dialect.SQLServer2008Dialect";
 		}
 		throw new RuntimeException("Could not find dialect for driver " + databaseDriver.getDriverName());
 	}

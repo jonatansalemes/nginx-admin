@@ -1,7 +1,7 @@
 package com.jslsolucoes.nginx.admin.ui.config;
 
 public enum DatabaseDriver {
-	ORACLE("oracle"), H2("h2");
+	ORACLE("oracle"), H2("h2"),MYSQL("mysql"),POSTGRESQL("postgresql"),SQLSERVER("sqlserver");
 
 	private String driverName;
 

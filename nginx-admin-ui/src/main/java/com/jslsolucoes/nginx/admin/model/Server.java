@@ -22,7 +22,7 @@ import javax.persistence.Table;
 public class Server implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY,generator="server_sq")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator="server_sq")
 	private Long id;
 
 	@Column(name = "ip")

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module xmlns="urn:jboss:module:1.3" name="com.oracle">
  	<resources>
-    	<artifact name="com.jslsolucoes:ojdbc6:11.2.0.1.0"/>
+    	<artifact name="mysql:mysql-connector-java:5.1.45"/>
   	</resources>
     <dependencies>
         <module name="javax.api"/>
