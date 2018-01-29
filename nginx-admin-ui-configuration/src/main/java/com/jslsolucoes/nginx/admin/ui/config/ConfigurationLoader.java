@@ -2,12 +2,9 @@ package com.jslsolucoes.nginx.admin.ui.config;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class ConfigurationLoader {
 
@@ -85,14 +82,8 @@ public class ConfigurationLoader {
 		smtp.setAuthenticate(Boolean.valueOf(properties.getProperty("NGINX_ADMIN_MAIL_AUTHENTICATE")));
 		smtp.setUserName(properties.getProperty("NGINX_ADMIN_MAIL_USERNAME"));
 		smtp.setPassword(properties.getProperty("NGINX_ADMIN_MAIL_PASSWORD"));
-		smtp.setMailList(mailList(properties.getProperty("NGINX_ADMIN_MAIL_MAILING_LIST")));
-		smtp.setSubject(properties.getProperty("NGINX_ADMIN_MAIL_SUBJECT"));
 		smtp.setCharset(properties.getProperty("NGINX_ADMIN_MAIL_CHARSET"));
 		return smtp;
-	}
-
-	private List<String> mailList(String emails) {
-		return Arrays.asList(emails.split(",")).stream().collect(Collectors.toList());
 	}
 
 	private Application application() {

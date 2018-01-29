@@ -1,7 +1,5 @@
 package com.jslsolucoes.nginx.admin.ui.config;
 
-import java.util.List;
-
 public class Smtp {
 
 	private String host;
@@ -12,8 +10,6 @@ public class Smtp {
 	private Boolean authenticate;
 	private String userName;
 	private String password;
-	private List<String> mailList;
-	private String subject;
 	private String charset;
 
 	public String getHost() {
@@ -78,22 +74,6 @@ public class Smtp {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public List<String> getMailList() {
-		return mailList;
-	}
-
-	public void setMailList(List<String> mailList) {
-		this.mailList = mailList;
-	}
-
-	public String getSubject() {
-		return subject;
-	}
-
-	public void setSubject(String subject) {
-		this.subject = subject;
 	}
 
 	public String getCharset() {

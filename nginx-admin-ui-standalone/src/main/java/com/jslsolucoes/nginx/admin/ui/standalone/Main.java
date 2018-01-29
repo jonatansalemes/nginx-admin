@@ -38,30 +38,31 @@ public class Main {
 
 			Configuration configuration = ConfigurationLoader.newBuilder().withFile(argument.getConf()).build();
 			
-			System.out.println(driverName(configuration.getDatabase()));
-			System.out.println(connectionUrl(configuration.getDatabase()));
-			System.out.println(configuration.getDatabase().getUserName());
-			System.out.println(configuration.getDatabase().getPassword());
-
 			File jks = copyToTemp("/keystore.jks");
 			File war = copyToTemp("/nginx-admin-ui-" + configuration.getApplication().getVersion() + ".war");
 
 			Swarm swarm = new Swarm(new String[] { "-Dswarm.http.port=" + configuration.getServer().getHttpPort(),
 					"-Dswarm.https.port=" + configuration.getServer().getHttpsPort(),
 					"-Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel",
-					"\"-Dapplication.properties=" + argument.getConf() + "\"",
+					"-Dapplication.properties=" + argument.getConf(),
 					"-Durl.base=" + configuration.getApplication().getUrlBase(),
 					"-Dmail.server=" + configuration.getSmtp().getHost(),
 					"-Dmail.port=" + configuration.getSmtp().getPort(),
 					"-Dmail.tls=" + configuration.getSmtp().getTls(),
-					"\"-Dmail.from.name=" + configuration.getSmtp().getFromName() + "\"",
+					"-Dmail.from.name=" + configuration.getSmtp().getFromName(),
 					"-Dmail.from.address=" + configuration.getSmtp().getFromAddress(),
 					"-Dmail.authenticate=" + configuration.getSmtp().getAuthenticate(),
 					"-Dmail.username=" + configuration.getSmtp().getUserName(),
 					"-Dmail.password=" + configuration.getSmtp().getPassword(),
-					"-Dmail.charset=" + configuration.getSmtp().getSubject() });
+					"-Dmail.charset=" + configuration.getSmtp().getCharset() });
 			
-			swarm.fraction(new DatasourcesFraction()/*.jdbcDriver("com.oracle", (d) -> {
+			swarm.fraction(new DatasourcesFraction()
+			.jdbcDriver("com.microsoft.sqlserver", (d) -> {
+				d.driverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+				d.xaDatasourceClass("com.microsoft.sqlserver.jdbc.SQLServerXADataSource");
+				d.driverModuleName("com.microsoft.sqlserver");
+			})
+			.jdbcDriver("com.oracle", (d) -> {
 				d.driverClassName("oracle.jdbc.driver.OracleDriver");
 				d.xaDatasourceClass("oracle.jdbc.xa.OracleXADataSource");
 				d.driverModuleName("com.oracle");
@@ -69,14 +70,24 @@ public class Main {
 				d.driverClassName("org.postgresql.Driver");
 				d.xaDatasourceClass("org.postgresql.xa.PGXADataSource");
 				d.driverModuleName("org.postgresql");
-			})*/.jdbcDriver("com.mysql", (d) -> {
+			}).jdbcDriver("com.mysql", (d) -> {
 				d.driverClassName("com.mysql.jdbc.Driver");
 				d.xaDatasourceClass("com.mysql.jdbc.jdbc2.optional.MysqlXADataSource");
 				d.driverModuleName("com.mysql");
-			}).dataSource("NginxAdminDataSource", ds -> {
+			}).jdbcDriver("com.h2database.h2", (d) -> {
+				d.driverClassName("org.h2.Driver");
+				d.xaDatasourceClass("org.h2.jdbcx.JdbcDataSource");
+				d.driverModuleName("com.h2database.h2");
+			}).dataSource("ExampleDS",ds -> {
+				ds.driverName("com.h2database.h2");
+				ds.jndiName("java:jboss/datasources/ExampleDS");
+				ds.connectionUrl("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
+				ds.userName("sa");
+				ds.password("sa");
+			}).dataSource("NginxAdminDS", ds -> {
+				ds.driverName(driverName(configuration.getDatabase()));
 				ds.jndiName("java:jboss/datasources/nginx-admin");
 				ds.connectionUrl(connectionUrl(configuration.getDatabase()));
-				ds.driverName(driverName(configuration.getDatabase()));
 				ds.userName(configuration.getDatabase().getUserName());
 				ds.password(configuration.getDatabase().getPassword());
 				ds.maxPoolSize(configuration.getDatabase().getDatabasePool().getMaxConnection());
@@ -106,7 +117,7 @@ public class Main {
 				rootLogger.handler("CONSOLE");
 			}));
 			swarm.start();
-
+			
 			WARArchive warArchive = ShrinkWrap.createFromZipFile(WARArchive.class, war);
 			swarm.deploy(warArchive);
 		}
@@ -136,6 +147,6 @@ public class Main {
 		file.deleteOnExit();
 		return file;
 	}
-	
+	// cd d:/workspace/github/nginx-admin/nginx-admin-ui-standalone/target
 	// java -server -Djava.net.preferIPv4Stack=true -Xms256m -Xmx1g -jar nginx-admin-ui-standalone-2.0.0-swarm.jar -c "D:\workspace\github\nginx-admin\nginx-admin-ui-standalone\nginx-admin\conf\nginx-admin.conf"
 }

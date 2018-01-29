@@ -2,7 +2,6 @@ package com.jslsolucoes.nginx.admin.controller;
 
 import javax.inject.Inject;
 
-import com.jslsolucoes.mail.service.MailService;
 import com.jslsolucoes.nginx.admin.model.User;
 import com.jslsolucoes.nginx.admin.repository.UserRepository;
 import com.jslsolucoes.nginx.admin.session.UserSession;
@@ -20,7 +19,6 @@ public class UserController {
 	private UserSession userSession;
 	private Result result;
 	private UserRepository userRepository;
-	private MailService mailService;
 
 	@Deprecated
 	public UserController() {
@@ -28,11 +26,10 @@ public class UserController {
 	}
 
 	@Inject
-	public UserController(UserSession userSession, Result result, UserRepository userRepository,MailService mailService) {
+	public UserController(UserSession userSession, Result result, UserRepository userRepository) {
 		this.userSession = userSession;
 		this.result = result;
 		this.userRepository = userRepository;
-		this.mailService = mailService;
 	}
 
 	public void logout() {
@@ -87,7 +84,7 @@ public class UserController {
 
 	@Public
 	public void login() {
-		mailService.async("jonatan@jslsolucoes.com", "teste", "teste");
+		
 	}
 
 	@Post
