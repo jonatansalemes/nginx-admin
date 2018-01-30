@@ -21,6 +21,7 @@
 		<class>com.jslsolucoes.nginx.admin.model.AccessLog</class>
 		<class>com.jslsolucoes.nginx.admin.model.ErrorLog</class>
 		<properties>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
 			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.format_sql" value="false" />
 		</properties>

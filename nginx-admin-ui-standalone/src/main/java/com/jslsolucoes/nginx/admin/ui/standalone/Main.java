@@ -9,6 +9,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.wildfly.swarm.Swarm;
+import org.wildfly.swarm.config.datasources.JDBCDriver;
 import org.wildfly.swarm.config.logging.Level;
 import org.wildfly.swarm.datasources.DatasourcesFraction;
 import org.wildfly.swarm.logging.LoggingFraction;
@@ -37,7 +38,7 @@ public class Main {
 		if (!argument.getQuit()) {
 
 			Configuration configuration = ConfigurationLoader.newBuilder().withFile(argument.getConf()).build();
-			
+
 			File jks = copyToTemp("/keystore.jks");
 			File war = copyToTemp("/nginx-admin-ui-" + configuration.getApplication().getVersion() + ".war");
 
@@ -55,89 +56,122 @@ public class Main {
 					"-Dmail.username=" + configuration.getSmtp().getUserName(),
 					"-Dmail.password=" + configuration.getSmtp().getPassword(),
 					"-Dmail.charset=" + configuration.getSmtp().getCharset() });
-			
-			swarm.fraction(new DatasourcesFraction()
-			.jdbcDriver("com.microsoft.sqlserver", (d) -> {
-				d.driverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-				d.xaDatasourceClass("com.microsoft.sqlserver.jdbc.SQLServerXADataSource");
-				d.driverModuleName("com.microsoft.sqlserver");
-			})
-			.jdbcDriver("com.oracle", (d) -> {
-				d.driverClassName("oracle.jdbc.driver.OracleDriver");
-				d.xaDatasourceClass("oracle.jdbc.xa.OracleXADataSource");
-				d.driverModuleName("com.oracle");
-			}).jdbcDriver("org.postgresql", (d) -> {
-				d.driverClassName("org.postgresql.Driver");
-				d.xaDatasourceClass("org.postgresql.xa.PGXADataSource");
-				d.driverModuleName("org.postgresql");
-			}).jdbcDriver("com.mysql", (d) -> {
-				d.driverClassName("com.mysql.jdbc.Driver");
-				d.xaDatasourceClass("com.mysql.jdbc.jdbc2.optional.MysqlXADataSource");
-				d.driverModuleName("com.mysql");
-			}).jdbcDriver("com.h2database.h2", (d) -> {
-				d.driverClassName("org.h2.Driver");
-				d.xaDatasourceClass("org.h2.jdbcx.JdbcDataSource");
-				d.driverModuleName("com.h2database.h2");
-			}).dataSource("ExampleDS",ds -> {
-				ds.driverName("com.h2database.h2");
-				ds.jndiName("java:jboss/datasources/ExampleDS");
-				ds.connectionUrl("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
-				ds.userName("sa");
-				ds.password("sa");
-			}).dataSource("NginxAdminDS", ds -> {
-				ds.driverName(driverName(configuration.getDatabase()));
-				ds.jndiName("java:jboss/datasources/nginx-admin");
-				ds.connectionUrl(connectionUrl(configuration.getDatabase()));
-				ds.userName(configuration.getDatabase().getUserName());
-				ds.password(configuration.getDatabase().getPassword());
-				ds.maxPoolSize(configuration.getDatabase().getDatabasePool().getMaxConnection());
-				ds.minPoolSize(configuration.getDatabase().getDatabasePool().getMinConnection());
-				ds.initialPoolSize(configuration.getDatabase().getDatabasePool().getInitialConnection());
-			}))
-			.fraction(new ManagementFraction().securityRealm("SSLRealm", realm -> {
-				realm.sslServerIdentity(sslServerIdentity -> {
-					sslServerIdentity.keystorePath(jks.getAbsolutePath()).keystorePassword("password")
-							.alias("selfsigned");
-				});
-			})).fraction(new UndertowFraction().server("default-server", server -> {
-				server.httpListener("default", httpListener -> {
-					httpListener.socketBinding("http").redirectSocket("https").enableHttp2(true);
-				}).httpsListener("https", httpsListener -> {
-					httpsListener.securityRealm("SSLRealm").socketBinding("https").enableHttp2(true);
-				}).host("default-host", host -> {
-					host.alias("localhost");
-				});
-			}).bufferCache("default").servletContainer("default", servletContainer -> {
-				servletContainer.websocketsSetting().jspSetting();
-			})).fraction(new LoggingFraction().consoleHandler("CONSOLE", f -> {
-				f.level(Level.INFO);
-				f.formatter("%d{HH:mm:ss,SSS} %-5p [%c] (%t) %s%e%n");
-			}).rootLogger(rootLogger -> {
-				rootLogger.level(Level.ERROR);
-				rootLogger.handler("CONSOLE");
-			}));
+
+			swarm.fraction(new DatasourcesFraction().jdbcDriver(jdbcDriver(configuration.getDatabase()))
+					.dataSource("ExampleDS", dataSource -> {
+						dataSource.driverName("com.h2database.h2");
+						dataSource.jndiName("java:jboss/datasources/ExampleDS");
+						dataSource.connectionUrl("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
+						dataSource.userName("sa");
+						dataSource.password("sa");
+					}).dataSource("NginxAdminDS", dataSource -> {
+						dataSource.driverName(driverName(configuration.getDatabase()));
+						dataSource.jndiName("java:jboss/datasources/nginx-admin");
+						dataSource.connectionUrl(connectionUrl(configuration.getDatabase()));
+						dataSource.userName(configuration.getDatabase().getUserName());
+						dataSource.password(configuration.getDatabase().getPassword());
+						dataSource.maxPoolSize(configuration.getDatabase().getDatabasePool().getMaxConnection());
+						dataSource.minPoolSize(configuration.getDatabase().getDatabasePool().getMinConnection());
+						dataSource.initialPoolSize(configuration.getDatabase().getDatabasePool().getInitialConnection());
+					})).fraction(new ManagementFraction().securityRealm("SSLRealm", securityRealm -> {
+						securityRealm.sslServerIdentity(sslServerIdentity -> {
+							sslServerIdentity.keystorePath(jks.getAbsolutePath()).keystorePassword("password")
+									.alias("selfsigned");
+						});
+					})).fraction(new UndertowFraction().server("default-server", server -> {
+						server.httpListener("default", httpListener -> {
+							httpListener.socketBinding("http").redirectSocket("https").enableHttp2(true);
+						}).httpsListener("https", httpsListener -> {
+							httpsListener.securityRealm("SSLRealm").socketBinding("https").enableHttp2(true);
+						}).host("default-host", host -> {
+							host.alias("localhost");
+						});
+					}).bufferCache("default").servletContainer("default", servletContainer -> {
+						servletContainer.websocketsSetting().jspSetting();
+					})).fraction(new LoggingFraction().consoleHandler("CONSOLE", consoleHandler -> {
+						consoleHandler.level(Level.INFO);
+						consoleHandler.formatter("%d{HH:mm:ss,SSS} %-5p [%c] (%t) %s%e%n");
+					}).rootLogger(rootLogger -> {
+						rootLogger.level(Level.ERROR);
+						rootLogger.handler("CONSOLE");
+					}));
 			swarm.start();
-			
+
 			WARArchive warArchive = ShrinkWrap.createFromZipFile(WARArchive.class, war);
 			swarm.deploy(warArchive);
 		}
-
 	}
-	
+
+	@SuppressWarnings("rawtypes")
+	private static JDBCDriver jdbcDriver(Database database) {
+
+		if (database.getDatabaseDriver().equals(DatabaseDriver.ORACLE)) {
+			JDBCDriver jDBCDriver = new JDBCDriver("com.oracle");
+			jDBCDriver.driverClassName("oracle.jdbc.driver.OracleDriver");
+			jDBCDriver.xaDatasourceClass("oracle.jdbc.xa.OracleXADataSource");
+			jDBCDriver.driverModuleName("com.oracle");
+			jDBCDriver.driverName("com.oracle");
+			return jDBCDriver;
+		} else if (database.getDatabaseDriver().equals(DatabaseDriver.POSTGRESQL)) {
+			JDBCDriver jDBCDriver = new JDBCDriver("org.postgresql");
+			jDBCDriver.driverClassName("org.postgresql.Driver");
+			jDBCDriver.xaDatasourceClass("org.postgresql.xa.PGXADataSource");
+			jDBCDriver.driverModuleName("org.postgresql");
+			jDBCDriver.driverName("org.postgresql");
+			return jDBCDriver;
+		} else if (database.getDatabaseDriver().equals(DatabaseDriver.MYSQL)) {
+			JDBCDriver jDBCDriver = new JDBCDriver("com.mysql");
+			jDBCDriver.driverClassName("com.mysql.jdbc.Driver");
+			jDBCDriver.xaDatasourceClass("com.mysql.jdbc.jdbc2.optional.MysqlXADataSource");
+			jDBCDriver.driverModuleName("com.mysql");
+			jDBCDriver.driverName("com.mysql");
+			return jDBCDriver;
+		} else if (database.getDatabaseDriver().equals(DatabaseDriver.H2)) {
+			JDBCDriver jDBCDriver = new JDBCDriver("com.h2database.h2");
+			jDBCDriver.driverClassName("org.h2.Driver");
+			jDBCDriver.xaDatasourceClass("org.h2.jdbcx.JdbcDataSource");
+			jDBCDriver.driverModuleName("com.h2database.h2");
+			jDBCDriver.driverName("com.h2database.h2");
+			return jDBCDriver;
+		} else if (database.getDatabaseDriver().equals(DatabaseDriver.SQLSERVER)) {
+			JDBCDriver jDBCDriver = new JDBCDriver("com.microsoft.sqlserver");
+			jDBCDriver.driverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+			jDBCDriver.xaDatasourceClass("com.microsoft.sqlserver.jdbc.SQLServerXADataSource");
+			jDBCDriver.driverModuleName("com.microsoft.sqlserver");
+			jDBCDriver.driverName("com.microsoft.sqlserver");
+			return jDBCDriver;
+		}
+		throw new RuntimeException("Could not resolve jdbc driver");
+	}
+
 	private static String driverName(Database database) {
-		if (database.getDatabaseDriver().equals(DatabaseDriver.MYSQL)) { 
+		if (database.getDatabaseDriver().equals(DatabaseDriver.ORACLE)) {
+			return "com.oracle";
+		} else if (database.getDatabaseDriver().equals(DatabaseDriver.POSTGRESQL)) {
+			return "org.postgresql";
+		} else if (database.getDatabaseDriver().equals(DatabaseDriver.MYSQL)) {
 			return "com.mysql";
+		} else if (database.getDatabaseDriver().equals(DatabaseDriver.H2)) {
+			return "com.h2database.h2";
+		} else if (database.getDatabaseDriver().equals(DatabaseDriver.SQLSERVER)) {
+			return "com.microsoft.sqlserver";
 		}
 		throw new RuntimeException("Could not resolve driver name");
 	}
 
 	private static String connectionUrl(Database database) {
-			if (database.getDatabaseDriver().equals(DatabaseDriver.H2)) {
-				return "jdbc:h2:" + database.getLocation() + ";DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE";
-			} else if (database.getDatabaseDriver().equals(DatabaseDriver.MYSQL)) {
-				return "jdbc:mysql://"+database.getHost()+":"+database.getPort()+"/"+database.getName()+"?useSSL=false";
-			}
-			throw new RuntimeException("Could not build connection database url");
+		if (database.getDatabaseDriver().equals(DatabaseDriver.ORACLE)) {
+			return "jdbc:oracle:thin:@" + database.getHost() + ":" + database.getPort() + "/" + database.getSid();
+		} else if (database.getDatabaseDriver().equals(DatabaseDriver.POSTGRESQL)) {
+			return "jdbc:postgresql://"+ database.getHost() +":" + database.getPort() + "/" + database.getName();
+		} else if (database.getDatabaseDriver().equals(DatabaseDriver.MYSQL)) {
+			return "jdbc:mysql://" + database.getHost() + ":" + database.getPort() + "/" + database.getName() + "?useSSL=false";
+		} else if (database.getDatabaseDriver().equals(DatabaseDriver.H2)) {
+			return "jdbc:h2:" + database.getLocation() + ";DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE";
+		} else if (database.getDatabaseDriver().equals(DatabaseDriver.SQLSERVER)) {
+			return "jdbc:sqlserver://" + database.getHost() + ":" + database.getPort() + ";databaseName=" + database.getName();
+		}
+		throw new RuntimeException("Could not build connection database url");
 	}
 
 	private static File copyToTemp(String classpath) throws IOException {

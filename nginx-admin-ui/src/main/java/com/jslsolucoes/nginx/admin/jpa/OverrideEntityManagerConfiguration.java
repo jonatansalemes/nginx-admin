@@ -22,7 +22,6 @@ public class OverrideEntityManagerConfiguration extends DefaultEntityManagerConf
 	@Override
 	public Map<String, Object> properties() {
 		Map<String, Object> properties = new HashMap<>();
-		System.out.println(dialect());
 		properties.put("hibernate.dialect", dialect());
 		return properties;
 	}
