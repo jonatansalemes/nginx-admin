@@ -23,6 +23,7 @@ import com.jslsolucoes.nginx.admin.ui.config.Database;
 import com.jslsolucoes.nginx.admin.ui.config.DatabaseDriver;
 import com.jslsolucoes.nginx.admin.ui.standalone.mode.Argument;
 import com.jslsolucoes.nginx.admin.ui.standalone.mode.ArgumentMode;
+import com.microsoft.sqlserver.jdbc.StringUtils;
 
 public class Main {
 
@@ -69,7 +70,10 @@ public class Main {
 						dataSource.jndiName("java:jboss/datasources/nginx-admin");
 						dataSource.connectionUrl(connectionUrl(configuration.getDatabase()));
 						dataSource.userName(configuration.getDatabase().getUserName());
-						dataSource.password(configuration.getDatabase().getPassword());
+						
+						if(!StringUtils.isEmpty(configuration.getDatabase().getPassword())) {
+							dataSource.password(configuration.getDatabase().getPassword());
+						}
 						dataSource.maxPoolSize(configuration.getDatabase().getDatabasePool().getMaxConnection());
 						dataSource.minPoolSize(configuration.getDatabase().getDatabasePool().getMinConnection());
 						dataSource.initialPoolSize(configuration.getDatabase().getDatabasePool().getInitialConnection());
