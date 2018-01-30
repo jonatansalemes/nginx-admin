@@ -11,7 +11,9 @@
 								<html:alert state="danger" rendered="${ nginxCommandLineInterfaceResponse.error() }" 
 									label="{nginx.agent.connection.error}"/>
 									
-								<html:alert state="${ nginxCommandLineInterfaceResponse.success() && nginxCommandLineInterfaceResponse.success ? 'success' : 'danger' }" rendered="${ nginxCommandLineInterfaceResponse.success() }">
+								<html:alert state="${ nginxCommandLineInterfaceResponse.success() 
+										&& nginxCommandLineInterfaceResponse.success ? 'success' : 'danger' }" 
+											rendered="${ nginxCommandLineInterfaceResponse.success() }">
 									${ nginxCommandLineInterfaceResponse.output }
 								</html:alert>
 							</html:panelBody>

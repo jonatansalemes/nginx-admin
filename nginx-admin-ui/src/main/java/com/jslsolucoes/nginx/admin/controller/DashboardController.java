@@ -40,6 +40,7 @@ public class DashboardController {
 
 	@Path("stop/{idNginx}")
 	public void stop(Long idNginx) {
+		this.result.include("stop",true);
 		this.result.include("nginxCommandLineInterfaceResponse", nginxAgentRunner.stop(idNginx));
 		this.result.redirectTo(this).index(idNginx);
 	}
