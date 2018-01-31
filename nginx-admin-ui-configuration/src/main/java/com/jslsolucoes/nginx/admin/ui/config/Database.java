@@ -84,6 +84,20 @@ public class Database {
 		this.name = name;
 	}
 	
+	public String getUrlConnection() {
+		if (databaseDriver.equals(DatabaseDriver.ORACLE)) {
+			return "jdbc:oracle:thin:@" + host + ":" + port + "/" + sid;
+		} else if (databaseDriver.equals(DatabaseDriver.POSTGRESQL)) {
+			return "jdbc:postgresql://"+ host +":" + port + "/" + name;
+		} else if (databaseDriver.equals(DatabaseDriver.MYSQL)) {
+			return "jdbc:mysql://" + host + ":" + port + "/" + name + "?useSSL=false";
+		} else if (databaseDriver.equals(DatabaseDriver.H2)) {
+			return "jdbc:h2:" + location + ";DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE";
+		} else if (databaseDriver.equals(DatabaseDriver.SQLSERVER)) {
+			return "jdbc:sqlserver://" + host + ":" + port + ";databaseName=" + name;
+		}
+		throw new RuntimeException("Could not build connection database url");
+	}
 	
 
 }

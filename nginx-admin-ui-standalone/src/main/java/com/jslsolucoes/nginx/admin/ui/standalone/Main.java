@@ -68,7 +68,7 @@ public class Main {
 					}).dataSource("NginxAdminDS", dataSource -> {
 						dataSource.driverName(driverName(configuration.getDatabase()));
 						dataSource.jndiName("java:jboss/datasources/nginx-admin");
-						dataSource.connectionUrl(connectionUrl(configuration.getDatabase()));
+						dataSource.connectionUrl(configuration.getDatabase().getUrlConnection());
 						dataSource.userName(configuration.getDatabase().getUserName());
 						
 						if(!StringUtils.isEmpty(configuration.getDatabase().getPassword())) {
@@ -161,21 +161,6 @@ public class Main {
 			return "com.microsoft.sqlserver";
 		}
 		throw new RuntimeException("Could not resolve driver name");
-	}
-
-	private static String connectionUrl(Database database) {
-		if (database.getDatabaseDriver().equals(DatabaseDriver.ORACLE)) {
-			return "jdbc:oracle:thin:@" + database.getHost() + ":" + database.getPort() + "/" + database.getSid();
-		} else if (database.getDatabaseDriver().equals(DatabaseDriver.POSTGRESQL)) {
-			return "jdbc:postgresql://"+ database.getHost() +":" + database.getPort() + "/" + database.getName();
-		} else if (database.getDatabaseDriver().equals(DatabaseDriver.MYSQL)) {
-			return "jdbc:mysql://" + database.getHost() + ":" + database.getPort() + "/" + database.getName() + "?useSSL=false";
-		} else if (database.getDatabaseDriver().equals(DatabaseDriver.H2)) {
-			return "jdbc:h2:" + database.getLocation() + ";DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE";
-		} else if (database.getDatabaseDriver().equals(DatabaseDriver.SQLSERVER)) {
-			return "jdbc:sqlserver://" + database.getHost() + ":" + database.getPort() + ";databaseName=" + database.getName();
-		}
-		throw new RuntimeException("Could not build connection database url");
 	}
 
 	private static File copyToTemp(String classpath) throws IOException {
