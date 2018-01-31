@@ -13,15 +13,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "upstream", schema = "admin")
+@SequenceGenerator(name = "upstream_sq", initialValue = 1, schema = "admin", allocationSize = 1, sequenceName = "admin.upstream_sq")
 public class Upstream implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator="upstream_sq")
 	private Long id;
 
 	@Column(name = "name")

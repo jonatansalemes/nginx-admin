@@ -27,7 +27,7 @@
 				<html:menuItem target="content" url="/errorLog/list/${ nginx.id }" icon="fire" label="{error.logs}"></html:menuItem>
 			</html:menuButton>
 			<html:menuButton icon="equalizer" align="right">
-				<html:menuItem url="/nginx/list" target="conteudo" label="{nginx.agent.empty}" rendered="${ empty(nginxList) }"></html:menuItem>
+				<html:menuItem url="/nginx/list" target="content" label="{nginx.agent.empty}" rendered="${ empty(nginxList) }"></html:menuItem>
 				<c:forEach items="${ nginxList }" var="nginx">
 					<html:menuItem url="/applySessionFor/${ nginx.id }" icon="stop">
 						<fmt:message key="nginx.agent.apply.session">
@@ -44,7 +44,7 @@
 		<html:alert state="info" rendered="${ nginx != null }">
 			<fmt:message key="nginx.agent.session">
 				<fmt:param>
-					${ nginx.name } (${ nginx.endpoint })
+					${ nginx.name } (${ nginx.endpoint }) <html:button target="content" state="success" label="{go.to.dashboard}" url="/dashboard/index/${ nginx.id }"></html:button>
 				</fmt:param>
 			</fmt:message>
 		</html:alert>

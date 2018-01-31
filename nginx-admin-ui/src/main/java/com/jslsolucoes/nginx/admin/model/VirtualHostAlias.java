@@ -10,15 +10,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "virtual_host_alias", schema = "admin")
+@SequenceGenerator(name = "virtual_host_alias_sq", initialValue = 1, schema = "admin", allocationSize = 1, sequenceName = "admin.virtual_host_alias_sq")
 public class VirtualHostAlias implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator="virtual_host_alias_sq")
 	private Long id;
 
 	@Column(name = "alias")

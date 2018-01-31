@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.StringUtils;
@@ -21,10 +22,11 @@ import org.apache.commons.lang.StringUtils;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "virtual_host", schema = "admin")
+@SequenceGenerator(name = "virtual_host_sq", initialValue = 1, schema = "admin", allocationSize = 1, sequenceName = "admin.virtual_host_sq")
 public class VirtualHost implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator="virtual_host_sq")
 	private Long id;
 
 	@Column(name = "https")

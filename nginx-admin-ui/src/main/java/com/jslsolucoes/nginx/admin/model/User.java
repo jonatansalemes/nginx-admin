@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.jslsolucoes.vraptor4.auth.model.AuthUser;
@@ -14,10 +15,11 @@ import com.jslsolucoes.vraptor4.auth.model.AuthUser;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "user", schema = "admin")
+@SequenceGenerator(name = "user_sq", initialValue = 1, schema = "admin", allocationSize = 1, sequenceName = "admin.user_sq")
 public class User implements Serializable, AuthUser {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator="user_sq")
 	private Long id;
 
 	@Column(name = "login")

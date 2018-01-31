@@ -9,15 +9,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "nginx", schema = "admin")
+@SequenceGenerator(name = "nginx_sq", initialValue = 1, schema = "admin", allocationSize = 1, sequenceName = "admin.nginx_sq")
 public class Nginx implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator="nginx_sq")
 	private Long id;
 
 	@Column(name = "name")

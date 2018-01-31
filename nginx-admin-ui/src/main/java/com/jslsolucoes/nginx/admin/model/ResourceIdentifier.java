@@ -7,15 +7,17 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "resource_identifier", schema = "admin")
+@SequenceGenerator(name = "resource_identifier_sq", initialValue = 1, schema = "admin", allocationSize = 1, sequenceName = "admin.resource_identifier_sq")
 public class ResourceIdentifier implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator="resource_identifier_sq")
 	private Long id;
 
 	@Column(name = "uuid")

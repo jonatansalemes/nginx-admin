@@ -4,7 +4,7 @@
 	<html:block>
 		<html:card>
 			<html:cardBody>
-				<html:block>
+				<html:block rendered="${ nginxCommandLineInterfaceResponse != null }">
 					<html:panel>
 							<html:panelHead label="{nginx.operation.panel}"/>
 							<html:panelBody>
@@ -14,7 +14,38 @@
 								<html:alert state="${ nginxCommandLineInterfaceResponse.success() 
 										&& nginxCommandLineInterfaceResponse.success ? 'success' : 'danger' }" 
 											rendered="${ nginxCommandLineInterfaceResponse.success() }">
-									${ nginxCommandLineInterfaceResponse.output }
+											
+											
+											<html:span rendered="${ stop && nginxCommandLineInterfaceResponse.success }" label="{stop.ok}"></html:span>
+											<html:span rendered="${ stop && !nginxCommandLineInterfaceResponse.success }" label="{stop.error}"></html:span>
+											
+											<html:span rendered="${ reload && nginxCommandLineInterfaceResponse.success }" label="{reload.ok}"></html:span>
+											<html:span rendered="${ reload && !nginxCommandLineInterfaceResponse.success }" label="{reload.error}"></html:span>
+											
+											<html:span rendered="${ start && nginxCommandLineInterfaceResponse.success }" label="{start.ok}"></html:span>
+											<html:span rendered="${ start && !nginxCommandLineInterfaceResponse.success }" label="{start.error}"></html:span>
+											
+											<html:span rendered="${ killAll && nginxCommandLineInterfaceResponse.success }" label="{killAll.ok}"></html:span>
+											<html:span rendered="${ killAll && !nginxCommandLineInterfaceResponse.success }">
+												<fmt:message key="killAll.error">
+													<fmt:param value="${ nginxCommandLineInterfaceResponse.output }"></fmt:param>
+												</fmt:message>
+											</html:span>
+											
+											<html:span rendered="${ status && nginxCommandLineInterfaceResponse.success }" label="{status.ok}"></html:span>
+											<html:span rendered="${ status && !nginxCommandLineInterfaceResponse.success }" label="{status.error}"></html:span>
+											
+											<html:span rendered="${ restart && nginxCommandLineInterfaceResponse.success }" label="{restart.ok}"></html:span>
+											<html:span rendered="${ restart && !nginxCommandLineInterfaceResponse.success }" label="{restart.error}"></html:span>
+											
+											
+											<html:span rendered="${ testConfiguration && nginxCommandLineInterfaceResponse.success }" label="{testConfiguration.ok}"></html:span>
+											<html:span rendered="${ testConfiguration && !nginxCommandLineInterfaceResponse.success }">
+												<fmt:message key="testConfiguration.error">
+													<fmt:param value="${ nginxCommandLineInterfaceResponse.output }"></fmt:param>
+												</fmt:message>
+											</html:span>
+											
 								</html:alert>
 							</html:panelBody>
 					</html:panel>

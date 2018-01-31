@@ -187,4 +187,6 @@ public class Main {
 	}
 	// cd d:/workspace/github/nginx-admin/nginx-admin-ui-standalone/target
 	// java -server -Djava.net.preferIPv4Stack=true -Xms256m -Xmx1g -jar nginx-admin-ui-standalone-2.0.0-swarm.jar -c "D:\workspace\github\nginx-admin\nginx-admin-ui-standalone\nginx-admin\conf\nginx-admin.conf"
+	// java -server -Djava.net.preferIPv4Stack=true -Xms256m -Xmx1g -jar nginx-admin-ui-standalone-2.0.0-swarm.jar -c "/hd1/workspace/github/nginx-admin/nginx-admin-ui-standalone/nginx-admin/conf/nginx-admin.conf"
+
 }

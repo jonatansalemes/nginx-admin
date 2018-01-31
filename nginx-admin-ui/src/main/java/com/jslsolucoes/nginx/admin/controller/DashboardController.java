@@ -47,36 +47,42 @@ public class DashboardController {
 
 	@Path("reload/{idNginx}")
 	public void reload(Long idNginx) {
+		this.result.include("reload",true);
 		this.result.include("nginxCommandLineInterfaceResponse", nginxAgentRunner.reload(idNginx));
 		this.result.redirectTo(this).index(idNginx);
 	}
 
 	@Path("start/{idNginx}")
 	public void start(Long idNginx) {
+		this.result.include("start",true);
 		this.result.include("nginxCommandLineInterfaceResponse", nginxAgentRunner.start(idNginx));
 		this.result.redirectTo(this).index(idNginx);
 	}
 
 	@Path("killAll/{idNginx}")
 	public void killAll(Long idNginx) {
+		this.result.include("killAll",true);
 		this.result.include("nginxCommandLineInterfaceResponse", nginxAgentRunner.killAll(idNginx));
 		this.result.redirectTo(this).index(idNginx);
 	}
 
 	@Path("status/{idNginx}")
 	public void status(Long idNginx) {
+		this.result.include("status",true);
 		this.result.include("nginxCommandLineInterfaceResponse", nginxAgentRunner.status(idNginx));
 		this.result.redirectTo(this).index(idNginx);
 	}
 
 	@Path("restart/{idNginx}")
 	public void restart(Long idNginx) {
+		this.result.include("restart",true);
 		this.result.include("nginxCommandLineInterfaceResponse", nginxAgentRunner.restart(idNginx));
 		this.result.redirectTo(this).index(idNginx);
 	}
 
 	@Path("testConfiguration/{idNginx}")
 	public void testConfiguration(Long idNginx) {
+		this.result.include("testConfiguration",true);
 		this.result.include("nginxCommandLineInterfaceResponse", nginxAgentRunner.testConfiguration(idNginx));
 		this.result.redirectTo(this).index(idNginx);
 	}

@@ -13,15 +13,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "ssl_certificate", schema = "admin")
+@SequenceGenerator(name = "ssl_certificate_sq", initialValue = 1, schema = "admin", allocationSize = 1, sequenceName = "admin.ssl_certificate_sq")
 public class SslCertificate implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator="ssl_certificate_sq")
 	private Long id;
 
 	@Column(name = "common_name")
