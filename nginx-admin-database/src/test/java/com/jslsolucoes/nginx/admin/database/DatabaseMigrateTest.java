@@ -8,12 +8,17 @@ public class DatabaseMigrateTest {
 
 	@Test
 	public void migrate() {
+		
+		String uuid = UUID.randomUUID().toString();
+		String jdbcUrl = "jdbc:h2:tcp://localhost/~/h2/" + uuid;
 		DatabaseMigrate
 			.newBuilder()
 			.withDriver("h2")
-			.withUrlConnection("jdbc:h2:~/h2/" + UUID.randomUUID().toString())
+			.withUrlConnection(jdbcUrl)
 			.withUsername("sa")
 			.withPassword("sa")
+			.migrate()
+			.withUrlConnection(jdbcUrl)
 			.migrate();
 	}
 }

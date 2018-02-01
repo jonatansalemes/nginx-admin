@@ -1,29 +1,17 @@
 package com.jslsolucoes.nginx.admin.database;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Collections;
-import java.util.List;
-import java.util.StringTokenizer;
-import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import org.apache.commons.lang3.StringUtils;
 import org.h2.Driver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.jslsolucoes.nginx.admin.database.repository.DatabaseHistoryRepository;
+import com.jslsolucoes.nginx.admin.database.repository.impl.DatabaseHistoryRepositoryImpl;
+import com.jslsolucoes.nginx.admin.database.repository.impl.driver.DriverQuery;
+import com.jslsolucoes.nginx.admin.database.repository.impl.driver.H2DriverQuery;
 
 public class DatabaseMigrate {
 
@@ -31,6 +19,9 @@ public class DatabaseMigrate {
 	private String username;
 	private String password;
 	private String driver;
+	private String schema = "public";
+	private String tableName = "db_migrate_history";
+	private static final Logger logger = LoggerFactory.getLogger(DatabaseMigrate.class);
 	
 	static {
 		try {
@@ -63,11 +54,58 @@ public class DatabaseMigrate {
 		return this;
 	}
 	
+	public DatabaseMigrate withSchema(String schema) {
+		this.schema = schema;
+		return this;
+	}
+	
+	public DatabaseMigrate withTableName(String tableName) {
+		this.tableName = tableName;
+		return this;
+	}
+	
 	public DatabaseMigrate withDriver(String driver) {
 		this.driver = driver;
 		return this;
 	}
 	
+	public DatabaseMigrate migrate() {
+		try(Connection connection = connection()) {
+			DatabaseHistoryRepository databaseHistoryRepository = impl(connection);
+			if(!databaseHistoryRepository.exists(schema, tableName)) {
+				logger.info("Table " + tableName + " not found in schema " + schema + " will be created");
+				databaseHistoryRepository.create(schema, tableName);
+			} else {
+				logger.info("Table " + tableName + " already exists in schema " + schema + ". Nothing to do.");
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+		return this;
+	}
+
+	private DatabaseHistoryRepository impl(Connection connection) {
+		return new DatabaseHistoryRepositoryImpl(connection, driverQuery());
+	}
+
+	private DriverQuery driverQuery() {
+		if(driver.equals("h2")) {
+			return new H2DriverQuery();
+		}
+		throw new RuntimeException("Could not determine driver type");
+	}
+
+	private Connection connection() {
+		try {
+			logger.info("url connection: {}, username: {}",urlConnection,username);
+			return DriverManager.getConnection(urlConnection, username, password);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	
+	/*
 	private Path path() throws URISyntaxException, IOException {
 		URI uri = getClass().getResource("/db/migration/"+driver).toURI();
 		if(uri.getScheme().equals("file")) {
@@ -141,4 +179,5 @@ public class DatabaseMigrate {
 		}
 	    return this;
 	}
+	*/
 }
