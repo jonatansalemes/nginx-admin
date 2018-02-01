@@ -1,1 +1,0 @@
-drop table admin.user;

@@ -1,8 +1,8 @@
-DROP database IF EXISTS admin;
+create schema admin;
 
-CREATE database admin;
+create sequence admin.user_sq minvalue 1 start with 1 increment by 1;
 create table admin.user (
-	id bigint(10) auto_increment not null, 
+	id bigint(10) not null, 
 	login varchar(100) not null,
 	email varchar(100) not null,
 	password varchar(100) not null,
@@ -12,17 +12,19 @@ create table admin.user (
 alter table admin.user add constraint user_uk1 unique(login);
 alter table admin.user add constraint user_uk2 unique(email);
 
-insert into admin.user (login,email,password,password_force_change) values ('admin','admin@localhost.com','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918',1);
+insert into admin.user (id,login,email,password,password_force_change) values (admin.user_sq.nextval,'admin','admin@localhost.com','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918',1);
 
+create sequence admin.resource_identifier_sq minvalue 1 start with 1 increment by 1;
 create table admin.resource_identifier (
-	id bigint(10) auto_increment not null, 
+	id bigint(10) not null, 
 	uuid varchar(100) not null,
 	primary key (id)
 );
 alter table admin.resource_identifier add constraint resource_identifier_uk1 unique(uuid);
 
+create sequence admin.nginx_sq minvalue 1 start with 1 increment by 1;
 create table admin.nginx (
-	id bigint(10) auto_increment not null,
+	id bigint(10) not null,
 	name varchar(255) not null,
 	endpoint varchar(255) not null,
 	authorization_key varchar(255) not null,
@@ -31,8 +33,9 @@ create table admin.nginx (
 alter table admin.nginx add constraint nginx_uk1 unique(name);
 alter table admin.nginx add constraint nginx_uk2 unique(endpoint);
 
+create sequence admin.configuration_sq minvalue 1 start with 1 increment by 1;
 create table admin.configuration (
-	id bigint(10) auto_increment not null, 
+	id bigint(10) not null, 
 	id_nginx bigint(10) not null,
 	gzip int(1) not null,
 	max_post_size int(4) not null,
@@ -41,9 +44,9 @@ create table admin.configuration (
 alter table admin.configuration add constraint configuration_uk1 unique(id_nginx);
 alter table admin.configuration add constraint configuration_fk1 foreign key(id_nginx) references admin.nginx(id);
 
-
+create sequence admin.ssl_certificate_sq minvalue 1 start with 1 increment by 1;
 create table admin.ssl_certificate (
-	id bigint(10) auto_increment not null, 
+	id bigint(10) not null, 
 	common_name varchar(100) not null,
 	id_nginx bigint(10) not null,
 	id_resource_identifier_certificate bigint(10),
@@ -55,27 +58,20 @@ alter table admin.ssl_certificate add constraint ssl_certificate_fk1 foreign key
 alter table admin.ssl_certificate add constraint ssl_certificate_fk2 foreign key(id_resource_identifier_certificate_private_key) references admin.resource_identifier(id);
 alter table admin.ssl_certificate add constraint ssl_certificate_fk3 foreign key(id_nginx) references admin.nginx(id);
 
-
+create sequence admin.strategy_sq minvalue 1 start with 1 increment by 1;
 create table admin.strategy (
-	id bigint(10) auto_increment not null, 
+	id bigint(10) not null, 
 	name varchar(100) not null,
 	primary key (id)
 );
 alter table admin.strategy add constraint strategy_uk1 unique(name);
-insert into admin.strategy (name) values ('ip_hash');
-insert into admin.strategy (name) values ('round-robin');
-insert into admin.strategy (name) values ('least-connected');
+insert into admin.strategy (id,name) values (admin.strategy_sq.nextval,'ip_hash');
+insert into admin.strategy (id,name) values (admin.strategy_sq.nextval,'round-robin');
+insert into admin.strategy (id,name) values (admin.strategy_sq.nextval,'least-connected');
 
-
-
-create table admin.server_sq (
-    next_val bigint(10) not null,
-    primary key(next_val)
-);
-insert into admin.server_sq (next_val) values (0);
-
+create sequence admin.server_sq minvalue 1 start with 1 increment by 1;
 create table admin.server (
-	id bigint(10) auto_increment not null, 
+	id bigint(10) not null, 
 	ip varchar(15) not null,
 	id_nginx bigint(10) not null,
 	primary key (id)
@@ -83,9 +79,9 @@ create table admin.server (
 alter table admin.server add constraint server_uk1 unique(ip,id_nginx);
 alter table admin.server add constraint server_fk1 foreign key(id_nginx) references admin.nginx(id);
 
-
+create sequence admin.upstream_sq minvalue 1 start with 1 increment by 1;
 create table admin.upstream (
-	id bigint(10) auto_increment not null, 
+	id bigint(10) not null, 
 	name varchar(100) not null,
 	id_strategy bigint(10) not null,
 	id_nginx bigint(10) not null,
@@ -97,9 +93,9 @@ alter table admin.upstream add constraint upstream_fk1 foreign key(id_strategy) 
 alter table admin.upstream add constraint upstream_fk2 foreign key(id_resource_identifier) references admin.resource_identifier(id);
 alter table admin.upstream add constraint upstream_fk3 foreign key(id_nginx) references admin.nginx(id);
 
-
+create sequence admin.upstream_server_sq minvalue 1 start with 1 increment by 1;
 create table admin.upstream_server (
-	id bigint(10) auto_increment not null, 
+	id bigint(10) not null, 
 	id_server bigint(10) not null, 
 	id_upstream bigint(10) not null, 
 	port int(5) not null,
@@ -109,8 +105,9 @@ alter table admin.upstream_server add constraint upstream_server_uk1 unique(id_s
 alter table admin.upstream_server add constraint upstream_server_fk1 foreign key(id_server) references admin.server(id);
 alter table admin.upstream_server add constraint upstream_server_fk2 foreign key(id_upstream) references admin.upstream(id);
 
+create sequence admin.virtual_host_sq minvalue 1 start with 1 increment by 1;
 create table admin.virtual_host (
-	id bigint(10) auto_increment not null, 
+	id bigint(10) not null, 
 	https int(1) not null,
 	id_nginx bigint(10) not null,
 	id_ssl_certificate bigint(10),
@@ -121,9 +118,9 @@ alter table admin.virtual_host add constraint virtual_host_fk1 foreign key(id_ss
 alter table admin.virtual_host add constraint virtual_host_fk2 foreign key(id_resource_identifier) references admin.resource_identifier(id);
 alter table admin.virtual_host add constraint virtual_host_fk3 foreign key(id_nginx) references admin.nginx(id);
 
-
+create sequence admin.virtual_host_location_sq minvalue 1 start with 1 increment by 1;
 create table admin.virtual_host_location (
-	id bigint(10) auto_increment not null, 
+	id bigint(10) not null, 
 	id_upstream bigint(10) not null,
 	path varchar(100) not null,
 	id_virtual_host bigint(10) not null,
@@ -133,9 +130,9 @@ alter table admin.virtual_host_location add constraint virtual_host_location_uk1
 alter table admin.virtual_host_location add constraint virtual_host_location_fk1 foreign key(id_upstream) references admin.upstream(id);
 alter table admin.virtual_host_location add constraint virtual_host_location_fk2 foreign key(id_virtual_host) references admin.virtual_host(id);
 
-
+create sequence admin.virtual_host_alias_sq minvalue 1 start with 1 increment by 1;
 create table admin.virtual_host_alias (
-	id bigint(10) auto_increment not null, 
+	id bigint(10) not null, 
 	alias varchar(100) not null,
 	id_virtual_host bigint(10) not null,
 	primary key (id)
@@ -143,8 +140,9 @@ create table admin.virtual_host_alias (
 alter table admin.virtual_host_alias add constraint virtual_host_alias_uk1 unique(id_virtual_host,alias);
 alter table admin.virtual_host_alias add constraint virtual_host_alias_fk1 foreign key(id_virtual_host) references admin.virtual_host(id);
 
+create sequence admin.access_log_sq minvalue 1 start with 1 increment by 1;
 create table admin.access_log (
-	id bigint(10) auto_increment not null,
+	id bigint(10) not null,
 	id_nginx bigint(10) not null,
 	date_time datetime not null,
 	remote_addr varchar(15) not null,
@@ -170,8 +168,9 @@ create table admin.access_log (
 );
 alter table admin.access_log add constraint access_log_fk1 foreign key(id_nginx) references admin.nginx(id);
 
+create sequence admin.error_log_sq minvalue 1 start with 1 increment by 1;
 create table admin.error_log (
-	id bigint(10) auto_increment not null,
+	id bigint(10) not null,
 	id_nginx bigint(10) not null,
 	date_time datetime not null,
 	level varchar(15) not null,

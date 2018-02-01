@@ -119,19 +119,13 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-core</artifactId>
-            <version>5.0.7</version>
-        </dependency>
-        <dependency>
-		    <groupId>org.slf4j</groupId>
-		    <artifactId>slf4j-log4j12</artifactId>
-		    <version>1.7.25</version>
-		    <scope>provided</scope>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.22</version>
 		</dependency>
 		<dependency>
 			<groupId>com.jslsolucoes</groupId>
-			<artifactId>nginx-admin-ui-configuration</artifactId>
+			<artifactId>nginx-admin-database</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
@@ -152,11 +146,6 @@
 			<artifactId>jaxrs</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.jboss.resteasy</groupId>
-			<artifactId>resteasy-jackson-provider</artifactId>
-			<version>3.1.4.Final</version>
-		</dependency>
-		<dependency>
 			<groupId>org.wildfly.swarm</groupId>
 			<artifactId>datasources</artifactId>
 		</dependency>
@@ -169,39 +158,9 @@
 			<artifactId>management</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.jslsolucoes</groupId>
-			<artifactId>ojdbc6</artifactId>
-			<version>11.2.0.1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<version>1.4.196</version>
-		</dependency>
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>42.1.4</version>
-		</dependency>
-		<dependency>
-			<groupId>com.microsoft.sqlserver</groupId>
-			<artifactId>mssql-jdbc</artifactId>
-			<version>6.3.6.jre8-preview</version>
-		</dependency>
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.45</version>
-		</dependency>
-		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>2.5</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.7.22</version>
 		</dependency>
 	</dependencies>
 

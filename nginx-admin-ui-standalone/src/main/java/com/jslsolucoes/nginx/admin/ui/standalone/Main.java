@@ -17,6 +17,7 @@ import org.wildfly.swarm.management.ManagementFraction;
 import org.wildfly.swarm.undertow.UndertowFraction;
 import org.wildfly.swarm.undertow.WARArchive;
 
+import com.jslsolucoes.nginx.admin.database.DatabaseMigrate;
 import com.jslsolucoes.nginx.admin.ui.config.Configuration;
 import com.jslsolucoes.nginx.admin.ui.config.ConfigurationLoader;
 import com.jslsolucoes.nginx.admin.ui.config.Database;
@@ -39,7 +40,9 @@ public class Main {
 		if (!argument.getQuit()) {
 
 			Configuration configuration = ConfigurationLoader.newBuilder().withFile(argument.getConf()).build();
-
+			
+			migrateDatabase(configuration.getDatabase());
+			
 			File jks = copyToTemp("/keystore.jks");
 			File war = copyToTemp("/nginx-admin-ui-" + configuration.getApplication().getVersion() + ".war");
 
@@ -104,6 +107,16 @@ public class Main {
 			WARArchive warArchive = ShrinkWrap.createFromZipFile(WARArchive.class, war);
 			swarm.deploy(warArchive);
 		}
+	}
+
+	private static void migrateDatabase(Database database) {
+		DatabaseMigrate
+		.newBuilder()
+		.withDriver(database.getDatabaseDriver().getDriverName())
+		.withUrlConnection(database.getUrlConnection())
+		.withUsername(database.getUserName())
+		.withPassword(database.getPassword())
+		.migrate();
 	}
 
 	@SuppressWarnings("rawtypes")
