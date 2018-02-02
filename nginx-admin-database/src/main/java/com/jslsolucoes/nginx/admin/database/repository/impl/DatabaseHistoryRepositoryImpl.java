@@ -76,4 +76,13 @@ public class DatabaseHistoryRepositoryImpl implements DatabaseHistoryRepository 
 		}
 		
 	}
+
+	@Override
+	public void init(String database) {
+		try (PreparedStatement preparedStatement = connection.prepareStatement(driverQuery.init(database))){
+			preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			logger.error("Could not init database",e);
+		}
+	}
 }

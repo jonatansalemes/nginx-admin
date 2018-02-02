@@ -9,4 +9,6 @@ public interface DriverQuery {
 	public String current(String database, String table);
 
 	public String insert(String database, String table);
+
+	public String init(String database);
 }

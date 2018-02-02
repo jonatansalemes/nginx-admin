@@ -130,6 +130,9 @@ public class DatabaseMigrationBuilder {
 			}
 			DatabaseHistory databaseHistory = databaseHistoryRepository.current(database, table);
 			logger.info("Current version is {}",databaseHistory.getName());
+			
+			databaseHistoryRepository.init(database);
+			
 			for (DatabaseSqlResource fileSequence : files()) {
 				if (fileSequence.getVersion() > databaseHistory.getVersion()) {
 					StringTokenizer stringTokenizer = new StringTokenizer(

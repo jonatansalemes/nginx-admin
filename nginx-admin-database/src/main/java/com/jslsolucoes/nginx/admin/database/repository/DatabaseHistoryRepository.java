@@ -7,4 +7,5 @@ public interface DatabaseHistoryRepository {
 	public void create(String database,String table);
 	public DatabaseHistory current(String database,String table);
 	public void insert(String database, String table, String name, Long version);
+	public void init(String database);
 }

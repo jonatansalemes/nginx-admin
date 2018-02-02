@@ -59,4 +59,15 @@ public class GenericDriverQuery implements DriverQuery {
 		}	
 	}
 
+	@Override
+	public String init(String database) {
+		try (StringWriter stringWriter = new StringWriter()) {
+			TemplateProcessor.newBuilder().withData("database", database)
+					.withTemplate(folder, "init.tpl").withEncoding("UTF-8").withOutput(stringWriter).process();
+			return stringWriter.toString();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}	
+	}
+
 }

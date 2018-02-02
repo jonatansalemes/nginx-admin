@@ -104,10 +104,11 @@ public class Main {
 					}).logger("database", logger->{
 						logger.category("com.jslsolucoes.nginx.admin.database");
 						logger.level(Level.INFO);
+						logger.handler("CONSOLE");
 					}).rootLogger(rootLogger -> {
 						rootLogger.level(Level.ERROR);
 						rootLogger.handler("CONSOLE");
-					}));;
+					}));
 			swarm.start();
 			
 			migrateDatabase(configuration.getDatabase());
@@ -178,9 +179,9 @@ public class Main {
 		} else if (driver.equals("postgresql")) {
 			return "jdbc:postgresql://" + database.getHost() + ":" + database.getPort() + "/" + database.getName();
 		} else if (driver.equals("mysql")) {
-			return "jdbc:mysql://" + database.getHost() + ":" + database.getPort() + "/" + database.getName();
+			return "jdbc:mysql://" + database.getHost() + ":" + database.getPort() + "/" + database.getName() + "?useSSL=false";
 		} else if (driver.equals("h2")) {
-			return "jdbc:h2:~/h2/" + database.getName() + ";AUTO_SERVER=TRUE";
+			return "jdbc:h2:~/h2/" + database.getName() + ";INIT=use "+database.getName()+";AUTO_SERVER=TRUE";
 		} else if (driver.equals("sqlserver")) {
 			return "jdbc:sqlserver://" + database.getHost() + ":" + database.getPort() + "/" + database.getName();
 		}
