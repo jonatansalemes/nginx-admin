@@ -25,8 +25,8 @@ public class DatabaseHistoryRepositoryImpl implements DatabaseHistoryRepository 
 	}
 
 	@Override
-	public Boolean exists(String schema,String tableName) {
-		try (PreparedStatement preparedStatement = connection.prepareStatement(driverQuery.exists(schema,tableName))){
+	public Boolean exists(String database,String table) {
+		try (PreparedStatement preparedStatement = connection.prepareStatement(driverQuery.exists(database,table))){
 			try (ResultSet resultSet = preparedStatement.executeQuery()) {
 				if(resultSet.next()) {
 					return resultSet.getBoolean("found");
@@ -39,21 +39,21 @@ public class DatabaseHistoryRepositoryImpl implements DatabaseHistoryRepository 
 	}
 
 	@Override
-	public void create(String schema, String tableName) {
-		StringTokenizer stringTokenizer = new StringTokenizer(driverQuery.create(schema,tableName),";");
+	public void create(String database, String table) {
+		StringTokenizer stringTokenizer = new StringTokenizer(driverQuery.create(database,table),";");
 		while(stringTokenizer.hasMoreTokens()) {
 			String query = stringTokenizer.nextToken();
 			try (PreparedStatement preparedStatement = connection.prepareStatement(query)){
 				preparedStatement.executeUpdate();
 			} catch (SQLException e) {
-				logger.error("Could not create table schema statement " + query,e);
+				logger.error("Could not create table database statement " + query,e);
 			}
 		}
 	}
 	
 	@Override
-	public DatabaseHistory current(String schema, String tableName) {
-		try (PreparedStatement preparedStatement = connection.prepareStatement(driverQuery.current(schema,tableName))){
+	public DatabaseHistory current(String database, String table) {
+		try (PreparedStatement preparedStatement = connection.prepareStatement(driverQuery.current(database,table))){
 			try (ResultSet resultSet = preparedStatement.executeQuery()) {
 				if(resultSet.next()) {
 					return new DatabaseHistory(resultSet.getLong("id"),resultSet.getString("name"),resultSet.getLong("version"));
@@ -66,8 +66,8 @@ public class DatabaseHistoryRepositoryImpl implements DatabaseHistoryRepository 
 	}
 
 	@Override
-	public void insert(String schema, String tableName, String name, Long version) {
-		try (PreparedStatement preparedStatement = connection.prepareStatement(driverQuery.insert(schema,tableName))){
+	public void insert(String database, String table, String name, Long version) {
+		try (PreparedStatement preparedStatement = connection.prepareStatement(driverQuery.insert(database,table))){
 			preparedStatement.setString(1,name);
 			preparedStatement.setLong(2, version);
 			preparedStatement.executeUpdate();

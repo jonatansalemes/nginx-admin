@@ -1,4 +1,3 @@
-create schema if not exists ${ database };
 create table ${ database }.${ table } (
 	id bigint(10) auto_increment not null, 
 	name varchar(100) not null,

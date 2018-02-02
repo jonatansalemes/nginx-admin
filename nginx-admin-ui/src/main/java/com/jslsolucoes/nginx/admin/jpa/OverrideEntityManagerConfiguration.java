@@ -8,7 +8,6 @@ import javax.enterprise.inject.Specializes;
 import javax.inject.Inject;
 
 import com.jslsolucoes.nginx.admin.ui.config.Configuration;
-import com.jslsolucoes.nginx.admin.ui.config.DatabaseDriver;
 
 import br.com.caelum.vraptor.jpa.DefaultEntityManagerConfiguration;
 
@@ -27,18 +26,18 @@ public class OverrideEntityManagerConfiguration extends DefaultEntityManagerConf
 	}
 
 	public String dialect() {
-		DatabaseDriver databaseDriver = configuration.getDatabase().getDatabaseDriver();
-		if (databaseDriver.equals(DatabaseDriver.H2)) {
+		String driver = configuration.getDatabase().getDriver();
+		if (driver.equals("h2")) {
 			return "org.hibernate.dialect.H2Dialect";
-		} else if (databaseDriver.equals(DatabaseDriver.MYSQL)) {
+		} else if (driver.equals("mysql")) {
 			return "org.hibernate.dialect.MySQL5Dialect";
-		} else if (databaseDriver.equals(DatabaseDriver.ORACLE)) {
+		} else if (driver.equals("oracle")) {
 			return "org.hibernate.dialect.Oracle10gDialect";
-		} else if (databaseDriver.equals(DatabaseDriver.POSTGRESQL)) {
+		} else if (driver.equals("postgresql")) {
 			return "org.hibernate.dialect.PostgreSQLDialect";
-		}  else if (databaseDriver.equals(DatabaseDriver.SQLSERVER)) {
+		}  else if (driver.equals("sqlserver")) {
 			return "org.hibernate.dialect.SQLServer2008Dialect";
 		}
-		throw new RuntimeException("Could not find dialect for driver " + databaseDriver.getDriverName());
+		throw new RuntimeException("Could not find dialect for driver " + driver);
 	}
 }

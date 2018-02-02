@@ -14,12 +14,12 @@ import com.jslsolucoes.vraptor4.auth.model.AuthUser;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "user", schema = "admin")
-@SequenceGenerator(name = "user_sq", initialValue = 1, schema = "admin", allocationSize = 1, sequenceName = "admin.user_sq")
+@Table(name = "user")
+@SequenceGenerator(name = "user_sq", initialValue = 1, allocationSize = 1, sequenceName = "user_sq")
 public class User implements Serializable, AuthUser {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator="user_sq")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sq")
 	private Long id;
 
 	@Column(name = "login")

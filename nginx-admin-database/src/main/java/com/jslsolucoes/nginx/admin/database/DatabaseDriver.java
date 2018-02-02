@@ -1,4 +1,4 @@
-package com.jslsolucoes.nginx.admin.ui.config;
+package com.jslsolucoes.nginx.admin.database;
 
 public enum DatabaseDriver {
 	ORACLE("oracle"), H2("h2"),MYSQL("mysql"),POSTGRESQL("postgresql"),SQLSERVER("sqlserver");

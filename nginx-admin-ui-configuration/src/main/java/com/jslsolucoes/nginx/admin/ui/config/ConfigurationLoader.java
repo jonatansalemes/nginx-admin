@@ -95,13 +95,11 @@ public class ConfigurationLoader {
 
 	private Database database() {
 		Database database = new Database();
-		database.setDatabaseDriver(DatabaseDriver.forName(properties.getProperty("NGINX_ADMIN_DB_DRIVER")));
+		database.setDriver(properties.getProperty("NGINX_ADMIN_DB_DRIVER"));
 		database.setHost(properties.getProperty("NGINX_ADMIN_DB_HOST"));
-		database.setLocation(properties.getProperty("NGINX_ADMIN_DB_LOCATION"));
 		database.setName(properties.getProperty("NGINX_ADMIN_DB_NAME"));
 		database.setPort(Integer.valueOf(properties.getProperty("NGINX_ADMIN_DB_PORT")));
-		database.setSid(properties.getProperty("NGINX_ADMIN_DB_SID"));
-		database.setUserName(properties.getProperty("NGINX_ADMIN_DB_USERNAME"));
+		database.setUsername(properties.getProperty("NGINX_ADMIN_DB_USERNAME"));
 		database.setPassword(properties.getProperty("NGINX_ADMIN_DB_PASSWORD"));
 		database.setDatabasePool(databasePool());
 		return database;

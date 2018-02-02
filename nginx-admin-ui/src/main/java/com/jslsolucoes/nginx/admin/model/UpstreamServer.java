@@ -15,12 +15,12 @@ import javax.persistence.Table;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "upstream_server", schema = "admin")
-@SequenceGenerator(name = "upstream_server_sq", initialValue = 1, schema = "admin", allocationSize = 1, sequenceName = "admin.upstream_server_sq")
+@Table(name = "upstream_server")
+@SequenceGenerator(name = "upstream_server_sq", initialValue = 1, allocationSize = 1, sequenceName = "upstream_server_sq")
 public class UpstreamServer implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator="upstream_server_sq")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "upstream_server_sq")
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)

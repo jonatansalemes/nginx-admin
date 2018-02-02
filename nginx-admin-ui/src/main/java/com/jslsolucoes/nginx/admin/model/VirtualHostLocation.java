@@ -15,12 +15,12 @@ import javax.persistence.Table;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "virtual_host_location", schema = "admin")
-@SequenceGenerator(name = "virtual_host_location_sq", initialValue = 1, schema = "admin", allocationSize = 1, sequenceName = "admin.virtual_host_location_sq")
+@Table(name = "virtual_host_location")
+@SequenceGenerator(name = "virtual_host_location_sq", initialValue = 1, allocationSize = 1, sequenceName = "virtual_host_location_sq")
 public class VirtualHostLocation implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator="virtual_host_location_sq")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "virtual_host_location_sq")
 	private Long id;
 
 	@Column(name = "path")

@@ -1,4 +1,10 @@
-create sequence user_sq minvalue 1 start with 1 increment by 1;
+
+create table user_sq (
+	next_val bigint(10) not null,
+	primary key (next_val)
+);
+insert into user_sq (next_val) values (1); 
+
 create table user (
 	id bigint(10) not null, 
 	login varchar(100) not null,
@@ -10,9 +16,15 @@ create table user (
 alter table user add constraint user_uk1 unique(login);
 alter table user add constraint user_uk2 unique(email);
 
-insert into user (id,login,email,password,password_force_change) values (user_sq.nextval,'admin','admin@localhost.com','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918',1);
+insert into user (id,login,email,password,password_force_change) values (1,'admin','admin@localhost.com','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918',1);
 
-create sequence resource_identifier_sq minvalue 1 start with 1 increment by 1;
+
+create table resource_identifier_sq (
+	next_val bigint(10) not null,
+	primary key (next_val)
+);
+insert into resource_identifier_sq (next_val) values (0); 
+
 create table resource_identifier (
 	id bigint(10) not null, 
 	uuid varchar(100) not null,
@@ -20,7 +32,12 @@ create table resource_identifier (
 );
 alter table resource_identifier add constraint resource_identifier_uk1 unique(uuid);
 
-create sequence nginx_sq minvalue 1 start with 1 increment by 1;
+create table nginx_sq (
+	next_val bigint(10) not null,
+	primary key (next_val)
+);
+insert into nginx_sq (next_val) values (0); 
+
 create table nginx (
 	id bigint(10) not null,
 	name varchar(255) not null,
@@ -31,7 +48,13 @@ create table nginx (
 alter table nginx add constraint nginx_uk1 unique(name);
 alter table nginx add constraint nginx_uk2 unique(endpoint);
 
-create sequence configuration_sq minvalue 1 start with 1 increment by 1;
+
+create table configuration_sq (
+	next_val bigint(10) not null,
+	primary key (next_val)
+);
+insert into configuration_sq (next_val) values (0); 
+
 create table configuration (
 	id bigint(10) not null, 
 	id_nginx bigint(10) not null,
@@ -42,7 +65,14 @@ create table configuration (
 alter table configuration add constraint configuration_uk1 unique(id_nginx);
 alter table configuration add constraint configuration_fk1 foreign key(id_nginx) references nginx(id);
 
-create sequence ssl_certificate_sq minvalue 1 start with 1 increment by 1;
+
+
+create table ssl_certificate_sq (
+	next_val bigint(10) not null,
+	primary key (next_val)
+);
+insert into ssl_certificate_sq (next_val) values (0); 
+
 create table ssl_certificate (
 	id bigint(10) not null, 
 	common_name varchar(100) not null,
@@ -56,18 +86,28 @@ alter table ssl_certificate add constraint ssl_certificate_fk1 foreign key(id_re
 alter table ssl_certificate add constraint ssl_certificate_fk2 foreign key(id_resource_identifier_certificate_private_key) references resource_identifier(id);
 alter table ssl_certificate add constraint ssl_certificate_fk3 foreign key(id_nginx) references nginx(id);
 
-create sequence strategy_sq minvalue 1 start with 1 increment by 1;
+create table strategy_sq (
+	next_val bigint(10) not null,
+	primary key (next_val)
+);
+insert into strategy_sq (next_val) values (3); 
+
 create table strategy (
 	id bigint(10) not null, 
 	name varchar(100) not null,
 	primary key (id)
 );
 alter table strategy add constraint strategy_uk1 unique(name);
-insert into strategy (id,name) values (strategy_sq.nextval,'ip_hash');
-insert into strategy (id,name) values (strategy_sq.nextval,'round-robin');
-insert into strategy (id,name) values (strategy_sq.nextval,'least-connected');
+insert into strategy (id,name) values (1,'ip_hash');
+insert into strategy (id,name) values (2,'round-robin');
+insert into strategy (id,name) values (3,'least-connected');
 
-create sequence server_sq minvalue 1 start with 1 increment by 1;
+create table server_sq (
+	next_val bigint(10) not null,
+	primary key (next_val)
+);
+insert into server_sq (next_val) values (0); 
+
 create table server (
 	id bigint(10) not null, 
 	ip varchar(15) not null,
@@ -77,7 +117,12 @@ create table server (
 alter table server add constraint server_uk1 unique(ip,id_nginx);
 alter table server add constraint server_fk1 foreign key(id_nginx) references nginx(id);
 
-create sequence upstream_sq minvalue 1 start with 1 increment by 1;
+create table upstream_sq (
+	next_val bigint(10) not null,
+	primary key (next_val)
+);
+insert into upstream_sq (next_val) values (0); 
+
 create table upstream (
 	id bigint(10) not null, 
 	name varchar(100) not null,
@@ -91,7 +136,13 @@ alter table upstream add constraint upstream_fk1 foreign key(id_strategy) refere
 alter table upstream add constraint upstream_fk2 foreign key(id_resource_identifier) references resource_identifier(id);
 alter table upstream add constraint upstream_fk3 foreign key(id_nginx) references nginx(id);
 
-create sequence upstream_server_sq minvalue 1 start with 1 increment by 1;
+
+create table upstream_server_sq (
+	next_val bigint(10) not null,
+	primary key (next_val)
+);
+insert into upstream_server_sq (next_val) values (0); 
+
 create table upstream_server (
 	id bigint(10) not null, 
 	id_server bigint(10) not null, 
@@ -103,7 +154,12 @@ alter table upstream_server add constraint upstream_server_uk1 unique(id_server,
 alter table upstream_server add constraint upstream_server_fk1 foreign key(id_server) references server(id);
 alter table upstream_server add constraint upstream_server_fk2 foreign key(id_upstream) references upstream(id);
 
-create sequence virtual_host_sq minvalue 1 start with 1 increment by 1;
+create table virtual_host_sq (
+	next_val bigint(10) not null,
+	primary key (next_val)
+);
+insert into virtual_host_sq (next_val) values (0); 
+
 create table virtual_host (
 	id bigint(10) not null, 
 	https int(1) not null,
@@ -116,7 +172,12 @@ alter table virtual_host add constraint virtual_host_fk1 foreign key(id_ssl_cert
 alter table virtual_host add constraint virtual_host_fk2 foreign key(id_resource_identifier) references resource_identifier(id);
 alter table virtual_host add constraint virtual_host_fk3 foreign key(id_nginx) references nginx(id);
 
-create sequence virtual_host_location_sq minvalue 1 start with 1 increment by 1;
+create table virtual_host_location_sq (
+	next_val bigint(10) not null,
+	primary key (next_val)
+);
+insert into virtual_host_location_sq (next_val) values (0); 
+
 create table virtual_host_location (
 	id bigint(10) not null, 
 	id_upstream bigint(10) not null,
@@ -128,7 +189,12 @@ alter table virtual_host_location add constraint virtual_host_location_uk1 uniqu
 alter table virtual_host_location add constraint virtual_host_location_fk1 foreign key(id_upstream) references upstream(id);
 alter table virtual_host_location add constraint virtual_host_location_fk2 foreign key(id_virtual_host) references virtual_host(id);
 
-create sequence virtual_host_alias_sq minvalue 1 start with 1 increment by 1;
+create table virtual_host_alias_sq (
+	next_val bigint(10) not null,
+	primary key (next_val)
+);
+insert into virtual_host_alias_sq (next_val) values (0);
+
 create table virtual_host_alias (
 	id bigint(10) not null, 
 	alias varchar(100) not null,
@@ -138,7 +204,12 @@ create table virtual_host_alias (
 alter table virtual_host_alias add constraint virtual_host_alias_uk1 unique(id_virtual_host,alias);
 alter table virtual_host_alias add constraint virtual_host_alias_fk1 foreign key(id_virtual_host) references virtual_host(id);
 
-create sequence access_log_sq minvalue 1 start with 1 increment by 1;
+create table access_log_sq (
+	next_val bigint(10) not null,
+	primary key (next_val)
+);
+insert into access_log_sq (next_val) values (0);
+
 create table access_log (
 	id bigint(10) not null,
 	id_nginx bigint(10) not null,
@@ -166,7 +237,13 @@ create table access_log (
 );
 alter table access_log add constraint access_log_fk1 foreign key(id_nginx) references nginx(id);
 
-create sequence error_log_sq minvalue 1 start with 1 increment by 1;
+
+create table error_log_sq (
+	next_val bigint(10) not null,
+	primary key (next_val)
+);
+insert into error_log_sq (next_val) values (0);
+
 create table error_log (
 	id bigint(10) not null,
 	id_nginx bigint(10) not null,
@@ -179,3 +256,4 @@ create table error_log (
 	primary key (id)
 );
 alter table error_log add constraint error_log_fk1 foreign key(id_nginx) references nginx(id);
+

@@ -16,12 +16,12 @@ import javax.persistence.Table;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "error_log", schema = "admin")
-@SequenceGenerator(name = "error_log_sq", initialValue = 1, schema = "admin", allocationSize = 1, sequenceName = "admin.error_log_sq")
+@Table(name = "error_log")
+@SequenceGenerator(name = "error_log_sq", initialValue = 1, allocationSize = 1, sequenceName = "error_log_sq")
 public class ErrorLog implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator="error_log_sq")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "error_log_sq")
 	private Long id;
 
 	@Column(name = "date_time")

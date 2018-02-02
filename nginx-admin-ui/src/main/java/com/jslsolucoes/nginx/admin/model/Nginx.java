@@ -14,12 +14,12 @@ import javax.persistence.Table;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "nginx", schema = "admin")
-@SequenceGenerator(name = "nginx_sq", initialValue = 1, schema = "admin", allocationSize = 1, sequenceName = "admin.nginx_sq")
+@Table(name = "nginx")
+@SequenceGenerator(name = "nginx_sq", initialValue = 1, allocationSize = 1, sequenceName = "nginx_sq")
 public class Nginx implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator="nginx_sq")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "nginx_sq")
 	private Long id;
 
 	@Column(name = "name")
@@ -30,8 +30,8 @@ public class Nginx implements Serializable {
 
 	@Column(name = "authorization_key")
 	private String authorizationKey;
-	
-	@OneToOne(fetch=FetchType.LAZY,mappedBy="nginx")
+
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "nginx")
 	private Configuration configuration;
 
 	public Nginx() {

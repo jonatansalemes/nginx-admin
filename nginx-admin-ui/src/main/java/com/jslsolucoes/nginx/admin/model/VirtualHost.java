@@ -21,12 +21,12 @@ import org.apache.commons.lang.StringUtils;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "virtual_host", schema = "admin")
-@SequenceGenerator(name = "virtual_host_sq", initialValue = 1, schema = "admin", allocationSize = 1, sequenceName = "admin.virtual_host_sq")
+@Table(name = "virtual_host")
+@SequenceGenerator(name = "virtual_host_sq", initialValue = 1, allocationSize = 1, sequenceName = "virtual_host_sq")
 public class VirtualHost implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator="virtual_host_sq")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "virtual_host_sq")
 	private Long id;
 
 	@Column(name = "https")

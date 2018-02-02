@@ -19,12 +19,12 @@ import com.google.gson.annotations.SerializedName;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "access_log", schema = "admin")
-@SequenceGenerator(name = "access_log_sq", initialValue = 1, schema = "admin", allocationSize = 1, sequenceName = "admin.access_log_sq")
+@Table(name = "access_log")
+@SequenceGenerator(name = "access_log_sq", initialValue = 1, allocationSize = 1, sequenceName = "access_log_sq")
 public class AccessLog implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator="access_log_sq")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "access_log_sq")
 	private Long id;
 
 	@Column(name = "date_time")

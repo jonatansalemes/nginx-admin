@@ -15,12 +15,12 @@ import javax.persistence.Table;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "configuration", schema = "admin")
-@SequenceGenerator(name = "configuration_sq", initialValue = 1, schema = "admin", allocationSize = 1, sequenceName = "admin.configuration_sq")
+@Table(name = "configuration")
+@SequenceGenerator(name = "configuration_sq", initialValue = 1, allocationSize = 1, sequenceName = "configuration_sq")
 public class Configuration implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator="configuration_sq")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "configuration_sq")
 	private Long id;
 
 	@OneToOne(fetch = FetchType.LAZY)

@@ -17,12 +17,12 @@ import javax.persistence.Table;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "server", schema = "admin")
-@SequenceGenerator(name = "server_sq", initialValue = 1, schema = "admin", allocationSize = 1, sequenceName = "admin.server_sq")
+@Table(name = "server")
+@SequenceGenerator(name = "server_sq", initialValue = 1, allocationSize = 1, sequenceName = "server_sq")
 public class Server implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator="server_sq")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "server_sq")
 	private Long id;
 
 	@Column(name = "ip")
