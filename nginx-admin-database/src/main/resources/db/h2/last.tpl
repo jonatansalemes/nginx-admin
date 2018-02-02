@@ -1,1 +1,0 @@
-select * from ${ schema }.${ tableName } order by version desc limit 1;

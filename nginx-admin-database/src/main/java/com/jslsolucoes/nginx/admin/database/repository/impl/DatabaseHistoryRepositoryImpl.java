@@ -29,9 +29,7 @@ public class DatabaseHistoryRepositoryImpl implements DatabaseHistoryRepository 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(driverQuery.exists(schema,tableName))){
 			try (ResultSet resultSet = preparedStatement.executeQuery()) {
 				if(resultSet.next()) {
-					Boolean found = resultSet.getBoolean("found");
-					logger.info("Found result {}",found);
-					return found;
+					return resultSet.getBoolean("found");
 				}
 			}
 		} catch (SQLException e) {
@@ -48,25 +46,34 @@ public class DatabaseHistoryRepositoryImpl implements DatabaseHistoryRepository 
 			try (PreparedStatement preparedStatement = connection.prepareStatement(query)){
 				preparedStatement.executeUpdate();
 			} catch (SQLException e) {
-				logger.error("Could not execute statement " + query,e);
+				logger.error("Could not create table schema statement " + query,e);
 			}
 		}
 	}
-
+	
 	@Override
-	public DatabaseHistory last(String schema, String tableName) {
-		try (PreparedStatement preparedStatement = connection.prepareStatement(driverQuery.last(schema,tableName))){
+	public DatabaseHistory current(String schema, String tableName) {
+		try (PreparedStatement preparedStatement = connection.prepareStatement(driverQuery.current(schema,tableName))){
 			try (ResultSet resultSet = preparedStatement.executeQuery()) {
 				if(resultSet.next()) {
-					Long id = resultSet.getLong("id");
-					String name = resultSet.getString("name");
-					Long version = resultSet.getLong("version");
-					return new DatabaseHistory(id, name, version);
+					return new DatabaseHistory(resultSet.getLong("id"),resultSet.getString("name"),resultSet.getLong("version"));
 				}
 			}
 		} catch (SQLException e) {
-			logger.error("Could not create table",e);
+			logger.error("Could calculate version",e);
 		}
-		return null;
+		return new DatabaseHistory("v.0.0.0",Long.valueOf(0));
+	}
+
+	@Override
+	public void insert(String schema, String tableName, String name, Long version) {
+		try (PreparedStatement preparedStatement = connection.prepareStatement(driverQuery.insert(schema,tableName))){
+			preparedStatement.setString(1,name);
+			preparedStatement.setLong(2, version);
+			preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			logger.error("Could not determine if table exists",e);
+		}
+		
 	}
 }

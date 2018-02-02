@@ -12,6 +12,11 @@ public class DatabaseHistory {
 		this.version = version;
 	}
 	
+	public DatabaseHistory(String name,Long version) {
+		this.name = name;
+		this.version = version;
+	}
+
 	public Long getId() {
 		return id;
 	}

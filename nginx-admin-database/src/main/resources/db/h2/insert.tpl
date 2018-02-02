@@ -1,0 +1,1 @@
+insert into ${ schema }.${ tableName } (name,version) values (?,?); 
