@@ -17,7 +17,7 @@
 		<dependency>
 			<groupId>com.jslsolucoes</groupId>
 			<artifactId>template</artifactId>
-			<version>1.0.2-SNAPSHOT</version>
+			<version>1.0.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
