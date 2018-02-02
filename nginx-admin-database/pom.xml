@@ -19,11 +19,6 @@
 			<artifactId>template</artifactId>
 			<version>1.0.2-SNAPSHOT</version>
 		</dependency>
-		 <dependency>
-                <groupId>org.flywaydb</groupId>
-                <artifactId>flyway-core</artifactId>
-                <version>5.0.7</version>
-         </dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>

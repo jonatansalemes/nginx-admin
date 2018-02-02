@@ -10,9 +10,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.wildfly.swarm.Swarm;
 import org.wildfly.swarm.config.datasources.JDBCDriver;
-import org.wildfly.swarm.config.logging.Level;
 import org.wildfly.swarm.datasources.DatasourcesFraction;
-import org.wildfly.swarm.logging.LoggingFraction;
 import org.wildfly.swarm.management.ManagementFraction;
 import org.wildfly.swarm.undertow.UndertowFraction;
 import org.wildfly.swarm.undertow.WARArchive;
@@ -95,12 +93,6 @@ public class Main {
 						});
 					}).bufferCache("default").servletContainer("default", servletContainer -> {
 						servletContainer.websocketsSetting().jspSetting();
-					})).fraction(new LoggingFraction().consoleHandler("CONSOLE", consoleHandler -> {
-						consoleHandler.level(Level.INFO);
-						consoleHandler.formatter("%d{HH:mm:ss,SSS} %-5p [%c] (%t) %s%e%n");
-					}).rootLogger(rootLogger -> {
-						rootLogger.level(Level.ERROR);
-						rootLogger.handler("CONSOLE");
 					}));
 			swarm.start();
 
@@ -112,6 +104,8 @@ public class Main {
 	private static void migrateDatabase(Database database) {
 		DatabaseMigrate
 		.newBuilder()
+		.withSchema("admin")
+		.withClasspath("/db/migration/"+database.getDatabaseDriver().getDriverName())
 		.withDriver(database.getDatabaseDriver().getDriverName())
 		.withUrlConnection(database.getUrlConnection())
 		.withUsername(database.getUserName())
@@ -183,6 +177,7 @@ public class Main {
 		file.deleteOnExit();
 		return file;
 	}
+	// cd /hd1/workspace/github/nginx-admin/nginx-admin-ui-standalone/target
 	// cd d:/workspace/github/nginx-admin/nginx-admin-ui-standalone/target
 	// java -server -Djava.net.preferIPv4Stack=true -Xms256m -Xmx1g -jar nginx-admin-ui-standalone-2.0.0-swarm.jar -c "D:\workspace\github\nginx-admin\nginx-admin-ui-standalone\nginx-admin\conf\nginx-admin.conf"
 	// java -server -Djava.net.preferIPv4Stack=true -Xms256m -Xmx1g -jar nginx-admin-ui-standalone-2.0.0-swarm.jar -c "/hd1/workspace/github/nginx-admin/nginx-admin-ui-standalone/nginx-admin/conf/nginx-admin.conf"

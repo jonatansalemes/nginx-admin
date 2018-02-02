@@ -38,7 +38,7 @@ public class DatabaseMigrate {
 	private String schema = "public";
 	private String tableName = "db_migrate_history";
 	private static final Logger logger = LoggerFactory.getLogger(DatabaseMigrate.class);
-	private List<String> locations;
+	private List<String> classpaths;
 
 	static {
 		try {
@@ -87,7 +87,7 @@ public class DatabaseMigrate {
 	}
 
 	public DatabaseMigrate withClasspath(String... locations) {
-		this.locations = Arrays.asList(locations);
+		this.classpaths = Arrays.asList(locations);
 		return this;
 	}
 
@@ -179,7 +179,7 @@ public class DatabaseMigrate {
 	}
 
 	private List<Path> locations() {
-		return locations.stream().map(location -> {
+		return classpaths.stream().map(location -> {
 			try {
 				URI uri = getClass().getResource(location).toURI();
 				if (uri.getScheme().equals("jar")) {
