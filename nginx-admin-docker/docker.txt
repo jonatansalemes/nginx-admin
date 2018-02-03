@@ -1,0 +1,7 @@
+docker build --rm -t nginx-agent-red-hat-qas .
+docker run --rm -d -p 3000:3000 -p 3443:3443 -p 3001:80 --name nginx-agent-red-hat-qas nginx-agent-red-hat-qas
+docker run --rm -it -p 3000:3000 -p 3443:3443 -p 3001:80 nginx-agent-red-hat-qas /bin/bash
+
+docker build --rm -t nginx-agent-debian-qas .
+docker run --rm -d -p 4000:3000 -p 4443:3443 -p 4001:80 --name nginx-agent-debian-qas nginx-agent-red-hat-qas
+docker run --rm -it -p 4000:3000 -p 4443:3443 -p 4001:80 nginx-agent-debian-qas /bin/bash

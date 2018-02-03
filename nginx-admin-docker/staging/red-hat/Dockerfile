@@ -1,8 +1,8 @@
 FROM centos:7
-RUN mkdir -p /usr/share/downloads
-COPY build/nginx.repo /etc/yum.repos.d/nginx.repo
 RUN yum -y update
+RUN yum -y install epel-release
 RUN yum -y install psmisc initscripts java-1.8.0-openjdk-devel.x86_64 nginx unzip sudo wget
+RUN mkdir -p /usr/share/downloads
 RUN wget https://bintray.com/jslsolucoes/nginx-admin/download_file?file_path=nginx-agent-bin.zip -O /usr/share/downloads/nginx-agent-bin.zip
 RUN useradd nginx-agent -r
 RUN chmod 640 /etc/sudoers

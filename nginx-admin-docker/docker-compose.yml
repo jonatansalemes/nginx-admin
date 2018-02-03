@@ -1,0 +1,21 @@
+version: "3"
+services:
+  nginx-agent-red-hat-qas:
+    build: qas/red-hat.
+    image: nginx-agent-red-hat-qas
+    container_name: nginx-agent-red-hat-qas
+    ports:
+      - 3000:3000
+      - 3443:3443
+      - 3001:80
+  nginx-agent-debian-qas:
+    build: qas/debian.
+    image: nginx-agent-debian-qas
+    container_name: nginx-agent-debian-qas
+    ports:
+      - 4000:3000
+      - 4443:3443
+      - 4001:80
+
+
+

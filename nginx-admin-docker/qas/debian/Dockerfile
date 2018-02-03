@@ -1,6 +1,8 @@
 FROM ubuntu:16.04
 RUN apt-get -y update
-RUN apt-get -y install openjdk-8-jdk unzip sudo epel-release nginx
+RUN apt-get -y install openjdk-8-jdk unzip sudo nginx python-setuptools
+RUN easy_install supervisor
+COPY build/supervisord.conf /etc/supervisord.conf
 RUN useradd nginx-agent -r
 RUN chmod 640 /etc/sudoers
 RUN printf 'nginx-agent ALL=(ALL) NOPASSWD:/usr/sbin/nginx,/usr/bin/pgrep nginx,/usr/bin/killall nginx\n' >> /etc/sudoers
@@ -13,3 +15,4 @@ RUN chown -R nginx-agent:nginx-agent /opt/nginx-agent
 EXPOSE 80
 EXPOSE 3000
 EXPOSE 3443
+CMD ["/usr/local/bin/supervisord"]
