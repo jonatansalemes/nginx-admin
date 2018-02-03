@@ -47,11 +47,11 @@ Welcome to the new brand Nginx Admin 2.0.0 with a lot of improvments and bug fix
 
 Screenshots: 
 
-![alt tag](https://github.com/jslsolucoes/nginx-admin/blob/master/nginx-admin-ui-screenshot/screenshot1.png)
-![alt tag](https://github.com/jslsolucoes/nginx-admin/blob/master/nginx-admin-ui-screenshot/screenshot2.png)
-![alt tag](https://github.com/jslsolucoes/nginx-admin/blob/master/nginx-admin-ui-screenshot/screenshot3.png)
-![alt tag](https://github.com/jslsolucoes/nginx-admin/blob/master/nginx-admin-ui-screenshot/screenshot4.png)
-![alt tag](https://github.com/jslsolucoes/nginx-admin/blob/master/nginx-admin-ui-screenshot/screenshot5.png)
+![alt tag](https://github.com/jslsolucoes/nginx-admin/blob/develop/nginx-admin-ui-screenshot/screenshot1.png)
+![alt tag](https://github.com/jslsolucoes/nginx-admin/blob/develop/nginx-admin-ui-screenshot/screenshot2.png)
+![alt tag](https://github.com/jslsolucoes/nginx-admin/blob/develop/nginx-admin-ui-screenshot/screenshot3.png)
+![alt tag](https://github.com/jslsolucoes/nginx-admin/blob/develop/nginx-admin-ui-screenshot/screenshot4.png)
+![alt tag](https://github.com/jslsolucoes/nginx-admin/blob/develop/nginx-admin-ui-screenshot/screenshot5.png)
 
  
 Features:
