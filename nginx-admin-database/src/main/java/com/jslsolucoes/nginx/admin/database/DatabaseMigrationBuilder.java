@@ -149,7 +149,7 @@ public class DatabaseMigrationBuilder {
 					logger.info("File {} was applyed successfully on database ",fileSequence.getPath().getFileName());
 					databaseHistoryRepository.insert(database, table,fileSequence.getPath().getFileName().toString(),fileSequence.getVersion());
 				} else {
-					logger.info("File {} was ignored because is lower than current version {}",fileSequence.getPath().getFileName().toString(),databaseHistory.getName());
+					logger.info("File {} was ignored because is lower or equals than current version {}",fileSequence.getPath().getFileName().toString(),databaseHistory.getName());
 				}
 			}
 		} catch (Exception e) {

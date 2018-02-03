@@ -59,7 +59,7 @@
 		<dependency>
 			<groupId>com.jslsolucoes</groupId>
 			<artifactId>vraptor4-scheduler</artifactId>
-			<version>1.0.2</version>
+			<version>1.0.3</version>
 		</dependency>
 		<dependency>
 			<groupId>br.com.caelum</groupId>

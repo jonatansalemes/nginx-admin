@@ -98,16 +98,18 @@ public class Main {
 						});
 					}).bufferCache("default").servletContainer("default", servletContainer -> {
 						servletContainer.websocketsSetting().jspSetting();
-					})).fraction(new LoggingFraction().consoleHandler("CONSOLE", f -> {
-						f.level(Level.INFO);
-						f.formatter("%d{HH:mm:ss,SSS} %-5p [%c] (%t) %s%e%n");
-					}).logger("database", logger->{
+					})).fraction(new LoggingFraction()
+					.consoleHandler("console", consoleHandler -> {
+						consoleHandler.level(Level.INFO);
+						consoleHandler.formatter("%d{HH:mm:ss,SSS} %-5p [%c] (%t) %s%e%n");
+					}).logger("com.jslsolucoes.nginx.admin.database", logger->{
 						logger.category("com.jslsolucoes.nginx.admin.database");
 						logger.level(Level.INFO);
-						logger.handler("CONSOLE");
+						logger.useParentHandlers(false);
+						logger.handler("console");
 					}).rootLogger(rootLogger -> {
 						rootLogger.level(Level.ERROR);
-						rootLogger.handler("CONSOLE");
+						rootLogger.handler("console");
 					}));
 			swarm.start();
 			
