@@ -1,6 +1,7 @@
 package com.jslsolucoes.nginx.admin.agent.resource.impl;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
@@ -33,10 +34,10 @@ public class NginxUpstreamResourceImpl {
 	}
 
 	private NginxOperationResult createOrUpdate(String name, String uuid, String strategy, List<Endpoint> endpoints) {
-		try {
+		try(FileWriter fileWriter = new FileWriter(upstream(uuid))) {
 			TemplateProcessor.newBuilder().withTemplate("/template/nginx/dynamic", "upstream.tpl")
 					.withData("name", name).withData("strategy", strategy).withData("endpoints", endpoints)
-					.withOutputLocation(upstream(uuid)).process();
+					.withOutput(fileWriter).process();
 			return new NginxOperationResult(NginxOperationResultType.SUCCESS);
 		} catch (Exception e) {
 			return new NginxOperationResult(NginxOperationResultType.ERROR, e);

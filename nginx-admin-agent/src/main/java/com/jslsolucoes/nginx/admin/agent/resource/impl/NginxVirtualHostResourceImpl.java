@@ -1,6 +1,7 @@
 package com.jslsolucoes.nginx.admin.agent.resource.impl;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
@@ -40,11 +41,11 @@ public class NginxVirtualHostResourceImpl {
 
 	public NginxOperationResult createOrUpdate(String uuid, Boolean https, String certificateUuid,
 			String certificatePrivateKeyUuid, List<String> aliases, List<Location> locations) {
-		try {
+		try(FileWriter fileWriter = new FileWriter(virtualHost(uuid))) {
 			TemplateProcessor.newBuilder().withTemplate("/template/nginx/dynamic", "virtual-host.tpl")
 					.withData("https", https).withData("certificateUuid", certificateUuid)
 					.withData("certificatePrivateKeyUuid", certificatePrivateKeyUuid).withData("settings", settings())
-					.withData("aliases", aliases).withData("locations", locations).withOutputLocation(virtualHost(uuid))
+					.withData("aliases", aliases).withData("locations", locations).withOutput(fileWriter)
 					.process();
 			return new NginxOperationResult(NginxOperationResultType.SUCCESS);
 		} catch (Exception e) {
