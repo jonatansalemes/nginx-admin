@@ -9,7 +9,7 @@
 [![][paypal img]][paypal]
 
 [travis]:https://travis-ci.org/jslsolucoes/nginx-admin
-[travis img]:https://travis-ci.org/jslsolucoes/nginx-admin.svg?branch=master
+[travis img]:https://travis-ci.org/jslsolucoes/nginx-admin.svg?branch=develop
 
 [license]:LICENSE
 [license img]:https://img.shields.io/badge/License-Apache%202-blue.svg
@@ -38,12 +38,12 @@
 [paypal]:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PE25DPU3CNFH4
 [paypal img]:https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif
 
-
-
 # nginx-admin
 Nginx admin is an open source multiplatform manager for nginx software to easy administration 
 
-Welcome to the new brand Nginx Admin 2.0.0 with a lot of improvments and bug fixes.
+Welcome to the new brand Nginx Admin 2.x with a lot of improvments and bug fixes. 
+This milestone develop was a great breakthrough in system arch and unfortunately break compatibility with old 1.x version. Sorry for that.
+You can check new way to install components arch and new features like manager multiple nginx in a single manager ui.
 
 Screenshots: 
 
@@ -58,9 +58,9 @@ Features:
 
 <ul>
 	<li>Test configuration,Kill,Stop,Start,Status,Reload and Restart</li>
-	<li>Support for manager multiple nginx agent (nodes) in a single manager interface</li>
+	<li>Support for manager multiple nginx agent (nodes) in a single manager ui interface</li>
 	<li>Manager servers endpoints,ssl certificate,upstreams and virtual hosts</li>
-	<li>Multiplatform manager</li>
+	<li>Multiplatform support for manager</li>
 	<li>100% Java</li>
 	<li>Rotate and collect errors and access logs</li>
 	<li>Log reports and stats</li>
@@ -78,7 +78,7 @@ Supported operational system for manager:
 	<li>Mac</li>
 </ul>
 
-Supported database for manager:
+Supported database for manager: (Another databases like postgresql,oracle and sqlserver will be released soon as possible)
 <ul>
 	<li>H2</li>
 	<li>MySQL</li>
@@ -86,14 +86,39 @@ Supported database for manager:
 
 
 <hr/>
-Installation:
+Installation: (Always as root user)
 
-Red-hat
+Nginx agent:
 
-Agent :
+Red-hat:
 <pre>
 	<code>
-		mkdir -p /usr/share/downloads	
+		#install pre-dependencies if has no one
+		yum -y update
+		yum -y install epel-release
+		yum -y install psmisc initscripts java-1.8.0-openjdk-devel.x86_64 nginx unzip sudo wget visudo
+	
+		#create user and add permission for running agent. you can also use visudo to add permissions below
+		useradd nginx-agent -r
+		chmod 640 /etc/sudoers
+		printf 'nginx-agent ALL=(ALL) NOPASSWD:/usr/sbin/nginx,/usr/bin/pgrep nginx,/usr/bin/killall nginx\n' >> /etc/sudoers
+		chmod 440 /etc/sudoers
+		
+		#download and extract latest version of nginx agent package
+		mkdir -p /opt/downloads
+		wget https://bintray.com/jslsolucoes/nginx-admin/download_file?file_path=nginx-agent-bin.zip -O /opt/downloads/nginx-agent-bin.zip
+		unzip /opt/downloads/nginx-agent-bin.zip -d /opt
+		chmod -R 755 /opt/nginx-agent
+		chown -R nginx-agent:nginx-agent /opt/nginx-agent
+		
+		#add init scripts to os
+		cp /opt/nginx-agent/scripts/red-hat/nginx-agent.sh /etc/init.d/nginx-agent
+		chmod +x /etc/init.d/nginx-agent
+		chown root:root /etc/init.d/nginx-agent
+		chkconfig --level 345 nginx-agent on
+		
+		#start service
+		service nginx-agent start
 	</code>
 </pre>
 
