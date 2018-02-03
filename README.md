@@ -43,7 +43,9 @@
 # nginx-admin
 Nginx admin is an open source multiplatform manager for nginx software to easy administration 
 
-Screenshots : 
+Welcome to the new brand Nginx Admin 2.0.0 with a lot of improvments and bug fixes.
+
+Screenshots: 
 
 ![alt tag](https://github.com/jslsolucoes/nginx-admin/blob/master/nginx-admin-ui-screenshot/screenshot1.png)
 ![alt tag](https://github.com/jslsolucoes/nginx-admin/blob/master/nginx-admin-ui-screenshot/screenshot2.png)
@@ -52,70 +54,49 @@ Screenshots :
 ![alt tag](https://github.com/jslsolucoes/nginx-admin/blob/master/nginx-admin-ui-screenshot/screenshot5.png)
 
  
-Some features :
+Features:
+
 <ul>
-	<li>Test configuration,Stop,Start,Status,Reload and Restart</li>
-	<li>Manager serves,ssl certificate,upstreams and virtual domains</li>
-	<li>Multiplatform</li>
+	<li>Test configuration,Kill,Stop,Start,Status,Reload and Restart</li>
+	<li>Support for manager multiple nginx agent (nodes) in a single manager interface</li>
+	<li>Manager servers endpoints,ssl certificate,upstreams and virtual hosts</li>
+	<li>Multiplatform manager</li>
 	<li>100% Java</li>
-	<li>Rotate and collect log</li>
-	<li>Log reports</li>
+	<li>Rotate and collect errors and access logs</li>
+	<li>Log reports and stats</li>
+</ul>
+
+Supported operational system for agent:
+<ul>
+	<li>Linux</li>
+</ul>
+
+Supported operational system for manager:
+<ul>
+	<li>Linux</li>
+	<li>Windows</li>
+	<li>Mac</li>
+</ul>
+
+Supported database for manager:
+<ul>
+	<li>H2</li>
+	<li>MySQL</li>
 </ul>
 
 
 <hr/>
-Automatic installation :
+Installation:
 
-Red-hat distribution you follow this steps as root user : 
+Red-hat
+
+Agent :
 <pre>
 	<code>
-wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/master/nginx-admin-script/src/main/resources/scripts/red-hat/install.sh
-chmod +x install.sh
-./install.sh 
+		mkdir -p /usr/share/downloads	
 	</code>
 </pre>
 
-
-Debian distribution you follow this steps as root user : 
-<pre>
-	<code>
-wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/master/nginx-admin-script/src/main/resources/scripts/debian/install.sh
-chmod +x install.sh
-./install.sh 
-	</code>
-</pre>
-
-<hr/>
-Automatic update version :
-
-Red-hat distribution you follow this steps as root user : 
-<pre>
-	<code>
-wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/master/nginx-admin-script/src/main/resources/scripts/red-hat/update.sh
-chmod +x update.sh
-./update.sh 
-	</code>
-</pre>
-
-Debian distribution you follow this steps as root user : 
-<pre>
-	<code>
-wget https://raw.githubusercontent.com/jslsolucoes/nginx-admin/master/nginx-admin-script/src/main/resources/scripts/debian/update.sh
-chmod +x update.sh
-./update.sh 
-	</code>
-</pre>
-
-<hr/>
-Manual installation: 
-
-* Download latest version of manager hosted on <a href='https://bintray.com/jslsolucoes/nginx-admin/com.jslsolucoes.nginx.admin/'>bintray</a> 
-* Install nginx (required)
-* Install jdk8 (required)
-* Run manager with super user privileges : java -jar nginx-admin-standalone-{version}-swarm.jar
-* h2 database is located under ~/database/nginx-admin (it`s important keep backup of this folder)
-* Access localhost:3000 to access manager
-* Enjoy
 
 <h1>For premium support please contact : jonatan@jslsolucoes.com</h2>
 

@@ -66,6 +66,9 @@
 								<copy
 									file="${project.build.directory}/nginx-agent-bin.zip"
 									tofile="${base.dir}/nginx-admin-docker/qas/red-hat/build/nginx-agent-bin.zip" />
+								<copy
+									file="${project.build.directory}/nginx-agent-bin.zip"
+									tofile="${base.dir}/nginx-admin-docker/qas/debian/build/nginx-agent-bin.zip" />
 							</tasks>
 						</configuration>
 						<goals>
