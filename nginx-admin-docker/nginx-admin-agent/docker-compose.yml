@@ -40,6 +40,7 @@ services:
       - 7000:3000
       - 7443:3443
       - 7001:80
+      - 23:22
   nginx-agent-debian-release:
     build: release/debian.
     image: nginx-agent-debian-release
@@ -48,6 +49,7 @@ services:
       - 8000:3000
       - 8443:3443
       - 8001:80
+      - 24:22
 
 
 

@@ -119,6 +119,14 @@ Red-hat:
 		
 		#start service
 		service nginx-agent start
+		
+		#you can check for connectivity that must return http status 200 OK for the request
+		wget --header "Authorization : changeit" http://localhost:3000
+		
+		#By default your authorization key is "changeit" you also can check for connectivity in your browser accessing http://ip:3000 or https://ip:3443 that will return http status 403 forbidden with message "Resource forbidden" because requires authorization header to work
+		#Please access /opt/nginx-agent/conf/nginx-agent.conf and change variable NGINX_AGENT_AUTHORIZATION_KEY=changeit value for one that only you knows and unique for every node that you have installed. You can also change others configurations if you like in this file
+		#Nginx manager ui will ask for this authorization key value to connect with this agent.
+		
 	</code>
 </pre>
 
