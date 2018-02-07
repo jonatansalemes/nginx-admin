@@ -14,26 +14,26 @@
 [license]:LICENSE
 [license img]:https://img.shields.io/badge/License-Apache%202-blue.svg
 
-[sonar]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin:master
-[sonar img]:https://sonarcloud.io/api/badges/gate?key=com.jslsolucoes:nginx-admin:master
+[sonar]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin
+[sonar img]:https://sonarcloud.io/api/badges/gate?key=com.jslsolucoes:nginx-admin
 
-[bugs]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin:master
-[bugs img]:https://sonarcloud.io/api/badges/measure?key=com.jslsolucoes:nginx-admin:master&metric=bugs
+[bugs]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin
+[bugs img]:https://sonarcloud.io/api/badges/measure?key=com.jslsolucoes:nginx-admin&metric=bugs
 
-[coverage]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin:master
-[coverage img]:https://sonarcloud.io/api/badges/measure?key=com.jslsolucoes:nginx-admin:master&metric=coverage
+[coverage]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin
+[coverage img]:https://sonarcloud.io/api/badges/measure?key=com.jslsolucoes:nginx-admin&metric=coverage
 
-[bugs]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin:master
-[bugs img]:https://sonarcloud.io/api/badges/measure?key=com.jslsolucoes:nginx-admin:master&metric=bugs
+[bugs]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin
+[bugs img]:https://sonarcloud.io/api/badges/measure?key=com.jslsolucoes:nginx-admin&metric=bugs
 
-[lines]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin:master
-[lines img]:https://sonarcloud.io/api/badges/measure?key=com.jslsolucoes:nginx-admin:master&metric=lines
+[lines]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin
+[lines img]:https://sonarcloud.io/api/badges/measure?key=com.jslsolucoes:nginx-admin&metric=lines
 
-[vulnerabilities]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin:master
-[vulnerabilities img]:https://sonarcloud.io/api/badges/measure?key=com.jslsolucoes:nginx-admin:master&metric=vulnerabilities
+[vulnerabilities]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin
+[vulnerabilities img]:https://sonarcloud.io/api/badges/measure?key=com.jslsolucoes:nginx-admin&metric=vulnerabilities
 
-[code_smells]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin:master
-[code_smells img]:https://sonarcloud.io/api/badges/measure?key=com.jslsolucoes:nginx-admin:master&metric=code_smells
+[code_smells]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin
+[code_smells img]:https://sonarcloud.io/api/badges/measure?key=com.jslsolucoes:nginx-admin&metric=code_smells
 
 [paypal]:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PE25DPU3CNFH4
 [paypal img]:https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif
