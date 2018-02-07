@@ -170,7 +170,12 @@ Debian:
 </pre>
 
 
-Nginx admin ui (manager): (you can install manager in the same machine or diferent machine then agent above)
+Nginx admin ui (manager): (you can install manager in the same machine or diferent machine then agent above).
+The default user for manager is: 
+
+Login :    admin
+Password : admin
+
 
 Red-hat:
 <pre>
