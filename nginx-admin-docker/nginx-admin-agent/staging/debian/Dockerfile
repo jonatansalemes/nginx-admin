@@ -4,6 +4,7 @@ RUN apt-get -y install openjdk-8-jdk unzip sudo nginx python-setuptools wget
 RUN easy_install supervisor
 COPY build/supervisord.conf /etc/supervisord.conf
 RUN useradd nginx-agent -r
+RUN useradd nginx -r
 RUN chmod 640 /etc/sudoers
 RUN printf 'nginx-agent ALL=(ALL) NOPASSWD:/usr/sbin/nginx,/usr/bin/pgrep nginx,/usr/bin/killall nginx\n' >> /etc/sudoers
 RUN chmod 440 /etc/sudoers
