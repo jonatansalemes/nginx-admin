@@ -41,7 +41,7 @@
 # nginx-admin
 Nginx admin is an open source multiplatform manager for nginx software to easy administration 
 
-Welcome to the new brand Nginx Admin 2.x with a lot of improvments and bug fixes. 
+Welcome to the new brand Nginx Admin 2.x-RC1 with a lot of improvments and bug fixes. 
 This milestone develop was a great breakthrough in system arch and unfortunately break compatibility with old 1.x version. Sorry for that.
 You can check new way to install components arch and new features like manager multiple nginx in a single manager ui.
 
@@ -88,7 +88,7 @@ Supported database for manager: (Another databases like postgresql,oracle and sq
 <hr/>
 Installation: (Always as root user)
 
-Nginx agent:
+Nginx agent (node):
 
 Red-hat:
 <pre>
@@ -171,6 +171,79 @@ Debian:
 	</code>
 </pre>
 
+
+Nginx admin ui (manager): (you can install manager in the same machine or diferent machine then agent above)
+
+Red-hat:
+<pre>
+	<code>
+		#install pre-dependencies if has no one
+		yum -y update
+		yum -y install psmisc initscripts java-1.8.0-openjdk-devel.x86_64 unzip wget
+	
+		#create user for running manager
+		useradd nginx-admin -r
+		
+		#download and extract latest version of nginx manager package
+		mkdir -p /opt/downloads
+		wget https://bintray.com/jslsolucoes/nginx-admin/download_file?file_path=nginx-admin-bin.zip -O /opt/downloads/nginx-admin-bin.zip
+		unzip /opt/downloads/nginx-admin-bin.zip -d /opt
+		chmod -R 755 /opt/nginx-admin
+		chown -R nginx-admin:nginx-admin /opt/nginx-admin
+		
+		#add init scripts to os
+		cp /opt/nginx-admin/scripts/red-hat/nginx-admin.sh /etc/init.d/nginx-admin
+		chmod +x /etc/init.d/nginx-admin
+		chown root:root /etc/init.d/nginx-admin
+		chkconfig --level 345 nginx-admin on
+		
+		#start service
+		service nginx-admin start
+		
+		#You can check for manager ui in browser accessing http://localhost:4000
+		#Please access /opt/nginx-admin/conf/nginx-admin.conf and you can see or change others configurations 
+		#like smtp settings or change database driver connection (NGINX_ADMIN_DB_DRIVER=(h2 or mysql)) if you like in this file
+		
+	</code>
+</pre>
+
+Debian:
+<pre>
+	<code>
+		#install pre-dependencies if has no one
+		apt-get -y update
+		apt-get -y install openjdk-8-jdk unzip wget
+	
+		#create user for running manager
+		useradd nginx-admin -r
+		
+		#download and extract latest version of nginx manager package
+		mkdir -p /opt/downloads
+		wget https://bintray.com/jslsolucoes/nginx-admin/download_file?file_path=nginx-admin-bin.zip -O /opt/downloads/nginx-admin-bin.zip
+		unzip /opt/downloads/nginx-admin-bin.zip -d /opt
+		chmod -R 755 /opt/nginx-admin
+		chown -R nginx-admin:nginx-admin /opt/nginx-admin
+		
+		#add init scripts to os
+		cp /opt/nginx-admin/scripts/debian/nginx-admin.sh /etc/init.d/nginx-admin
+		chmod +x /etc/init.d/nginx-admin
+		chown root:root /etc/init.d/nginx-admin
+		update-rc.d nginx-admin defaults
+		update-rc.d nginx-admin enable
+		
+		#start service
+		service nginx-admin start
+		
+		#You can check for manager ui in browser accessing http://localhost:4000
+		#Please access /opt/nginx-admin/conf/nginx-admin.conf and you can see or change others configurations 
+		#like smtp settings or change database driver connection (NGINX_ADMIN_DB_DRIVER=(h2 or mysql)) if you like in this file
+		
+	</code>
+</pre>
+
+Thanks for using nginx-admin.
+
+Issues or questions can be done in https://github.com/jslsolucoes/nginx-admin/issues. 
 
 <h1>For premium support please contact : jonatan@jslsolucoes.com</h2>
 
