@@ -69,7 +69,7 @@ public class ConfigurationLoader {
 	private Application application() {
 		Application application = new Application();
 		application.setVersion(properties.getProperty("NGINX_AGENT_VERSION"));
-		application.setUrlBase(properties.getProperty("NGINX_AGENT_APP_URL_BASE"));
+		application.setUrlBase(properties.getProperty("NGINX_AGENT_URL_BASE"));
 		application.setAuthorizationKey(properties.getProperty("NGINX_AGENT_AUTHORIZATION_KEY"));
 		return application;
 	}
