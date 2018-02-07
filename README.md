@@ -9,31 +9,31 @@
 [![][paypal img]][paypal]
 
 [travis]:https://travis-ci.org/jslsolucoes/nginx-admin
-[travis img]:https://travis-ci.org/jslsolucoes/nginx-admin.svg?branch=develop
+[travis img]:https://travis-ci.org/jslsolucoes/nginx-admin.svg?branch=master
 
 [license]:LICENSE
 [license img]:https://img.shields.io/badge/License-Apache%202-blue.svg
 
-[sonar]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin:develop
-[sonar img]:https://sonarcloud.io/api/badges/gate?key=com.jslsolucoes:nginx-admin:develop
+[sonar]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin:master
+[sonar img]:https://sonarcloud.io/api/badges/gate?key=com.jslsolucoes:nginx-admin:master
 
-[bugs]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin:develop
-[bugs img]:https://sonarcloud.io/api/badges/measure?key=com.jslsolucoes:nginx-admin:develop&metric=bugs
+[bugs]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin:master
+[bugs img]:https://sonarcloud.io/api/badges/measure?key=com.jslsolucoes:nginx-admin:master&metric=bugs
 
-[coverage]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin:develop
-[coverage img]:https://sonarcloud.io/api/badges/measure?key=com.jslsolucoes:nginx-admin:develop&metric=coverage
+[coverage]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin:master
+[coverage img]:https://sonarcloud.io/api/badges/measure?key=com.jslsolucoes:nginx-admin:master&metric=coverage
 
-[bugs]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin:develop
-[bugs img]:https://sonarcloud.io/api/badges/measure?key=com.jslsolucoes:nginx-admin:develop&metric=bugs
+[bugs]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin:master
+[bugs img]:https://sonarcloud.io/api/badges/measure?key=com.jslsolucoes:nginx-admin:master&metric=bugs
 
-[lines]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin:develop
-[lines img]:https://sonarcloud.io/api/badges/measure?key=com.jslsolucoes:nginx-admin:develop&metric=lines
+[lines]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin:master
+[lines img]:https://sonarcloud.io/api/badges/measure?key=com.jslsolucoes:nginx-admin:master&metric=lines
 
-[vulnerabilities]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin:develop
-[vulnerabilities img]:https://sonarcloud.io/api/badges/measure?key=com.jslsolucoes:nginx-admin:develop&metric=vulnerabilities
+[vulnerabilities]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin:master
+[vulnerabilities img]:https://sonarcloud.io/api/badges/measure?key=com.jslsolucoes:nginx-admin:master&metric=vulnerabilities
 
-[code_smells]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin:develop
-[code_smells img]:https://sonarcloud.io/api/badges/measure?key=com.jslsolucoes:nginx-admin:develop&metric=code_smells
+[code_smells]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin:master
+[code_smells img]:https://sonarcloud.io/api/badges/measure?key=com.jslsolucoes:nginx-admin:master&metric=code_smells
 
 [paypal]:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PE25DPU3CNFH4
 [paypal img]:https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif
@@ -47,11 +47,11 @@ You can check new way to install components arch and new features like manager m
 
 Screenshots: 
 
-![alt tag](https://github.com/jslsolucoes/nginx-admin/blob/develop/nginx-admin-ui-screenshot/screenshot1.png)
-![alt tag](https://github.com/jslsolucoes/nginx-admin/blob/develop/nginx-admin-ui-screenshot/screenshot2.png)
-![alt tag](https://github.com/jslsolucoes/nginx-admin/blob/develop/nginx-admin-ui-screenshot/screenshot3.png)
-![alt tag](https://github.com/jslsolucoes/nginx-admin/blob/develop/nginx-admin-ui-screenshot/screenshot4.png)
-![alt tag](https://github.com/jslsolucoes/nginx-admin/blob/develop/nginx-admin-ui-screenshot/screenshot5.png)
+![alt tag](https://github.com/jslsolucoes/nginx-admin/blob/master/nginx-admin-ui-screenshot/screenshot1.png)
+![alt tag](https://github.com/jslsolucoes/nginx-admin/blob/master/nginx-admin-ui-screenshot/screenshot2.png)
+![alt tag](https://github.com/jslsolucoes/nginx-admin/blob/master/nginx-admin-ui-screenshot/screenshot3.png)
+![alt tag](https://github.com/jslsolucoes/nginx-admin/blob/master/nginx-admin-ui-screenshot/screenshot4.png)
+![alt tag](https://github.com/jslsolucoes/nginx-admin/blob/master/nginx-admin-ui-screenshot/screenshot5.png)
 
  
 Features:
