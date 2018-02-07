@@ -54,12 +54,12 @@ is_launched() {
 }
 
 try_launch() {
-	rm -f $NGINX_ADMIN_CONSOLE_LOG
-	cat /dev/null > $NGINX_ADMIN_CONSOLE_LOG
 	mkdir -p $(dirname $NGINX_ADMIN_PIDFILE)
+	mkdir -p $(dirname $NGINX_ADMIN_CONSOLE_LOG)
+	rm -f $NGINX_ADMIN_CONSOLE_LOG
 	chown $NGINX_ADMIN_USER $(dirname $NGINX_ADMIN_PIDFILE) || true
 
-	runuser -s /bin/bash -l $NGINX_ADMIN_USER -c "$JDK_HOME/bin/java -server -Djava.net.preferIPv4Stack=true -Xms256m -Xmx1g -jar $NGINX_ADMIN_BIN/nginx-admin-standalone-$NGINX_ADMIN_VERSION-swarm.jar -c $NGINX_ADMIN_CONF/nginx-admin.conf" >> $NGINX_ADMIN_CONSOLE_LOG 2>&1 & echo $! > $NGINX_ADMIN_PIDFILE
+	runuser $NGINX_ADMIN_USER -c "$JAVA -server -Djava.net.preferIPv4Stack=true -Djava.awt.headless=true -Xms256m -Xmx1g -jar $NGINX_ADMIN_BIN/nginx-admin-ui-standalone-$NGINX_ADMIN_VERSION-swarm.jar -c $NGINX_ADMIN_CONF/nginx-admin.conf" >> $NGINX_ADMIN_CONSOLE_LOG 2>&1 & echo $! > $NGINX_ADMIN_PIDFILE
 	
 	if ! is_launched ; then
 		rm -f $NGINX_ADMIN_PIDFILE

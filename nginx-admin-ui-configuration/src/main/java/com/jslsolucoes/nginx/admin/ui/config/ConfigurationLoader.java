@@ -88,14 +88,15 @@ public class ConfigurationLoader {
 
 	private Application application() {
 		Application application = new Application();
-		application.setVersion(properties.getProperty("NGINX_ADMIN_APP_VERSION"));
-		application.setUrlBase(properties.getProperty("NGINX_ADMIN_APP_URL_BASE"));
+		application.setVersion(properties.getProperty("NGINX_ADMIN_VERSION"));
+		application.setUrlBase(properties.getProperty("NGINX_ADMIN_URL_BASE"));
 		return application;
 	}
 
 	private Database database() {
 		Database database = new Database();
 		database.setDriver(properties.getProperty("NGINX_ADMIN_DB_DRIVER"));
+		database.setLocation(properties.getProperty("NGINX_ADMIN_DB_LOCATION"));
 		database.setHost(properties.getProperty("NGINX_ADMIN_DB_HOST"));
 		database.setName(properties.getProperty("NGINX_ADMIN_DB_NAME"));
 		database.setPort(Integer.valueOf(properties.getProperty("NGINX_ADMIN_DB_PORT")));

@@ -3,6 +3,7 @@ package com.jslsolucoes.nginx.admin.ui.config;
 public class Database {
 
 	private String driver;
+	private String location;
 	private String host;
 	private Integer port;
 	private String name;
@@ -65,6 +66,14 @@ public class Database {
 
 	public void setDriver(String driver) {
 		this.driver = driver;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
 	}
 	
 }

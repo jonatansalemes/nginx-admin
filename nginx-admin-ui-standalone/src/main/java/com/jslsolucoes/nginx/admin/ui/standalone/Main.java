@@ -133,7 +133,7 @@ public class Main {
 	private static void migrateDatabase(Database database) {
 		DatabaseMigrationBuilder.newBuilder().withClasspath("/db/migration/" + database.getDriver())
 				.withDriver(DatabaseDriver.forName(database.getDriver())).withHost(database.getHost())
-				.withLocation("~/h2")
+				.withLocation(database.getLocation())
 				.withPort(database.getPort()).withDatabase(database.getName()).withUsername(database.getUsername())
 				.withPassword(database.getPassword()).migrate();
 	}
@@ -183,7 +183,7 @@ public class Main {
 		} else if (driver.equals("mysql")) {
 			return "jdbc:mysql://" + database.getHost() + ":" + database.getPort() + "/" + database.getName() + "?useSSL=false";
 		} else if (driver.equals("h2")) {
-			return "jdbc:h2:~/h2/" + database.getName() + ";INIT=use "+database.getName()+";AUTO_SERVER=TRUE";
+			return "jdbc:h2:" + database.getLocation() + "/" + database.getName() + ";INIT=use "+database.getName()+";AUTO_SERVER=TRUE";
 		} else if (driver.equals("sqlserver")) {
 			return "jdbc:sqlserver://" + database.getHost() + ":" + database.getPort() + "/" + database.getName();
 		}

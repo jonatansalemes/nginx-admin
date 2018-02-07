@@ -52,6 +52,25 @@
 								<copy
 									file="${base.dir}/nginx-admin-ui/target/nginx-admin-ui-${project.version}.war"
 									tofile="${resource.dir}/nginx-admin-ui-${project.version}.war" />
+								<fixcrlf srcdir="${project.basedir}/nginx-admin/conf" includes="**/*.conf" eol="lf" eof="remove"/>
+								<fixcrlf srcdir="${project.basedir}/nginx-admin/scripts" includes="**/*.sh" eol="lf" eof="remove"/>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+					<execution>
+					    <id>copy-bin-zip</id>
+						<phase>install</phase>
+						<configuration>
+							<tasks>
+								<copy
+									file="${project.build.directory}/nginx-admin-bin.zip"
+									tofile="${base.dir}/nginx-admin-docker/nginx-admin-ui/qas/red-hat/build/nginx-admin-bin.zip" />
+								<copy
+									file="${project.build.directory}/nginx-admin-bin.zip"
+									tofile="${base.dir}/nginx-admin-docker/nginx-admin-ui/qas/debian/build/nginx-admin-bin.zip" />
 							</tasks>
 						</configuration>
 						<goals>

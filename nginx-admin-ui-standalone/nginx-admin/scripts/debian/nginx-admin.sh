@@ -58,12 +58,12 @@ is_launched() {
 
 
 try_launch() {
-	rm -f $NGINX_ADMIN_CONSOLE_LOG
-	cat /dev/null > $NGINX_ADMIN_CONSOLE_LOG
-	mkdir -p $(dirname $NGINX_ADMIN_PIDFILE)
-	chown $NGINX_ADMIN_USER $(dirname $NGINX_ADMIN_PIDFILE) || true
+	 	mkdir -p $(dirname $NGINX_ADMIN_PIDFILE)
+        mkdir -p $(dirname $NGINX_ADMIN_CONSOLE_LOG)
+        rm -f $NGINX_ADMIN_CONSOLE_LOG
+        chown $NGINX_ADMIN_USER $(dirname $NGINX_ADMIN_PIDFILE) || true
 
-	start-stop-daemon --start --make-pidfile --pidfile $NGINX_ADMIN_PIDFILE --chuid $NGINX_ADMIN_USER --user $NGINX_ADMIN_USER --chdir $NGINX_ADMIN_HOME --exec $JDK_HOME/bin/java --background -- -server -Djava.net.preferIPv4Stack=true -Xms256m -Xmx1g -jar $NGINX_ADMIN_BIN/nginx-admin-standalone-$NGINX_ADMIN_VERSION-swarm.jar -c $NGINX_ADMIN_CONF/nginx-admin.conf
+	start-stop-daemon --start --make-pidfile --pidfile $NGINX_ADMIN_PIDFILE --chuid $NGINX_ADMIN_USER --user $NGINX_ADMIN_USER --chdir $NGINX_ADMIN_HOME --exec $JAVA --background -- -server -Djava.net.preferIPv4Stack=true -Djava.awt.headless=true -Xms256m -Xmx1g -jar $NGINX_ADMIN_BIN/nginx-admin-ui-standalone-$NGINX_ADMIN_VERSION-swarm.jar -c $NGINX_ADMIN_CONF/nginx-admin.conf
 	
 	if ! is_launched ; then
 		rm -f $NGINX_ADMIN_PIDFILE

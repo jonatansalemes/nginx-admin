@@ -52,6 +52,7 @@
 								<copy
 									file="${base.dir}/nginx-admin-agent/target/nginx-admin-agent-${project.version}.war"
 									tofile="${resource.dir}/nginx-admin-agent-${project.version}.war" />
+								<fixcrlf srcdir="${project.basedir}/nginx-agent/conf" includes="**/*.conf" eol="lf" eof="remove"/>
 								<fixcrlf srcdir="${project.basedir}/nginx-agent/scripts" includes="**/*.sh" eol="lf" eof="remove"/>
 							</tasks>
 						</configuration>

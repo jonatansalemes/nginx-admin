@@ -1,0 +1,9 @@
+# Misc commands
+docker rmi $(docker images --quiet --filter "dangling=true")
+docker stop $(docker ps -aq)
+docker rm $(docker ps -aq)
+
+#qas enviroment
+docker build --rm -t nginx-admin-red-hat-qas .
+docker run --rm -d -p 10000:4000 -p 10443:4443 --name nginx-admin-red-hat-qas nginx-admin-red-hat-qas
+docker run --rm -it -p 10000:4000 -p 10443:4443 nginx-admin-red-hat-qas /bin/bash
