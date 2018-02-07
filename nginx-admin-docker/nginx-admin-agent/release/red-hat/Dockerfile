@@ -7,3 +7,4 @@ EXPOSE 22
 EXPOSE 80
 EXPOSE 3000
 EXPOSE 3443
+CMD ["/usr/sbin/sshd", "-D"]

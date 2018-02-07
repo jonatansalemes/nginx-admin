@@ -1,7 +1,7 @@
 version: "3"
 services:
   nginx-agent-red-hat-qas:
-    build: qas/red-hat.
+    build: qas/red-hat
     image: nginx-agent-red-hat-qas
     container_name: nginx-agent-red-hat-qas
     ports:
@@ -9,7 +9,7 @@ services:
       - 3443:3443
       - 3001:80
   nginx-agent-debian-qas:
-    build: qas/debian.
+    build: qas/debian
     image: nginx-agent-debian-qas
     container_name: nginx-agent-debian-qas
     ports:
@@ -17,7 +17,7 @@ services:
       - 4443:3443
       - 4001:80
   nginx-agent-red-hat-staging:
-    build: staging/red-hat.
+    build: staging/red-hat
     image: nginx-agent-red-hat-staging
     container_name: nginx-agent-red-hat-staging
     ports:
@@ -25,7 +25,7 @@ services:
       - 5443:3443
       - 5001:80
   nginx-agent-debian-staging:
-    build: staging/debian.
+    build: staging/debian
     image: nginx-agent-debian-staging
     container_name: nginx-agent-debian-staging
     ports:
@@ -33,7 +33,7 @@ services:
       - 6443:3443
       - 6001:80
   nginx-agent-red-hat-release:
-    build: release/red-hat.
+    build: release/red-hat
     image: nginx-agent-red-hat-release
     container_name: nginx-agent-red-hat-release
     ports:
@@ -42,7 +42,7 @@ services:
       - 7001:80
       - 23:22
   nginx-agent-debian-release:
-    build: release/debian.
+    build: release/debian
     image: nginx-agent-debian-release
     container_name: nginx-agent-debian-release
     ports:

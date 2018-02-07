@@ -28,5 +28,5 @@ docker run --rm -d -p 23:22 -p 7000:3000 -p 7443:3443 -p 7001:80 --name nginx-ag
 docker run --rm -it -p 23:22 -p 7000:3000 -p 7443:3443 -p 7001:80 nginx-agent-red-hat-release /bin/bash
 
 docker build --rm -t nginx-agent-debian-release .
-docker run --rm -d -p 8000:3000 -p 8443:3443 -p 8001:80 --name nginx-agent-debian-staging nginx-agent-debian-release
-docker run --rm -it -p 8000:3000 -p 8443:3443 -p 8001:80 nginx-agent-debian-release /bin/bash
+docker run --rm -d -p 24:22 -p 8000:3000 -p 8443:3443 -p 8001:80 --name nginx-agent-debian-staging nginx-agent-debian-release
+docker run --rm -it -p 24:22 -p 8000:3000 -p 8443:3443 -p 8001:80 nginx-agent-debian-release /bin/bash
