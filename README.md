@@ -122,7 +122,7 @@ Red-hat:
 		wget --header "Authorization: changeit" http://localhost:3000
 		
 		#By default your authorization key is "changeit" you also can check for connectivity in your browser accessing http://ip:3000 or https://ip:3443 that will return http status 403 forbidden with message "Resource forbidden" because requires authorization header to work
-		#Please access /opt/nginx-agent/conf/nginx-agent.conf and change variable NGINX_AGENT_AUTHORIZATION_KEY=changeit value for one that only you knows and unique for every node that you have installed. You can also change others configurations if you like in this file
+		#Please access /opt/nginx-agent/conf/nginx-agent.conf and change variable NGINX_AGENT_AUTHORIZATION_KEY=changeit value for one that only you knows and unique for every node that you have installed. You can also change others configurations if you like in this file and restart service to apply new settings
 		#Nginx manager ui will ask for this authorization key value to connect with this agent.
 		
 	</code>
@@ -163,7 +163,7 @@ Debian:
 		wget --header "Authorization: changeit" http://localhost:3000
 		
 		#By default your authorization key is "changeit" you also can check for connectivity in your browser accessing http://ip:3000 or https://ip:3443 that will return http status 403 forbidden with message "Resource forbidden" because requires authorization header to work
-		#Please access /opt/nginx-agent/conf/nginx-agent.conf and change variable NGINX_AGENT_AUTHORIZATION_KEY=changeit value for one that only you knows and unique for every node that you have installed. You can also change others configurations if you like in this file
+		#Please access /opt/nginx-agent/conf/nginx-agent.conf and change variable NGINX_AGENT_AUTHORIZATION_KEY=changeit value for one that only you knows and unique for every node that you have installed. You can also change others configurations if you like in this file and restart service to apply new settings
 		#Nginx manager ui will ask for this authorization key value to connect with this agent.
 		
 	</code>
@@ -205,7 +205,7 @@ Red-hat:
 		
 		#You can check for manager ui in browser accessing http://localhost:4000
 		#Please access /opt/nginx-admin/conf/nginx-admin.conf and you can see or change others configurations 
-		#like smtp settings or change database driver connection (NGINX_ADMIN_DB_DRIVER=(h2 or mysql)) if you like in this file
+		#like smtp settings or change database driver connection (NGINX_ADMIN_DB_DRIVER=(h2 or mysql)) if you like in this file and restart service to apply new settings
 		
 	</code>
 </pre>
@@ -239,7 +239,7 @@ Debian:
 		
 		#You can check for manager ui in browser accessing http://localhost:4000
 		#Please access /opt/nginx-admin/conf/nginx-admin.conf and you can see or change others configurations 
-		#like smtp settings or change database driver connection (NGINX_ADMIN_DB_DRIVER=(h2 or mysql)) if you like in this file
+		#like smtp settings or change database driver connection (NGINX_ADMIN_DB_DRIVER=(h2 or mysql)) if you like in this file and restart service to apply new settings
 		
 	</code>
 </pre>
