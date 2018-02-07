@@ -79,11 +79,14 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 	public String resetPasswordFor(String identification) {
 		String password = RandomStringUtils.randomAlphanumeric(8);
 		User user = findFor(identification);
-		user.setPassword(DigestUtils.sha256Hex(password));
-		user.setPasswordForceChange(1);
-		mailService.async(Messages.getString("reset.mail.subject"), user.getEmail(),
-				Messages.getString("reset.mail.body", user.getLogin(), password));
-		return user.getEmail();
+		if(user != null){
+			user.setPassword(DigestUtils.sha256Hex(password));
+			user.setPasswordForceChange(1);
+			mailService.async(Messages.getString("reset.mail.subject"), user.getEmail(),
+					Messages.getString("reset.mail.body", user.getLogin(), password));
+			return user.getEmail();
+		}
+		return identification;
 	}
 
 	@Override

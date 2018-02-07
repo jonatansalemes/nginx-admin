@@ -74,11 +74,7 @@ public abstract class RepositoryImpl<T> {
 		};
 		List<Field> fields = new Mirror().on(clazz).reflectAll().fields().matching(matcher);
 		if (CollectionUtils.isEmpty(fields)) {
-			try {
-				throw new Exception("Class" + this.clazz + " doesn't have @Id annotation");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			throw new RuntimeException("Class" + this.clazz + " doesn't have @Id annotation");
 		}
 		return (Long) new Mirror().on(entity).invoke().getterFor(fields.get(0));
 	}

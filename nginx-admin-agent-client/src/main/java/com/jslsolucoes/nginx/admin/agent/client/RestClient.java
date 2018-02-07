@@ -10,7 +10,6 @@ import java.util.Map;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import javax.ws.rs.client.Client;
@@ -30,11 +29,8 @@ public class RestClient implements Closeable, Client {
 	}
 
 	private HostnameVerifier hostnameVerifier() {
-		return new HostnameVerifier() {
-			@Override
-			public boolean verify(String hostname, SSLSession session) {
+		return (hostname, session) -> {
 				return true;
-			}
 		};
 	}
 
@@ -43,15 +39,15 @@ public class RestClient implements Closeable, Client {
 			SSLContext sslContext = SSLContext.getInstance("SSL");
 			sslContext.init(null, new TrustManager[] { new X509TrustManager() {
 				public X509Certificate[] getAcceptedIssuers() {
-					return null;
+					return new X509Certificate[]{};
 				}
 
 				public void checkClientTrusted(X509Certificate[] certs, String authType) {
-
+					//do nothing
 				}
 
 				public void checkServerTrusted(X509Certificate[] certs, String authType) {
-
+					//do nothing
 				}
 			} }, new SecureRandom());
 			return sslContext;

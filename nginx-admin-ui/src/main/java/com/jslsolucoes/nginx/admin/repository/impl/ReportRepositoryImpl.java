@@ -91,8 +91,7 @@ public class ReportRepositoryImpl implements ReportRepository {
 	@Override
 	public InputStream statistics(List<VirtualHostAlias> aliases, LocalDate from, LocalTime fromTime, LocalDate to,
 			LocalTime toTime, Nginx nginx) throws NginxAdminException {
-		try {
-			Connection connection = dataSource.getConnection();
+		try (Connection connection = dataSource.getConnection()){
 			Map<String, Object> parameters = defaultParameters();
 			parameters.put("NGINX", nginx.getId());
 			parameters.put("FROM", start(from, fromTime));
@@ -101,7 +100,6 @@ public class ReportRepositoryImpl implements ReportRepository {
 					.map(virtualHostAlias -> "'" + virtualHostAliasRepository.load(virtualHostAlias).getAlias() + "'")
 					.collect(Collectors.toSet()), ","));
 			InputStream inputStream = export("statistics", parameters, connection);
-			connection.close();
 			return inputStream;
 		} catch (IOException | JRException | SQLException e) {
 			throw new NginxAdminException(e);
