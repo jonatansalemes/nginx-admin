@@ -74,8 +74,6 @@ Supported operational system for agent:
 Supported operational system for manager:
 <ul>
 	<li>Linux</li>
-	<li>Windows</li>
-	<li>Mac</li>
 </ul>
 
 Supported database for manager: (Another databases like postgresql,oracle and sqlserver will be released soon as possible)
