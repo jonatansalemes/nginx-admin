@@ -96,7 +96,7 @@ Red-hat:
 		#install pre-dependencies if has no one
 		yum -y update
 		yum -y install epel-release
-		yum -y install psmisc initscripts java-1.8.0-openjdk-devel.x86_64 nginx unzip sudo wget visudo
+		yum -y install psmisc initscripts java-1.8.0-openjdk-devel.x86_64 nginx unzip sudo wget visudo vim
 	
 		#create user and add permission for running agent. you can also use visudo to add permissions below
 		useradd nginx-agent -r
@@ -135,7 +135,7 @@ Debian:
 	<code>
 		#install pre-dependencies if has no one
 		apt-get -y update
-		apt-get -y install openjdk-8-jdk unzip nginx unzip sudo wget vim
+		apt-get -y install openjdk-8-jdk nginx unzip sudo wget vim
 		
 		#create user and add permission for running agent. you can also use visudo to add permissions below
 		useradd nginx-agent -r
