@@ -155,7 +155,7 @@ Debian:
 		chmod +x /etc/init.d/nginx-agent
 		chown root:root /etc/init.d/nginx-agent
 		update-rc.d nginx-agent defaults
-	    update-rc.d nginx-agent enable
+		update-rc.d nginx-agent enable
 		
 		#start service
 		service nginx-agent start
