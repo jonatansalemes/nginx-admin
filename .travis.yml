@@ -3,12 +3,13 @@ sudo: false
 install: true
 
 addons:
-    sonarqube:
-       branches:
-        - develop
-        - master
-       token:
-         secure: "1HR2sffnJ3KqF6sMQXiYKP2wFjnuEwbrl3SRKTWenVyM1QD4VgXFOII1wi+ql2sHPO1fpLogYD0HisSwLMlDhF7yptyF9J/Ii1FspeU5osLwTdYijQV9mn0tXj30qirnltEf9hWsRlUABVH5SCCdLZQ/yIgCDsta/vZb1tKO0jnTJUeK0ZHwvQqPEnVccbsCA93zgp6AGORxmNTnDOMynAGSwdUJltY7GTs4RmTT0D9bpdt4FMC/JnZgib6D4oBu3STAWZUofif0bznovUojrjqggTDMdA9Ewol9zCkD+IrP2e0Gyyr+3cffYfjwWI0fDb8cKHd1Hy/eEbWwnWhRji9HWP+GYjuPJ2207cMoWD7uGZvEAvh/cxfXPeFPx8vP6Ghn+wwn79EvkF4sFvNobGSC0JrmEbQZQ0IEmg5iCW8u6dH3Tqp6aSjVenYJkKFBYKylVleQXOfJszQA+hw5xRaNfCnsetx3A8s5n8jQKXwvUv72JiCb4tqO0u9qKQLDAK7/nLkvbdbID5YM1TEFCW9eyGfvsIi9OBDgdS5DpMuKQmxrIeMplODoOaod4DcrbnFkZ3CwcwT6VcXpB8oNXNTqRBDjpzueKTuEy7QZRuNtEw5q3tMTVU/iC2FTLh3fdvNo/0KnbmimyFXQqfaS8cFlPFcMo8ujtHm7NuglkYU="
+    sonarcloud:
+        organization: "jslsolucoes-github"
+        branches:
+            - develop
+            - master
+        token:
+            secure: "15W7WxYtWLtmLVVcFU0z6TLjImKbcYT/PuAW3J5f5ziMW59GejudBeXsnv1WIeXJuslbdkajQcwaxlCcmeScnVNfTR0gscSCKWo+FJIaXfuzHApG3jkzfe+9dtZLUYp76MccSSySn+9xoXREld3FpgvralnBR66irc+5YzoJV9VZyZBfpvZ/VBcK/S6B13z4Iew97IQ+ZIFsXYIXKBrHlvhc96MwNexkzO8hRUDHiFtGf+H50zJfX7GELTnQyIMo56wSIosLWWVxxtFGBFa16sns+RPJbep4a5JufyOFunzMxQo2JMDU524c+RPOhZZGji890wudFML0kxbac/S27qFTqE2D2W/yAxArKVx4gDBP7ujyaz9ZWruncT/VG9narnychzzskfZ+mC+4MpYpI5IGwKeD+8jlXwY7M1b9itnA+XseQ1ocpXkJEa3v1fVtABvtMaHWABXe7ojUG4CYLWKM/+VYO9sVIjSkiIMDhRrIow9DWr6nWfjBno/yYQz7rG1D0OhC5GlzCss7NV4R5klVlqIs7cCehxpn2YXp3ySvH6rmosW2XNwN3+isj0JqNNumriOOQBc9EvYwUrHf1HfdxtHhAuYFejZxLrYy++ySuVJYQszaCDeOfkDeglgTOcWvmFPvt2G2QgTFwhn6FyA1xmARBfPOlx8MXEm9mUs="
 
 jdk:
   - oraclejdk8
