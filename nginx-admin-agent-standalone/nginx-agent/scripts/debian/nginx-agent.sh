@@ -63,7 +63,7 @@ try_launch() {
         rm -f $NGINX_AGENT_CONSOLE_LOG
         chown $NGINX_AGENT_USER $(dirname $NGINX_AGENT_PIDFILE) || true
 
-        start-stop-daemon --start --make-pidfile --pidfile $NGINX_AGENT_PIDFILE --chuid $NGINX_AGENT_USER --user $NGINX_AGENT_USER --chdir $NGINX_AGENT_HOME --exec $JAVA --background -- -server -Djava.net.preferIPv4Stack=true -Djava.awt.headless=true -Xms256m -Xmx1g -jar $NGINX_AGENT_BIN/nginx-admin-agent-standalone-$NGINX_AGENT_VERSION-swarm.jar -c $NGINX_AGENT_CONF/nginx-agent.conf
+        start-stop-daemon --start --make-pidfile --pidfile $NGINX_AGENT_PIDFILE --chuid $NGINX_AGENT_USER --user $NGINX_AGENT_USER --chdir $NGINX_AGENT_HOME --exec $JAVA -- -server -Djava.net.preferIPv4Stack=true -Djava.awt.headless=true -Xms256m -Xmx1g -jar $NGINX_AGENT_BIN/nginx-admin-agent-standalone-$NGINX_AGENT_VERSION-swarm.jar -c $NGINX_AGENT_CONF/nginx-agent.conf >> $NGINX_AGENT_CONSOLE_LOG 2>&1 &
 
         if ! is_launched ; then
                 rm -f $NGINX_AGENT_PIDFILE

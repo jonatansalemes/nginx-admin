@@ -63,7 +63,7 @@ try_launch() {
         rm -f $NGINX_ADMIN_CONSOLE_LOG
         chown $NGINX_ADMIN_USER $(dirname $NGINX_ADMIN_PIDFILE) || true
 
-	start-stop-daemon --start --make-pidfile --pidfile $NGINX_ADMIN_PIDFILE --chuid $NGINX_ADMIN_USER --user $NGINX_ADMIN_USER --chdir $NGINX_ADMIN_HOME --exec $JAVA --background -- -server -Djava.net.preferIPv4Stack=true -Djava.awt.headless=true -Xms256m -Xmx1g -jar $NGINX_ADMIN_BIN/nginx-admin-ui-standalone-$NGINX_ADMIN_VERSION-swarm.jar -c $NGINX_ADMIN_CONF/nginx-admin.conf
+	start-stop-daemon --start --make-pidfile --pidfile $NGINX_ADMIN_PIDFILE --chuid $NGINX_ADMIN_USER --user $NGINX_ADMIN_USER --chdir $NGINX_ADMIN_HOME --exec $JAVA -- -server -Djava.net.preferIPv4Stack=true -Djava.awt.headless=true -Xms256m -Xmx1g -jar $NGINX_ADMIN_BIN/nginx-admin-ui-standalone-$NGINX_ADMIN_VERSION-swarm.jar -c $NGINX_ADMIN_CONF/nginx-admin.conf >> $NGINX_ADMIN_CONSOLE_LOG 2>&1 &
 	
 	if ! is_launched ; then
 		rm -f $NGINX_ADMIN_PIDFILE
