@@ -1,18 +1,3 @@
-/*******************************************************************************
- * Copyright 2016 JSL Solucoes LTDA - https://jslsolucoes.com
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *******************************************************************************/
 package com.jslsolucoes.nginx.admin.controller;
 
 import java.io.IOException;
@@ -26,10 +11,12 @@ import org.apache.commons.io.IOUtils;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
-import com.jslsolucoes.nginx.admin.html.HtmlUtil;
+import com.jslsolucoes.nginx.admin.error.NginxAdminException;
+import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.model.VirtualHostAlias;
 import com.jslsolucoes.nginx.admin.repository.ReportRepository;
 import com.jslsolucoes.nginx.admin.repository.VirtualHostAliasRepository;
+import com.jslsolucoes.tagria.lib.form.FormValidation;
 
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Path;
@@ -46,6 +33,7 @@ public class ReportController {
 	private VirtualHostAliasRepository virtualHostAliasRepository;
 	private HttpServletResponse httpServletResponse;
 
+	@Deprecated
 	public ReportController() {
 
 	}
@@ -59,30 +47,35 @@ public class ReportController {
 		this.httpServletResponse = httpServletResponse;
 	}
 
-	public void validate(List<Long> aliases, LocalDate from, LocalTime fromTime, LocalDate to, LocalTime toTime) {
+	public void validate(List<Long> aliases, LocalDate from, LocalTime fromTime, LocalDate to, LocalTime toTime,
+			Long idNginx) {
 		this.result.use(Results.json())
-				.from(HtmlUtil.convertToUnodernedList(
-						reportRepository.validateBeforeSearch(convert(aliases), from, fromTime, to, toTime)), "errors")
+				.from(FormValidation.newBuilder().toUnordenedList(reportRepository
+						.validateBeforeSearch(convert(aliases), from, fromTime, to, toTime, new Nginx(idNginx))),
+						"errors")
 				.serialize();
 	}
 
-	public void search() {
-		this.result.include("virtualHostAliasList", virtualHostAliasRepository.listAll());
+	@Path("search/{idNginx}")
+	public void search(Long idNginx) {
+		this.result.include("virtualHostAliasList", virtualHostAliasRepository.listAllFor(new Nginx(idNginx)));
+		this.result.include("nginx", new Nginx(idNginx));
 	}
 
 	@Post
 	@Path("export.pdf")
-	public void export(List<Long> aliases, LocalDate from, LocalTime fromTime, LocalDate to, LocalTime toTime)
-			throws IOException {
+	public void export(List<Long> aliases, LocalDate from, LocalTime fromTime, LocalDate to, LocalTime toTime,
+			Long idNginx) throws NginxAdminException, IOException {
 		httpServletResponse.setContentType("application/pdf");
-		IOUtils.copy(reportRepository.statistics(convert(aliases), from, fromTime, to, toTime),
+		IOUtils.copy(reportRepository.statistics(convert(aliases), from, fromTime, to, toTime, new Nginx(idNginx)),
 				httpServletResponse.getOutputStream());
 		this.result.use(Results.status()).ok();
 	}
 
 	private List<VirtualHostAlias> convert(List<Long> aliases) {
-		if(aliases == null) return null;
-		List<VirtualHostAlias> virtualHostAliases = new ArrayList<VirtualHostAlias>();
+		if (aliases == null)
+			return new ArrayList<>();
+		List<VirtualHostAlias> virtualHostAliases = new ArrayList<>();
 		for (Long idVirtualHostAlias : aliases) {
 			virtualHostAliases.add(new VirtualHostAlias(idVirtualHostAlias));
 		}

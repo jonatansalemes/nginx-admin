@@ -1,26 +1,15 @@
-/*******************************************************************************
- * Copyright 2016 JSL Solucoes LTDA - https://jslsolucoes.com
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *******************************************************************************/
 package com.jslsolucoes.nginx.admin.controller;
 
 import javax.inject.Inject;
 
-import com.jslsolucoes.nginx.admin.html.HtmlUtil;
+import com.jslsolucoes.nginx.admin.agent.client.NginxAgentClient;
+import com.jslsolucoes.nginx.admin.agent.client.api.NginxAgentClientApis;
+import com.jslsolucoes.nginx.admin.agent.model.response.NginxResponse;
+import com.jslsolucoes.nginx.admin.error.NginxAdminException;
 import com.jslsolucoes.nginx.admin.model.Nginx;
-import com.jslsolucoes.nginx.admin.nginx.status.NginxStatus;
 import com.jslsolucoes.nginx.admin.repository.NginxRepository;
+import com.jslsolucoes.nginx.admin.repository.impl.OperationResult;
+import com.jslsolucoes.tagria.lib.form.FormValidation;
 
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Path;
@@ -34,43 +23,72 @@ public class NginxController {
 
 	private Result result;
 	private NginxRepository nginxRepository;
-	private NginxStatus nginxStatus;
+	private NginxAgentClient nginxAgentClient;
 
 	public NginxController() {
 
 	}
 
 	@Inject
-	public NginxController(Result result, NginxRepository nginxRepository,NginxStatus nginxStatus) {
+	public NginxController(Result result, NginxRepository nginxRepository, NginxAgentClient nginxAgentClient) {
 		this.result = result;
 		this.nginxRepository = nginxRepository;
-		this.nginxStatus = nginxStatus;
+		this.nginxAgentClient = nginxAgentClient;
 	}
 
-	public void validate(Long id, String bin, String settings, Integer gzip,
-			Integer maxPostSize) {
-		this.result.use(Results.json())
-				.from(HtmlUtil.convertToUnodernedList(nginxRepository
-						.validateBeforeSaveOrUpdate(new Nginx(id, bin, settings,  gzip, maxPostSize))),
+	public void list() {
+		this.result.include("nginxList", nginxRepository.listAll());
+	}
+
+	@Path({ "tabs", "tabs/{id}" })
+	public void tabs(Long id) {
+		if (id != null) {
+			this.result.include("nginx", new Nginx(id));
+		}
+	}
+
+	public void reload(Long id) {
+		this.result.include("id", id);
+	}
+
+	public void form() {
+
+	}
+
+	public void ping(String endpoint, String authorizationKey) {
+		NginxResponse nginxResponse = nginxAgentClient.api(NginxAgentClientApis.ping()).withEndpoint(endpoint)
+				.withAuthorizationKey(authorizationKey).build().ping().join();
+		this.result.include("nginxResponse", nginxResponse);
+	}
+
+	public void validate(Long id, String name, String endpoint, String authorizationKey) {
+		this.result
+				.use(Results.json()).from(
+						FormValidation.newBuilder()
+								.toUnordenedList(nginxRepository
+										.validateBeforeSaveOrUpdate(new Nginx(id, name, endpoint, authorizationKey))),
 						"errors")
 				.serialize();
 	}
 
-	public void edit() {
-		this.result.include("nginx", this.nginxRepository.configuration());
+	@Path("edit/{id}")
+	public void edit(Long id) {
+		this.result.include("nginx", nginxRepository.load(new Nginx(id)));
+		this.result.forwardTo(this).form();
+	}
+
+	@Path("delete/{id}")
+	public void delete(Long id) {
+		this.result.include("operation", nginxRepository.delete(new Nginx(id)));
+		this.result.redirectTo(this).list();
 	}
 
 	@Post
-	public void update(Long id, String bin, String settings, Integer gzip,
-			Integer maxPostSize) {
-		this.nginxRepository.saveOrUpdate(new Nginx(id, bin, settings,gzip, maxPostSize));
-		this.result.include("updated", true);
-		this.result.redirectTo(this).edit();
-	}
-	
-	
-	public void status() {
-		this.result.use(Results.json()).from(nginxStatus).serialize();
+	public void saveOrUpdate(Long id, String name, String endpoint, String authorizationKey)
+			throws NginxAdminException {
+		OperationResult operationResult = nginxRepository.saveOrUpdate(new Nginx(id, name, endpoint, authorizationKey));
+		this.result.include("operation", operationResult.getOperationType());
+		this.result.redirectTo(this).reload(operationResult.getId());
 	}
 
 }

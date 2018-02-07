@@ -1,128 +1,94 @@
-/*******************************************************************************
- * Copyright 2016 JSL Solucoes LTDA - https://jslsolucoes.com
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *******************************************************************************/
 package com.jslsolucoes.nginx.admin.repository.impl;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.SetJoin;
 
-import org.apache.commons.io.FileUtils;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.sql.JoinType;
-
-import com.jslsolucoes.nginx.admin.i18n.Messages;
+import com.jslsolucoes.i18n.Messages;
 import com.jslsolucoes.nginx.admin.model.Nginx;
+import com.jslsolucoes.nginx.admin.model.Nginx_;
 import com.jslsolucoes.nginx.admin.model.VirtualHost;
 import com.jslsolucoes.nginx.admin.model.VirtualHostAlias;
+import com.jslsolucoes.nginx.admin.model.VirtualHostAlias_;
 import com.jslsolucoes.nginx.admin.model.VirtualHostLocation;
-import com.jslsolucoes.nginx.admin.repository.NginxRepository;
+import com.jslsolucoes.nginx.admin.model.VirtualHost_;
 import com.jslsolucoes.nginx.admin.repository.ResourceIdentifierRepository;
 import com.jslsolucoes.nginx.admin.repository.VirtualHostAliasRepository;
 import com.jslsolucoes.nginx.admin.repository.VirtualHostLocationRepository;
 import com.jslsolucoes.nginx.admin.repository.VirtualHostRepository;
-import com.jslsolucoes.nginx.admin.template.TemplateProcessor;
 
 @RequestScoped
 public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> implements VirtualHostRepository {
 
 	private ResourceIdentifierRepository resourceIdentifierRepository;
-	private NginxRepository nginxRepository;
 	private VirtualHostAliasRepository virtualHostAliasRepository;
 	private VirtualHostLocationRepository virtualHostLocationRepository;
-	
 
+	@Deprecated
 	public VirtualHostRepositoryImpl() {
 
 	}
 
 	@Inject
-	public VirtualHostRepositoryImpl(Session session,
-			ResourceIdentifierRepository resourceIdentifierRepository, NginxRepository nginxRepository,
+	public VirtualHostRepositoryImpl(EntityManager entityManager,
+			ResourceIdentifierRepository resourceIdentifierRepository,
 			VirtualHostAliasRepository virtualHostAliasRepository,
 			VirtualHostLocationRepository virtualHostLocationRepository) {
-		super(session);
+		super(entityManager);
 		this.resourceIdentifierRepository = resourceIdentifierRepository;
-		this.nginxRepository = nginxRepository;
 		this.virtualHostAliasRepository = virtualHostAliasRepository;
 		this.virtualHostLocationRepository = virtualHostLocationRepository;
 	}
 
 	@Override
-	public OperationResult saveOrUpdate(VirtualHost virtualHost,List<VirtualHostAlias> aliases,List<VirtualHostLocation> locations) throws Exception {
-		if (virtualHost.getId() == null) {
-			virtualHost.setResourceIdentifier(resourceIdentifierRepository.create());
-		}
+	public OperationResult saveOrUpdate(VirtualHost virtualHost, List<VirtualHostAlias> aliases,
+			List<VirtualHostLocation> locations) {
 		if (virtualHost.getHttps() == 0) {
 			virtualHost.setSslCertificate(null);
 		}
 		OperationResult operationResult = super.saveOrUpdate(virtualHost);
-		virtualHostAliasRepository.recreate(new VirtualHost(operationResult.getId()), aliases);
-		virtualHostLocationRepository.recreate(new VirtualHost(operationResult.getId()), locations);
-		flushAndClear();
-		configure(virtualHost);
+		virtualHostAliasRepository.recreateAllFor(new VirtualHost(operationResult.getId()), aliases);
+		virtualHostLocationRepository.recreateAllFor(new VirtualHost(operationResult.getId()), locations);
 		return operationResult;
 	}
-	
+
 	@Override
-	public OperationType delete(VirtualHost virtualHost) throws Exception {
+	public OperationStatusType delete(VirtualHost virtualHost) {
 		virtualHostAliasRepository.deleteAllFor(virtualHost);
 		virtualHostLocationRepository.deleteAllFor(virtualHost);
-		virtualHost = load(virtualHost);
-		String hash = virtualHost.getResourceIdentifier().getHash();
-		FileUtils.forceDelete(new File(nginxRepository.configuration().virtualHost(),hash + ".conf"));
-		super.delete(virtualHost);
-		resourceIdentifierRepository.delete(hash);
-		return OperationType.DELETE;
-	}
-
-	private void configure(VirtualHost virtualHost) throws Exception {
-		virtualHost = load(virtualHost);
-		Nginx nginx = nginxRepository.configuration();
-		new TemplateProcessor().withTemplate("virtual-host.tpl").withData("virtualHost", virtualHost)
-				.withData("nginx", nginx)
-				.toLocation(new File(nginx.virtualHost(), virtualHost.getResourceIdentifier().getHash() + ".conf"))
-				.process();
+		VirtualHost virtualHostToDelete = load(virtualHost);
+		String uuid = virtualHostToDelete.getResourceIdentifier().getUuid();
+		super.delete(virtualHostToDelete);
+		resourceIdentifierRepository.delete(uuid);
+		return OperationStatusType.DELETE;
 	}
 
 	@Override
-	public List<String> validateBeforeSaveOrUpdate(VirtualHost virtualHost,List<VirtualHostAlias> aliases,List<VirtualHostLocation> locations) {
-		List<String> errors = new ArrayList<String>();
+	public List<String> validateBeforeSaveOrUpdate(VirtualHost virtualHost, List<VirtualHostAlias> aliases,
+			List<VirtualHostLocation> locations) {
+		List<String> errors = new ArrayList<>();
 
-		if (hasEquals(virtualHost,aliases) != null) {
+		if (hasEquals(virtualHost, aliases) != null) {
 			errors.add(Messages.getString("virtualHost.already.exists"));
 		}
-		
-		if (aliases
-				.stream()
-				.map(VirtualHostAlias::getAlias)
-				.collect(Collectors.toSet()).size() != aliases.size()) {
+
+		if (aliases.stream().map(VirtualHostAlias::getAlias).collect(Collectors.toSet()).size() != aliases.size()) {
 			errors.add(Messages.getString("virtualHost.alias.mapped.twice"));
 		}
-		
-		if (locations
-				.stream()
-				.map(VirtualHostLocation::getPath)
-				.collect(Collectors.toSet()).size() != locations.size()) {
+
+		if (locations.stream().map(VirtualHostLocation::getPath).collect(Collectors.toSet()).size() != locations
+				.size()) {
 			errors.add(Messages.getString("virtualHost.location.mapped.twice"));
 		}
 
@@ -130,26 +96,46 @@ public class VirtualHostRepositoryImpl extends RepositoryImpl<VirtualHost> imple
 	}
 
 	@Override
-	public VirtualHost hasEquals(VirtualHost virtualHost,List<VirtualHostAlias> aliases) {
-		Criteria criteria = session.createCriteria(VirtualHost.class);
-		criteria.createCriteria("aliases","virtualHostAlias", JoinType.INNER_JOIN);
-		criteria.add(Restrictions.in("virtualHostAlias.alias", aliases
-							.stream()
-							.map(VirtualHostAlias::getAlias)
-							.collect(Collectors.toList())));
-		if (virtualHost.getId() != null) {
-			criteria.add(Restrictions.ne("id", virtualHost.getId()));
+	public VirtualHost hasEquals(VirtualHost virtualHost, List<VirtualHostAlias> aliases) {
+		try {
+			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+			CriteriaQuery<VirtualHost> criteriaQuery = criteriaBuilder.createQuery(VirtualHost.class);
+			Root<VirtualHost> root = criteriaQuery.from(VirtualHost.class);
+			SetJoin<VirtualHost, VirtualHostAlias> join = root.join(VirtualHost_.aliases, JoinType.INNER);
+			List<Predicate> predicates = new ArrayList<>();
+			predicates.add(criteriaBuilder.equal(root.join(VirtualHost_.nginx, JoinType.INNER).get(Nginx_.id),
+					virtualHost.getNginx().getId()));
+			predicates.add(join.get(VirtualHostAlias_.alias)
+					.in(aliases.stream().map(VirtualHostAlias::getAlias).collect(Collectors.toList())));
+			if (virtualHost.getId() != null) {
+				predicates.add(criteriaBuilder.notEqual(root.get(VirtualHost_.id), virtualHost.getId()));
+			}
+			criteriaQuery.distinct(true).where(predicates.toArray(new Predicate[] {}));
+			return entityManager.createQuery(criteriaQuery).getSingleResult();
+		} catch (NoResultException noResultException) {
+			return null;
 		}
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		return (VirtualHost) criteria.uniqueResult();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<VirtualHost> search(String term) {
-		Criteria criteria = session.createCriteria(VirtualHost.class);
-		criteria.createCriteria("aliases","virtualHostAlias", JoinType.INNER_JOIN);
-		criteria.add(Restrictions.ilike("virtualHostAlias.alias", term, MatchMode.ANYWHERE));
-		return criteria.list();
+	public List<VirtualHost> listAllFor(Nginx nginx) {
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<VirtualHost> criteriaQuery = criteriaBuilder.createQuery(VirtualHost.class);
+		Root<VirtualHost> root = criteriaQuery.from(VirtualHost.class);
+		criteriaQuery.where(
+				criteriaBuilder.equal(root.join(VirtualHost_.nginx, JoinType.INNER).get(Nginx_.id), nginx.getId()));
+		return entityManager.createQuery(criteriaQuery).getResultList();
+	}
+
+	@Override
+	public List<VirtualHost> searchFor(Nginx nginx, String term) {
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<VirtualHost> criteriaQuery = criteriaBuilder.createQuery(VirtualHost.class);
+		Root<VirtualHost> root = criteriaQuery.from(VirtualHost.class);
+		SetJoin<VirtualHost, VirtualHostAlias> join = root.join(VirtualHost_.aliases, JoinType.INNER);
+		criteriaQuery.where(criteriaBuilder.and(
+				criteriaBuilder.equal(root.join(VirtualHost_.nginx, JoinType.INNER).get(Nginx_.id), nginx.getId()),
+				criteriaBuilder.like(criteriaBuilder.lower(join.get(VirtualHostAlias_.alias)), term.toLowerCase())));
+		return entityManager.createQuery(criteriaQuery).getResultList();
 	}
 }

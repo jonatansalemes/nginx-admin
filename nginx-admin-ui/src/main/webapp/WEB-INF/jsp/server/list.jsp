@@ -14,9 +14,9 @@
 			</html:gridColumn>
 			<html:gridColumn>
 				<html:buttonGroup spaced="true">
-					<html:button icon="pencil" url="/server/edit/${ server.id }"></html:button>
+					<html:button icon="pencil" url="/server/edit/${nginx.id }/${ server.id }"></html:button>
 					<html:button disabled="${ !empty(server.upstreamServers) }" state="danger" id="${ server.id }" icon="trash" url="#"></html:button>
-					<html:confirm attachTo="${ server.id }" url="/server/delete/${ server.id }">
+					<html:confirm attachTo="${ server.id }" url="/server/delete/${nginx.id }/${ server.id }">
 						<fmt:message key="server.delete.confirm">
 							<fmt:param value="${ server.ip }"></fmt:param>
 						</fmt:message>
@@ -25,7 +25,7 @@
 			</html:gridColumn>
 			
 			<html:toolbar>
-				<html:button icon="plus" url="/server/form"></html:button>
+				<html:button icon="plus" url="/server/form/${nginx.id }"></html:button>
 			</html:toolbar>
 			
 		</html:grid>

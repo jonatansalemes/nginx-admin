@@ -1,65 +1,52 @@
-/*******************************************************************************
- * Copyright 2016 JSL Solucoes LTDA - https://jslsolucoes.com
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *******************************************************************************/
 package com.jslsolucoes.nginx.admin.model;
 
-import java.io.File;
 import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "nginx", schema = "admin")
+@Table(name = "nginx")
+@SequenceGenerator(name = "nginx_sq", initialValue = 1, allocationSize = 1, sequenceName = "nginx_sq")
 public class Nginx implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "nginx_sq")
 	private Long id;
 
-	@Column(name = "bin")
-	private String bin;
+	@Column(name = "name")
+	private String name;
 
-	@Column(name = "settings")
-	private String settings;
-	
-	@Column(name = "gzip")
-	private Integer gzip;
-	
-	@Column(name = "max_post_size")
-	private Integer maxPostSize;
+	@Column(name = "endpoint")
+	private String endpoint;
+
+	@Column(name = "authorization_key")
+	private String authorizationKey;
+
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "nginx")
+	private Configuration configuration;
 
 	public Nginx() {
 
 	}
-	
-	public Nginx(String bin, String home) {
-		this(null, bin, home,1,100);
+
+	public Nginx(Long id, String name, String endpoint, String authorizationKey) {
+		this.id = id;
+		this.name = name;
+		this.endpoint = endpoint;
+		this.authorizationKey = authorizationKey;
 	}
 
-	public Nginx(Long id, String bin, String settings,Integer gzip,Integer maxPostSize) {
+	public Nginx(Long id) {
 		this.id = id;
-		this.bin = bin;
-		this.settings = settings;
-		this.gzip = (gzip == null ? 0 : gzip);
-		this.maxPostSize = maxPostSize;
 	}
 
 	public Long getId() {
@@ -70,72 +57,32 @@ public class Nginx implements Serializable {
 		this.id = id;
 	}
 
-	public String getBin() {
-		return bin;
+	public String getName() {
+		return name;
 	}
 
-	public void setBin(String bin) {
-		this.bin = bin;
-	}
-	
-	public String getSettings() {
-		return settings;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public void setSettings(String settings) {
-		this.settings = settings;
+	public String getEndpoint() {
+		return endpoint;
 	}
 
-	public File setting() {
-		return new File(settings);
-	}
-	
-	public File binFolder(){
-		return bin().getParentFile();
-	}
-	
-	public File bin(){
-		return new File(bin);
-	}
-	
-	public File conf(){
-		return new File(setting(), "nginx.conf");
+	public void setEndpoint(String endpoint) {
+		this.endpoint = endpoint;
 	}
 
-	public File ssl() {
-		return new File(setting(), "ssl");
+	public String getAuthorizationKey() {
+		return authorizationKey;
 	}
 
-	public File upstream() {
-		return new File(setting(), "upstream");
-	}
-	
-	public File virtualHost() {
-		return new File(setting(), "virtual-host");
-	}
-	
-	public File pid() {
-		return new File(setting(), "nginx.pid");
-	}
-	
-	public File log() {
-		return new File(setting(), "log");
+	public void setAuthorizationKey(String authorizationKey) {
+		this.authorizationKey = authorizationKey;
 	}
 
-	public Integer getGzip() {
-		return gzip;
-	}
-
-	public void setGzip(Integer gzip) {
-		this.gzip = gzip;
-	}
-
-	public Integer getMaxPostSize() {
-		return maxPostSize;
-	}
-
-	public void setMaxPostSize(Integer maxPostSize) {
-		this.maxPostSize = maxPostSize;
+	public Configuration getConfiguration() {
+		return configuration;
 	}
 
 }

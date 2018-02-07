@@ -4,16 +4,27 @@
 	<html:block>
 		<html:alert state="success" label="{virtualHost.update.success}"
 			rendered="${ operation == 'UPDATE' }"></html:alert>
+		<html:alert state="danger" label="{virtualHost.update.failed}"
+			rendered="${ operation == 'UPDATE_FAILED' }"></html:alert>
 		<html:alert state="success" label="{virtualHost.insert.success}"
 			rendered="${ operation == 'INSERT' }"></html:alert>
+		<html:alert state="danger" label="{virtualHost.insert.failed}"
+			rendered="${ operation == 'INSERT_FAILED' }"></html:alert>
 	</html:block>
 
 	<html:block>
 		<html:form action="/virtualHost/saveOrUpdate"
 			label="{virtualHost.form}" validation="/virtualHost/validate">
 			<html:input name="id" type="hidden" value="${ virtualHost.id }"></html:input>
-			<html:input name="idResourceIdentifier" type="hidden"
-				value="${ virtualHost.resourceIdentifier.id }"></html:input>
+			<html:input name="idNginx" type="hidden" value="${ nginx.id }"></html:input>
+			
+			<html:formGroup label="{virtualHost.download}" rendered="${ virtualHost != null }">
+					<html:div>
+						<html:link target="_blank"
+							url="/virtualHost/download/${ nginx.id }/${ virtualHost.resourceIdentifier.uuid }"
+							label="{virtualHost.download.file}"></html:link>
+					</html:div>
+			</html:formGroup>
 			
 			<html:formGroup>
 				<html:listGroup>
@@ -76,6 +87,6 @@
 	</html:jsEvent>
 
 	<html:block align="center">
-		<html:link url="/virtualHost/list" label="{back}"></html:link>
+		<html:link url="/virtualHost/list/${ nginx.id }" label="{back}"></html:link>
 	</html:block>
 </html:view>

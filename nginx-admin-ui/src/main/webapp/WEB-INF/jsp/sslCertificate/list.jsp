@@ -4,6 +4,8 @@
 	<html:block>
 		<html:alert state="success" label="{ssl.delete.success}"
 			rendered="${ operation == 'DELETE' }"></html:alert>
+		<html:alert state="danger" label="{ssl.delete.failed}"
+			rendered="${ operation == 'DELETE_FAILED' }"></html:alert>
 	</html:block>
 
 	<html:block>
@@ -13,16 +15,20 @@
 				${ sslCertificate.commonName }
 			</html:gridColumn>
 			<html:gridColumn label="{ssl.certificate}">
-				<html:link target="_blank" url="/sslCertificate/download/${ sslCertificate.certificate }" label="{ssl.certificate.download}"></html:link>
+				<html:link target="_blank"
+						url="/sslCertificate/download/${ nginx.id }/${ sslCertificate.resourceIdentifierCertificate.uuid }"
+						label="{ssl.certificate.download}"></html:link>
 			</html:gridColumn>
 			<html:gridColumn label="{ssl.certificate.key}">
-				<html:link target="_blank" url="/sslCertificate/download/${ sslCertificate.certificatePrivateKey }" label="{ssl.certificate.key.download}"></html:link>
+				<html:link target="_blank"
+						url="/sslCertificate/download/${ nginx.id }/${ sslCertificate.resourceIdentifierCertificatePrivateKey.uuid }"
+						label="{ssl.certificate.key.download}"></html:link>
 			</html:gridColumn>
 			<html:gridColumn>
 				<html:buttonGroup spaced="true">
-					<html:button icon="pencil" url="/sslCertificate/edit/${ sslCertificate.id }"></html:button>
+					<html:button icon="pencil" url="/sslCertificate/edit/${ nginx.id }/${ sslCertificate.id }"></html:button>
 					<html:button disabled="${ !empty(sslCertificate.virtualHosts) }" state="danger" id="${ sslCertificate.id }" icon="trash" url="#"></html:button>
-					<html:confirm attachTo="${ sslCertificate.id }" url="/sslCertificate/delete/${ sslCertificate.id }">
+					<html:confirm attachTo="${ sslCertificate.id }" url="/sslCertificate/delete/${ nginx.id }/${ sslCertificate.id }">
 						<fmt:message key="ssl.delete.confirm">
 							<fmt:param value="${ sslCertificate.commonName }"></fmt:param>
 						</fmt:message>
@@ -31,7 +37,7 @@
 			</html:gridColumn>
 			
 			<html:toolbar>
-				<html:button icon="plus" url="/sslCertificate/form"></html:button>
+				<html:button icon="plus" url="/sslCertificate/form/${ nginx.id }"></html:button>
 			</html:toolbar>
 			
 		</html:grid>

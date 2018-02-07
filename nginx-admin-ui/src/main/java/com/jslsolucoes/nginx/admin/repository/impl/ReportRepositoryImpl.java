@@ -1,18 +1,3 @@
-/*******************************************************************************
- * Copyright 2016 JSL Solucoes LTDA - https://jslsolucoes.com
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *******************************************************************************/
 package com.jslsolucoes.nginx.admin.repository.impl;
 
 import java.io.ByteArrayInputStream;
@@ -27,20 +12,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import javax.sql.DataSource;
 
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.Session;
-import org.hibernate.jdbc.ReturningWork;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.springframework.util.CollectionUtils;
 
 import com.google.common.collect.Lists;
-import com.jslsolucoes.nginx.admin.i18n.Messages;
+import com.jslsolucoes.i18n.Messages;
+import com.jslsolucoes.nginx.admin.error.NginxAdminException;
+import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.model.VirtualHostAlias;
 import com.jslsolucoes.nginx.admin.repository.ReportRepository;
 import com.jslsolucoes.nginx.admin.repository.VirtualHostAliasRepository;
@@ -54,29 +41,30 @@ import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 @RequestScoped
 public class ReportRepositoryImpl implements ReportRepository {
 
-	private Session session;
+	@Resource(mappedName = "java:jboss/datasources/nginx-admin")
+	private DataSource dataSource;
 	private VirtualHostAliasRepository virtualHostAliasRepository;
 
+	@Deprecated
 	public ReportRepositoryImpl() {
 
 	}
 
 	@Inject
-	public ReportRepositoryImpl(Session session,VirtualHostAliasRepository virtualHostAliasRepository) {
-		this.session = session;
+	public ReportRepositoryImpl(VirtualHostAliasRepository virtualHostAliasRepository) {
 		this.virtualHostAliasRepository = virtualHostAliasRepository;
 	}
 
 	@Override
-	public List<String> validateBeforeSearch(List<VirtualHostAlias> aliases, LocalDate from, LocalTime fromTime, LocalDate to,
-			LocalTime toTime) {
+	public List<String> validateBeforeSearch(List<VirtualHostAlias> aliases, LocalDate from, LocalTime fromTime,
+			LocalDate to, LocalTime toTime, Nginx nginx) {
 
-		List<String> errors = new ArrayList<String>();
+		List<String> errors = new ArrayList<>();
 		if (new DateTime(start(from, fromTime)).isAfter(new DateTime(end(to, toTime)))) {
 			errors.add(Messages.getString("report.date.interval.invalid"));
 		}
-		
-		if(CollectionUtils.isEmpty(aliases)){
+
+		if (CollectionUtils.isEmpty(aliases)) {
 			errors.add(Messages.getString("report.aliases.empty"));
 		}
 		return errors;
@@ -102,33 +90,25 @@ public class ReportRepositoryImpl implements ReportRepository {
 
 	@Override
 	public InputStream statistics(List<VirtualHostAlias> aliases, LocalDate from, LocalTime fromTime, LocalDate to,
-			LocalTime toTime) {
-		return session.doReturningWork(new ReturningWork<InputStream>() {
-			@Override
-			public InputStream execute(Connection connection) throws SQLException {
-				try {
-					Map<String, Object> parameters = defaultParameters();
-					parameters.put("FROM", start(from, fromTime));
-					parameters.put("TO", end(to, toTime));
-					parameters.put("ALIASES", StringUtils.join(aliases
-										.stream()
-										.map(virtualHostAlias ->{
-											return "'" + virtualHostAliasRepository.load(virtualHostAlias).getAlias() + "'";
-										}).collect(Collectors.toSet())
-										,",") );
-					return export("statistics", parameters, connection);
-				} catch (Exception e) {
-					e.printStackTrace();
-					return null;
-				}
-			}
-		});
+			LocalTime toTime, Nginx nginx) throws NginxAdminException {
+		try (Connection connection = dataSource.getConnection()){
+			Map<String, Object> parameters = defaultParameters();
+			parameters.put("NGINX", nginx.getId());
+			parameters.put("FROM", start(from, fromTime));
+			parameters.put("TO", end(to, toTime));
+			parameters.put("ALIASES", StringUtils.join(aliases.stream()
+					.map(virtualHostAlias -> "'" + virtualHostAliasRepository.load(virtualHostAlias).getAlias() + "'")
+					.collect(Collectors.toSet()), ","));
+			InputStream inputStream = export("statistics", parameters, connection);
+			return inputStream;
+		} catch (IOException | JRException | SQLException e) {
+			throw new NginxAdminException(e);
+		}
 	}
 
 	private InputStream export(String jasper, Map<String, Object> parameters, Connection connection)
 			throws JRException {
 		JRPdfExporter jrPdfExporter = new JRPdfExporter();
-		
 		jrPdfExporter.setExporterInput(SimpleExporterInput.getInstance(Lists.newArrayList(JasperFillManager
 				.fillReport(getClass().getResourceAsStream("/report/" + jasper + ".jasper"), parameters, connection))));
 		java.io.ByteArrayOutputStream outputStream = new java.io.ByteArrayOutputStream();
@@ -138,7 +118,7 @@ public class ReportRepositoryImpl implements ReportRepository {
 	}
 
 	private Map<String, Object> defaultParameters() throws IOException {
-		Map<String, Object> parameters = new HashMap<String, Object>();
+		Map<String, Object> parameters = new HashMap<>();
 		parameters.put("LOGO", ImageIO.read(getClass().getResourceAsStream("/report/image/logo.png")));
 		return parameters;
 	}

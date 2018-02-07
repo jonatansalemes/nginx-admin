@@ -1,18 +1,3 @@
-/*******************************************************************************
- * Copyright 2016 JSL Solucoes LTDA - https://jslsolucoes.com
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *******************************************************************************/
 package com.jslsolucoes.nginx.admin.model;
 
 import java.io.Serializable;
@@ -25,43 +10,51 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "ssl_certificate", schema = "admin")
+@Table(name = "ssl_certificate")
+@SequenceGenerator(name = "ssl_certificate_sq", initialValue = 1, allocationSize = 1, sequenceName = "ssl_certificate_sq")
 public class SslCertificate implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ssl_certificate_sq")
 	private Long id;
 
 	@Column(name = "common_name")
 	private String commonName;
-	
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_nginx")
+	private Nginx nginx;
+
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_resource_identifier_certificate")
 	private ResourceIdentifier resourceIdentifierCertificate;
-	
+
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_resource_identifier_certificate_private_key")
 	private ResourceIdentifier resourceIdentifierCertificatePrivateKey;
-	
-	@OneToMany(fetch=FetchType.LAZY,mappedBy="sslCertificate")
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "sslCertificate")
 	private Set<VirtualHost> virtualHosts;
 
 	public SslCertificate() {
-
+		// default constructor
 	}
 
 	public SslCertificate(Long id, String commonName, ResourceIdentifier resourceIdentifierCertificate,
-			ResourceIdentifier resourceIdentifierCertificatePrivateKey) {
+			ResourceIdentifier resourceIdentifierCertificatePrivateKey, Nginx nginx) {
 		this.id = id;
 		this.commonName = commonName;
 		this.resourceIdentifierCertificate = resourceIdentifierCertificate;
 		this.resourceIdentifierCertificatePrivateKey = resourceIdentifierCertificatePrivateKey;
+		this.nginx = nginx;
 	}
 
 	public SslCertificate(Long id) {
@@ -106,6 +99,14 @@ public class SslCertificate implements Serializable {
 
 	public void setResourceIdentifierCertificatePrivateKey(ResourceIdentifier resourceIdentifierCertificatePrivateKey) {
 		this.resourceIdentifierCertificatePrivateKey = resourceIdentifierCertificatePrivateKey;
+	}
+
+	public Nginx getNginx() {
+		return nginx;
+	}
+
+	public void setNginx(Nginx nginx) {
+		this.nginx = nginx;
 	}
 
 }

@@ -1,26 +1,12 @@
-/*******************************************************************************
- * Copyright 2016 JSL Solucoes LTDA - https://jslsolucoes.com
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *******************************************************************************/
 package com.jslsolucoes.nginx.admin.controller;
 
 import javax.inject.Inject;
 
-import com.jslsolucoes.nginx.admin.html.HtmlUtil;
+import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.model.Server;
 import com.jslsolucoes.nginx.admin.repository.ServerRepository;
 import com.jslsolucoes.nginx.admin.repository.impl.OperationResult;
+import com.jslsolucoes.tagria.lib.form.FormValidation;
 
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Path;
@@ -35,6 +21,7 @@ public class ServerController {
 	private Result result;
 	private ServerRepository serverRepository;
 
+	@Deprecated
 	public ServerController() {
 
 	}
@@ -45,37 +32,40 @@ public class ServerController {
 		this.serverRepository = serverRepository;
 	}
 
-	public void list() {
-		this.result.include("serverList", serverRepository.listAll());
+	@Path("list/{idNginx}")
+	public void list(Long idNginx) {
+		this.result.include("serverList", serverRepository.listAllFor(new Nginx(idNginx)));
+		this.result.include("nginx", new Nginx(idNginx));
 	}
 
-	public void form() {
-
+	@Path("form/{idNginx}")
+	public void form(Long idNginx) {
+		this.result.include("nginx", new Nginx(idNginx));
 	}
 
-	public void validate(Long id, String ip) {
+	public void validate(Long id, String ip, Long idNginx) {
 		this.result.use(Results.json())
-				.from(HtmlUtil.convertToUnodernedList(serverRepository.validateBeforeSaveOrUpdate(new Server(id, ip))),
-						"errors")
+				.from(FormValidation.newBuilder().toUnordenedList(
+						serverRepository.validateBeforeSaveOrUpdate(new Server(id, ip, new Nginx(idNginx)))), "errors")
 				.serialize();
 	}
 
-	@Path("edit/{id}")
-	public void edit(Long id) {
+	@Path("edit/{idNginx}/{id}")
+	public void edit(Long idNginx, Long id) {
 		this.result.include("server", serverRepository.load(new Server(id)));
-		this.result.forwardTo(this).form();
+		this.result.forwardTo(this).form(idNginx);
 	}
 
-	@Path("delete/{id}")
-	public void delete(Long id) throws Exception {
+	@Path("delete/{idNginx}/{id}")
+	public void delete(Long idNginx, Long id) {
 		this.result.include("operation", serverRepository.delete(new Server(id)));
-		this.result.redirectTo(this).list();
+		this.result.redirectTo(this).list(idNginx);
 	}
 
 	@Post
-	public void saveOrUpdate(Long id, String ip) throws Exception {
-		OperationResult operationResult = serverRepository.saveOrUpdate(new Server(id, ip));
+	public void saveOrUpdate(Long id, String ip, Long idNginx) {
+		OperationResult operationResult = serverRepository.saveOrUpdate(new Server(id, ip, new Nginx(idNginx)));
 		this.result.include("operation", operationResult.getOperationType());
-		this.result.redirectTo(this).edit(operationResult.getId());
+		this.result.redirectTo(this).edit(idNginx, operationResult.getId());
 	}
 }

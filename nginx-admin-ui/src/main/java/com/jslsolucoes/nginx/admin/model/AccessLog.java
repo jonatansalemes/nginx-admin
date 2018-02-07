@@ -1,48 +1,42 @@
-/*******************************************************************************
- * Copyright 2016 JSL Solucoes LTDA - https://jslsolucoes.com
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *******************************************************************************/
 package com.jslsolucoes.nginx.admin.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.google.gson.annotations.SerializedName;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "access_log", schema = "admin")
+@Table(name = "access_log")
+@SequenceGenerator(name = "access_log_sq", initialValue = 1, allocationSize = 1, sequenceName = "access_log_sq")
 public class AccessLog implements Serializable {
-	
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "access_log_sq")
 	private Long id;
-	
+
 	@Column(name = "date_time")
 	private Date timestamp;
 
 	@Column(name = "remote_addr")
 	@SerializedName(value = "remote_addr")
 	private String remoteAddress;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_nginx")
+	private Nginx nginx;
 
 	@Column(name = "body_bytes_sent")
 	@SerializedName(value = "body_bytes_sent")
@@ -51,7 +45,7 @@ public class AccessLog implements Serializable {
 	@Column(name = "bytes_sent")
 	@SerializedName(value = "bytes_sent")
 	private Long bytesSent;
-	
+
 	@Column(name = "connection")
 	private Long connection;
 
@@ -61,16 +55,16 @@ public class AccessLog implements Serializable {
 
 	@Column(name = "msec")
 	private BigDecimal msec;
-	
+
 	@Column(name = "request")
 	private String request;
 
 	@Column(name = "status")
 	private Integer status;
-	
+
 	@Column(name = "scheme")
 	private String scheme;
-	
+
 	@Column(name = "request_length")
 	@SerializedName(value = "request_length")
 	private Long requestLength;
@@ -82,19 +76,19 @@ public class AccessLog implements Serializable {
 	@Column(name = "request_method")
 	@SerializedName(value = "request_method")
 	private String requestMethod;
-	
+
 	@Column(name = "request_uri")
 	@SerializedName(value = "request_uri")
 	private String requestUri;
-	
+
 	@Column(name = "server_name")
 	@SerializedName(value = "server_name")
 	private String serverName;
-	
+
 	@Column(name = "server_port")
 	@SerializedName(value = "server_port")
 	private Integer serverPort;
-	
+
 	@Column(name = "server_protocol")
 	@SerializedName(value = "server_protocol")
 	private String serverProtocol;
@@ -278,6 +272,13 @@ public class AccessLog implements Serializable {
 	public void setHttpXForwardedFor(String httpXForwardedFor) {
 		this.httpXForwardedFor = httpXForwardedFor;
 	}
-	
-}
 
+	public Nginx getNginx() {
+		return nginx;
+	}
+
+	public void setNginx(Nginx nginx) {
+		this.nginx = nginx;
+	}
+
+}

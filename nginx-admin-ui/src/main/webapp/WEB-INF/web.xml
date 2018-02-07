@@ -32,6 +32,7 @@
 		<servlet-name>tagria</servlet-name>
 		<url-pattern>/tagria/*</url-pattern>
 	</servlet-mapping>
+	
 	<error-page>
 		<error-code>500</error-code>
 		<location>/WEB-INF/jsp/app/error.jsp</location>

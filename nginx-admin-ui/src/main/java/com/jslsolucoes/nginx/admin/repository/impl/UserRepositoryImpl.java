@@ -1,18 +1,3 @@
-/*******************************************************************************
- * Copyright 2016 JSL Solucoes LTDA - https://jslsolucoes.com
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *******************************************************************************/
 package com.jslsolucoes.nginx.admin.repository.impl;
 
 import java.util.ArrayList;
@@ -20,72 +5,95 @@ import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 
-import com.jslsolucoes.nginx.admin.i18n.Messages;
+import com.jslsolucoes.i18n.Messages;
+import com.jslsolucoes.mail.service.MailService;
 import com.jslsolucoes.nginx.admin.model.User;
-import com.jslsolucoes.nginx.admin.repository.MailRepository;
+import com.jslsolucoes.nginx.admin.model.User_;
 import com.jslsolucoes.nginx.admin.repository.UserRepository;
 
 @RequestScoped
 public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepository {
 
-	private MailRepository mailRepository;
+	private MailService mailService;
 
+	@Deprecated
 	public UserRepositoryImpl() {
 
 	}
 
 	@Inject
-	public UserRepositoryImpl(Session session, MailRepository mailRepository) {
-		super(session);
-		this.mailRepository = mailRepository;
+	public UserRepositoryImpl(EntityManager entityManager, MailService mailService) {
+		super(entityManager);
+		this.mailService = mailService;
 	}
 
 	@Override
-	public User authenticate(User user) {
-		Criteria criteria = session.createCriteria(User.class);
-		criteria.add(Restrictions.eq("login", user.getLogin()));
-		criteria.add(Restrictions.eq("password", DigestUtils.sha256Hex(user.getPassword())));
-		return (User) criteria.uniqueResult();
+	public User authenticate(String identification, String password) {
+		try {
+			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+			CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+			Root<User> root = criteriaQuery.from(User.class);
+			criteriaQuery.where(criteriaBuilder.and(
+					criteriaBuilder.or(criteriaBuilder.equal(root.get(User_.login), identification),
+							criteriaBuilder.equal(root.get(User_.email), identification)),
+					criteriaBuilder.equal(root.get(User_.password), DigestUtils.sha256Hex(password))));
+			return entityManager.createQuery(criteriaQuery).getSingleResult();
+		} catch (NoResultException noResultException) {
+			return null;
+		}
 	}
 
 	@Override
-	public List<String> validateBeforeResetPassword(User user) {
-		List<String> errors = new ArrayList<String>();
-		if (getByLogin(user) == null) {
+	public List<String> validateBeforeResetPasswordFor(String identification) {
+		List<String> errors = new ArrayList<>();
+		if (findFor(identification) == null) {
 			errors.add(Messages.getString("invalid.login"));
 		}
 		return errors;
 	}
 
-	private User getByLogin(User user) {
-		Criteria criteria = session.createCriteria(User.class);
-		criteria.add(Restrictions.eq("login", user.getLogin()));
-		return (User) criteria.uniqueResult();
+	private User findFor(String identification) {
+		try {
+			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+			CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+			Root<User> root = criteriaQuery.from(User.class);
+			criteriaQuery.where(criteriaBuilder.or(criteriaBuilder.equal(root.get(User_.login), identification),
+					criteriaBuilder.equal(root.get(User_.email), identification)));
+			return entityManager.createQuery(criteriaQuery).getSingleResult();
+		} catch (NoResultException noResultException) {
+			return null;
+		}
 	}
 
 	@Override
-	public void resetPassword(User user) {
+	public String resetPasswordFor(String identification) {
 		String password = RandomStringUtils.randomAlphanumeric(8);
-		user = getByLogin(user);
-		user.setPassword(DigestUtils.sha256Hex(password));
-		user.setPasswordForceChange(1);
-		mailRepository.send(Messages.getString("reset.mail.subject"), user.getLogin(),
-				Messages.getString("reset.mail.body", user.getLogin(), password));
+		User user = findFor(identification);
+		if(user != null){
+			user.setPassword(DigestUtils.sha256Hex(password));
+			user.setPasswordForceChange(1);
+			mailService.async(Messages.getString("reset.mail.subject"), user.getEmail(),
+					Messages.getString("reset.mail.body", user.getLogin(), password));
+			return user.getEmail();
+		}
+		return identification;
 	}
 
 	@Override
-	public List<String> validateBeforeChangePassword(User user, String oldPassword, String password,
+	public List<String> validateBeforeChangePassword(User userParam, String oldPassword, String password,
 			String passwordConfirm) {
-		List<String> errors = new ArrayList<String>();
-		user = load(user);
+		List<String> errors = new ArrayList<>();
+		User user = load(userParam);
 
 		errors.addAll(validatePasswordPair(password, passwordConfirm));
 
@@ -100,7 +108,7 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 	}
 
 	private List<String> validatePasswordPair(String password, String passwordConfirm) {
-		List<String> errors = new ArrayList<String>();
+		List<String> errors = new ArrayList<>();
 		Integer passwordSize = 8;
 		if (password.length() < passwordSize) {
 			errors.add(Messages.getString("invalid.password.size", passwordSize));
@@ -113,30 +121,29 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 
 	@Override
 	public void changePassword(User user, String password) {
-		user = load(user);
-		user.setPasswordForceChange(0);
-		user.setPassword(DigestUtils.sha256Hex(password));
+		User userToChange = load(user);
+		userToChange.setPasswordForceChange(0);
+		userToChange.setPassword(DigestUtils.sha256Hex(password));
 	}
 
 	@Override
 	public User loadForSession(User user) {
-		Criteria criteria = session.createCriteria(User.class);
-		criteria.add(Restrictions.eq("id", user.getId()));
-		return (User) criteria.uniqueResult();
+		try {
+			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+			CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+			Root<User> root = criteriaQuery.from(User.class);
+			criteriaQuery.where(criteriaBuilder.equal(root.get(User_.id), user.getId()));
+			return entityManager.createQuery(criteriaQuery).getSingleResult();
+		} catch (NoResultException noResultException) {
+			return null;
+		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<User> listAll() {
-		Criteria criteria = session.createCriteria(User.class);
-		return criteria.list();
-	}
-
-	@Override
-	public List<String> validateBeforeCreateAdministrator(String login, String loginConfirm, String password,
+	public List<String> validateBeforeCreateUser(String login, String loginConfirm, String email, String password,
 			String passwordConfirm) {
 
-		List<String> errors = new ArrayList<String>();
+		List<String> errors = new ArrayList<>();
 		errors.addAll(validatePasswordPair(password, passwordConfirm));
 
 		if (!StringUtils.equals(login, loginConfirm)) {
@@ -147,12 +154,12 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
 	}
 
 	@Override
-	public void createAdministrator(String login, String password) {
+	public void create(String login, String email, String password) {
 		User user = new User();
 		user.setPassword(DigestUtils.sha256Hex(password));
 		user.setLogin(login);
 		user.setPasswordForceChange(0);
-		user.setAdmin(1);
+		user.setEmail(email);
 		super.insert(user);
 	}
 }

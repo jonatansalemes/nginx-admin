@@ -1,0 +1,29 @@
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+	version="2.0">
+	<persistence-unit name="default">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<non-jta-data-source>java:jboss/datasources/nginx-admin</non-jta-data-source>
+
+		<class>com.jslsolucoes.nginx.admin.model.User</class>
+		<class>com.jslsolucoes.nginx.admin.model.Nginx</class>
+		<class>com.jslsolucoes.nginx.admin.model.Configuration</class>
+		<class>com.jslsolucoes.nginx.admin.model.SslCertificate</class>
+		<class>com.jslsolucoes.nginx.admin.model.Strategy</class>
+		<class>com.jslsolucoes.nginx.admin.model.Server</class>
+		<class>com.jslsolucoes.nginx.admin.model.Upstream</class>
+		<class>com.jslsolucoes.nginx.admin.model.UpstreamServer</class>
+		<class>com.jslsolucoes.nginx.admin.model.VirtualHost</class>
+		<class>com.jslsolucoes.nginx.admin.model.VirtualHostAlias</class>
+		<class>com.jslsolucoes.nginx.admin.model.VirtualHostLocation</class>
+		<class>com.jslsolucoes.nginx.admin.model.ResourceIdentifier</class>
+		<class>com.jslsolucoes.nginx.admin.model.AccessLog</class>
+		<class>com.jslsolucoes.nginx.admin.model.ErrorLog</class>
+		<properties>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.format_sql" value="false" />
+		</properties>
+	</persistence-unit>
+</persistence> 

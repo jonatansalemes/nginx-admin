@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="statistics" pageWidth="595" pageHeight="1500" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Key" uuid="3916a44c-5f75-446d-8814-a4ba8bd5348b">
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="3.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="1824"/>
 	<subDataset name="urls" uuid="4f42aa25-3dfc-457e-9174-24cce628433e">
 		<parameter name="FROM" class="java.util.Date">
 			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -14,8 +14,9 @@
 			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 		</parameter>
 		<parameter name="TOTAL" class="java.lang.Long"/>
+		<parameter name="NGINX" class="java.lang.Long"/>
 		<queryString>
-			<![CDATA[select count(id) as hits,request_uri as url,server_name as host from admin.access_log where
+			<![CDATA[select count(id) as hits,request_uri as url,server_name as host from admin.access_log where id_nginx = $P{NGINX} and
 date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by request_uri,server_name order by hits desc]]>
 		</queryString>
 		<field name="HITS" class="java.lang.Long"/>
@@ -27,8 +28,9 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 		<parameter name="TO" class="java.util.Date"/>
 		<parameter name="ALIASES" class="java.lang.String"/>
 		<parameter name="TOTAL" class="java.lang.Long"/>
+		<parameter name="NGINX" class="java.lang.Long"/>
 		<queryString>
-			<![CDATA[select count(id) as hits,remote_addr as ip from admin.access_log where
+			<![CDATA[select count(id) as hits,remote_addr as ip from admin.access_log where id_nginx = $P{NGINX} and
 date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by remote_addr order by hits desc]]>
 		</queryString>
 		<field name="HITS" class="java.lang.Long"/>
@@ -39,8 +41,9 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 		<parameter name="TO" class="java.util.Date"/>
 		<parameter name="ALIASES" class="java.lang.String"/>
 		<parameter name="TOTAL" class="java.lang.Long"/>
+		<parameter name="NGINX" class="java.lang.Long"/>
 		<queryString>
-			<![CDATA[select count(id) as hits,status as code from admin.access_log where
+			<![CDATA[select count(id) as hits,status as code from admin.access_log where id_nginx = $P{NGINX} and
 date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by status order by hits desc]]>
 		</queryString>
 		<field name="HITS" class="java.lang.Long"/>
@@ -51,8 +54,9 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 		<parameter name="TO" class="java.util.Date"/>
 		<parameter name="ALIASES" class="java.lang.String"/>
 		<parameter name="TOTAL" class="java.lang.Long"/>
+		<parameter name="NGINX" class="java.lang.Long"/>
 		<queryString>
-			<![CDATA[select count(id) as hits,http_user_agent as browser from admin.access_log where date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by http_user_agent order by hits desc]]>
+			<![CDATA[select count(id) as hits,http_user_agent as browser from admin.access_log where id_nginx = $P{NGINX} and date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by http_user_agent order by hits desc]]>
 		</queryString>
 		<field name="HITS" class="java.lang.Long"/>
 		<field name="BROWSER" class="java.lang.String"/>
@@ -62,8 +66,9 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 		<parameter name="TO" class="java.util.Date"/>
 		<parameter name="ALIASES" class="java.lang.String"/>
 		<parameter name="TOTAL" class="java.lang.Long"/>
+		<parameter name="NGINX" class="java.lang.Long"/>
 		<queryString>
-			<![CDATA[select count(id) as hits,http_referrer as url from admin.access_log where date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by http_referrer order by hits desc]]>
+			<![CDATA[select count(id) as hits,http_referrer as url from admin.access_log where id_nginx = $P{NGINX} and date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by http_referrer order by hits desc]]>
 		</queryString>
 		<field name="HITS" class="java.lang.Long"/>
 		<field name="URL" class="java.lang.String"/>
@@ -72,8 +77,9 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 		<parameter name="FROM" class="java.util.Date"/>
 		<parameter name="TO" class="java.util.Date"/>
 		<parameter name="ALIASES" class="java.lang.String"/>
+		<parameter name="NGINX" class="java.lang.Long"/>
 		<queryString>
-			<![CDATA[select count(id) as hits,status as code from admin.access_log where
+			<![CDATA[select count(id) as hits,status as code from admin.access_log where id_nginx = $P{NGINX} and
 date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by status  order by hits desc limit 5]]>
 		</queryString>
 		<field name="HITS" class="java.lang.Long"/>
@@ -84,8 +90,9 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 		<parameter name="TO" class="java.util.Date"/>
 		<parameter name="ALIASES" class="java.lang.String"/>
 		<parameter name="TOTAL" class="java.lang.Long"/>
+		<parameter name="NGINX" class="java.lang.Long"/>
 		<queryString>
-			<![CDATA[select count(id) as hits,SUBSTR(http_user_agent,0,70) as browser from admin.access_log where date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by http_user_agent order by hits desc limit 5]]>
+			<![CDATA[select count(id) as hits,SUBSTR(http_user_agent,0,70) as browser from admin.access_log where id_nginx = $P{NGINX} and date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by http_user_agent order by hits desc limit 5]]>
 		</queryString>
 		<field name="HITS" class="java.lang.Long"/>
 		<field name="BROWSER" class="java.lang.String"/>
@@ -95,8 +102,9 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 		<parameter name="TO" class="java.util.Date"/>
 		<parameter name="ALIASES" class="java.lang.String"/>
 		<parameter name="TOTAL" class="java.lang.Long"/>
+		<parameter name="NGINX" class="java.lang.Long"/>
 		<queryString>
-			<![CDATA[select count(id) as hits,remote_addr as ip from admin.access_log where
+			<![CDATA[select count(id) as hits,remote_addr as ip from admin.access_log where id_nginx = $P{NGINX} and
 date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by remote_addr order by hits desc limit 5]]>
 		</queryString>
 		<field name="HITS" class="java.lang.Long"/>
@@ -113,8 +121,9 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 		</parameter>
 		<parameter name="TOTAL" class="java.lang.Long"/>
+		<parameter name="NGINX" class="java.lang.Long"/>
 		<queryString>
-			<![CDATA[select count(id) as hits,SUBSTR(request_uri,0,50) as url,server_name as host from admin.access_log where
+			<![CDATA[select count(id) as hits,SUBSTR(request_uri,0,50) as url,server_name as host from admin.access_log where id_nginx = $P{NGINX} and
 date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by request_uri,server_name order by hits desc limit 5]]>
 		</queryString>
 		<field name="HITS" class="java.lang.Long"/>
@@ -126,8 +135,9 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 		<parameter name="TO" class="java.util.Date"/>
 		<parameter name="ALIASES" class="java.lang.String"/>
 		<parameter name="TOTAL" class="java.lang.Long"/>
+		<parameter name="NGINX" class="java.lang.Long"/>
 		<queryString>
-			<![CDATA[select count(id) as hits,http_referrer as url from admin.access_log where date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by http_referrer order by hits desc limit 5]]>
+			<![CDATA[select count(id) as hits,http_referrer as url from admin.access_log where id_nginx = $P{NGINX} and date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by http_referrer order by hits desc limit 5]]>
 		</queryString>
 		<field name="HITS" class="java.lang.Long"/>
 		<field name="URL" class="java.lang.String"/>
@@ -137,8 +147,9 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 		<parameter name="TO" class="java.util.Date"/>
 		<parameter name="ALIASES" class="java.lang.String"/>
 		<parameter name="TOTAL" class="java.lang.Long"/>
+		<parameter name="NGINX" class="java.lang.Long"/>
 		<queryString>
-			<![CDATA[select count(id) as hits,request_uri as url,server_name as host from admin.access_log where
+			<![CDATA[select count(id) as hits,request_uri as url,server_name as host from admin.access_log where id_nginx = $P{NGINX} and
 date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) and status = 404 group by request_uri,server_name order by hits desc;]]>
 		</queryString>
 		<field name="HITS" class="java.lang.Long"/>
@@ -150,8 +161,9 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 		<parameter name="TO" class="java.util.Date"/>
 		<parameter name="ALIASES" class="java.lang.String"/>
 		<parameter name="TOTAL" class="java.lang.Long"/>
+		<parameter name="NGINX" class="java.lang.Long"/>
 		<queryString>
-			<![CDATA[select count(id) as hits,request_uri as url,server_name as host from admin.access_log where
+			<![CDATA[select count(id) as hits,request_uri as url,server_name as host from admin.access_log where id_nginx = $P{NGINX} and
 date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) and status = 404 group by request_uri,server_name order by hits desc limit 5]]>
 		</queryString>
 		<field name="HITS" class="java.lang.Long"/>
@@ -164,8 +176,9 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 	<parameter name="ALIASES" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="NGINX" class="java.lang.Long"/>
 	<queryString>
-		<![CDATA[select count(id) as hits from admin.access_log where
+		<![CDATA[select count(id) as hits from admin.access_log where id_nginx = $P{NGINX} and
 date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})]]>
 	</queryString>
 	<field name="HITS" class="java.lang.Long"/>
@@ -264,7 +277,7 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 			<componentElement>
 				<reportElement positionType="Float" x="0" y="625" width="555" height="30" uuid="56169595-b0f1-4bea-b314-7320527594e4"/>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
-					<datasetRun subDataset="urls" uuid="101bd08d-d3bb-4b64-9dee-2edf644e2b16">
+					<datasetRun subDataset="urls" uuid="252f7ef2-2852-44c8-b44c-e6b66b64f67a">
 						<datasetParameter name="FROM">
 							<datasetParameterExpression><![CDATA[$P{FROM}]]></datasetParameterExpression>
 						</datasetParameter>
@@ -276,6 +289,9 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 						</datasetParameter>
 						<datasetParameter name="TOTAL">
 							<datasetParameterExpression><![CDATA[$F{HITS}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="NGINX">
+							<datasetParameterExpression><![CDATA[$P{NGINX}]]></datasetParameterExpression>
 						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
@@ -352,7 +368,7 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 			<componentElement>
 				<reportElement positionType="Float" x="0" y="721" width="555" height="30" uuid="aff4ef60-a541-4ac4-afb9-601418930524"/>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
-					<datasetRun subDataset="origins" uuid="30dcd1cc-9cbc-491a-8187-df84965d327e">
+					<datasetRun subDataset="origins" uuid="c7450050-1831-46f8-9d7b-e6332afbc6f2">
 						<datasetParameter name="FROM">
 							<datasetParameterExpression><![CDATA[$P{FROM}]]></datasetParameterExpression>
 						</datasetParameter>
@@ -364,6 +380,9 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 						</datasetParameter>
 						<datasetParameter name="ALIASES">
 							<datasetParameterExpression><![CDATA[$P{ALIASES}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="NGINX">
+							<datasetParameterExpression><![CDATA[$P{NGINX}]]></datasetParameterExpression>
 						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
@@ -426,7 +445,7 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 			<componentElement>
 				<reportElement positionType="Float" x="0" y="808" width="555" height="30" uuid="b534169e-5806-49e1-b0e6-35c565f2aa5a"/>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
-					<datasetRun subDataset="status" uuid="37cae229-9062-48d2-9f1b-a04245b880d0">
+					<datasetRun subDataset="status" uuid="22a6faea-74b9-4e02-9b94-d72e76595108">
 						<datasetParameter name="TO">
 							<datasetParameterExpression><![CDATA[$P{TO}]]></datasetParameterExpression>
 						</datasetParameter>
@@ -438,6 +457,9 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 						</datasetParameter>
 						<datasetParameter name="ALIASES">
 							<datasetParameterExpression><![CDATA[$P{ALIASES}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="NGINX">
+							<datasetParameterExpression><![CDATA[$P{NGINX}]]></datasetParameterExpression>
 						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
@@ -500,7 +522,7 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 			<componentElement>
 				<reportElement positionType="Float" x="0" y="900" width="555" height="30" uuid="b225569a-6b1c-4d67-996d-5261be7c2ad6"/>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
-					<datasetRun subDataset="browsers" uuid="5dda976c-9fad-412a-8830-ba9335cfe8ab">
+					<datasetRun subDataset="browsers" uuid="86c75b4c-1390-4ef2-a534-dc4a281744be">
 						<datasetParameter name="FROM">
 							<datasetParameterExpression><![CDATA[$P{FROM}]]></datasetParameterExpression>
 						</datasetParameter>
@@ -512,6 +534,9 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 						</datasetParameter>
 						<datasetParameter name="ALIASES">
 							<datasetParameterExpression><![CDATA[$P{ALIASES}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="NGINX">
+							<datasetParameterExpression><![CDATA[$P{NGINX}]]></datasetParameterExpression>
 						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
@@ -574,7 +599,7 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 			<componentElement>
 				<reportElement positionType="Float" x="0" y="990" width="555" height="30" uuid="ddb72da3-b290-4fba-b703-3642a0077885"/>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
-					<datasetRun subDataset="referrers" uuid="5ce96dc8-5e3f-4d8c-a6fc-5a261c3cc41b">
+					<datasetRun subDataset="referrers" uuid="bb6b0f3c-f71d-4508-a34b-35ba27cbe18e">
 						<datasetParameter name="FROM">
 							<datasetParameterExpression><![CDATA[$P{FROM}]]></datasetParameterExpression>
 						</datasetParameter>
@@ -586,6 +611,9 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 						</datasetParameter>
 						<datasetParameter name="TOTAL">
 							<datasetParameterExpression><![CDATA[$F{HITS}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="NGINX">
+							<datasetParameterExpression><![CDATA[$P{NGINX}]]></datasetParameterExpression>
 						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
@@ -669,6 +697,9 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 							<datasetParameter name="ALIASES">
 								<datasetParameterExpression><![CDATA[$P{ALIASES}]]></datasetParameterExpression>
 							</datasetParameter>
+							<datasetParameter name="NGINX">
+								<datasetParameterExpression><![CDATA[$P{NGINX}]]></datasetParameterExpression>
+							</datasetParameter>
 							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 						</datasetRun>
 					</dataset>
@@ -711,6 +742,9 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 							<datasetParameter name="ALIASES">
 								<datasetParameterExpression><![CDATA[$P{ALIASES}]]></datasetParameterExpression>
 							</datasetParameter>
+							<datasetParameter name="NGINX">
+								<datasetParameterExpression><![CDATA[$P{NGINX}]]></datasetParameterExpression>
+							</datasetParameter>
 							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 						</datasetRun>
 					</dataset>
@@ -745,6 +779,9 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 							</datasetParameter>
 							<datasetParameter name="ALIASES">
 								<datasetParameterExpression><![CDATA[$P{ALIASES}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="NGINX">
+								<datasetParameterExpression><![CDATA[$P{NGINX}]]></datasetParameterExpression>
 							</datasetParameter>
 							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 						</datasetRun>
@@ -788,6 +825,9 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 							<datasetParameter name="ALIASES">
 								<datasetParameterExpression><![CDATA[$P{ALIASES}]]></datasetParameterExpression>
 							</datasetParameter>
+							<datasetParameter name="NGINX">
+								<datasetParameterExpression><![CDATA[$P{NGINX}]]></datasetParameterExpression>
+							</datasetParameter>
 							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 						</datasetRun>
 					</dataset>
@@ -823,6 +863,9 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 							<datasetParameter name="ALIASES">
 								<datasetParameterExpression><![CDATA[$P{ALIASES}]]></datasetParameterExpression>
 							</datasetParameter>
+							<datasetParameter name="NGINX">
+								<datasetParameterExpression><![CDATA[$P{NGINX}]]></datasetParameterExpression>
+							</datasetParameter>
 							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 						</datasetRun>
 					</dataset>
@@ -837,7 +880,7 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 			<componentElement>
 				<reportElement positionType="Float" x="0" y="1085" width="555" height="30" uuid="3a3b5304-7bf8-4be0-bf29-77ed6af6b3b6"/>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
-					<datasetRun subDataset="notfound" uuid="ac65065a-0692-4a51-a9ec-a310e9bf9432">
+					<datasetRun subDataset="notfound" uuid="2db56806-36bd-43c5-ada8-16305792eacd">
 						<datasetParameter name="FROM">
 							<datasetParameterExpression><![CDATA[$P{FROM}]]></datasetParameterExpression>
 						</datasetParameter>
@@ -849,6 +892,9 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 						</datasetParameter>
 						<datasetParameter name="TOTAL">
 							<datasetParameterExpression><![CDATA[$F{HITS}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="NGINX">
+							<datasetParameterExpression><![CDATA[$P{NGINX}]]></datasetParameterExpression>
 						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
@@ -945,6 +991,9 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 							</datasetParameter>
 							<datasetParameter name="ALIASES">
 								<datasetParameterExpression><![CDATA[$P{ALIASES}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="NGINX">
+								<datasetParameterExpression><![CDATA[$P{NGINX}]]></datasetParameterExpression>
 							</datasetParameter>
 							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 						</datasetRun>

@@ -1,32 +1,58 @@
-/*******************************************************************************
- * Copyright 2016 JSL Solucoes LTDA - https://jslsolucoes.com
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *******************************************************************************/
 package com.jslsolucoes.nginx.admin.controller;
+
+import java.util.concurrent.ExecutionException;
+
+import javax.inject.Inject;
+
+import com.jslsolucoes.mail.MailStatusType;
+import com.jslsolucoes.mail.service.MailService;
+import com.jslsolucoes.nginx.admin.ui.config.Configuration;
 
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Path;
+import br.com.caelum.vraptor.Post;
+import br.com.caelum.vraptor.Result;
 
 @Controller
 @Path("settings")
 public class SettingsController {
 
-	public void home() {
+	private Result result;
+	private MailService mailService;
+	private Configuration configuration;
+
+	@Deprecated
+	public SettingsController() {
 
 	}
 
-	public void welcome() {
+	@Inject
+	public SettingsController(Result result, MailService mailService, Configuration configuration) {
+		this.result = result;
+		this.mailService = mailService;
+		this.configuration = configuration;
+	}
 
+	public void home() {
+		// home logic
+	}
+
+	public void smtp() {
+		this.result.include("smtp", configuration.getSmtp());
+	}
+
+	public void app() {
+		this.result.include("application", configuration.getApplication());
+	}
+
+	@Post
+	@Path("smtp/test")
+	public void smtpTest(String to, String subject, String message) throws InterruptedException, ExecutionException {
+		MailStatusType mailStatus = mailService.sync(subject, to, message);
+		this.result.include("mailStatus", mailStatus);
+		this.result.include("sended", true);
+		this.result.include("to", to);
+		this.result.include("subject", subject);
+		this.result.redirectTo(this).smtp();
 	}
 }

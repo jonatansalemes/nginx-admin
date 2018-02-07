@@ -11,7 +11,7 @@
 			<html:div cssClass="text-center">
 				<html:h1>
 					<html:small>
-						<fmt:message key="title"></fmt:message> - ${version}
+						<fmt:message key="title"></fmt:message> - <html:span name="version"></html:span>
 					</html:small>
 				</html:h1>
 			</html:div>
@@ -21,9 +21,9 @@
 		
 			<html:form action="/user/reset" label="{password.recovery}"
 				validation="/user/validateBeforeResetPassword">
-				<html:formGroup label="{login}" required="true">
-					<html:input name="login" type="email" required="true"
-						placeholder="{login.placeholder}"></html:input>
+				<html:formGroup label="{identification}" required="true">
+					<html:input name="identification" required="true"
+						placeholder="{identification.placeholder}"></html:input>
 				</html:formGroup>
 				<html:toolbar>
 					<html:button type="submit" label="{reset}" state="primary"></html:button>
@@ -37,5 +37,11 @@
 		</html:block>
 
 	</html:container>
+	
+	<ajax:function url="/version" name="version" executeOnDocumentLoad="true">
+		<ajax:onSuccess>
+			<ajax:target type="html" data="version" target="version"></ajax:target>
+		</ajax:onSuccess>
+	</ajax:function>
 
 </html:view>

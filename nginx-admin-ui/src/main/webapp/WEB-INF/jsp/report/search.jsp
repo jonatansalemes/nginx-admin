@@ -4,6 +4,7 @@
 	<html:block>
 		<html:form label="{report.search}" action="/report/export.pdf" 
 		  validation="/report/validate" target="_newtab">
+		  	<html:input type="hidden" name="idNginx" value="${ nginx.id }"></html:input>
 			<html:formGroup label="{report.server.name}">
 				<html:listGroup>
 					<c:forEach var="virtualHostAlias" items="${ virtualHostAliasList }" varStatus="status">

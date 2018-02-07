@@ -1,18 +1,3 @@
-/*******************************************************************************
- * Copyright 2016 JSL Solucoes LTDA - https://jslsolucoes.com
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *******************************************************************************/
 package com.jslsolucoes.nginx.admin.model;
 
 import java.io.Serializable;
@@ -22,31 +7,35 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import com.jslsolucoes.vraptor4.auth.model.AuthUser;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "user", schema = "admin")
-public class User implements Serializable {
+@Table(name = "user")
+@SequenceGenerator(name = "user_sq", initialValue = 1, allocationSize = 1, sequenceName = "user_sq")
+public class User implements Serializable, AuthUser {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sq")
 	private Long id;
 
 	@Column(name = "login")
 	private String login;
+
+	@Column(name = "email")
+	private String email;
 
 	@Column(name = "password")
 	private String password;
 
 	@Column(name = "password_force_change")
 	private Integer passwordForceChange;
-	
-	@Column(name = "admin")
-	private Integer admin;
 
 	public User() {
-
+		// default constructor
 	}
 
 	public User(String login, String password) {
@@ -90,12 +79,11 @@ public class User implements Serializable {
 		this.passwordForceChange = passwordForceChange;
 	}
 
-	public Integer getAdmin() {
-		return admin;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setAdmin(Integer admin) {
-		this.admin = admin;
+	public void setEmail(String email) {
+		this.email = email;
 	}
-
 }
