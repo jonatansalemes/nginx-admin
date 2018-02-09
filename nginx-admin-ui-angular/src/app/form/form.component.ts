@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'ui-form',
@@ -7,8 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FormComponent implements OnInit {
 
-  private method:string = "GET";
-  private action:string = "#";
+  @Input() private method:string = "GET";
+  @Input() private action:string = "#";
 
   constructor() { }
 

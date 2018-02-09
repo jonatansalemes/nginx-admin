@@ -7,6 +7,8 @@ import { FormComponent } from './form/form.component';
 import { FormGroupComponent } from './form-group/form-group.component';
 import { InputComponent } from './input/input.component';
 import { LabelComponent } from './label/label.component';
+import { ToolbarComponent } from './toolbar/toolbar.component';
+import { ButtonComponent } from './button/button.component';
 
 
 @NgModule({
@@ -15,7 +17,9 @@ import { LabelComponent } from './label/label.component';
     LabelComponent,
     FormComponent,
     FormGroupComponent,
-    InputComponent
+    InputComponent,
+    ToolbarComponent,
+    ButtonComponent
   ],
   imports: [
     BrowserModule

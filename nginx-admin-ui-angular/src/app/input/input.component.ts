@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { v4 } from 'uuid';
+import { Component, OnInit, Input } from '@angular/core';
+import { ComponentMisc } from '../component-misc';
 
 @Component({
   selector: 'ui-input',
@@ -9,13 +9,14 @@ import { v4 } from 'uuid';
 export class InputComponent implements OnInit {
 
 
-  private type:string = "text";
-  private name:string;
-  private id:string = v4();
+  @Input() private type:string = "text";
+  @Input() private name:string;
+  @Input() private id:string;
 
   constructor() { }
 
   ngOnInit() {
+    this.id = ComponentMisc.idFor(this.name,this.id);
   }
 
 }
