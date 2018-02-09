@@ -1,3 +1,7 @@
 <form action="{{action}}" method="{{method}}" novalidate="novalidate" (submit)="onSubmit($event)">
+    
+    <div *ngIf="hasEmptyInputs">
+        Tem campos em branco
+    </div>
     <ng-content></ng-content>
 </form>

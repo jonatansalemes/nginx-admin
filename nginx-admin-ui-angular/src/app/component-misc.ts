@@ -13,6 +13,10 @@ export class ComponentMisc {
         }
     }
 
+    public static randomNameFor() : string {
+        return uuid();
+    }
+
     public static id (id:string) : string {
         return this.idFor(null,id);
     }
