@@ -12,6 +12,7 @@ export class ButtonComponent implements OnInit {
   @Input() private id:string;
   @Input() private state:string = "primary";
   @Input() private label:string;
+  @Input() private type:string = "button";
 
   constructor() { }
 

@@ -9,6 +9,7 @@ import { InputComponent } from './input/input.component';
 import { LabelComponent } from './label/label.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { ButtonComponent } from './button/button.component';
+import { ButtonGroupComponent } from './button-group/button-group.component';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { ButtonComponent } from './button/button.component';
     FormGroupComponent,
     InputComponent,
     ToolbarComponent,
-    ButtonComponent
+    ButtonComponent,
+    ButtonGroupComponent
   ],
   imports: [
     BrowserModule
