@@ -8,10 +8,17 @@
   <ui-form-group label="hello3" forElement="hello3">
       <ui-input></ui-input>
   </ui-form-group>
+  <ui-form-group label="select">
+    <ui-select value="ip1">
+        <ui-option *ngFor="let server of servers" [value]="server.endpoint" [text]="server.endpoint">
+          
+        </ui-option>
+    </ui-select>
+  </ui-form-group>
   <ui-toolbar>
       <ui-button-group>
         <ui-button state="secondary" label="Save" type="submit"></ui-button>
-        <ui-button state="secondary" label="Save 2"></ui-button>
+        <ui-button state="secondary" label="Save 2" (click)="recall()"></ui-button>
       </ui-button-group>
   </ui-toolbar>
 </ui-form>

@@ -1,30 +1,25 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, ContentChildren, QueryList } from '@angular/core';
 import { HtmlElement } from '../html/html-element';
+import { OptionComponent } from '../option/option.component';
+
 
 @Component({
-  selector: 'app-select',
+  selector: 'ui-select',
   templateUrl: './select.component.html',
   styleUrls: ['./select.component.css']
 })
-export class SelectComponent extends HtmlElement implements OnInit {
+export class SelectComponent implements OnInit {
 
-  @Input() private required:boolean = false;
+  @Input() private value:string;
+  @ContentChildren(OptionComponent, { descendants: true }) options: QueryList<OptionComponent>;
+
 
   constructor() { 
-    super();
+    
   }
 
   ngOnInit() {
-  }
-
-  isValid() : boolean {
-    this.removeClass('is-invalid');
-    if(this.required) {
-      this.addClass('is-invalid');
-      return false;
-    } else {
-      return true;
-    }
+    
   }
 
 }

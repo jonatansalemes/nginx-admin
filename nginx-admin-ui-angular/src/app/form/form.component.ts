@@ -25,9 +25,11 @@ export class FormComponent implements OnInit,AfterContentInit {
   }
 
   ngAfterContentInit(): void {
+    /*
     this.validables.forEach(input => { 
       console.log(input);
     });
+    */
   }
 
   public onSubmit(event:any) : void {
