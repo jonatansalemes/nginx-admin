@@ -2,18 +2,21 @@ import { Component, OnInit, Input, ContentChildren, ViewChild, QueryList, ViewCh
 import { ToolbarComponent } from '../toolbar/toolbar.component';
 import { InputComponent } from '../input/input.component';
 import { FormGroupComponent } from '../form-group/form-group.component';
+import { HtmlElement } from '../html/html-element';
 
 @Component({
   selector: 'ui-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.css']
 })
-export class FormComponent implements OnInit {
+export class FormComponent implements OnInit,AfterContentInit {
 
+  
   @Input() private method:string = "GET";
   @Input() private action:string = "#";
-  private hasEmptyInputs:boolean = false;
-  @ContentChildren(InputComponent, {descendants: true}) inputs: QueryList<InputComponent>;
+  @ContentChildren(HtmlElement,{descendants:true}) validables: QueryList<HtmlElement>;
+
+  private hasBlankField:boolean = false;
   
   constructor() { }
 
@@ -21,22 +24,30 @@ export class FormComponent implements OnInit {
     
   }
 
+  ngAfterContentInit(): void {
+    this.validables.forEach(input => { 
+      console.log(input);
+    });
+  }
+
   public onSubmit(event:any) : void {
     event.preventDefault();
-    if(this.hasBlankFields()){
-       this.hasEmptyInputs = true;
+    if(!this.hasBlankFields()){
+      this.hasBlankField = false;
+       console.log('Proceed with submit');
     } else {
-      this.hasEmptyInputs = false;
+      this.hasBlankField = true;
+      console.log('has blanks');
     }
   }
 
   private hasBlankFields() : boolean {
-    var hasBlank:boolean = false;
-    this.inputs.forEach(input => { 
-      hasBlank = input.isValid();
-    });
-    console.log('has blanks '+hasBlank);
-    return hasBlank;
+    for(let validable of this.validables.toArray()) {
+      if(!validable.isValid()) {
+        return true;
+      }
+    }
+    return false;
   }
 
 }

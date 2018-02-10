@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ComponentMisc } from '../component-misc';
+import { HtmlMisc } from '../html/html-misc';
 
 @Component({
   selector: 'ui-button',
@@ -17,7 +17,7 @@ export class ButtonComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.id = ComponentMisc.id(this.id);
+    this.id = HtmlMisc.id(this.id);
   }
 
 }

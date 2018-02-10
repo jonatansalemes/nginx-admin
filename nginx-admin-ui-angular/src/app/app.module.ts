@@ -11,6 +11,8 @@ import { LabelComponent } from './label/label.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { ButtonComponent } from './button/button.component';
 import { ButtonGroupComponent } from './button-group/button-group.component';
+import { SelectComponent } from './select/select.component';
+import { OptionComponent } from './option/option.component';
 
 
 @NgModule({
@@ -22,7 +24,9 @@ import { ButtonGroupComponent } from './button-group/button-group.component';
     InputComponent,
     ToolbarComponent,
     ButtonComponent,
-    ButtonGroupComponent
+    ButtonGroupComponent,
+    SelectComponent,
+    OptionComponent
   ],
   imports: [
     BrowserModule,FormsModule

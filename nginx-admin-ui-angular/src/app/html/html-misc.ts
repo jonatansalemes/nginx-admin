@@ -1,7 +1,7 @@
 
 import { v4 as uuid } from 'uuid';
 
-export class ComponentMisc {
+export class HtmlMisc {
 
     public static idFor (name:string,id:string) : string {
         if(id) {
@@ -20,4 +20,5 @@ export class ComponentMisc {
     public static id (id:string) : string {
         return this.idFor(null,id);
     }
+    
 }
