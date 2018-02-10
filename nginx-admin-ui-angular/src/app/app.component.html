@@ -10,8 +10,8 @@
   </ui-form-group>
   <ui-form-group label="select">
     <ui-select value="ip1">
-        <ui-option *ngFor="let server of servers" [value]="server.endpoint" [text]="server.endpoint">
-          
+        <ui-option *ngFor="let server of servers" [value]="server.endpoint">
+            {{server.endpoint}} - {{server.alias}}
         </ui-option>
     </ui-select>
   </ui-form-group>

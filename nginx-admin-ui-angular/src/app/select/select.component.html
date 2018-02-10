@@ -1,6 +1,4 @@
 <select class="form-control">
     <option value="">---</option>
-    <option [selected]="option.value === value" *ngFor="let option of options" [value]="option.value">
-        {{option.text}}
-    </option>
+    <option [selected]="option.value === value" *ngFor="let option of options" [value]="option.value">{{option.viewValue}}</option>
 </select>

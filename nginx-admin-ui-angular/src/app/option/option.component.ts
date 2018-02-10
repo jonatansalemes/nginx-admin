@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'ui-option',
@@ -8,12 +8,21 @@ import { Component, OnInit, Input } from '@angular/core';
 export class OptionComponent implements OnInit {
 
   @Input() private value:string;
-  @Input() private text:string;
 
-  constructor() { }
+  constructor(private _element: ElementRef) { 
+
+  }
 
   ngOnInit() {
 
+  }
+
+  _getHostElement(): HTMLElement {
+    return this._element.nativeElement;
+  }
+
+  get viewValue(): string {
+    return (this._getHostElement().textContent || '').trim();
   }
 
 }

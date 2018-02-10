@@ -9,15 +9,15 @@ import { Server } from './model/server';
 export class AppComponent {
  
   servers = [
-    new Server("ip1"),
-    new Server("ip2")
+    new Server("ip1","alias1"),
+    new Server("ip2","alias2")
 ];
 
 
   recall() : void {
     this.servers = [
-      new Server("ip3"),
-      new Server("ip4")
+      new Server("ip3","alias3"),
+      new Server("ip4","alias4")
     ];
   }
 
