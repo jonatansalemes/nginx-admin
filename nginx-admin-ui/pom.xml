@@ -29,7 +29,7 @@
 		<dependency>
 			<groupId>com.jslsolucoes</groupId>
 			<artifactId>tagria-lib</artifactId>
-			<version>1.0.15-SNAPSHOT</version>
+			<version>1.0.15</version>
 		</dependency>
 		<dependency>
 			<groupId>com.jslsolucoes</groupId>
