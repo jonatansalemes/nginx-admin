@@ -66,10 +66,10 @@
 						<configuration>
 							<tasks>
 								<copy
-									file="${project.build.directory}/nginx-admin-bin.zip"
+									file="${project.build.directory}/nginx-admin-${project.version}-bin.zip"
 									tofile="${base.dir}/nginx-admin-docker/nginx-admin-ui/qas/red-hat/build/nginx-admin-bin.zip" />
 								<copy
-									file="${project.build.directory}/nginx-admin-bin.zip"
+									file="${project.build.directory}/nginx-admin-${project.version}-bin.zip"
 									tofile="${base.dir}/nginx-admin-docker/nginx-admin-ui/qas/debian/build/nginx-admin-bin.zip" />
 							</tasks>
 						</configuration>
@@ -119,7 +119,7 @@
 							<goal>attached</goal>
 						</goals>
 						<configuration>
-							<finalName>nginx-admin</finalName>
+							<finalName>nginx-admin-${project.version}</finalName>
 							<descriptors>
 								<descriptor>assembly/full.xml</descriptor>
 							</descriptors>

@@ -104,7 +104,7 @@ Red-hat:
 		
 		#download and extract latest version of nginx agent package
 		mkdir -p /opt/downloads
-		wget https://bintray.com/jslsolucoes/nginx-admin/download_file?file_path=nginx-agent-bin.zip -O /opt/downloads/nginx-agent-bin.zip
+		wget https://bintray.com/jslsolucoes/nginx-admin/download_file?file_path=nginx-agent-2.0.1-bin.zip -O /opt/downloads/nginx-agent-bin.zip
 		unzip /opt/downloads/nginx-agent-bin.zip -d /opt
 		chmod -R 755 /opt/nginx-agent
 		chown -R nginx-agent:nginx-agent /opt/nginx-agent
@@ -151,7 +151,7 @@ Debian:
 		
 		#download and extract latest version of nginx agent package
 		mkdir -p /opt/downloads
-		wget https://bintray.com/jslsolucoes/nginx-admin/download_file?file_path=nginx-agent-bin.zip -O /opt/downloads/nginx-agent-bin.zip
+		wget https://bintray.com/jslsolucoes/nginx-admin/download_file?file_path=nginx-agent-2.0.1-bin.zip -O /opt/downloads/nginx-agent-bin.zip
 		unzip /opt/downloads/nginx-agent-bin.zip -d /opt
 		chmod -R 755 /opt/nginx-agent
 		chown -R nginx-agent:nginx-agent /opt/nginx-agent
@@ -196,7 +196,7 @@ Red-hat:
 		
 		#download and extract latest version of nginx manager package
 		mkdir -p /opt/downloads
-		wget https://bintray.com/jslsolucoes/nginx-admin/download_file?file_path=nginx-admin-bin.zip -O /opt/downloads/nginx-admin-bin.zip
+		wget https://bintray.com/jslsolucoes/nginx-admin/download_file?file_path=nginx-admin-2.0.1-bin.zip -O /opt/downloads/nginx-admin-bin.zip
 		unzip /opt/downloads/nginx-admin-bin.zip -d /opt
 		chmod -R 755 /opt/nginx-admin
 		chown -R nginx-admin:nginx-admin /opt/nginx-admin
@@ -234,7 +234,7 @@ Debian:
 		
 		#download and extract latest version of nginx manager package
 		mkdir -p /opt/downloads
-		wget https://bintray.com/jslsolucoes/nginx-admin/download_file?file_path=nginx-admin-bin.zip -O /opt/downloads/nginx-admin-bin.zip
+		wget https://bintray.com/jslsolucoes/nginx-admin/download_file?file_path=nginx-admin-2.0.1-bin.zip -O /opt/downloads/nginx-admin-bin.zip
 		unzip /opt/downloads/nginx-admin-bin.zip -d /opt
 		chmod -R 755 /opt/nginx-admin
 		chown -R nginx-admin:nginx-admin /opt/nginx-admin

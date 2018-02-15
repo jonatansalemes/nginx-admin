@@ -66,10 +66,10 @@
 						<configuration>
 							<tasks>
 								<copy
-									file="${project.build.directory}/nginx-agent-bin.zip"
+									file="${project.build.directory}/nginx-agent-${project.version}-bin.zip"
 									tofile="${base.dir}/nginx-admin-docker/nginx-admin-agent/qas/red-hat/build/nginx-agent-bin.zip" />
 								<copy
-									file="${project.build.directory}/nginx-agent-bin.zip"
+									file="${project.build.directory}/nginx-agent-${project.version}-bin.zip"
 									tofile="${base.dir}/nginx-admin-docker/nginx-admin-agent/qas/debian/build/nginx-agent-bin.zip" />
 							</tasks>
 						</configuration>
@@ -121,7 +121,7 @@
 							<goal>attached</goal>
 						</goals>
 						<configuration>
-							<finalName>nginx-agent</finalName>
+							<finalName>nginx-agent-${project.version}</finalName>
 							<descriptors>
 								<descriptor>assembly/full.xml</descriptor>
 							</descriptors>
