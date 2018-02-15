@@ -22,7 +22,7 @@
 		<html:toolbar>
 			<html:buttonGroup spaced="true">
 				<html:button state="primary" type="submit" label="{nginx.agent.save.settings}"></html:button>
-				<html:button url="javascript:testSettings()" state="info" type="button" label="{nginx.agent.test.settings}"></html:button>
+				<html:button rendered="${ nginx != null }" url="javascript:testSettings()" state="info" type="button" label="{nginx.agent.test.settings}"></html:button>
 			</html:buttonGroup>
 			
 		</html:toolbar>

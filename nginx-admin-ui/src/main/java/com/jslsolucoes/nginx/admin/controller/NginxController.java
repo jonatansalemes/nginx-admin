@@ -43,7 +43,7 @@ public class NginxController {
 	@Path({ "tabs", "tabs/{id}" })
 	public void tabs(Long id) {
 		if (id != null) {
-			this.result.include("nginx", new Nginx(id));
+			this.result.include("nginx", nginxRepository.load(new Nginx(id)));
 		}
 	}
 

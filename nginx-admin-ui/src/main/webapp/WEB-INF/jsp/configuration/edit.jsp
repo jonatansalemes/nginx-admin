@@ -9,6 +9,10 @@
 		<html:alert state="danger" rendered="${ nginxConfigureResponse.error() }">
 				${ nginxConfigureResponse.stackTrace }
 			</html:alert>
+		<html:alert state="danger" rendered="${ configuration == null  }" label="{nginx.configure.attention}">
+		
+		</html:alert>	
+			
 	</html:block>
 	
 	<html:block>

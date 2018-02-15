@@ -42,4 +42,13 @@ public class ConfigurationRepositoryImpl extends RepositoryImpl<Configuration> i
 		}
 	}
 
+	@Override
+	public OperationStatusType deleteFor(Nginx nginx) {
+		Configuration forDelete = loadFor(nginx);
+		if (forDelete != null) {
+			super.delete(forDelete);
+		}
+		return OperationStatusType.DELETE;
+	}
+
 }

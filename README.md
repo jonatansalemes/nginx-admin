@@ -94,7 +94,7 @@ Red-hat:
 		#install pre-dependencies if has no one
 		yum -y update
 		yum -y install epel-release
-		yum -y install psmisc initscripts java-1.8.0-openjdk-devel.x86_64 nginx unzip sudo wget visudo vim
+		yum -y install psmisc initscripts java-1.8.0-openjdk-devel.x86_64 nginx unzip sudo wget visudo vim firewalld
 	
 		#create user and add permission for running agent. you can also use visudo to add permissions below
 		useradd nginx-agent -r
@@ -118,7 +118,14 @@ Red-hat:
 		#start service
 		service nginx-agent start
 		
-		#you can check for connectivity that must return http status 200 OK for the request
+		#release ports on firewalld to nginx-agent and to nginx	
+		printf '<?xml version="1.0" encoding="utf-8"?>\n<service>\n<short>Nginx agent firewall service</short>\n<description>Nginx agent firewall service</description>\n<port protocol="tcp" port="3000"/>\n<port protocol="tcp" port="3443"/>\n</service>\n' >> /etc/firewalld/services/nginx-agent.xml
+		firewall-cmd --zone=public --add-service=nginx-agent --permanent
+		firewall-cmd --zone=public --add-service=http --permanent
+		firewall-cmd --zone=public --add-service=https --permanent
+		firewall-cmd --reload
+		
+		#you can check for connectivity after a few seconds that must return http status 200 OK for the request
 		wget --header "Authorization: changeit" http://localhost:3000
 		
 		#By default your authorization key is "changeit" you also can check for connectivity in your browser accessing http://ip:3000 or https://ip:3443 that will return http status 403 forbidden with message "Resource forbidden" because requires authorization header to work
@@ -159,7 +166,7 @@ Debian:
 		#start service
 		service nginx-agent start
 		
-		#you can check for connectivity that must return http status 200 OK for the request
+		#you can check for connectivity after a few second that must return http status 200 OK for the request
 		wget --header "Authorization: changeit" http://localhost:3000
 		
 		#By default your authorization key is "changeit" you also can check for connectivity in your browser accessing http://ip:3000 or https://ip:3443 that will return http status 403 forbidden with message "Resource forbidden" because requires authorization header to work
@@ -182,7 +189,7 @@ Red-hat:
 	<code>
 		#install pre-dependencies if has no one
 		yum -y update
-		yum -y install psmisc initscripts java-1.8.0-openjdk-devel.x86_64 unzip wget
+		yum -y install psmisc initscripts java-1.8.0-openjdk-devel.x86_64 unzip wget firewalld
 	
 		#create user for running manager
 		useradd nginx-admin -r
@@ -202,6 +209,11 @@ Red-hat:
 		
 		#start service
 		service nginx-admin start
+		
+		#release ports on firewalld to nginx-agent and to nginx	
+		printf '<?xml version="1.0" encoding="utf-8"?>\n<service>\n<short>Nginx admin firewall service</short>\n<description>Nginx admin firewall service</description>\n<port protocol="tcp" port="4000"/>\n<port protocol="tcp" port="4443"/>\n</service>\n' >> /etc/firewalld/services/nginx-admin.xml
+		firewall-cmd --zone=public --add-service=nginx-admin --permanent
+		firewall-cmd --reload
 		
 		#You can check for manager ui in browser accessing http://localhost:4000
 		#Please access /opt/nginx-admin/conf/nginx-admin.conf and you can see or change others configurations 
