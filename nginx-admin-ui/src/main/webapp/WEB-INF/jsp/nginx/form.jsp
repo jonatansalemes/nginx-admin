@@ -18,33 +18,12 @@
 			<html:input name="authorizationKey" value="${ nginx.authorizationKey }"
 				placeholder="{nginx.agent.authorization.key.placeholder}" required="true"></html:input>
 		</html:formGroup>
-		
 		<html:toolbar>
 			<html:buttonGroup spaced="true">
 				<html:button state="primary" type="submit" label="{nginx.agent.save.settings}"></html:button>
-				<html:button rendered="${ nginx != null }" url="javascript:testSettings()" state="info" type="button" label="{nginx.agent.test.settings}"></html:button>
-			</html:buttonGroup>
-			
+			</html:buttonGroup>		
 		</html:toolbar>
 	</html:form>
-	
-	
-	<html:modal label="{nginx.agent.connection.result}" id="modalTestSettings">
-		<html:div id="modalTestSettingsResultInfo">
-		
-		</html:div>
-	</html:modal>
-	
-	<ajax:function name="testSettings" url="/nginx/ping" dataType="html">
-		<ajax:parameters>
-			<ajax:parameter src="endpoint" name="endpoint" type="val"></ajax:parameter>
-			<ajax:parameter src="authorizationKey" name="authorizationKey" type="val"></ajax:parameter>
-		</ajax:parameters>
-		<ajax:onSuccess>
-				$('#modalTestSettingsResultInfo').html(data);
-				$('#modalTestSettings').modal('show');
-		</ajax:onSuccess>
-	</ajax:function>
 	
 	<html:block align="center">
 		<html:link url="/nginx/list" label="{back}" target="_parent"></html:link>

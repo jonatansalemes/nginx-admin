@@ -14,6 +14,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import com.jslsolucoes.i18n.Messages;
+import com.jslsolucoes.nginx.admin.agent.NginxAgentRunner;
+import com.jslsolucoes.nginx.admin.agent.model.response.NginxResponse;
 import com.jslsolucoes.nginx.admin.model.Configuration_;
 import com.jslsolucoes.nginx.admin.model.Nginx;
 import com.jslsolucoes.nginx.admin.model.Nginx_;
@@ -24,6 +26,7 @@ import com.jslsolucoes.nginx.admin.repository.NginxRepository;
 public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxRepository {
 
 	private ConfigurationRepository configurationRepository;
+	private NginxAgentRunner nginxAgentRunner;
 
 	@Deprecated
 	public NginxRepositoryImpl() {
@@ -31,9 +34,10 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 	}
 
 	@Inject
-	public NginxRepositoryImpl(EntityManager entityManager,ConfigurationRepository configurationRepository) {
+	public NginxRepositoryImpl(EntityManager entityManager,ConfigurationRepository configurationRepository,NginxAgentRunner nginxAgentRunner) {
 		super(entityManager);
 		this.configurationRepository = configurationRepository;
+		this.nginxAgentRunner = nginxAgentRunner;
 	}
 
 	@Override
@@ -42,8 +46,15 @@ public class NginxRepositoryImpl extends RepositoryImpl<Nginx> implements NginxR
 		
 		if (hasEquals(nginx) != null) {
 			errors.add(Messages.getString("nginx.agent.already.exists"));
-		}
+		}		
 		
+		NginxResponse nginxResponse = nginxAgentRunner.ping(nginx.getEndpoint(), nginx.getAuthorizationKey());
+		if(nginxResponse.error()){
+			errors.add(Messages.getString("nginx.agent.connection.error"));
+		} else if(nginxResponse.forbidden()){
+			errors.add(Messages.getString("nginx.agent.authentication.error"));
+		}
+
 		return errors;
 	}
 	

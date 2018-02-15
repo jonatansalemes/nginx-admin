@@ -2,17 +2,12 @@
 <html:view title="{title}">
 
 	<html:block>
-		<html:alert state="success" label="{nginx.configure.update.success}"
-			rendered="${ operation == 'UPDATE' }"></html:alert>
-		<html:alert state="success" label="{nginx.configure.insert.success}"
-			rendered="${ operation == 'INSERT' }"></html:alert>
+		<html:alert state="success" label="{nginx.configure.update.success}" rendered="${ operation == 'UPDATE' }"/>
+		<html:alert state="success" label="{nginx.configure.insert.success}" rendered="${ operation == 'INSERT' }"/>
 		<html:alert state="danger" rendered="${ nginxConfigureResponse.error() }">
 				${ nginxConfigureResponse.stackTrace }
-			</html:alert>
-		<html:alert state="danger" rendered="${ configuration == null  }" label="{nginx.configure.attention}">
-		
-		</html:alert>	
-			
+		</html:alert>
+		<html:alert state="danger" rendered="${ configuration == null  }" label="{nginx.configure.attention}"/>
 	</html:block>
 	
 	<html:block>
@@ -39,5 +34,11 @@
 			</html:toolbar>
 		</html:form>
 	</html:block>
+	
+	<html:jsCode rendered="${ operation == 'INSERT' }">
+		window.setTimeout(function(){
+			window.parent.self.location = URL_BASE + '/nginx/tabs/${ nginx.id }';
+		},5000);
+	</html:jsCode>
 
 </html:view>
