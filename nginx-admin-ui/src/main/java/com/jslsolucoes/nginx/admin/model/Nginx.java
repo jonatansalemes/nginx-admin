@@ -1,6 +1,7 @@
 package com.jslsolucoes.nginx.admin.model;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -33,6 +35,9 @@ public class Nginx implements Serializable {
 
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "nginx")
 	private Configuration configuration;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "nginx")
+	private Set<Server> servers;
 
 	public Nginx() {
 
@@ -83,6 +88,10 @@ public class Nginx implements Serializable {
 
 	public Configuration getConfiguration() {
 		return configuration;
+	}
+
+	public Set<Server> getServers() {
+		return servers;
 	}
 
 }

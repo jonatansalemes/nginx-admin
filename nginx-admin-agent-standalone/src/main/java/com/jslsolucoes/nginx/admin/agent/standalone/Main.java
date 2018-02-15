@@ -48,9 +48,9 @@ public class Main {
 								});
 							})).fraction(new UndertowFraction().server("default-server", server -> {
 								server.httpListener("default", httpListener -> {
-									httpListener.socketBinding("http").redirectSocket("https").enableHttp2(true);
+									httpListener.socketBinding("http").redirectSocket("https").enableHttp2(true).maxPostSize(maxPostSize());
 								}).httpsListener("https", httpsListener -> {
-									httpsListener.securityRealm("SSLRealm").socketBinding("https").enableHttp2(true);
+									httpsListener.securityRealm("SSLRealm").socketBinding("https").enableHttp2(true).maxPostSize(maxPostSize());
 								}).host("default-host", host -> {
 									host.alias("localhost");
 								});
@@ -69,6 +69,10 @@ public class Main {
 			swarm.deploy(warArchive);
 		}
 
+	}
+	
+	private static Long maxPostSize() {
+		return Long.valueOf(30 * 1024 * 1024);
 	}
 
 	private static File copyToTemp(String classpath) throws IOException {

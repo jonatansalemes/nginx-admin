@@ -36,7 +36,15 @@
 				<html:buttonGroup spaced="true">
 					<html:button icon="pencil" url="/upstream/edit/${ nginx.id }/${ upstream.id }"></html:button>
 					<html:button disabled="${ !empty(upstream.virtualHostLocations) }" state="danger" id="${ upstream.id }" icon="trash" url="#"></html:button>
-					<html:confirm attachTo="${ upstream.id }" url="/upstream/delete/${ nginx.id }/${ upstream.id }">
+					
+					
+					<html:icon icon="question-sign" id="help${ upstream.id }" rendered="${ !empty(upstream.virtualHostLocations) }"></html:icon>
+					
+					<html:tooltip attachToSelector="#help${ upstream.id }" rendered="${ !empty(upstream.virtualHostLocations) }" 
+						label="{upstream.delete.disabled}">
+					</html:tooltip>
+					
+					<html:confirm attachToSelector="#${ upstream.id }" url="/upstream/delete/${ nginx.id }/${ upstream.id }">
 						<fmt:message key="upstream.delete.confirm">
 							<fmt:param value="${ upstream.name }"></fmt:param>
 						</fmt:message>

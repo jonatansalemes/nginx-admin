@@ -16,7 +16,14 @@
 				<html:buttonGroup spaced="true">
 					<html:button icon="pencil" url="/server/edit/${nginx.id }/${ server.id }"></html:button>
 					<html:button disabled="${ !empty(server.upstreamServers) }" state="danger" id="${ server.id }" icon="trash" url="#"></html:button>
-					<html:confirm attachTo="${ server.id }" url="/server/delete/${nginx.id }/${ server.id }">
+					
+					<html:icon icon="question-sign" id="help${ server.id }" rendered="${ !empty(server.upstreamServers) }"></html:icon>
+					
+					<html:tooltip attachToSelector="#help${ server.id }" rendered="${ !empty(server.upstreamServers) }" 
+						label="{server.delete.disabled}">
+					</html:tooltip>
+					
+					<html:confirm attachToSelector="#${ server.id }" url="/server/delete/${nginx.id }/${ server.id }">
 						<fmt:message key="server.delete.confirm">
 							<fmt:param value="${ server.ip }"></fmt:param>
 						</fmt:message>

@@ -28,7 +28,15 @@
 				<html:buttonGroup spaced="true">
 					<html:button icon="pencil" url="/sslCertificate/edit/${ nginx.id }/${ sslCertificate.id }"></html:button>
 					<html:button disabled="${ !empty(sslCertificate.virtualHosts) }" state="danger" id="${ sslCertificate.id }" icon="trash" url="#"></html:button>
-					<html:confirm attachTo="${ sslCertificate.id }" url="/sslCertificate/delete/${ nginx.id }/${ sslCertificate.id }">
+					
+					
+					<html:icon icon="question-sign" id="help${ sslCertificate.id }" rendered="${ !empty(sslCertificate.virtualHosts) }"></html:icon>
+					
+					<html:tooltip attachToSelector="#help${ sslCertificate.id }" rendered="${ !empty(sslCertificate.virtualHosts) }" 
+						label="{ssl.delete.disabled}">
+					</html:tooltip>
+					
+					<html:confirm attachToSelector="#${ sslCertificate.id }" url="/sslCertificate/delete/${ nginx.id }/${ sslCertificate.id }">
 						<fmt:message key="ssl.delete.confirm">
 							<fmt:param value="${ sslCertificate.commonName }"></fmt:param>
 						</fmt:message>

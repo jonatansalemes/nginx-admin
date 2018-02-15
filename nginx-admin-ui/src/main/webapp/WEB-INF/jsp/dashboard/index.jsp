@@ -70,22 +70,22 @@
 	
 	
 								<html:button id="killAll" state="danger" label="{killAll}"></html:button>
-								<html:confirm url="/dashboard/killAll/${ nginx.id }" attachTo="killAll"
+								<html:confirm url="/dashboard/killAll/${ nginx.id }" attachToSelector="#killAll"
 									label="{killAll.confirm}">
 								</html:confirm>
 	
 								<html:button id="stop" state="danger" label="{stop}"></html:button>
-								<html:confirm url="/dashboard/stop/${ nginx.id }" attachTo="stop"
+								<html:confirm url="/dashboard/stop/${ nginx.id }" attachToSelector="#stop"
 									label="{stop.confirm}">
 								</html:confirm>
 	
 								<html:button id="restart" state="danger" label="{restart}"></html:button>
-								<html:confirm url="/dashboard/restart/${ nginx.id }" attachTo="restart"
+								<html:confirm url="/dashboard/restart/${ nginx.id }" attachToSelector="#restart"
 									label="{restart.confirm}">
 								</html:confirm>
 	
 								<html:button id="reload" state="danger" label="{reload}"></html:button>
-								<html:confirm url="/dashboard/reload/${ nginx.id }" attachTo="reload"
+								<html:confirm url="/dashboard/reload/${ nginx.id }" attachToSelector="#reload"
 									label="{reload.confirm}">
 								</html:confirm>
 	
