@@ -19,7 +19,19 @@
 
 # Source function library.
 . /etc/init.d/functions
-. /opt/nginx-agent/conf/nginx-agent.conf
+
+
+if [ `id -u` -ne 0 ]; then
+	echo "You need root privileges to run this script"
+	exit 1
+fi
+
+if [ -z "$NGINX_AGENT_HOME" ]; then
+	echo "You need set NGINX_AGENT_HOME enviroment variable to run this script"
+	exit 1
+fi
+
+. $NGINX_AGENT_HOME/conf/nginx-agent.conf
 
 NGINX_AGENT_NAME=nginx-agent
 NGINX_AGENT_PIDFILE=/var/run/$NGINX_AGENT_NAME/nginx-agent.pid

@@ -9,6 +9,7 @@ COPY build/nginx-admin-2.0.1.zip /opt/downloads/nginx-admin-2.0.1.zip
 RUN unzip /opt/downloads/nginx-admin-2.0.1.zip -d /opt
 RUN chmod -R 755 /opt/nginx-admin-2.0.1
 RUN chown -R nginx-admin:nginx-admin /opt/nginx-admin-2.0.1
+ENV NGINX_ADMIN_HOME /opt/nginx-admin-2.0.1
 EXPOSE 4000
 EXPOSE 4443
 CMD ["/usr/bin/supervisord"]

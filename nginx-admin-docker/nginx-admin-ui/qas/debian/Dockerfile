@@ -5,10 +5,11 @@ RUN easy_install supervisor
 COPY build/supervisord.conf /etc/supervisord.conf
 RUN useradd nginx-admin -r
 RUN mkdir -p /opt/downloads
-COPY build/nginx-admin-bin.zip /opt/downloads/nginx-admin.zip
-RUN unzip /opt/downloads/nginx-admin.zip -d /opt
-RUN chmod -R 755 /opt/nginx-admin
-RUN chown -R nginx-admin:nginx-admin /opt/nginx-admin
+COPY build/nginx-admin-2.0.1.zip /opt/downloads/nginx-admin-2.0.1.zip
+RUN unzip /opt/downloads/nginx-admin-2.0.1.zip -d /opt
+RUN chmod -R 755 /opt/nginx-admin-2.0.1
+RUN chown -R nginx-admin:nginx-admin /opt/nginx-admin-2.0.1
+ENV NGINX_ADMIN_HOME /opt/nginx-admin-2.0.1
 EXPOSE 4000
 EXPOSE 4443
-CMD ["/usr/local/bin/supervisord"]
+CMD ["/usr/bin/supervisord"]

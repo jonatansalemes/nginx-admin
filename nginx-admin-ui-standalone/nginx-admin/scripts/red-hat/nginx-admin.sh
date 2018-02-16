@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Nginx Admin control script
+# Nginx admin control script
 #
 # chkconfig: - 80 20
 # description: Nginx Admin startup script
@@ -9,7 +9,18 @@
 # configfile: /opt/nginx-admin/conf/nginx-admin.conf 
 
 . /etc/init.d/functions
-. /opt/nginx-admin-2.0.1/conf/nginx-admin.conf
+
+if [ `id -u` -ne 0 ]; then
+	echo "You need root privileges to run this script"
+	exit 1
+fi
+
+if [ -z "$NGINX_ADMIN_HOME" ]; then
+	echo "You need set NGINX_ADMIN_HOME enviroment variable to run this script"
+	exit 1
+fi
+
+. $NGINX_ADMIN_HOME/conf/nginx-admin.conf
 
 NGINX_ADMIN_NAME=nginx-admin
 NGINX_ADMIN_PIDFILE=/var/run/$NGINX_ADMIN_NAME/nginx-admin.pid
