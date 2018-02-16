@@ -34,7 +34,7 @@
 		<dependency>
 			<groupId>com.jslsolucoes</groupId>
 			<artifactId>mail</artifactId>
-			<version>1.0.1-SNAPSHOT</version>
+			<version>1.0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.jslsolucoes</groupId>
@@ -54,7 +54,7 @@
 		<dependency>
 			<groupId>com.jslsolucoes</groupId>
 			<artifactId>vraptor4-scheduler</artifactId>
-			<version>1.0.4-SNAPSHOT</version>
+			<version>1.0.4</version>
 		</dependency>
 		<dependency>
 			<groupId>br.com.caelum</groupId>
