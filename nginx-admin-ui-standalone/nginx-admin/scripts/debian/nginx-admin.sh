@@ -13,7 +13,7 @@
 ### END INIT INFO
 
 . /lib/lsb/init-functions
-. /opt/nginx-admin/conf/nginx-admin.conf
+. /opt/nginx-admin-2.0.1/conf/nginx-admin.conf
 
 NGINX_ADMIN_NAME=nginx-admin
 NGINX_ADMIN_PIDFILE=/var/run/$NGINX_ADMIN_NAME/nginx-admin.pid

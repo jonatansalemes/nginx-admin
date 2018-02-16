@@ -6,4 +6,12 @@
     <version>2.0.1</version>
   </parent>
   <artifactId>nginx-admin-agent-configuration</artifactId>
+  
+  <dependencies>
+		<dependency>
+			<groupId>com.jslsolucoes</groupId>
+			<artifactId>properties</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
 </project>

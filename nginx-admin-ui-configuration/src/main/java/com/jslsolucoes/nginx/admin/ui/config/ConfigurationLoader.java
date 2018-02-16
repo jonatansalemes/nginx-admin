@@ -1,10 +1,8 @@
 package com.jslsolucoes.nginx.admin.ui.config;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.Properties;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import com.jslsolucoes.properties.PropertiesBuilder;
 
 public class ConfigurationLoader {
 
@@ -15,36 +13,13 @@ public class ConfigurationLoader {
 	}
 
 	public ConfigurationLoader withProperties(Properties properties) {
-		this.properties = properties;
-		return replace();
-	}
-
-	public ConfigurationLoader withFile(String path) {
-		try {
-			properties.load(new FileInputStream(new File(path)));
-			return replace();
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	private ConfigurationLoader replace() {
-		properties.entrySet().forEach(entry -> {
-			String key = (String) entry.getKey();
-			String value = (String) entry.getValue();
-			properties.setProperty(key, replace(value));
-		});
+		this.properties = PropertiesBuilder.newBuilder().withProperties(properties).build();
 		return this;
 	}
 
-	private String replace(String oldValue) {
-		String value = oldValue;
-		Matcher matcher = Pattern.compile("\\$([\\w]*)").matcher(value);
-		while (matcher.find()) {
-			String currentValue = (String) properties.get(matcher.group(1));
-			value = matcher.replaceAll(currentValue);
-		}
-		return value;
+	public ConfigurationLoader withFile(String path) {
+		properties = PropertiesBuilder.newBuilder().withFile(path).build();
+		return this;
 	}
 
 	public Configuration build() {

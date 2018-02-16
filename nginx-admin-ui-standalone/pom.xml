@@ -66,11 +66,11 @@
 						<configuration>
 							<tasks>
 								<copy
-									file="${project.build.directory}/nginx-admin-${project.version}-bin.zip"
-									tofile="${base.dir}/nginx-admin-docker/nginx-admin-ui/qas/red-hat/build/nginx-admin-bin.zip" />
+									file="${project.build.directory}/nginx-admin-${project.version}.zip"
+									tofile="${base.dir}/nginx-admin-docker/nginx-admin-ui/qas/red-hat/build/nginx-admin-${project.version}.zip" />
 								<copy
-									file="${project.build.directory}/nginx-admin-${project.version}-bin.zip"
-									tofile="${base.dir}/nginx-admin-docker/nginx-admin-ui/qas/debian/build/nginx-admin-bin.zip" />
+									file="${project.build.directory}/nginx-admin-${project.version}.zip"
+									tofile="${base.dir}/nginx-admin-docker/nginx-admin-ui/qas/debian/build/nginx-admin-${project.version}.zip" />
 							</tasks>
 						</configuration>
 						<goals>
