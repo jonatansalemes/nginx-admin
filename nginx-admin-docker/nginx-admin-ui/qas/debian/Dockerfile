@@ -12,4 +12,4 @@ RUN chown -R nginx-admin:nginx-admin /opt/nginx-admin-2.0.1
 ENV NGINX_ADMIN_HOME /opt/nginx-admin-2.0.1
 EXPOSE 4000
 EXPOSE 4443
-CMD ["/usr/bin/supervisord"]
+CMD ["/usr/local/bin/supervisord"]

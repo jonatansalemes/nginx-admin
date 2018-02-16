@@ -5,14 +5,12 @@ docker rm $(docker ps -aq)
 
 #qas enviroment
 docker build --rm -t nginx-admin-red-hat-qas .
-docker run --rm -d -p 10000:4000 -p 10443:4443 --name nginx-admin-red-hat-qas nginx-admin-red-hat-qas
+docker run --rm -d  --link nginx-agent-red-hat-qas:nginx-agent-red-hat-qas -p 10000:4000 -p 10443:4443 --name nginx-admin-red-hat-qas nginx-admin-red-hat-qas
 docker run --rm -it --link nginx-agent-red-hat-qas:nginx-agent-red-hat-qas -p 10000:4000 -p 10443:4443 nginx-admin-red-hat-qas /bin/bash
 
 docker build --rm -t nginx-admin-debian-qas .
-docker run --rm -d -p 11000:4000 -p 11443:4443 --name nginx-admin-debian-qas nginx-admin-debian-qas
+docker run --rm -d  --link nginx-agent-debian-qas:nginx-agent-debian-qas -p 11000:4000 -p 11443:4443 --name nginx-admin-debian-qas nginx-admin-debian-qas
 docker run --rm -it --link nginx-agent-debian-qas:nginx-agent-debian-qas -p 11000:4000 -p 11443:4443 nginx-admin-debian-qas /bin/bash
-
-
 
 #release enviroment
 docker build --rm -t nginx-admin-red-hat-release .

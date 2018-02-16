@@ -17,4 +17,4 @@ ENV NGINX_AGENT_HOME /opt/nginx-agent-2.0.1
 EXPOSE 80
 EXPOSE 3000
 EXPOSE 3443
-CMD ["/usr/bin/supervisord"]
+CMD ["/usr/local/bin/supervisord"]
