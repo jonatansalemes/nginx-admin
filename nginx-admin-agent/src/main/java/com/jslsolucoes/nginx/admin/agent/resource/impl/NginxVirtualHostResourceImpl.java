@@ -12,7 +12,7 @@ import com.jslsolucoes.nginx.admin.agent.config.Configuration;
 import com.jslsolucoes.nginx.admin.agent.model.FileObject;
 import com.jslsolucoes.nginx.admin.agent.model.FileObjectBuilder;
 import com.jslsolucoes.nginx.admin.agent.model.Location;
-import com.jslsolucoes.template.TemplateProcessor;
+import com.jslsolucoes.template.TemplateBuilder;
 
 @RequestScoped
 public class NginxVirtualHostResourceImpl {
@@ -42,7 +42,7 @@ public class NginxVirtualHostResourceImpl {
 	public NginxOperationResult createOrUpdate(String uuid, Boolean https, String certificateUuid,
 			String certificatePrivateKeyUuid, List<String> aliases, List<Location> locations) {
 		try(FileWriter fileWriter = new FileWriter(virtualHost(uuid))) {
-			TemplateProcessor.newBuilder().withTemplate("/template/nginx/dynamic", "virtual-host.tpl")
+			TemplateBuilder.newBuilder().withClasspathTemplate("/template/nginx/dynamic", "virtual-host.tpl")
 					.withData("https", https).withData("certificateUuid", certificateUuid)
 					.withData("certificatePrivateKeyUuid", certificatePrivateKeyUuid).withData("settings", settings())
 					.withData("aliases", aliases).withData("locations", locations).withOutput(fileWriter)

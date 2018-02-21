@@ -3,7 +3,7 @@ package com.jslsolucoes.nginx.admin.database.repository.impl.driver;
 import java.io.IOException;
 import java.io.StringWriter;
 
-import com.jslsolucoes.template.TemplateProcessor;
+import com.jslsolucoes.template.TemplateBuilder;
 
 public class GenericDriverQuery implements DriverQuery {
 
@@ -17,8 +17,8 @@ public class GenericDriverQuery implements DriverQuery {
 	@Override
 	public String exists(String database, String table) {
 		try (StringWriter stringWriter = new StringWriter()) {
-			TemplateProcessor.newBuilder().withData("database", database).withData("table", table)
-					.withTemplate(folder, "exists.tpl").withEncoding("UTF-8").withOutput(stringWriter).process();
+			TemplateBuilder.newBuilder().withData("database", database).withData("table", table)
+					.withClasspathTemplate(folder, "exists.tpl").withEncoding("UTF-8").withOutput(stringWriter).process();
 			return stringWriter.toString();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -28,9 +28,9 @@ public class GenericDriverQuery implements DriverQuery {
 	@Override
 	public String create(String database, String table) {
 		try (StringWriter stringWriter = new StringWriter()) {
-			TemplateProcessor.newBuilder().withData("database", database)
+			TemplateBuilder.newBuilder().withData("database", database)
 					.withData("table", table)
-					.withTemplate(folder, "create.tpl").withEncoding("UTF-8").withOutput(stringWriter).process();
+					.withClasspathTemplate(folder, "create.tpl").withEncoding("UTF-8").withOutput(stringWriter).process();
 			return stringWriter.toString();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -40,8 +40,8 @@ public class GenericDriverQuery implements DriverQuery {
 	@Override
 	public String current(String database, String table) {
 		try (StringWriter stringWriter = new StringWriter()) {
-			TemplateProcessor.newBuilder().withData("database", database).withData("table", table)
-					.withTemplate(folder, "current.tpl").withEncoding("UTF-8").withOutput(stringWriter).process();
+			TemplateBuilder.newBuilder().withData("database", database).withData("table", table)
+					.withClasspathTemplate(folder, "current.tpl").withEncoding("UTF-8").withOutput(stringWriter).process();
 			return stringWriter.toString();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -51,8 +51,8 @@ public class GenericDriverQuery implements DriverQuery {
 	@Override
 	public String insert(String database, String table) {
 		try (StringWriter stringWriter = new StringWriter()) {
-			TemplateProcessor.newBuilder().withData("database", database).withData("table", table)
-					.withTemplate(folder, "insert.tpl").withEncoding("UTF-8").withOutput(stringWriter).process();
+			TemplateBuilder.newBuilder().withData("database", database).withData("table", table)
+					.withClasspathTemplate(folder, "insert.tpl").withEncoding("UTF-8").withOutput(stringWriter).process();
 			return stringWriter.toString();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -62,8 +62,8 @@ public class GenericDriverQuery implements DriverQuery {
 	@Override
 	public String init(String database) {
 		try (StringWriter stringWriter = new StringWriter()) {
-			TemplateProcessor.newBuilder().withData("database", database)
-					.withTemplate(folder, "init.tpl").withEncoding("UTF-8").withOutput(stringWriter).process();
+			TemplateBuilder.newBuilder().withData("database", database)
+					.withClasspathTemplate(folder, "init.tpl").withEncoding("UTF-8").withOutput(stringWriter).process();
 			return stringWriter.toString();
 		} catch (IOException e) {
 			throw new RuntimeException(e);

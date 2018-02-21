@@ -15,7 +15,7 @@ import com.jslsolucoes.nginx.admin.agent.resource.impl.os.OperationalSystem;
 import com.jslsolucoes.nginx.admin.agent.resource.impl.os.OperationalSystemInfo;
 import com.jslsolucoes.nginx.admin.agent.resource.impl.status.NginxStatus;
 import com.jslsolucoes.nginx.admin.agent.resource.impl.status.NginxStatusDiscover;
-import com.jslsolucoes.template.TemplateProcessor;
+import com.jslsolucoes.template.TemplateBuilder;
 
 @RequestScoped
 public class NginxAdminResourceImpl {
@@ -50,16 +50,16 @@ public class NginxAdminResourceImpl {
 	private void applyTemplate(Integer maxPostSize, Boolean gzip) {
 		String settings = settings();
 		try(FileWriter fileWriter = new FileWriter(new File(virtualHost(), "root.conf"))) {
-			TemplateProcessor.newBuilder()
-				.withTemplate("/template/nginx/dynamic", "root.tpl")
+			TemplateBuilder.newBuilder()
+				.withClasspathTemplate("/template/nginx/dynamic", "root.tpl")
 			.withData("settings", settings).withOutput(fileWriter).process();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 		
 		try(FileWriter fileWriter = new FileWriter(new File(settings, "nginx.conf"))) {
-			TemplateProcessor.newBuilder()
-			.withTemplate("/template/nginx/dynamic", "nginx.tpl").withData("settings", settings)
+			TemplateBuilder.newBuilder()
+			.withClasspathTemplate("/template/nginx/dynamic", "nginx.tpl").withData("settings", settings)
 			.withData("gzip", gzip).withData("maxPostSize", maxPostSize)
 			.withOutput(fileWriter).process();
 		} catch (IOException e) {
