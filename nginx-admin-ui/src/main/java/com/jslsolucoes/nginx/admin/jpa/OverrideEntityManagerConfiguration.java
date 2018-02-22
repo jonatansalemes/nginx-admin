@@ -22,7 +22,24 @@ public class OverrideEntityManagerConfiguration extends DefaultEntityManagerConf
 	public Map<String, Object> properties() {
 		Map<String, Object> properties = new HashMap<>();
 		properties.put("hibernate.dialect", dialect());
+		properties.put("hibernate.default_schema", schema());
 		return properties;
+	}
+
+	private String schema() {
+		String driver = configuration.getDatabase().getDriver();
+		if (driver.equals("h2")) {
+			return configuration.getDatabase().getName();
+		} else if (driver.equals("mysql")) {
+			return configuration.getDatabase().getName();
+		} else if (driver.equals("oracle")) {
+			return configuration.getDatabase().getUsername();
+		} else if (driver.equals("postgresql")) {
+			return configuration.getDatabase().getName();
+		}  else if (driver.equals("sqlserver")) {
+			return configuration.getDatabase().getName();
+		}
+		throw new RuntimeException("Could not find schema for driver " + driver);
 	}
 
 	public String dialect() {

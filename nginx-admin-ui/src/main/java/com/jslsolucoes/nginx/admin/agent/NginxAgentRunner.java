@@ -60,6 +60,11 @@ public class NginxAgentRunner {
 		return nginxAgentClient.api(NginxAgentClientApis.configure()).withAuthorizationKey(authorizationKey(idNginx))
 				.withEndpoint(endpoint(idNginx)).withGzip(gzip).withMaxPostSize(maxPostSize).build().configure().join();
 	}
+	
+	public NginxResponse ping(String endpoint,String authorizationKey) {
+		return nginxAgentClient.api(NginxAgentClientApis.ping()).withAuthorizationKey(authorizationKey)
+				.withEndpoint(endpoint).build().ping().join();
+	}
 
 	public NginxResponse statusForNginx(Long idNginx) {
 		return nginxAgentClient.api(NginxAgentClientApis.status()).withAuthorizationKey(authorizationKey(idNginx))

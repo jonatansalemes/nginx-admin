@@ -40,7 +40,6 @@ public class AppController {
 	@Path(value = { "/", "/home" })
 	public void home() {
 		this.result.include("nginxList", nginxRepository.listAllConfigured());
-
 	}
 
 	@Path("/applySessionFor/{id}")

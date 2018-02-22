@@ -12,7 +12,7 @@ import com.jslsolucoes.nginx.admin.agent.config.Configuration;
 import com.jslsolucoes.nginx.admin.agent.model.Endpoint;
 import com.jslsolucoes.nginx.admin.agent.model.FileObject;
 import com.jslsolucoes.nginx.admin.agent.model.FileObjectBuilder;
-import com.jslsolucoes.template.TemplateProcessor;
+import com.jslsolucoes.template.TemplateBuilder;
 
 @RequestScoped
 public class NginxUpstreamResourceImpl {
@@ -35,7 +35,7 @@ public class NginxUpstreamResourceImpl {
 
 	private NginxOperationResult createOrUpdate(String name, String uuid, String strategy, List<Endpoint> endpoints) {
 		try(FileWriter fileWriter = new FileWriter(upstream(uuid))) {
-			TemplateProcessor.newBuilder().withTemplate("/template/nginx/dynamic", "upstream.tpl")
+			TemplateBuilder.newBuilder().withClasspathTemplate("/template/nginx/dynamic", "upstream.tpl")
 					.withData("name", name).withData("strategy", strategy).withData("endpoints", endpoints)
 					.withOutput(fileWriter).process();
 			return new NginxOperationResult(NginxOperationResultType.SUCCESS);

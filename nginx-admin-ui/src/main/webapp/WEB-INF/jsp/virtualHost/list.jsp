@@ -41,7 +41,7 @@
 				<html:buttonGroup spaced="true">
 					<html:button icon="pencil" url="/virtualHost/edit/${ nginx.id }/${ virtualHost.id }"></html:button>
 					<html:button state="danger" id="${ virtualHost.id }" icon="trash" url="#"></html:button>
-					<html:confirm attachTo="${ virtualHost.id }" url="/virtualHost/delete/${ nginx.id }/${ virtualHost.id }">
+					<html:confirm attachToSelector="#${ virtualHost.id }" url="/virtualHost/delete/${ nginx.id }/${ virtualHost.id }">
 						<fmt:message key="virtualHost.delete.confirm">
 							<c:forEach items="${ virtualHost.aliases }" var="virtualHostAlias">
 								<fmt:param value="${ virtualHostAlias.alias }"></fmt:param>

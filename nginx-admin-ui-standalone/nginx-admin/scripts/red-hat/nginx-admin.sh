@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Nginx Admin control script
+# Nginx admin control script
 #
 # chkconfig: - 80 20
 # description: Nginx Admin startup script
@@ -9,7 +9,22 @@
 # configfile: /opt/nginx-admin/conf/nginx-admin.conf 
 
 . /etc/init.d/functions
-. /opt/nginx-admin/conf/nginx-admin.conf
+
+if [ `id -u` -ne 0 ]; then
+	echo "You need root privileges to run this script"
+	exit 1
+fi
+
+if [ -f "/etc/environment" ]; then
+	. "/etc/environment"
+fi
+
+if [ -z "$NGINX_ADMIN_HOME" ]; then
+	echo "You need set NGINX_ADMIN_HOME enviroment variable to run this script"
+	exit 1
+fi
+
+. $NGINX_ADMIN_HOME/conf/nginx-admin.conf
 
 NGINX_ADMIN_NAME=nginx-admin
 NGINX_ADMIN_PIDFILE=/var/run/$NGINX_ADMIN_NAME/nginx-admin.pid
@@ -53,11 +68,20 @@ is_launched() {
 	return 1
 }
 
+remove_db_lock() {
+  NGINX_ADMIN_DB_LOCK_FILE="$NGINX_ADMIN_DB_LOCATION/$NGINX_ADMIN_DB_NAME.lock.db"
+  if [ -f "$NGINX_ADMIN_DB_LOCK_FILE" ] ; then
+    rm -f "$NGINX_ADMIN_DB_LOCK_FILE"
+  fi
+  return 0
+}
+
 try_launch() {
 	mkdir -p $(dirname $NGINX_ADMIN_PIDFILE)
 	mkdir -p $(dirname $NGINX_ADMIN_CONSOLE_LOG)
 	rm -f $NGINX_ADMIN_CONSOLE_LOG
 	chown $NGINX_ADMIN_USER $(dirname $NGINX_ADMIN_PIDFILE) || true
+	remove_db_lock
 
 	runuser $NGINX_ADMIN_USER -c "$JAVA -server -Djava.net.preferIPv4Stack=true -Djava.awt.headless=true -Xms256m -Xmx1g -jar $NGINX_ADMIN_BIN/nginx-admin-ui-standalone-$NGINX_ADMIN_VERSION-swarm.jar -c $NGINX_ADMIN_CONF/nginx-admin.conf" >> $NGINX_ADMIN_CONSOLE_LOG 2>&1 & echo $! > $NGINX_ADMIN_PIDFILE
 	

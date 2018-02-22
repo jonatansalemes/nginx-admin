@@ -9,10 +9,11 @@ RUN chmod 640 /etc/sudoers
 RUN printf 'nginx-agent ALL=(ALL) NOPASSWD:/usr/sbin/nginx,/usr/bin/pgrep nginx,/usr/bin/killall nginx\n' >> /etc/sudoers
 RUN chmod 440 /etc/sudoers
 RUN mkdir -p /opt/downloads
-COPY build/nginx-agent-bin.zip /opt/downloads/nginx-agent.zip
-RUN unzip /opt/downloads/nginx-agent.zip -d /opt
-RUN chmod -R 755 /opt/nginx-agent
-RUN chown -R nginx-agent:nginx-agent /opt/nginx-agent
+COPY build/nginx-agent-2.0.1.zip /opt/downloads/nginx-agent-2.0.1.zip
+RUN unzip /opt/downloads/nginx-agent-2.0.1.zip -d /opt
+RUN chmod -R 755 /opt/nginx-agent-2.0.1
+RUN chown -R nginx-agent:nginx-agent /opt/nginx-agent-2.0.1
+ENV NGINX_AGENT_HOME /opt/nginx-agent-2.0.1
 EXPOSE 80
 EXPOSE 3000
 EXPOSE 3443

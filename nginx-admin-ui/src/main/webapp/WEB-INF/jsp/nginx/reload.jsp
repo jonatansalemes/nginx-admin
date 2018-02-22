@@ -9,7 +9,7 @@
 	<html:jsCode>
 		window.setTimeout(function(){
 			window.parent.self.location = URL_BASE + '/nginx/tabs/${ id }';
-		},3000);
+		},5000);
 	</html:jsCode>
 	
 </html:view>

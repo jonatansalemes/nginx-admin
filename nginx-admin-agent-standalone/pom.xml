@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.jslsolucoes</groupId>
 		<artifactId>nginx-admin</artifactId>
-		<version>2.0.0</version>
+		<version>2.0.1</version>
 	</parent>
 	<artifactId>nginx-admin-agent-standalone</artifactId>
 
@@ -66,11 +66,11 @@
 						<configuration>
 							<tasks>
 								<copy
-									file="${project.build.directory}/nginx-agent-bin.zip"
-									tofile="${base.dir}/nginx-admin-docker/nginx-admin-agent/qas/red-hat/build/nginx-agent-bin.zip" />
+									file="${project.build.directory}/nginx-agent-${project.version}.zip"
+									tofile="${base.dir}/nginx-admin-docker/nginx-admin-agent/red-hat/build/nginx-agent-${project.version}.zip" />
 								<copy
-									file="${project.build.directory}/nginx-agent-bin.zip"
-									tofile="${base.dir}/nginx-admin-docker/nginx-admin-agent/qas/debian/build/nginx-agent-bin.zip" />
+									file="${project.build.directory}/nginx-agent-${project.version}.zip"
+									tofile="${base.dir}/nginx-admin-docker/nginx-admin-agent/debian/build/nginx-agent-${project.version}.zip" />
 							</tasks>
 						</configuration>
 						<goals>
@@ -121,7 +121,7 @@
 							<goal>attached</goal>
 						</goals>
 						<configuration>
-							<finalName>nginx-agent</finalName>
+							<finalName>nginx-agent-${project.version}</finalName>
 							<descriptors>
 								<descriptor>assembly/full.xml</descriptor>
 							</descriptors>

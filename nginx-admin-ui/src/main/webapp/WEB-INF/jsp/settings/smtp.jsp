@@ -64,7 +64,7 @@
 		</html:panel>
 	</html:block>
 	
-	<html:modal label="{smtp.test.settings}" attachTo="test">
+	<html:modal label="{smtp.test.settings}" attachToSelector="#test">
 		<html:form action="/settings/smtp/test">
 			<html:formGroup required="true" label="{smtp.test.to}">
 				<html:input type="email" name="to" required="true" placeholder="{smtp.test.to.placeholder}"></html:input>

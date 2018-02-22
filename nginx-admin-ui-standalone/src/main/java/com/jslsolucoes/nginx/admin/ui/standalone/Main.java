@@ -90,9 +90,9 @@ public class Main {
 						});
 					})).fraction(new UndertowFraction().server("default-server", server -> {
 						server.httpListener("default", httpListener -> {
-							httpListener.socketBinding("http").redirectSocket("https").enableHttp2(true);
+							httpListener.socketBinding("http").redirectSocket("https").enableHttp2(true).maxPostSize(maxPostSize());
 						}).httpsListener("https", httpsListener -> {
-							httpsListener.securityRealm("SSLRealm").socketBinding("https").enableHttp2(true);
+							httpsListener.securityRealm("SSLRealm").socketBinding("https").enableHttp2(true).maxPostSize(maxPostSize());
 						}).host("default-host", host -> {
 							host.alias("localhost");
 						});
@@ -118,6 +118,10 @@ public class Main {
 			WARArchive warArchive = ShrinkWrap.createFromZipFile(WARArchive.class, war);
 			swarm.deploy(warArchive);
 		}
+	}
+
+	private static Long maxPostSize() {
+		return Long.valueOf(30 * 1024 * 1024);
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -213,9 +217,4 @@ public class Main {
 		file.deleteOnExit();
 		return file;
 	}
-	// cd /hd1/workspace/github/nginx-admin/nginx-admin-ui-standalone/target
-	// cd d:/workspace/github/nginx-admin/nginx-admin-ui-standalone/target
-	// java -server -Djava.net.preferIPv4Stack=true -Xms256m -Xmx1g -jar nginx-admin-ui-standalone-2.0.0-swarm.jar -c "D:\workspace\github\nginx-admin\nginx-admin-ui-standalone\nginx-admin\conf\nginx-admin.conf"
-	// java -server -Djava.net.preferIPv4Stack=true -Xms256m -Xmx1g -jar nginx-admin-ui-standalone-2.0.0-swarm.jar -c "/hd1/workspace/github/nginx-admin/nginx-admin-ui-standalone/nginx-admin/conf/nginx-admin.conf"
-
 }
