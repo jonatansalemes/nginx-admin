@@ -95,6 +95,9 @@ Red-hat:
 		yum -y update
 		yum -y install epel-release
 		yum -y install psmisc initscripts java-1.8.0-openjdk-devel.x86_64 nginx unzip sudo wget visudo vim firewalld
+		
+		#stop default nginx
+		service nginx stop
 	
 		#create user and add permission for running agent. you can also use visudo to add permissions below
 		useradd nginx-agent -r
@@ -104,13 +107,16 @@ Red-hat:
 		
 		#download and extract latest version of nginx agent package
 		mkdir -p /opt/downloads
-		wget https://bintray.com/jslsolucoes/nginx-admin/download_file?file_path=nginx-agent-2.0.1-bin.zip -O /opt/downloads/nginx-agent-bin.zip
-		unzip /opt/downloads/nginx-agent-bin.zip -d /opt
-		chmod -R 755 /opt/nginx-agent
-		chown -R nginx-agent:nginx-agent /opt/nginx-agent
+		wget https://bintray.com/jslsolucoes/nginx-admin/download_file?file_path=nginx-agent-2.0.1.zip -O /opt/downloads/nginx-agent-2.0.1.zip
+		unzip /opt/downloads/nginx-agent-2.0.1.zip -d /opt
+		chmod -R 755 /opt/nginx-agent-2.0.1
+		chown -R nginx-agent:nginx-agent /opt/nginx-agent-2.0.1
+		
+		#set environment variable
+		printf 'NGINX_AGENT_HOME=/opt/nginx-agent-2.0.1\n' >> /etc/environment
 		
 		#add init scripts to os
-		cp /opt/nginx-agent/scripts/red-hat/nginx-agent.sh /etc/init.d/nginx-agent
+		cp /opt/nginx-agent-2.0.1/scripts/red-hat/nginx-agent.sh /etc/init.d/nginx-agent
 		chmod +x /etc/init.d/nginx-agent
 		chown root:root /etc/init.d/nginx-agent
 		chkconfig --level 345 nginx-agent on

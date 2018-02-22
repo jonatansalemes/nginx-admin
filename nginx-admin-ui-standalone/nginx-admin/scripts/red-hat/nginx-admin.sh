@@ -15,6 +15,10 @@ if [ `id -u` -ne 0 ]; then
 	exit 1
 fi
 
+if [ -f "/etc/environment" ]; then
+	. "/etc/environment"
+fi
+
 if [ -z "$NGINX_ADMIN_HOME" ]; then
 	echo "You need set NGINX_ADMIN_HOME enviroment variable to run this script"
 	exit 1
