@@ -31,12 +31,12 @@
 		<dependency>
 			<groupId>com.jslsolucoes</groupId>
 			<artifactId>cdi-misc</artifactId>
-			<version>1.0.2-SNAPSHOT</version>
+			<version>1.0.2</version>
 		</dependency>
 		<dependency>
 			<groupId>com.jslsolucoes</groupId>
 			<artifactId>template</artifactId>
-			<version>1.0.3-SNAPSHOT</version>
+			<version>1.0.3</version>
 		</dependency>
 		<dependency>
 			<groupId>com.jslsolucoes</groupId>

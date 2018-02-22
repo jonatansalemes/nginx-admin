@@ -23,8 +23,8 @@ services:
     links: 
       - nginx-admin-agent-red-hat
     ports:
-      - 8000:4000
-      - 8443:4443
+      - 15000:4000
+      - 15443:4443
   nginx-admin-debian: 
     build: nginx-admin/debian
     image: nginx-admin-debian
@@ -32,8 +32,8 @@ services:
     links: 
       - nginx-admin-agent-debian
     ports:
-      - 9000:4000
-      - 9443:4443
+      - 16000:4000
+      - 16443:4443
 
 
 
