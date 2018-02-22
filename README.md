@@ -286,6 +286,25 @@ Debian:
 	</code>
 </pre>
 
+To change database to Mysql follow this steps: (As mysql root user)
+<pre>
+	<code>
+		#create database and user
+		create database nginx_admin;
+		grant all privileges on nginx_admin.* to nginx_admin@'%' identified by 'password';
+		flush privileges;
+		
+		#Go to nginx-admin folder default installation /opt/nginx-admin-2.0.1/conf/nginx-admin.conf and change settings to your mysql database settings like :
+		NGINX_ADMIN_DB_DRIVER=mysql
+		NGINX_ADMIN_DB_HOST=localhost
+		NGINX_ADMIN_DB_PORT=3306
+		NGINX_ADMIN_DB_NAME=nginx_admin
+		NGINX_ADMIN_DB_USERNAME=nginx_admin
+		NGINX_ADMIN_DB_PASSWORD=password
+	</code>
+</pre>
+
+
 Thanks for using nginx-admin.
 
 Issues or questions can be done in https://github.com/jslsolucoes/nginx-admin/issues. 
