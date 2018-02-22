@@ -122,7 +122,7 @@ Red-hat:
 		chkconfig --level 345 nginx-agent on
 		
 		#release ports on firewalld to nginx-agent and to nginx	
-		printf '<?xml version="1.0" encoding="utf-8"?>\n<service>\n<short>Nginx agent firewall service</short>\n<description>Nginx agent firewall service</description>\n<port protocol="tcp" port="3000"/>\n<port protocol="tcp" port="3443"/>\n</service>\n' >> /etc/firewalld/services/nginx-agent.xml
+		printf '&lt;?xml version="1.0" encoding="utf-8"?&gt;\n&lt;service&gt;\n&lt;short&gt;Nginx agent firewall service&lt;/short&gt;\n&lt;description&gt;Nginx agent firewall service&lt;/description&gt;\n&lt;port protocol="tcp" port="3000"/&gt;\n&lt;port protocol="tcp" port="3443"/&gt;\n&lt;/service&gt;\n' &gt;&gt; /etc/firewalld/services/nginx-agent.xml
 		firewall-cmd --zone=public --add-service=nginx-agent --permanent
 		firewall-cmd --zone=public --add-service=http --permanent
 		firewall-cmd --zone=public --add-service=https --permanent
