@@ -9,31 +9,31 @@
 [![][paypal img]][paypal]
 
 [travis]:https://travis-ci.org/jslsolucoes/nginx-admin
-[travis img]:https://travis-ci.org/jslsolucoes/nginx-admin.svg?branch=develop
+[travis img]:https://travis-ci.org/jslsolucoes/nginx-admin.svg?branch=master
 
 [license]:LICENSE
 [license img]:https://img.shields.io/badge/License-Apache%202-blue.svg
 
-[sonar]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin:develop
-[sonar img]:https://sonarcloud.io/api/badges/gate?key=com.jslsolucoes:nginx-admin:develop
+[sonar]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin
+[sonar img]:https://sonarcloud.io/api/badges/gate?key=com.jslsolucoes:nginx-admin
 
-[bugs]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin:develop
-[bugs img]:https://sonarcloud.io/api/badges/measure?key=com.jslsolucoes:nginx-admin:develop&metric=bugs
+[bugs]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin
+[bugs img]:https://sonarcloud.io/api/badges/measure?key=com.jslsolucoes:nginx-admin&metric=bugs
 
-[coverage]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin:develop
-[coverage img]:https://sonarcloud.io/api/badges/measure?key=com.jslsolucoes:nginx-admin:develop&metric=coverage
+[coverage]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin
+[coverage img]:https://sonarcloud.io/api/badges/measure?key=com.jslsolucoes:nginx-admin&metric=coverage
 
-[bugs]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin:develop
-[bugs img]:https://sonarcloud.io/api/badges/measure?key=com.jslsolucoes:nginx-admin:develop&metric=bugs
+[bugs]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin
+[bugs img]:https://sonarcloud.io/api/badges/measure?key=com.jslsolucoes:nginx-admin&metric=bugs
 
-[lines]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin:develop
-[lines img]:https://sonarcloud.io/api/badges/measure?key=com.jslsolucoes:nginx-admin:develop&metric=lines
+[lines]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin
+[lines img]:https://sonarcloud.io/api/badges/measure?key=com.jslsolucoes:nginx-admin&metric=lines
 
-[vulnerabilities]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin:develop
-[vulnerabilities img]:https://sonarcloud.io/api/badges/measure?key=com.jslsolucoes:nginx-admin:develop&metric=vulnerabilities
+[vulnerabilities]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin
+[vulnerabilities img]:https://sonarcloud.io/api/badges/measure?key=com.jslsolucoes:nginx-admin&metric=vulnerabilities
 
-[code_smells]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin:develop
-[code_smells img]:https://sonarcloud.io/api/badges/measure?key=com.jslsolucoes:nginx-admin:develop&metric=code_smells
+[code_smells]:https://sonarcloud.io/dashboard/index/com.jslsolucoes:nginx-admin
+[code_smells img]:https://sonarcloud.io/api/badges/measure?key=com.jslsolucoes:nginx-admin&metric=code_smells
 
 [paypal]:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PE25DPU3CNFH4
 [paypal img]:https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif
@@ -41,7 +41,7 @@
 # nginx-admin
 Nginx admin is an open source multiplatform manager for nginx software to easy administration 
 
-Welcome to the new brand Nginx Admin 2.x-RC1 with a lot of improvments and bug fixes. 
+Welcome to the new brand Nginx Admin 2.x-RC2 with a lot of improvments and bug fixes. 
 This milestone develop was a great breakthrough in system arch and unfortunately break compatibility with old 1.x version. Sorry for that.
 You can check new way to install components arch and new features like manager multiple nginx in a single manager ui.
 
