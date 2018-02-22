@@ -121,9 +121,6 @@ Red-hat:
 		chown root:root /etc/init.d/nginx-agent
 		chkconfig --level 345 nginx-agent on
 		
-		#start service
-		service nginx-agent start
-		
 		#release ports on firewalld to nginx-agent and to nginx	
 		printf '<?xml version="1.0" encoding="utf-8"?>\n<service>\n<short>Nginx agent firewall service</short>\n<description>Nginx agent firewall service</description>\n<port protocol="tcp" port="3000"/>\n<port protocol="tcp" port="3443"/>\n</service>\n' >> /etc/firewalld/services/nginx-agent.xml
 		firewall-cmd --zone=public --add-service=nginx-agent --permanent
@@ -131,11 +128,17 @@ Red-hat:
 		firewall-cmd --zone=public --add-service=https --permanent
 		firewall-cmd --reload
 		
+		#start service
+		service nginx-agent start
+		
+		#logs from server
+		tail -f /opt/nginx-agent-2.0.1/log/console.log
+		
 		#you can check for connectivity after a few seconds that must return http status 200 OK for the request
 		wget --header "Authorization: changeit" http://localhost:3000
 		
 		#By default your authorization key is "changeit" you also can check for connectivity in your browser accessing http://ip:3000 or https://ip:3443 that will return http status 403 forbidden with message "Resource forbidden" because requires authorization header to work
-		#Please access /opt/nginx-agent/conf/nginx-agent.conf and change variable NGINX_AGENT_AUTHORIZATION_KEY=changeit value for one that only you knows and unique for every node that you have installed. You can also change others configurations if you like in this file and restart service to apply new settings
+		#Please access /opt/nginx-agent-2.0.1/conf/nginx-agent.conf and change variable NGINX_AGENT_AUTHORIZATION_KEY=changeit value for one that only you knows and unique for every node that you have installed. You can also change others configurations if you like in this file and restart service to apply new settings
 		#Nginx manager ui will ask for this authorization key value to connect with this agent.
 		
 	</code>
@@ -178,11 +181,14 @@ Debian:
 		#start service
 		service nginx-agent start
 		
+		#logs from server
+		tail -f /opt/nginx-agent-2.0.1/log/console.log
+		
 		#you can check for connectivity after a few second that must return http status 200 OK for the request
 		wget --header "Authorization: changeit" http://localhost:3000
 		
 		#By default your authorization key is "changeit" you also can check for connectivity in your browser accessing http://ip:3000 or https://ip:3443 that will return http status 403 forbidden with message "Resource forbidden" because requires authorization header to work
-		#Please access /opt/nginx-agent/conf/nginx-agent.conf and change variable NGINX_AGENT_AUTHORIZATION_KEY=changeit value for one that only you knows and unique for every node that you have installed. You can also change others configurations if you like in this file and restart service to apply new settings
+		#Please access /opt/nginx-agent-2.0.1/conf/nginx-agent.conf and change variable NGINX_AGENT_AUTHORIZATION_KEY=changeit value for one that only you knows and unique for every node that you have installed. You can also change others configurations if you like in this file and restart service to apply new settings
 		#Nginx manager ui will ask for this authorization key value to connect with this agent.
 		
 	</code>
@@ -208,27 +214,33 @@ Red-hat:
 		
 		#download and extract latest version of nginx manager package
 		mkdir -p /opt/downloads
-		wget https://bintray.com/jslsolucoes/nginx-admin/download_file?file_path=nginx-admin-2.0.1-bin.zip -O /opt/downloads/nginx-admin-bin.zip
-		unzip /opt/downloads/nginx-admin-bin.zip -d /opt
-		chmod -R 755 /opt/nginx-admin
-		chown -R nginx-admin:nginx-admin /opt/nginx-admin
+		wget https://bintray.com/jslsolucoes/nginx-admin/download_file?file_path=nginx-admin-2.0.1.zip -O /opt/downloads/nginx-admin-2.0.1.zip
+		unzip /opt/downloads/nginx-admin-2.0.1.zip -d /opt
+		chmod -R 755 /opt/nginx-admin-2.0.1
+		chown -R nginx-admin:nginx-admin /opt/nginx-admin-2.0.1
+		
+		#set environment variable
+		printf 'NGINX_ADMIN_HOME=/opt/nginx-admin-2.0.1\n' >> /etc/environment
 		
 		#add init scripts to os
-		cp /opt/nginx-admin/scripts/red-hat/nginx-admin.sh /etc/init.d/nginx-admin
+		cp /opt/nginx-admin-2.0.1/scripts/red-hat/nginx-admin.sh /etc/init.d/nginx-admin
 		chmod +x /etc/init.d/nginx-admin
 		chown root:root /etc/init.d/nginx-admin
 		chkconfig --level 345 nginx-admin on
-		
-		#start service
-		service nginx-admin start
 		
 		#release ports on firewalld to nginx-agent and to nginx	
 		printf '<?xml version="1.0" encoding="utf-8"?>\n<service>\n<short>Nginx admin firewall service</short>\n<description>Nginx admin firewall service</description>\n<port protocol="tcp" port="4000"/>\n<port protocol="tcp" port="4443"/>\n</service>\n' >> /etc/firewalld/services/nginx-admin.xml
 		firewall-cmd --zone=public --add-service=nginx-admin --permanent
 		firewall-cmd --reload
 		
+		#start service
+		service nginx-admin start
+		
+		#logs from server
+		tail -f /opt/nginx-admin-2.0.1/log/console.log
+		
 		#You can check for manager ui in browser accessing http://localhost:4000
-		#Please access /opt/nginx-admin/conf/nginx-admin.conf and you can see or change others configurations 
+		#Please access /opt/nginx-admin-2.0.1/conf/nginx-admin.conf and you can see or change others configurations 
 		#like smtp settings or change database driver connection (NGINX_ADMIN_DB_DRIVER=(h2 or mysql)) if you like in this file and restart service to apply new settings
 		
 	</code>
@@ -264,8 +276,11 @@ Debian:
 		#start service
 		service nginx-admin start
 		
+		#logs from server
+		tail -f /opt/nginx-admin-2.0.1/log/console.log
+		
 		#You can check for manager ui in browser accessing http://localhost:4000
-		#Please access /opt/nginx-admin/conf/nginx-admin.conf and you can see or change others configurations 
+		#Please access /opt/nginx-admin-2.0.1/conf/nginx-admin.conf and you can see or change others configurations 
 		#like smtp settings or change database driver connection (NGINX_ADMIN_DB_DRIVER=(h2 or mysql)) if you like in this file and restart service to apply new settings
 		
 	</code>
