@@ -301,6 +301,11 @@ To change database to Mysql follow this steps: (As mysql root user)
 		NGINX_ADMIN_DB_NAME=nginx_admin
 		NGINX_ADMIN_DB_USERNAME=nginx_admin
 		NGINX_ADMIN_DB_PASSWORD=password
+		
+		#Restart service
+		service nginx-admin restart
+		
+		#After that your database will be installed on mysql with default username and password
 	</code>
 </pre>
 
