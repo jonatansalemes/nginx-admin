@@ -142,6 +142,9 @@ Debian:
 		apt-get -y update
 		apt-get -y install openjdk-8-jdk nginx unzip sudo wget vim
 		
+		#stop default nginx
+		service nginx stop
+		
 		#create user and add permission for running agent. you can also use visudo to add permissions below
 		useradd nginx-agent -r
 		useradd nginx -r
@@ -151,13 +154,16 @@ Debian:
 		
 		#download and extract latest version of nginx agent package
 		mkdir -p /opt/downloads
-		wget https://bintray.com/jslsolucoes/nginx-admin/download_file?file_path=nginx-agent-2.0.1-bin.zip -O /opt/downloads/nginx-agent-bin.zip
-		unzip /opt/downloads/nginx-agent-bin.zip -d /opt
-		chmod -R 755 /opt/nginx-agent
-		chown -R nginx-agent:nginx-agent /opt/nginx-agent
+		wget https://bintray.com/jslsolucoes/nginx-admin/download_file?file_path=nginx-agent-2.0.1.zip -O /opt/downloads/nginx-agent-2.0.1.zip
+		unzip /opt/downloads/nginx-agent-2.0.1.zip -d /opt
+		chmod -R 755 /opt/nginx-agent-2.0.1
+		chown -R nginx-agent:nginx-agent /opt/nginx-agent-2.0.1
+		
+		#set environment variable
+		printf 'NGINX_AGENT_HOME=/opt/nginx-agent-2.0.1\n' >> /etc/environment
 		
 		#add init scripts to os
-		cp /opt/nginx-agent/scripts/debian/nginx-agent.sh /etc/init.d/nginx-agent
+		cp /opt/nginx-agent-2.0.1/scripts/debian/nginx-agent.sh /etc/init.d/nginx-agent
 		chmod +x /etc/init.d/nginx-agent
 		chown root:root /etc/init.d/nginx-agent
 		update-rc.d nginx-agent defaults
@@ -234,13 +240,16 @@ Debian:
 		
 		#download and extract latest version of nginx manager package
 		mkdir -p /opt/downloads
-		wget https://bintray.com/jslsolucoes/nginx-admin/download_file?file_path=nginx-admin-2.0.1-bin.zip -O /opt/downloads/nginx-admin-bin.zip
-		unzip /opt/downloads/nginx-admin-bin.zip -d /opt
-		chmod -R 755 /opt/nginx-admin
-		chown -R nginx-admin:nginx-admin /opt/nginx-admin
+		wget https://bintray.com/jslsolucoes/nginx-admin/download_file?file_path=nginx-admin-2.0.1.zip -O /opt/downloads/nginx-admin-2.0.1.zip
+		unzip /opt/downloads/nginx-admin-2.0.1.zip -d /opt
+		chmod -R 755 /opt/nginx-admin-2.0.1
+		chown -R nginx-admin:nginx-admin /opt/nginx-admin-2.0.1
+		
+		#set environment variable
+		printf 'NGINX_ADMIN_HOME=/opt/nginx-admin-2.0.1\n' >> /etc/environment
 		
 		#add init scripts to os
-		cp /opt/nginx-admin/scripts/debian/nginx-admin.sh /etc/init.d/nginx-admin
+		cp /opt/nginx-admin-2.0.1/scripts/debian/nginx-admin.sh /etc/init.d/nginx-admin
 		chmod +x /etc/init.d/nginx-admin
 		chown root:root /etc/init.d/nginx-admin
 		update-rc.d nginx-admin defaults
