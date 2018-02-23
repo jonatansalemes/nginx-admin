@@ -1,6 +1,6 @@
 FROM ubuntu:16.04
 RUN apt-get -y update
-RUN apt-get -y install openjdk-8-jdk unzip sudo nginx python-setuptools
+RUN apt-get -y install openjdk-8-jdk unzip sudo nginx python-setuptools wget
 RUN easy_install supervisor
 COPY build/supervisord.conf /etc/supervisord.conf
 RUN useradd nginx-agent -r
