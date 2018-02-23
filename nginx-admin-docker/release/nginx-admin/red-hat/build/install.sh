@@ -1,4 +1,11 @@
 #!/bin/sh
+
+#check for root
+if [ `id -u` -ne 0 ]; then
+	echo "You need root privileges to run this script"
+	exit 1
+fi
+
 #install pre-dependencies if has no one
 yum -y update
 yum -y install psmisc initscripts java-1.8.0-openjdk-devel.x86_64 unzip wget firewalld

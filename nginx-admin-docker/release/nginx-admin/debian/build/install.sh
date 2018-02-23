@@ -1,4 +1,11 @@
 #!/bin/sh
+
+#check for root
+if [ `id -u` -ne 0 ]; then
+	echo "You need root privileges to run this script"
+	exit 1
+fi
+
 #install pre-dependencies if has no one
 apt-get -y update
 apt-get -y install openjdk-8-jdk unzip wget
