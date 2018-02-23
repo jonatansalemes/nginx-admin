@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link href="../assets/css/site.css" rel="stylesheet">
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+	
+	
+    <title>Configuration</title>
+  </head>
+  <body>
+  
+  	<div class="jumbotron">
+	        <h1 class="display-4">Configuring components</h1>
+	        <h2 class="display-5">Available configuration procedures</h2>
+			<p>Below there are some configurations examples for common settings changes</p>
+	</div>
+  
+	<div class="container">
+	
+		<div id="accordion">
+		  <div class="card">
+		    <div class="card-header">
+		      <h5 class="mb-0">
+		        <button class="btn btn-link" data-toggle="collapse" data-target="#mysql">
+		          Change database for Mysql
+		        </button>
+		      </h5>
+		    </div>
+		
+		    <div id="mysql" class="collapse show" data-parent="#accordion">
+		      <div class="card-body">
+		        <pre>
+	  	  			<code class="sh">
+#login as root and create database and user
+create database nginx_admin;
+grant all privileges on nginx_admin.* to nginx_admin@'%' identified by 'password';
+flush privileges;
+		
+#Go to nginx-admin folder default installation /opt/nginx-admin-2.0.1/conf/nginx-admin.conf 
+#and change settings to your mysql database settings like :
+NGINX_ADMIN_DB_DRIVER=mysql
+NGINX_ADMIN_DB_HOST=localhost
+NGINX_ADMIN_DB_PORT=3306
+NGINX_ADMIN_DB_NAME=nginx_admin
+NGINX_ADMIN_DB_USERNAME=nginx_admin
+NGINX_ADMIN_DB_PASSWORD=password
+
+#Restart service. After that your database will be installed on mysql with default username and password
+service nginx-admin restart
+	  	  			</code>
+  	    		</pre>	
+		      </div>
+		    </div>
+		  </div>
+		  <div class="card">
+		    <div class="card-header">
+		      <h5 class="mb-0">
+		        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#smtp">
+		          Change smtp settings
+		        </button>
+		      </h5>
+		    </div>
+		    <div id="smtp" class="collapse" data-parent="#accordion">
+		      <div class="card-body">
+		        <pre>
+	  	  			<code class="sh">
+#Go to nginx-admin folder default installation /opt/nginx-admin-2.0.1/conf/nginx-admin.conf 
+#and change settings to your smtp settings like :
+NGINX_ADMIN_MAIL_SERVER=localhost
+NGINX_ADMIN_MAIL_PORT=25
+NGINX_ADMIN_MAIL_TLS=false
+NGINX_ADMIN_MAIL_FROM_NAME=from@localhost.com
+NGINX_ADMIN_MAIL_FROM_ADDRESS=from@localhost.com
+NGINX_ADMIN_MAIL_AUTHENTICATE=false
+NGINX_ADMIN_MAIL_USERNAME=xxxx
+NGINX_ADMIN_MAIL_PASSWORD=xxxx
+NGINX_ADMIN_MAIL_CHARSET=utf-8
+	  	  			</code>
+  	    		</pre>	
+		      </div>
+		    </div>
+		  </div>
+		</div>
+	</div>
+	
+	<script>
+		$(document).ready(function() {
+		  $('pre code').each(function(i, block) {
+		    hljs.highlightBlock(block);
+		  });
+		});
+	</script>
+		
+  </body>
+</html>
