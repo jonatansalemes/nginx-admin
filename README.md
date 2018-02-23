@@ -43,14 +43,16 @@ Nginx admin is an open source multiplatform manager for nginx software
 
 Welcome to the new brand Nginx Admin 2.x-RC2 with a lot of improvments and bug fixes. 
 This milestone develop was a great breakthrough in system arch and unfortunately break compatibility with old 1.x version. 
-You can check new way to install components arch and new features like manager multiple nginx in a single manager ui on hot site http://ng-admin.jslsolucoes.com.
+You can check new way to install components arch and new features like manager multiple nginx in a single manager ui on hot site.
 
-<a href="http://ng-admin.jslsolucoes.com" target="_blank">Click here to check installation details, configurations, features, tutorials </a>
+<a href="http://ng-admin.jslsolucoes.com" target="_blank">Click here to check installation details, configurations, features, tutorials, etc </a>
 
+<hr/>
 The default user for nginx admin ui manager is: 
 Login :    admin
 Password : admin
 
+<hr/>
 Thanks for using nginx-admin.
 Issues or questions can be done in https://github.com/jslsolucoes/nginx-admin/issues. 
 <h1>For premium support please contact : jonatan@jslsolucoes.com</h2>
