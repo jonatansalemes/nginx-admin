@@ -1,0 +1,3 @@
+User-agent: *
+Disallow:
+Sitemap: https://jslsolucoes.github.io/nginx-admin/sitemap.xml
