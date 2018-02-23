@@ -2,7 +2,7 @@ version: "3"
 services:
   nginx-admin-agent-red-hat: 
     build: nginx-admin-agent/red-hat
-    image: nginx-admin-agent-red-hat
+    image: jslsolucoes/nginx-admin-agent-red-hat:2.0.1
     container_name: nginx-admin-agent-red-hat
     ports:
       - 3000:3000
@@ -10,7 +10,7 @@ services:
       - 3001:80
   nginx-admin-agent-debian: 
     build: nginx-admin-agent/debian
-    image: nginx-admin-agent-debian
+    image: jslsolucoes/nginx-admin-agent-debian:2.0.1
     container_name: nginx-admin-agent-debian
     ports:
       - 4000:3000
@@ -18,7 +18,7 @@ services:
       - 4001:80
   nginx-admin-red-hat: 
     build: nginx-admin/red-hat
-    image: nginx-admin-red-hat
+    image: jslsolucoes/nginx-admin-red-hat:2.0.1
     container_name: nginx-admin-red-hat
     links: 
       - nginx-admin-agent-red-hat
@@ -27,7 +27,7 @@ services:
       - 15443:4443
   nginx-admin-debian: 
     build: nginx-admin/debian
-    image: nginx-admin-debian
+    image: jslsolucoes/nginx-admin-debian:2.0.1
     container_name: nginx-admin-debian
     links: 
       - nginx-admin-agent-debian
