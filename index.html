@@ -3,17 +3,22 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-	<link href="asset/css/index.css" rel="stylesheet">
-	<link href="asset/css/open-iconic-bootstrap.min.css" rel="stylesheet">
+	<link href="asset/css/site.css" rel="stylesheet">
+	
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+  	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+	<script src="asset/js/jquery.ui.iframe.js"></script>
 	
     <title>Welcome to Nginx Admin</title>
   </head>
   <body>
 
 	  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-      <a class="navbar-brand" href="#">
+      <a class="navbar-brand" href="index.html">
       	<img src="asset/image/logo.png" width="30" height="30"/>
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -23,18 +28,16 @@
       <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-          </li>
-           <li class="nav-item">
-            <a class="nav-link" href="https://github.com/jslsolucoes/nginx-admin">Github project</a>
+            <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Documentation</a>
             <div class="dropdown-menu" aria-labelledby="dropdown01">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
+              <a class="dropdown-item" href="watch.html" target="content">Watch video tutorials</a>
             </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/jslsolucoes/nginx-admin" target="_newtab">Github project</a>
           </li>
           <li class="nav-item active">
             <a class="nav-link" href="https://github.com/jslsolucoes/nginx-admin/issues" target="_newtab">Issues</span></a>
@@ -43,17 +46,15 @@
       </div>
     </nav>
 
-    
-   
 	<div class="container">
 		<div>
-			<iframe name="content" id="par_content" src="welcome.html"></iframe>
+			<iframe name="content" frameborder="0" id="par_content" src="welcome.html"></iframe>
 		</div>
 	    <div class="row">
 	       <div class="col-md-4">
 	         <h2>Getting started</h2>
-	         <p></p>
-	         <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+	         <p>You can watch videos tutorial that explains how install and use Nginx Admin</p>
+	         <p><a class="btn btn-secondary" href="watch.html" target="content" role="button">Watch &raquo;</a></p>
 	       </div>
 	     </div>
 	 </div>
@@ -63,16 +64,11 @@
       <p>&copy; Jsl Soluções 2017-2018</p>
     </footer>
     
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-  	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-	<script src="asset/js/jquery.ui.iframe.js"></script>
-	
 	<script>
 		$(document).ready(function() {
-			$('#par_content').iframe();
+			$('#par_content').iframe({
+				min : 900
+			});
 		});
 	</script>
 	

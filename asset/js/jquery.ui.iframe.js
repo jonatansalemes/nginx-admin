@@ -2,7 +2,8 @@
 	$.widget("bs.iframe", {
 		options: {
 			interval : 1000,
-			offset : 50
+			offset : 50,
+			min : 0
 		},
 		_create: function() {
 			var self = this;
@@ -18,7 +19,7 @@
 		_reset : function () {
 			var self = this;
 			var iframe = self.element;
-			iframe.css('height',0 + 'px');
+			iframe.css('height',self.options.min + 'px');
 		},
 		_resize : function (){
 			var self = this;
