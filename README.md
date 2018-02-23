@@ -45,7 +45,7 @@ Welcome to the new brand Nginx Admin 2.x-RC2 with a lot of improvments and bug f
 This milestone develop was a great breakthrough in system arch and unfortunately break compatibility with old 1.x version. Sorry for that.
 You can check new way to install components arch and new features like manager multiple nginx in a single manager ui.
 
-<a href="http://ng-admin.jslsolucoes.com" target="_blank">Click here to check installation details, configurations, features, tutorials </a
+<a href="http://ng-admin.jslsolucoes.com" target="_blank">Click here to check installation details, configurations, features, tutorials </a>
 
 The default user for nginx admin ui manager is: 
 Login :    admin
