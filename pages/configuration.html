@@ -30,7 +30,7 @@
 		    <div class="card-header">
 		      <h5 class="mb-0">
 		        <button class="btn btn-link" data-toggle="collapse" data-target="#mysql">
-		          Change database for Mysql
+		          Change database to Mysql
 		        </button>
 		      </h5>
 		    </div>
@@ -53,7 +53,41 @@ NGINX_ADMIN_DB_NAME=nginx_admin
 NGINX_ADMIN_DB_USERNAME=nginx_admin
 NGINX_ADMIN_DB_PASSWORD=password
 
-#Restart service. After that your database will be installed on mysql with default username and password
+#Restart service. After that your database will be installed on mysql with default username and password  (admin:admin)
+service nginx-admin restart
+	  	  			</code>
+  	    		</pre>	
+		      </div>
+		    </div>
+		  </div>
+		  <div class="card">
+		    <div class="card-header">
+		      <h5 class="mb-0">
+		        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#mariadb">
+		          Change database to MariaDb
+		        </button>
+		      </h5>
+		    </div>
+		
+		    <div id="mariadb" class="collapse" data-parent="#accordion">
+		      <div class="card-body">
+		        <pre>
+	  	  			<code class="sh">
+#login as root and create database and user
+create database nginx_admin;
+grant all privileges on nginx_admin.* to nginx_admin@'%' identified by 'password';
+flush privileges;
+		
+#Go to nginx-admin folder default installation /opt/nginx-admin-2.0.2/conf/nginx-admin.conf 
+#and change settings to your mysql database settings like :
+NGINX_ADMIN_DB_DRIVER=mariadb
+NGINX_ADMIN_DB_HOST=localhost
+NGINX_ADMIN_DB_PORT=3306
+NGINX_ADMIN_DB_NAME=nginx_admin
+NGINX_ADMIN_DB_USERNAME=nginx_admin
+NGINX_ADMIN_DB_PASSWORD=password
+
+#Restart service. After that your database will be installed on mariadb with default username and password (admin:admin)
 service nginx-admin restart
 	  	  			</code>
   	    		</pre>	
