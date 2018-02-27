@@ -15,16 +15,16 @@ useradd nginx-admin -r
 
 #download and extract latest version of nginx manager package
 mkdir -p /opt/downloads
-wget https://bintray.com/jslsolucoes/nginx-admin/download_file?file_path=nginx-admin-2.0.1.zip -O /opt/downloads/nginx-admin-2.0.1.zip
-unzip /opt/downloads/nginx-admin-2.0.1.zip -d /opt
-chmod -R 755 /opt/nginx-admin-2.0.1
-chown -R nginx-admin:nginx-admin /opt/nginx-admin-2.0.1
+wget https://bintray.com/jslsolucoes/nginx-admin/download_file?file_path=nginx-admin-2.0.2.zip -O /opt/downloads/nginx-admin-2.0.2.zip
+unzip /opt/downloads/nginx-admin-2.0.2.zip -d /opt
+chmod -R 755 /opt/nginx-admin-2.0.2
+chown -R nginx-admin:nginx-admin /opt/nginx-admin-2.0.2
 
 #set environment variable
-printf 'NGINX_ADMIN_HOME=/opt/nginx-admin-2.0.1\n' >> /etc/environment
+printf 'NGINX_ADMIN_HOME=/opt/nginx-admin-2.0.2\n' >> /etc/environment
 
 #add init scripts to os
-cp /opt/nginx-admin-2.0.1/scripts/red-hat/nginx-admin.sh /etc/init.d/nginx-admin
+cp /opt/nginx-admin-2.0.2/scripts/red-hat/nginx-admin.sh /etc/init.d/nginx-admin
 chmod +x /etc/init.d/nginx-admin
 chown root:root /etc/init.d/nginx-admin
 chkconfig --level 345 nginx-admin on
@@ -38,8 +38,8 @@ firewall-cmd --reload
 service nginx-admin start
 
 #logs from server
-tail -f /opt/nginx-admin-2.0.1/log/console.log
+tail -f /opt/nginx-admin-2.0.2/log/console.log
 
 #You can check for manager ui in browser accessing http://localhost:4000
-#Please access /opt/nginx-admin-2.0.1/conf/nginx-admin.conf and you can see or change others configurations 
+#Please access /opt/nginx-admin-2.0.2/conf/nginx-admin.conf and you can see or change others configurations 
 #like smtp settings or change database driver connection (NGINX_ADMIN_DB_DRIVER=(h2 or mysql)) if you like in this file and restart service to apply new settings
