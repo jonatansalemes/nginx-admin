@@ -1,15 +1,15 @@
 #!/bin/sh
 #
 ### BEGIN INIT INFO
-# Provides:             nginx-agent
+# Provides:             nginx-admin-agent
 # Required-Start:       $remote_fs $network
 # Required-Stop:        $remote_fs $network
 # Should-Start:         $named
 # Should-Stop:          $named
 # Default-Start:        2 3 4 5
 # Default-Stop:         0 1 6
-# Short-Description:    Nginx Agent
-# Description:          Provide Nginx Agent startup/shutdown script
+# Short-Description:    Nginx Admin Agent
+# Description:          Provide Nginx Admin Agent startup/shutdown script
 ### END INIT INFO
 
 . /lib/lsb/init-functions

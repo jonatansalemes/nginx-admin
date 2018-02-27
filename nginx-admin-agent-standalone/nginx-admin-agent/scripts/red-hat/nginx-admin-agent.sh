@@ -1,12 +1,12 @@
 #!/bin/sh
 #
-# Nginx agent control script
+# Nginx Admin Agent control script
 #
 # chkconfig: 2345 80 20
-# description: Nginx agent startup/shutdown script
+# description: Nginx Admin Agent startup/shutdown script
 #
 ### BEGIN INIT INFO
-# Provides:             nginx-agent
+# Provides:             nginx-admin-agent
 # Required-Start:       $remote_fs $network
 # Required-Stop:        $remote_fs $network
 # Should-Start:         $named

@@ -14,10 +14,10 @@ apt-get -y install openjdk-8-jdk nginx unzip sudo wget vim
 service nginx stop
 
 #create user and add permission for running agent. you can also use visudo to add permissions below
-useradd nginx-agent -r
+useradd nginx-admin-agent -r
 useradd nginx -r
 chmod 640 /etc/sudoers
-printf 'nginx-agent ALL=(ALL) NOPASSWD:/usr/sbin/nginx,/usr/bin/pgrep nginx,/usr/bin/killall nginx\nDefaults:nginx-agent !requiretty\n' >> /etc/sudoers
+printf 'nginx-admin-agent ALL=(ALL) NOPASSWD:/usr/sbin/nginx,/usr/bin/pgrep nginx,/usr/bin/killall nginx\nDefaults:nginx-admin-agent !requiretty\n' >> /etc/sudoers
 chmod 440 /etc/sudoers
 
 #download and extract latest version of nginx agent package
@@ -25,10 +25,10 @@ mkdir -p /opt/downloads
 wget https://bintray.com/jslsolucoes/nginx-admin/download_file?file_path=nginx-admin-agent-2.0.2.zip -O /opt/downloads/nginx-admin-agent-2.0.2.zip
 unzip /opt/downloads/nginx-admin-agent-2.0.2.zip -d /opt
 chmod -R 755 /opt/nginx-admin-agent-2.0.2
-chown -R nginx-agent:nginx-agent /opt/nginx-admin-agent-2.0.2
+chown -R nginx-admin-agent:nginx-admin-agent /opt/nginx-admin-agent-2.0.2
 
 #set environment variable
-printf 'NGINX_AGENT_HOME=/opt/nginx-admin-agent-2.0.2\n' >> /etc/environment
+printf 'NGINX_ADMIN_AGENT_HOME=/opt/nginx-admin-agent-2.0.2\n' >> /etc/environment
 
 #add init scripts to os
 cp /opt/nginx-admin-agent-2.0.2/scripts/debian/nginx-admin-agent.sh /etc/init.d/nginx-admin-agent
