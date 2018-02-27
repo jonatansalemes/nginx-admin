@@ -122,7 +122,7 @@ public class Main {
 	}
 
 	private static Long maxPostSize() {
-		return Long.valueOf(30 * 1024 * 1024);
+		return Long.valueOf(30L * 1024L * 1024L);
 	}
 
 	@SuppressWarnings("rawtypes")
