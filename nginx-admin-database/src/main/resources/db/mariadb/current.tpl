@@ -1,0 +1,1 @@
+select id,name,version from ${ database }.${ table } order by version desc limit 1;

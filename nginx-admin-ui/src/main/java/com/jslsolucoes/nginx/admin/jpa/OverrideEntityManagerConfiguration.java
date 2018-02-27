@@ -32,6 +32,8 @@ public class OverrideEntityManagerConfiguration extends DefaultEntityManagerConf
 			return configuration.getDatabase().getName();
 		} else if (driver.equals("mysql")) {
 			return configuration.getDatabase().getName();
+		} else if (driver.equals("mariadb")) {
+			return configuration.getDatabase().getName();
 		} else if (driver.equals("oracle")) {
 			return configuration.getDatabase().getUsername();
 		} else if (driver.equals("postgresql")) {
@@ -48,6 +50,8 @@ public class OverrideEntityManagerConfiguration extends DefaultEntityManagerConf
 			return "org.hibernate.dialect.H2Dialect";
 		} else if (driver.equals("mysql")) {
 			return "org.hibernate.dialect.MySQL5Dialect";
+		} else if (driver.equals("mariadb")) {
+			return "org.hibernate.dialect.MariaDB53Dialect";
 		} else if (driver.equals("oracle")) {
 			return "org.hibernate.dialect.Oracle10gDialect";
 		} else if (driver.equals("postgresql")) {
