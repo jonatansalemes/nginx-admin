@@ -2,18 +2,18 @@ FROM ubuntu:16.04
 RUN apt-get -y update
 RUN apt-get -y install openjdk-8-jdk unzip sudo nginx python-setuptools wget
 RUN easy_install supervisor
-COPY build/supervisord.conf /etc/supervisord.conf
+RUN printf '[supervisord]\nnodaemon=true\n\n[program:nginx-admin-agent]\ncommand = /opt/nginx-admin-agent-2.0.2/scripts/debian/nginx-admin-agent.sh start\n' >> /etc/supervisord.conf
 RUN useradd nginx-agent -r
 RUN useradd nginx -r
 RUN chmod 640 /etc/sudoers
-RUN printf 'nginx-agent ALL=(ALL) NOPASSWD:/usr/sbin/nginx,/usr/bin/pgrep nginx,/usr/bin/killall nginx\n' >> /etc/sudoers
+RUN printf 'nginx-agent ALL=(ALL) NOPASSWD:/usr/sbin/nginx,/usr/bin/pgrep nginx,/usr/bin/killall nginx\nDefaults:nginx-agent !requiretty\n' >> /etc/sudoers
 RUN chmod 440 /etc/sudoers
 RUN mkdir -p /opt/downloads
-RUN wget https://bintray.com/jslsolucoes/nginx-admin/download_file?file_path=nginx-agent-2.0.1.zip -O /opt/downloads/nginx-agent-2.0.1.zip
-RUN unzip /opt/downloads/nginx-agent-2.0.1.zip -d /opt
-RUN chmod -R 755 /opt/nginx-agent-2.0.1
-RUN chown -R nginx-agent:nginx-agent /opt/nginx-agent-2.0.1
-ENV NGINX_AGENT_HOME /opt/nginx-agent-2.0.1
+RUN wget https://bintray.com/jslsolucoes/nginx-admin/download_file?file_path=nginx-admin-agent-2.0.2.zip -O /opt/downloads/nginx-admin-agent-2.0.2.zip
+RUN unzip /opt/downloads/nginx-admin-agent-2.0.2.zip -d /opt
+RUN chmod -R 755 /opt/nginx-admin-agent-2.0.2
+RUN chown -R nginx-agent:nginx-agent /opt/nginx-admin-agent-2.0.2
+ENV NGINX_AGENT_HOME /opt/nginx-admin-agent-2.0.2
 EXPOSE 80
 EXPOSE 3000
 EXPOSE 3443
