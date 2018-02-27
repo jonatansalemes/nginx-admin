@@ -11,7 +11,7 @@
 	<properties>
 		<base.dir>${project.basedir}/..</base.dir>
 		<resource.dir>${project.basedir}/src/main/resources</resource.dir>
-		<version.wildfly.swarm>2018.2.0.Final</version.wildfly.swarm>
+		<version.wildfly.swarm>2017.11.0</version.wildfly.swarm>
 	</properties>
 
 	<dependencyManagement>
