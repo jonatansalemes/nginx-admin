@@ -92,7 +92,8 @@ public class Main {
 						server.httpListener("default", httpListener -> {
 							httpListener.socketBinding("http").redirectSocket("https").enableHttp2(true).maxPostSize(maxPostSize());
 						}).httpsListener("https", httpsListener -> {
-							httpsListener.securityRealm("SSLRealm").socketBinding("https").enableHttp2(true).maxPostSize(maxPostSize());
+							httpsListener
+							.securityRealm("SSLRealm").socketBinding("https").enableHttp2(true).maxPostSize(maxPostSize());
 						}).host("default-host", host -> {
 							host.alias("localhost");
 						});
