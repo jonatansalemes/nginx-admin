@@ -30,7 +30,7 @@ chown root:root /etc/init.d/nginx-admin
 chkconfig --level 345 nginx-admin on
 
 #release ports on firewalld to nginx-agent and to nginx	
-printf '&lt;?xml version="1.0" encoding="utf-8"?&gt;\n&lt;service&gt;\n&lt;short&gt;Nginx admin firewall service&lt;/short&gt;\n&lt;description&gt;Nginx admin firewall service&lt;/description&gt;\n&lt;port protocol="tcp" port="4000"/&gt;\n&lt;port protocol="tcp" port="4443"/&gt;\n&lt;/service&gt;\n' &gt;&gt; /etc/firewalld/services/nginx-admin.xml
+printf '<?xml version="1.0" encoding="utf-8"?>\n<service>\n<short>Nginx admin firewall service</short>\n<description>Nginx admin firewall service</description>\n<port protocol="tcp" port="4000"/>\n<port protocol="tcp" port="4443"/>\n</service>\n' >> /etc/firewalld/services/nginx-admin.xml
 firewall-cmd --zone=public --add-service=nginx-admin --permanent
 firewall-cmd --reload
 
