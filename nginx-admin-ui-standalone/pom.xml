@@ -102,7 +102,9 @@
 						</goals>
 						<configuration>
 							<properties>
-								<swarm.http.port>3000</swarm.http.port>
+								<swarm.http.port>4000</swarm.http.port>
+								<swarm.https.port>4443</swarm.https.port>
+								<java.net.preferIPv4Stack>true</java.net.preferIPv4Stack>
 							</properties>
 							<mainClass>com.jslsolucoes.nginx.admin.ui.standalone.Main</mainClass>
 						</configuration>
