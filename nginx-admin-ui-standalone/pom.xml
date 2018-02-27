@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.jslsolucoes</groupId>
 		<artifactId>nginx-admin</artifactId>
-		<version>2.0.1</version>
+		<version>2.0.2</version>
 	</parent>
 	<artifactId>nginx-admin-ui-standalone</artifactId>
 
@@ -67,10 +67,10 @@
 							<tasks>
 								<copy
 									file="${project.build.directory}/nginx-admin-${project.version}.zip"
-									tofile="${base.dir}/nginx-admin-docker/nginx-admin/red-hat/build/nginx-admin-${project.version}.zip" />
+									tofile="${base.dir}/nginx-admin-docker/qas/nginx-admin/red-hat/build/nginx-admin-${project.version}.zip" />
 								<copy
 									file="${project.build.directory}/nginx-admin-${project.version}.zip"
-									tofile="${base.dir}/nginx-admin-docker/nginx-admin/debian/build/nginx-admin-${project.version}.zip" />
+									tofile="${base.dir}/nginx-admin-docker/qas/nginx-admin/debian/build/nginx-admin-${project.version}.zip" />
 							</tasks>
 						</configuration>
 						<goals>
@@ -102,7 +102,9 @@
 						</goals>
 						<configuration>
 							<properties>
-								<swarm.http.port>3000</swarm.http.port>
+								<swarm.http.port>4000</swarm.http.port>
+								<swarm.https.port>4443</swarm.https.port>
+								<java.net.preferIPv4Stack>true</java.net.preferIPv4Stack>
 							</properties>
 							<mainClass>com.jslsolucoes.nginx.admin.ui.standalone.Main</mainClass>
 						</configuration>

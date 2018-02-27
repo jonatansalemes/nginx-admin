@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.jslsolucoes</groupId>
 		<artifactId>nginx-admin</artifactId>
-		<version>2.0.1</version>
+		<version>2.0.2</version>
 	</parent>
 	<artifactId>nginx-admin-agent-standalone</artifactId>
 
@@ -52,8 +52,8 @@
 								<copy
 									file="${base.dir}/nginx-admin-agent/target/nginx-admin-agent-${project.version}.war"
 									tofile="${resource.dir}/nginx-admin-agent-${project.version}.war" />
-								<fixcrlf srcdir="${project.basedir}/nginx-agent/conf" includes="**/*.conf" eol="lf" eof="remove"/>
-								<fixcrlf srcdir="${project.basedir}/nginx-agent/scripts" includes="**/*.sh" eol="lf" eof="remove"/>
+								<fixcrlf srcdir="${project.basedir}/nginx-admin-agent/conf" includes="**/*.conf" eol="lf" eof="remove"/>
+								<fixcrlf srcdir="${project.basedir}/nginx-admin-agent/scripts" includes="**/*.sh" eol="lf" eof="remove"/>
 							</tasks>
 						</configuration>
 						<goals>
@@ -66,11 +66,11 @@
 						<configuration>
 							<tasks>
 								<copy
-									file="${project.build.directory}/nginx-agent-${project.version}.zip"
-									tofile="${base.dir}/nginx-admin-docker/nginx-admin-agent/red-hat/build/nginx-agent-${project.version}.zip" />
+									file="${project.build.directory}/nginx-admin-agent-${project.version}.zip"
+									tofile="${base.dir}/nginx-admin-docker/qas/nginx-admin-agent/red-hat/build/nginx-admin-agent-${project.version}.zip" />
 								<copy
-									file="${project.build.directory}/nginx-agent-${project.version}.zip"
-									tofile="${base.dir}/nginx-admin-docker/nginx-admin-agent/debian/build/nginx-agent-${project.version}.zip" />
+									file="${project.build.directory}/nginx-admin-agent-${project.version}.zip"
+									tofile="${base.dir}/nginx-admin-docker/qas/nginx-admin-agent/debian/build/nginx-admin-agent-${project.version}.zip" />
 							</tasks>
 						</configuration>
 						<goals>
@@ -121,7 +121,7 @@
 							<goal>attached</goal>
 						</goals>
 						<configuration>
-							<finalName>nginx-agent-${project.version}</finalName>
+							<finalName>nginx-admin-agent-${project.version}</finalName>
 							<descriptors>
 								<descriptor>assembly/full.xml</descriptor>
 							</descriptors>

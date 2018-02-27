@@ -1,7 +1,6 @@
 package com.jslsolucoes.nginx.admin.database;
 
 import java.net.URI;
-
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -29,6 +28,7 @@ import com.jslsolucoes.nginx.admin.database.repository.DatabaseHistoryRepository
 import com.jslsolucoes.nginx.admin.database.repository.impl.DatabaseHistoryRepositoryImpl;
 import com.jslsolucoes.nginx.admin.database.repository.impl.driver.DriverQuery;
 import com.jslsolucoes.nginx.admin.database.repository.impl.driver.H2DriverQuery;
+import com.jslsolucoes.nginx.admin.database.repository.impl.driver.MariaDbDriverQuery;
 import com.jslsolucoes.nginx.admin.database.repository.impl.driver.MysqlDriverQuery;
 
 public class DatabaseMigrationBuilder {
@@ -52,6 +52,7 @@ public class DatabaseMigrationBuilder {
 			DriverManager.registerDriver(new org.postgresql.Driver());
 			DriverManager.registerDriver(new com.microsoft.sqlserver.jdbc.SQLServerDriver());
 			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+			DriverManager.registerDriver(new org.mariadb.jdbc.Driver());
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
@@ -167,6 +168,8 @@ public class DatabaseMigrationBuilder {
 			return new H2DriverQuery();
 		} else if (databaseDriver.equals(DatabaseDriver.MYSQL)) {
 			return new MysqlDriverQuery();
+		} else if (databaseDriver.equals(DatabaseDriver.MARIADB)) {
+			return new MariaDbDriverQuery();
 		}
 		throw new RuntimeException("Could not determine driver type");
 	}
@@ -190,6 +193,8 @@ public class DatabaseMigrationBuilder {
 			return "jdbc:postgresql://"+ host +":" + port + "/" + database;
 		} else if (databaseDriver.equals(DatabaseDriver.MYSQL)) {
 			return "jdbc:mysql://" + host + ":" + port + "/" + database;
+		} else if (databaseDriver.equals(DatabaseDriver.MARIADB)) {
+			return "jdbc:mariadb://" + host + ":" + port + "/" + database;
 		} else if (databaseDriver.equals(DatabaseDriver.H2)) {
 			return "jdbc:h2:" + location + "/" + database;
 		} else if (databaseDriver.equals(DatabaseDriver.SQLSERVER)) {

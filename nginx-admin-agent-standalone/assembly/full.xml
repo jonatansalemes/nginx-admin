@@ -7,7 +7,7 @@
     </formats>
     <fileSets>
         <fileSet>
-            <directory>${project.basedir}/nginx-agent</directory>
+            <directory>${project.basedir}/nginx-admin-agent</directory>
             <outputDirectory>/</outputDirectory>
             <includes>
                 <include>*/**</include>

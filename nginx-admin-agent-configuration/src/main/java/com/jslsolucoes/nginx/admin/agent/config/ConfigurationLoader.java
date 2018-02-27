@@ -37,22 +37,22 @@ public class ConfigurationLoader {
 	private Nginx nginx() {
 		Nginx nginx = new Nginx();
 		nginx.setBin(properties.getProperty("NGINX_BIN"));
-		nginx.setSetting(properties.getProperty("NGINX_AGENT_SETTINGS"));
+		nginx.setSetting(properties.getProperty("NGINX_ADMIN_AGENT_SETTINGS"));
 		return nginx;
 	}
 
 	private Application application() {
 		Application application = new Application();
-		application.setVersion(properties.getProperty("NGINX_AGENT_VERSION"));
-		application.setUrlBase(properties.getProperty("NGINX_AGENT_URL_BASE"));
-		application.setAuthorizationKey(properties.getProperty("NGINX_AGENT_AUTHORIZATION_KEY"));
+		application.setVersion(properties.getProperty("NGINX_ADMIN_AGENT_VERSION"));
+		application.setUrlBase(properties.getProperty("NGINX_ADMIN_AGENT_URL_BASE"));
+		application.setAuthorizationKey(properties.getProperty("NGINX_ADMIN_AGENT_AUTHORIZATION_KEY"));
 		return application;
 	}
 
 	private Server server() {
 		Server server = new Server();
-		server.setHttpPort(Integer.valueOf(properties.getProperty("NGINX_AGENT_HTTP_PORT")));
-		server.setHttpsPort(Integer.valueOf(properties.getProperty("NGINX_AGENT_HTTPS_PORT")));
+		server.setHttpPort(Integer.valueOf(properties.getProperty("NGINX_ADMIN_AGENT_HTTP_PORT")));
+		server.setHttpsPort(Integer.valueOf(properties.getProperty("NGINX_ADMIN_AGENT_HTTPS_PORT")));
 		return server;
 	}
 }

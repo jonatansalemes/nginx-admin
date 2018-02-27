@@ -92,7 +92,8 @@ public class Main {
 						server.httpListener("default", httpListener -> {
 							httpListener.socketBinding("http").redirectSocket("https").enableHttp2(true).maxPostSize(maxPostSize());
 						}).httpsListener("https", httpsListener -> {
-							httpsListener.securityRealm("SSLRealm").socketBinding("https").enableHttp2(true).maxPostSize(maxPostSize());
+							httpsListener
+							.securityRealm("SSLRealm").socketBinding("https").enableHttp2(true).maxPostSize(maxPostSize());
 						}).host("default-host", host -> {
 							host.alias("localhost");
 						});
@@ -167,6 +168,13 @@ public class Main {
 			jDBCDriver.driverModuleName("com.mysql");
 			jDBCDriver.driverName("com.mysql");
 			return jDBCDriver;
+		} else if (driver.equals("mariadb")) {
+			JDBCDriver jDBCDriver = new JDBCDriver("org.mariadb");
+			jDBCDriver.driverClassName("org.mariadb.jdbc.Driver");
+			jDBCDriver.xaDatasourceClass("org.mariadb.jdbc.MySQLDataSource");
+			jDBCDriver.driverModuleName("org.mariadb");
+			jDBCDriver.driverName("org.mariadb");
+			return jDBCDriver;
 		} else if (driver.equals("sqlserver")) {
 			JDBCDriver jDBCDriver = new JDBCDriver("com.microsoft.sqlserver");
 			jDBCDriver.driverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
@@ -186,6 +194,8 @@ public class Main {
 			return "jdbc:postgresql://" + database.getHost() + ":" + database.getPort() + "/" + database.getName();
 		} else if (driver.equals("mysql")) {
 			return "jdbc:mysql://" + database.getHost() + ":" + database.getPort() + "/" + database.getName() + "?useSSL=false";
+		} else if (driver.equals("mariadb")) {
+			return "jdbc:mariadb://" + database.getHost() + ":" + database.getPort() + "/" + database.getName() + "?useSSL=false";
 		} else if (driver.equals("h2")) {
 			return "jdbc:h2:" + database.getLocation() + "/" + database.getName() + ";INIT=use "+database.getName()+";AUTO_SERVER=TRUE";
 		} else if (driver.equals("sqlserver")) {
@@ -202,6 +212,8 @@ public class Main {
 			return "org.postgresql";
 		} else if (driver.equals("mysql")) {
 			return "com.mysql";
+		} else if (driver.equals("mariadb")) {
+			return "org.mariadb";
 		} else if (driver.equals("h2")) {
 			return "com.h2database.h2";
 		} else if (driver.equals("sqlserver")) {
