@@ -5,18 +5,18 @@ docker rm $(docker ps -aq)
 
 #agent
 docker build --rm -t nginx-admin-agent-red-hat .
-docker run --rm -d -p 3000:3000 -p 3443:3443 -p 3001:80 --name nginx-admin-agent-red-hat jslsolucoes/nginx-admin-agent-red-hat:2.0.2
-docker run --rm -it -p 3000:3000 -p 3443:3443 -p 3001:80 jslsolucoes/nginx-admin-agent-red-hat:2.0.2 /bin/bash
+docker run --rm -d -p 3000:3000 -p 3443:3443 -p 3001:80 --name nginx-admin-agent-red-hat jslsolucoes/nginx-admin-agent-red-hat:2.0.3
+docker run --rm -it -p 3000:3000 -p 3443:3443 -p 3001:80 jslsolucoes/nginx-admin-agent-red-hat:2.0.3 /bin/bash
 
 docker build --rm -t nginx-admin-agent-debian .
 docker run --rm -d -p 4000:3000 -p 4443:3443 -p 4001:80 --name nginx-admin-agent-debian nginx-admin-agent-debian
-docker run --rm -it -p 4000:3000 -p 4443:3443 -p 4001:80 jslsolucoes/nginx-admin-agent-debian:2.0.2 /bin/bash
+docker run --rm -it -p 4000:3000 -p 4443:3443 -p 4001:80 jslsolucoes/nginx-admin-agent-debian:2.0.3 /bin/bash
 
 #admin
 docker build --rm -t nginx-admin-red-hat .
-docker run --rm -d  --link nginx-admin-agent-red-hat -p 8000:4000 -p 8443:4443 --name nginx-admin-red-hat jslsolucoes/nginx-admin-red-hat:2.0.2
-docker run --rm -it --link nginx-admin-agent-red-hat -p 8000:4000 -p 8443:4443 jslsolucoes/nginx-admin-red-hat:2.0.2 /bin/bash
+docker run --rm -d  --link nginx-admin-agent-red-hat -p 8000:4000 -p 8443:4443 --name nginx-admin-red-hat jslsolucoes/nginx-admin-red-hat:2.0.3
+docker run --rm -it --link nginx-admin-agent-red-hat -p 8000:4000 -p 8443:4443 jslsolucoes/nginx-admin-red-hat:2.0.3 /bin/bash
 
 docker build --rm -t nginx-admin-debian .
 docker run --rm -d  --link nginx-admin-agent-debian -p 9000:4000 -p 9443:4443 --name nginx-admin-debian nginx-admin-debian
-docker run --rm -it --link nginx-admin-agent-debian -p 9000:4000 -p 9443:4443 jslsolucoes/nginx-admin-debian:2.0.2 /bin/bash
+docker run --rm -it --link nginx-admin-agent-debian -p 9000:4000 -p 9443:4443 jslsolucoes/nginx-admin-debian:2.0.3 /bin/bash
