@@ -177,7 +177,7 @@ public class UpstreamController {
 	}
 
 	private String strategy(Strategy strategy) {
-		return strategyRepository.load(strategy).getName();
+		return strategyRepository.load(strategy).getDirective();
 	}
 
 }

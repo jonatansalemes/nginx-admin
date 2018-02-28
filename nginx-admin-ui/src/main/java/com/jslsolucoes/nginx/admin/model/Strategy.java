@@ -22,6 +22,12 @@ public class Strategy implements Serializable {
 
 	@Column(name = "name")
 	private String name;
+	
+	@Column(name = "description")
+	private String description;
+	
+	@Column(name = "directive")
+	private String directive;
 
 	public Strategy() {
 		// default constructor
@@ -45,5 +51,21 @@ public class Strategy implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getDirective() {
+		return directive;
+	}
+
+	public void setDirective(String directive) {
+		this.directive = directive;
 	}
 }
