@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.h2.tools.Server;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.wildfly.swarm.Swarm;
 import org.wildfly.swarm.config.datasources.JDBCDriver;
@@ -63,6 +64,8 @@ public class Main {
 			DatasourcesFraction datasourcesFraction = new DatasourcesFraction().jdbcDriver(jdbcH2Driver());
 			if(!configuration.getDatabase().getDriver().equals("h2")) {
 				datasourcesFraction = datasourcesFraction.jdbcDriver(jdbcDriver(configuration.getDatabase()));
+			} else {
+				Server.createTcpServer("-tcpPort", String.valueOf(configuration.getDatabase().getPort()), "-tcpAllowOthers").start();
 			}
 			swarm.fraction(datasourcesFraction
 					.dataSource("ExampleDS", dataSource -> {
@@ -118,11 +121,12 @@ public class Main {
 
 			WARArchive warArchive = ShrinkWrap.createFromZipFile(WARArchive.class, war);
 			swarm.deploy(warArchive);
+			
 		}
 	}
 
 	private static Long maxPostSize() {
-		return Long.valueOf(30 * 1024 * 1024);
+		return Long.valueOf(30L * 1024L * 1024L);
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -197,7 +201,7 @@ public class Main {
 		} else if (driver.equals("mariadb")) {
 			return "jdbc:mariadb://" + database.getHost() + ":" + database.getPort() + "/" + database.getName() + "?useSSL=false";
 		} else if (driver.equals("h2")) {
-			return "jdbc:h2:" + database.getLocation() + "/" + database.getName() + ";INIT=use "+database.getName()+";AUTO_SERVER=TRUE";
+			return "jdbc:h2:tcp://" + database.getHost() + ":" + database.getPort() + "/." + database.getLocation() + "/" + database.getName() + ";INIT=use "+database.getName()+";";
 		} else if (driver.equals("sqlserver")) {
 			return "jdbc:sqlserver://" + database.getHost() + ":" + database.getPort() + "/" + database.getName();
 		}

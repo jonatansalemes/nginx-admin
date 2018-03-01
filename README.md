@@ -41,7 +41,7 @@
 # nginx-admin
 Nginx admin is an open source multiplatform manager for nginx software
 
-Welcome to the new brand Nginx Admin 2.x-RC3 with a lot of improvments and bug fixes. 
+Welcome to the new brand Nginx Admin 2.x-RC4 with a lot of improvments and bug fixes. 
 This milestone develop was a great breakthrough in system arch and unfortunately break compatibility with old 1.x version. 
 You can check new way to install components arch and new features like manager multiple nginx in a single manager ui on hot site.
 

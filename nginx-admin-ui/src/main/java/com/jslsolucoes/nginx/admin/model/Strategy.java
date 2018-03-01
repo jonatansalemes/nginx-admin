@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.jslsolucoes.i18n.Messages;
+
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "strategy")
@@ -22,6 +24,12 @@ public class Strategy implements Serializable {
 
 	@Column(name = "name")
 	private String name;
+	
+	@Column(name = "description_key")
+	private String descriptionKey;
+	
+	@Column(name = "directive")
+	private String directive;
 
 	public Strategy() {
 		// default constructor
@@ -45,5 +53,25 @@ public class Strategy implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getDescription() {
+		return Messages.getString(descriptionKey);
+	}
+
+	public String getDirective() {
+		return directive;
+	}
+
+	public void setDirective(String directive) {
+		this.directive = directive;
+	}
+
+	public String getDescriptionKey() {
+		return descriptionKey;
+	}
+
+	public void setDescriptionKey(String descriptionKey) {
+		this.descriptionKey = descriptionKey;
 	}
 }

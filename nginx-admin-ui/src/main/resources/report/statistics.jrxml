@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="statistics" pageWidth="595" pageHeight="1500" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Key" uuid="3916a44c-5f75-446d-8814-a4ba8bd5348b">
-	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="1824"/>
+	<property name="ireport.y" value="896"/>
 	<subDataset name="urls" uuid="4f42aa25-3dfc-457e-9174-24cce628433e">
 		<parameter name="FROM" class="java.util.Date">
 			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -16,7 +16,7 @@
 		<parameter name="TOTAL" class="java.lang.Long"/>
 		<parameter name="NGINX" class="java.lang.Long"/>
 		<queryString>
-			<![CDATA[select count(id) as hits,request_uri as url,server_name as host from admin.access_log where id_nginx = $P{NGINX} and
+			<![CDATA[select count(id) as hits,request_uri as url,server_name as host from access_log where id_nginx = $P{NGINX} and
 date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by request_uri,server_name order by hits desc]]>
 		</queryString>
 		<field name="HITS" class="java.lang.Long"/>
@@ -30,7 +30,7 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 		<parameter name="TOTAL" class="java.lang.Long"/>
 		<parameter name="NGINX" class="java.lang.Long"/>
 		<queryString>
-			<![CDATA[select count(id) as hits,remote_addr as ip from admin.access_log where id_nginx = $P{NGINX} and
+			<![CDATA[select count(id) as hits,remote_addr as ip from access_log where id_nginx = $P{NGINX} and
 date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by remote_addr order by hits desc]]>
 		</queryString>
 		<field name="HITS" class="java.lang.Long"/>
@@ -43,7 +43,7 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 		<parameter name="TOTAL" class="java.lang.Long"/>
 		<parameter name="NGINX" class="java.lang.Long"/>
 		<queryString>
-			<![CDATA[select count(id) as hits,status as code from admin.access_log where id_nginx = $P{NGINX} and
+			<![CDATA[select count(id) as hits,status as code from access_log where id_nginx = $P{NGINX} and
 date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by status order by hits desc]]>
 		</queryString>
 		<field name="HITS" class="java.lang.Long"/>
@@ -56,7 +56,7 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 		<parameter name="TOTAL" class="java.lang.Long"/>
 		<parameter name="NGINX" class="java.lang.Long"/>
 		<queryString>
-			<![CDATA[select count(id) as hits,http_user_agent as browser from admin.access_log where id_nginx = $P{NGINX} and date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by http_user_agent order by hits desc]]>
+			<![CDATA[select count(id) as hits,http_user_agent as browser from access_log where id_nginx = $P{NGINX} and date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by http_user_agent order by hits desc]]>
 		</queryString>
 		<field name="HITS" class="java.lang.Long"/>
 		<field name="BROWSER" class="java.lang.String"/>
@@ -68,7 +68,7 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 		<parameter name="TOTAL" class="java.lang.Long"/>
 		<parameter name="NGINX" class="java.lang.Long"/>
 		<queryString>
-			<![CDATA[select count(id) as hits,http_referrer as url from admin.access_log where id_nginx = $P{NGINX} and date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by http_referrer order by hits desc]]>
+			<![CDATA[select count(id) as hits,http_referrer as url from access_log where id_nginx = $P{NGINX} and date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by http_referrer order by hits desc]]>
 		</queryString>
 		<field name="HITS" class="java.lang.Long"/>
 		<field name="URL" class="java.lang.String"/>
@@ -79,7 +79,7 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 		<parameter name="ALIASES" class="java.lang.String"/>
 		<parameter name="NGINX" class="java.lang.Long"/>
 		<queryString>
-			<![CDATA[select count(id) as hits,status as code from admin.access_log where id_nginx = $P{NGINX} and
+			<![CDATA[select count(id) as hits,status as code from access_log where id_nginx = $P{NGINX} and
 date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by status  order by hits desc limit 5]]>
 		</queryString>
 		<field name="HITS" class="java.lang.Long"/>
@@ -92,7 +92,7 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 		<parameter name="TOTAL" class="java.lang.Long"/>
 		<parameter name="NGINX" class="java.lang.Long"/>
 		<queryString>
-			<![CDATA[select count(id) as hits,SUBSTR(http_user_agent,0,70) as browser from admin.access_log where id_nginx = $P{NGINX} and date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by http_user_agent order by hits desc limit 5]]>
+			<![CDATA[select count(id) as hits,SUBSTR(http_user_agent,0,70) as browser from access_log where id_nginx = $P{NGINX} and date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by http_user_agent order by hits desc limit 5]]>
 		</queryString>
 		<field name="HITS" class="java.lang.Long"/>
 		<field name="BROWSER" class="java.lang.String"/>
@@ -104,7 +104,7 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 		<parameter name="TOTAL" class="java.lang.Long"/>
 		<parameter name="NGINX" class="java.lang.Long"/>
 		<queryString>
-			<![CDATA[select count(id) as hits,remote_addr as ip from admin.access_log where id_nginx = $P{NGINX} and
+			<![CDATA[select count(id) as hits,remote_addr as ip from access_log where id_nginx = $P{NGINX} and
 date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by remote_addr order by hits desc limit 5]]>
 		</queryString>
 		<field name="HITS" class="java.lang.Long"/>
@@ -123,7 +123,7 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 		<parameter name="TOTAL" class="java.lang.Long"/>
 		<parameter name="NGINX" class="java.lang.Long"/>
 		<queryString>
-			<![CDATA[select count(id) as hits,SUBSTR(request_uri,0,50) as url,server_name as host from admin.access_log where id_nginx = $P{NGINX} and
+			<![CDATA[select count(id) as hits,SUBSTR(request_uri,0,50) as url,server_name as host from access_log where id_nginx = $P{NGINX} and
 date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by request_uri,server_name order by hits desc limit 5]]>
 		</queryString>
 		<field name="HITS" class="java.lang.Long"/>
@@ -137,7 +137,7 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 		<parameter name="TOTAL" class="java.lang.Long"/>
 		<parameter name="NGINX" class="java.lang.Long"/>
 		<queryString>
-			<![CDATA[select count(id) as hits,http_referrer as url from admin.access_log where id_nginx = $P{NGINX} and date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by http_referrer order by hits desc limit 5]]>
+			<![CDATA[select count(id) as hits,http_referrer as url from access_log where id_nginx = $P{NGINX} and date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) group by http_referrer order by hits desc limit 5]]>
 		</queryString>
 		<field name="HITS" class="java.lang.Long"/>
 		<field name="URL" class="java.lang.String"/>
@@ -149,7 +149,7 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 		<parameter name="TOTAL" class="java.lang.Long"/>
 		<parameter name="NGINX" class="java.lang.Long"/>
 		<queryString>
-			<![CDATA[select count(id) as hits,request_uri as url,server_name as host from admin.access_log where id_nginx = $P{NGINX} and
+			<![CDATA[select count(id) as hits,request_uri as url,server_name as host from access_log where id_nginx = $P{NGINX} and
 date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) and status = 404 group by request_uri,server_name order by hits desc;]]>
 		</queryString>
 		<field name="HITS" class="java.lang.Long"/>
@@ -163,7 +163,7 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 		<parameter name="TOTAL" class="java.lang.Long"/>
 		<parameter name="NGINX" class="java.lang.Long"/>
 		<queryString>
-			<![CDATA[select count(id) as hits,request_uri as url,server_name as host from admin.access_log where id_nginx = $P{NGINX} and
+			<![CDATA[select count(id) as hits,request_uri as url,server_name as host from access_log where id_nginx = $P{NGINX} and
 date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES}) and status = 404 group by request_uri,server_name order by hits desc limit 5]]>
 		</queryString>
 		<field name="HITS" class="java.lang.Long"/>
@@ -178,7 +178,7 @@ date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})
 	</parameter>
 	<parameter name="NGINX" class="java.lang.Long"/>
 	<queryString>
-		<![CDATA[select count(id) as hits from admin.access_log where id_nginx = $P{NGINX} and
+		<![CDATA[select count(id) as hits from access_log where id_nginx = $P{NGINX} and
 date_time >= $P{FROM} and date_time <= $P{TO} and server_name in  ($P!{ALIASES})]]>
 	</queryString>
 	<field name="HITS" class="java.lang.Long"/>

@@ -196,7 +196,7 @@ public class DatabaseMigrationBuilder {
 		} else if (databaseDriver.equals(DatabaseDriver.MARIADB)) {
 			return "jdbc:mariadb://" + host + ":" + port + "/" + database;
 		} else if (databaseDriver.equals(DatabaseDriver.H2)) {
-			return "jdbc:h2:" + location + "/" + database;
+			return "jdbc:h2:tcp://" + host + ":" + port + "/." + location + "/" + database;
 		} else if (databaseDriver.equals(DatabaseDriver.SQLSERVER)) {
 			return "jdbc:sqlserver://" + host + ":" + port + "/" + database;
 		}

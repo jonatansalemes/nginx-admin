@@ -2,6 +2,7 @@ package com.jslsolucoes.nginx.admin.repository.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import javax.enterprise.context.RequestScoped;
@@ -71,12 +72,21 @@ public class UpstreamRepositoryImpl extends RepositoryImpl<Upstream> implements 
 				.collect(Collectors.toSet()).size() != upstreamServers.size()) {
 			errors.add(Messages.getString("upstream.servers.mapped.twice"));
 		}
+		
+		if(Pattern.compile("[A-Za-z][^A-Za-z0-9_]+").matcher(upstream.getName()).find()) {
+			errors.add(Messages.getString("upstream.name.not.valid"));
+		}
 
 		if (hasEquals(upstream) != null) {
 			errors.add(Messages.getString("upstream.already.exists"));
 		}
 
 		return errors;
+	}
+	
+	
+	public static void main(String[] args) {
+		System.out.println();
 	}
 
 	@Override
