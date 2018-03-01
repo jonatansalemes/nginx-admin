@@ -31,6 +31,7 @@ chkconfig --level 345 nginx-admin on
 
 #release ports on firewalld to nginx-agent and to nginx	
 printf '<?xml version="1.0" encoding="utf-8"?>\n<service>\n<short>Nginx admin firewall service</short>\n<description>Nginx admin firewall service</description>\n<port protocol="tcp" port="4000"/>\n<port protocol="tcp" port="4443"/>\n</service>\n' >> /etc/firewalld/services/nginx-admin.xml
+sleep 2
 firewall-cmd --zone=public --add-service=nginx-admin --permanent
 firewall-cmd --reload
 
