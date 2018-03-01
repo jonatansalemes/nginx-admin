@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.jslsolucoes.i18n.Messages;
+
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "strategy")
@@ -23,8 +25,8 @@ public class Strategy implements Serializable {
 	@Column(name = "name")
 	private String name;
 	
-	@Column(name = "description")
-	private String description;
+	@Column(name = "description_key")
+	private String descriptionKey;
 	
 	@Column(name = "directive")
 	private String directive;
@@ -54,11 +56,7 @@ public class Strategy implements Serializable {
 	}
 
 	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
+		return Messages.getString(descriptionKey);
 	}
 
 	public String getDirective() {
@@ -67,5 +65,13 @@ public class Strategy implements Serializable {
 
 	public void setDirective(String directive) {
 		this.directive = directive;
+	}
+
+	public String getDescriptionKey() {
+		return descriptionKey;
+	}
+
+	public void setDescriptionKey(String descriptionKey) {
+		this.descriptionKey = descriptionKey;
 	}
 }

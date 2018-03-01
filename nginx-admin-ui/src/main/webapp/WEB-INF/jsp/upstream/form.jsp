@@ -34,6 +34,11 @@
 				</html:select>
 			</html:formGroup>
 			<html:formGroup>
+				<html:div id="descriptionOfStrategy">
+				
+				</html:div>
+			</html:formGroup>
+			<html:formGroup>
 				<html:detailTable atLeast="1" data="${ upstream.servers }" var="upstreamServer" label="{upstream.servers}">
 					<html:detailTableColumn label="{server.ip}" required="true">
 						<html:select value="${ upstreamServer.server.id }" required="true" name="servers[]" data="${ serverList }" var="server">
@@ -52,4 +57,17 @@
 	<html:block align="center">
 		<html:link url="/upstream/list/${ nginx.id }" label="{back}"></html:link>
 	</html:block>
+	
+	<html:jsEvent attachTo="idStrategy" event="change">
+		strategy();
+	</html:jsEvent>
+	
+	<ajax:function name="strategy" url="/strategy/data" dataType="html">
+		<ajax:parameters>
+			<ajax:parameter src="idStrategy" name="id" type="val"></ajax:parameter>
+		</ajax:parameters>
+		<ajax:onSuccess>
+			$('#descriptionOfStrategy').html(data);
+		</ajax:onSuccess>
+	</ajax:function>
 </html:view>
