@@ -1,1 +1,0 @@
-SELECT case when count(table_name) > 0 then true else false end as found FROM INFORMATION_SCHEMA.TABLES where table_schema = upper('${ database }') and table_name = upper('${ table }');

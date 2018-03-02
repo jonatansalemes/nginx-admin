@@ -1,1 +1,0 @@
-insert into ${ database }.${ table } (name,version) values (?,?); 
