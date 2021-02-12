@@ -41,6 +41,13 @@
 <a href="https://www.ej-technologies.com/products/jprofiler/overview.html" target="_blank">Java profiler</a>
 ![jprofiler jprofiler](https://www.ej-technologies.com/images/product_banners/jprofiler_small.png)
 
+
+# Updating news
+
+12-02-2021 - Company is updating entire project changing for update and new tecnologies and bringing new ui and features to the project after some sleep time. We are focused to 
+release update soon as possible.
+
+
 # nginx-admin
 Nginx admin is an open source multiplatform manager for nginx software
 
