@@ -55,6 +55,5 @@ Password : admin
 <hr/>
 Thanks for using nginx-admin.
 Issues or questions can be done in https://github.com/jslsolucoes/nginx-admin/issues. 
-<h1>For premium support please contact : jonatan@jslsolucoes.com</h2>
 
 
