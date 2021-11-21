@@ -1,0 +1,9 @@
+# Misc commands
+docker stop $(docker ps -aq)
+docker rmi $(docker images --quiet --filter "dangling=true")
+docker rm $(docker ps -aq)
+
+
+docker run --rm -d -p 4000:3000 -p 4443:3443 -p 4001:80 --name nginx-admin-agent-debian nginx-admin-agent-image
+docker run --rm -d  --link nginx-admin-agent-debian -p 5000:4000 -p 5443:4443 --name nginx-admin-debian nginx-admin-image
+
