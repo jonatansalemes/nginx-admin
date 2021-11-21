@@ -1,7 +1,6 @@
 FROM ubuntu:16.04
 RUN apt-get -y update
-RUN apt-get -y install openjdk-8-jdk unzip sudo nginx python-setuptools
-RUN easy_install supervisor
+RUN apt-get -y install openjdk-8-jdk unzip sudo nginx supervisor
 COPY build/supervisord.conf /etc/supervisord.conf
 RUN useradd nginx-admin-agent -r
 RUN useradd nginx -r
@@ -17,4 +16,4 @@ ENV NGINX_ADMIN_AGENT_HOME /opt/nginx-admin-agent-2.0.3
 EXPOSE 80
 EXPOSE 3000
 EXPOSE 3443
-CMD ["/usr/local/bin/supervisord"]
+CMD ["/usr/bin/supervisord"]

@@ -22,7 +22,6 @@ import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
-import org.springframework.util.CollectionUtils;
 
 import com.google.common.collect.Lists;
 import com.jslsolucoes.i18n.Messages;
@@ -64,7 +63,7 @@ public class ReportRepositoryImpl implements ReportRepository {
 			errors.add(Messages.getString("report.date.interval.invalid"));
 		}
 
-		if (CollectionUtils.isEmpty(aliases)) {
+		if (aliases == null || aliases.isEmpty()) {
 			errors.add(Messages.getString("report.aliases.empty"));
 		}
 		return errors;

@@ -4,7 +4,9 @@
 .settings
 .DS_Store
 .factorypath
+.idea
 target
 *.war
 *.jar
 *.zip
+!nginx-admin-bin/*

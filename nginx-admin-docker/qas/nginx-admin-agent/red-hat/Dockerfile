@@ -1,8 +1,7 @@
 FROM centos:7
 RUN yum -y update
 RUN yum -y install epel-release
-RUN yum -y install psmisc initscripts java-1.8.0-openjdk-devel.x86_64 nginx unzip sudo python-setuptools
-RUN easy_install supervisor
+RUN yum -y install psmisc initscripts java-1.8.0-openjdk-devel.x86_64 nginx unzip sudo supervisor
 COPY build/supervisord.conf /etc/supervisord.conf
 RUN useradd nginx-admin-agent -r
 RUN chmod 640 /etc/sudoers
