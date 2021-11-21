@@ -15,7 +15,7 @@ useradd nginx-admin -r
 
 #download and extract latest version of nginx manager package
 mkdir -p /opt/downloads
-wget https://github.com/jslsolucoes/nginx-admin/raw/nginx-admin-bin/nginx-admin-2.0.3.zip -O /opt/downloads/nginx-admin-2.0.3.zip
+wget https://github.com/jslsolucoes/nginx-admin/raw/master/nginx-admin-bin/nginx-admin-2.0.3.zip -O /opt/downloads/nginx-admin-2.0.3.zip
 unzip /opt/downloads/nginx-admin-2.0.3.zip -d /opt
 chmod -R 755 /opt/nginx-admin-2.0.3
 chown -R nginx-admin:nginx-admin /opt/nginx-admin-2.0.3

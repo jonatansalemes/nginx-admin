@@ -8,7 +8,7 @@ RUN chmod 640 /etc/sudoers
 RUN printf 'nginx-admin-agent ALL=(ALL) NOPASSWD:/usr/sbin/nginx,/usr/bin/pgrep nginx,/usr/bin/killall nginx\nDefaults:nginx-admin-agent !requiretty\n' >> /etc/sudoers
 RUN chmod 440 /etc/sudoers
 RUN mkdir -p /opt/downloads
-RUN wget https://github.com/jslsolucoes/nginx-admin/raw/fix/host-build/nginx-admin-bin/nginx-admin-agent-2.0.3.zip -O /opt/downloads/nginx-admin-agent-2.0.3.zip
+RUN wget https://github.com/jslsolucoes/nginx-admin/raw/master/nginx-admin-bin/nginx-admin-agent-2.0.3.zip -O /opt/downloads/nginx-admin-agent-2.0.3.zip
 RUN unzip /opt/downloads/nginx-admin-agent-2.0.3.zip -d /opt
 RUN chmod -R 755 /opt/nginx-admin-agent-2.0.3
 RUN chown -R nginx-admin-agent:nginx-admin-agent /opt/nginx-admin-agent-2.0.3
