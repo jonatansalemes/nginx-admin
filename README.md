@@ -44,7 +44,7 @@
 
 # Updating news
 
-12-02-2021 - Company is updating entire project refactoring, updating and changing some tecnologies. We are bringing new reactive ui, cluster support, fully integrated with existent installation and others features to the project after some sleep time. We are focused to release update soon as possible. Thanks for patient.
+21-11-2021 - Company is updating entire project refactoring, updating and changing some tecnologies. We are bringing new reactive ui, cluster support, fully integrated with existent installation and others features to the project after some sleep time. We are focused to release update soon as possible. Thanks for patient.
 
 
 # nginx-admin
