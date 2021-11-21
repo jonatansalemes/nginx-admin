@@ -5,17 +5,17 @@ services:
     image: jslsolucoes/nginx-admin-agent-red-hat:2.0.3
     container_name: nginx-admin-agent-red-hat
     ports:
-      - 3000:3000
-      - 3443:3443
-      - 3001:80
+      - 13000:3000
+      - 13443:3443
+      - 13001:80
   nginx-admin-agent-debian: 
     build: nginx-admin-agent/debian
     image: jslsolucoes/nginx-admin-agent-debian:2.0.3
     container_name: nginx-admin-agent-debian
     ports:
-      - 4000:3000
-      - 4443:3443
-      - 4001:80
+      - 14000:3000
+      - 14443:3443
+      - 14001:80
   nginx-admin-red-hat: 
     build: nginx-admin/red-hat
     image: jslsolucoes/nginx-admin-red-hat:2.0.3

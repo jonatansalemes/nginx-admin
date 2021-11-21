@@ -71,6 +71,10 @@
 								<copy
 									file="${project.build.directory}/nginx-admin-agent-${project.version}.zip"
 									tofile="${base.dir}/nginx-admin-docker/qas/nginx-admin-agent/debian/build/nginx-admin-agent-${project.version}.zip" />
+								<copy
+										file="${project.build.directory}/nginx-admin-agent-${project.version}.zip"
+										tofile="${base.dir}/nginx-admin-bin/nginx-admin-agent-${project.version}.zip" />
+
 							</tasks>
 						</configuration>
 						<goals>

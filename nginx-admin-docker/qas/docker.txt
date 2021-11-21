@@ -1,6 +1,6 @@
 # Misc commands
-docker rmi $(docker images --quiet --filter "dangling=true")
 docker stop $(docker ps -aq)
+docker rmi $(docker images --quiet --filter "dangling=true")
 docker rm $(docker ps -aq)
 
 #agent
@@ -9,7 +9,7 @@ docker run --rm -d -p 3000:3000 -p 3443:3443 -p 3001:80 --name nginx-admin-agent
 docker run --rm -it -p 3000:3000 -p 3443:3443 -p 3001:80 jslsolucoes/nginx-admin-agent-red-hat:2.0.3 /bin/bash
 
 docker build --rm -t nginx-admin-agent-debian .
-docker run --rm -d -p 4000:3000 -p 4443:3443 -p 4001:80 --name nginx-admin-agent-debian nginx-admin-agent-debian
+docker run --rm -d -p 4000:3000 -p 4443:3443 -p 4001:80 --name nginx-admin-agent-debian jslsolucoes/nginx-admin-agent-debian:2.0.3
 docker run --rm -it -p 4000:3000 -p 4443:3443 -p 4001:80 jslsolucoes/nginx-admin-agent-debian:2.0.3 /bin/bash
 
 #admin
@@ -18,5 +18,5 @@ docker run --rm -d  --link nginx-admin-agent-red-hat -p 15000:4000 -p 15443:4443
 docker run --rm -it --link nginx-admin-agent-red-hat -p 15000:4000 -p 15443:4443 jslsolucoes/nginx-admin-red-hat:2.0.3 /bin/bash
 
 docker build --rm -t nginx-admin-debian .
-docker run --rm -d  --link nginx-admin-agent-debian -p 16000:4000 -p 16443:4443 --name nginx-admin-debian nginx-admin-debian
-docker run --rm -it --link nginx-admin-agent-debian -p 16000:4000 -p 16443:4443 jslsolucoes/nginx-admin-debian:2.0.3 /bin/bash
+docker run --rm -d  --link nginx-admin-agent-debian -p 5000:4000 -p 5443:4443 --name nginx-admin-debian jslsolucoes/nginx-admin-debian:2.0.3
+docker run --rm -it --link nginx-admin-agent-debian -p 5000:4000 -p 5443:4443 jslsolucoes/nginx-admin-debian:2.0.3 /bin/bash
