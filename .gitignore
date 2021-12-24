@@ -9,4 +9,3 @@ target
 *.war
 *.jar
 *.zip
-!nginx-admin-bin/*
