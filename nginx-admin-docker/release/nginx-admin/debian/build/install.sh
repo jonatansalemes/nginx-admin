@@ -15,7 +15,7 @@ useradd nginx-admin -r
 
 #download and extract latest version of nginx manager package
 mkdir -p /opt/downloads
-wget https://jslsolucoes.jfrog.io/ui/native/ngxin-admin-generic-local/nginx-admin-2.0.3.zip -O /opt/downloads/nginx-admin-2.0.3.zip
+wget https://jslsolucoes.jfrog.io/artifactory/ngxin-admin-generic-local/nginx-admin-2.0.3.zip -O /opt/downloads/nginx-admin-2.0.3.zip
 unzip /opt/downloads/nginx-admin-2.0.3.zip -d /opt
 chmod -R 755 /opt/nginx-admin-2.0.3
 chown -R nginx-admin:nginx-admin /opt/nginx-admin-2.0.3

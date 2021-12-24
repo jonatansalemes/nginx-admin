@@ -22,7 +22,7 @@ chmod 440 /etc/sudoers
 
 #download and extract latest version of nginx agent package
 mkdir -p /opt/downloads
-wget https://jslsolucoes.jfrog.io/ui/native/ngxin-admin-generic-local/nginx-admin-agent-2.0.3.zip -O /opt/downloads/nginx-admin-agent-2.0.3.zip
+wget https://jslsolucoes.jfrog.io/artifactory/ngxin-admin-generic-local/nginx-admin-agent-2.0.3.zip -O /opt/downloads/nginx-admin-agent-2.0.3.zip
 unzip /opt/downloads/nginx-admin-agent-2.0.3.zip -d /opt
 chmod -R 755 /opt/nginx-admin-agent-2.0.3
 chown -R nginx-admin-agent:nginx-admin-agent /opt/nginx-admin-agent-2.0.3
