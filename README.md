@@ -44,7 +44,7 @@
 
 # Updating news
 
-21-11-2021 - Company is updating entire project refactoring, updating and changing some tecnologies. We are bringing new reactive ui, cluster support, fully integrated with existent installation and others features to the project after some sleep time. We are focused to release update soon as possible. Thanks for patient.
+15-06-2022 - Im currently looking for project sponsors/recurrent donations via paypal to host project binaries properly without quota usage and keep project updated bringing new features cycles. Company in pandemics is suffering a lot and nowadays i`m currently alone in this project with no money to pay for private storages or github storages. Project is sleeping for some years. I have some free extra time to work in the project but i need financial help. If you interested in help someway please contact jonatan@jslsolucoes.com
 
 
 # nginx-admin
